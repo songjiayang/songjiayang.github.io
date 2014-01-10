@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>/boot</title>
+  <title>利用httpd做简单的web应用性能检测 - /boot</title>
   <meta name="author" content="Jiayang Song">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://songjiayang.github.io/">
+  <link rel="canonical" href="http://songjiayang.github.io/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -77,15 +77,12 @@
 </nav> -->
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/">利用httpd做简单的web应用性能检测</a></h1>
+      <h1 class="entry-title">利用httpd做简单的web应用性能检测</h1>
     
     
       <p class="meta">
@@ -103,14 +100,14 @@
 
 <time datetime="2014-01-10T23:37:05+08:00" pubdate data-updated="true">Jan 10<span>th</span>, 2014</time>
         
-         | <a href="/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/#disqus_thread">Comments</a>
+         | <a href="#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><blockquote><p>网站上线之前一般都会先检查下网站的抗压能力，比如并发和最大请求数等。那么我们可以使用httpd来做一些简单的测试。其中Httpd又简称ab.</p></blockquote>
+<div class="entry-content"><blockquote><p>网站上线之前一般都会先检查下网站的抗压能力，比如并发和最大请求数等。那么我们可以使用httpd来做一些简单的测试。其中Httpd又简称ab.</p></blockquote>
 
 <h4>1.ubuntu上Ab安装 </h4>
 
@@ -194,18 +191,63 @@
 
 <p>通过分析结果可以知道，ruby-china 使用的是nginx web 服务器，大约每秒可以处理的请求是17个，每个请求大概耗时1162ms, 网络流量572Kb/每秒 .</p>
 </div>
+
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Jiayang Song</span></span>
+
+      
+
+
+
+
+
+
+
+
   
 
 
-    </article>
+<time datetime="2014-01-10T23:37:05+08:00" pubdate data-updated="true">Jan 10<span>th</span>, 2014</time>
+      
+
+<span class="categories">
   
-  <div class="pagination">
+    <a class='category' href='/blog/categories/performace/'>performace</a>, <a class='category' href='/blog/categories/tool/'>tool</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>, <a class='category' href='/blog/categories/web/'>web</a>
+  
+</span>
+
+
+    </p>
     
-    <a href="/blog/archives/"> Archives </a>
-    
-  </div>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://songjiayang.github.io/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/" data-via="small_fish__" data-counturl="http://songjiayang.github.io/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/" >Tweet</a>
+  
+  
+  
 </div>
+
+    
+    <p class="meta">
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
 <aside class="sidebar">
   
     <section id="titles">
@@ -255,7 +297,7 @@
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/songjiayang">@songjiayang</a> on GitHub
@@ -288,6 +330,7 @@
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -302,7 +345,10 @@
       var disqus_shortname = 'songjiayang';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://songjiayang.github.io/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/';
+        var disqus_url = 'http://songjiayang.github.io/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

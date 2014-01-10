@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>/boot</title>
+  <title>Category: tool - /boot</title>
   <meta name="author" content="Jiayang Song">
 
   
-  <meta name="description" content="网站上线之前一般都会先检查下网站的抗压能力，比如并发和最大请求数等。那么我们可以使用httpd来做一些简单的测试。其中Httpd又简称ab. 1.ubuntu上Ab安装 执行sudo apt-get install httpd会得到诸如 &ldquo;Package httpd is a &hellip;">
+  <meta name="description" content="Category: tool">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://songjiayang.github.io/">
+  <link rel="canonical" href="http://songjiayang.github.ioblog/categories/tool/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -77,135 +77,40 @@
 </nav> -->
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article role="article">
   
-  
-  
-    <article>
-      
   <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/">利用httpd做简单的web应用性能检测</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-10T23:37:05+08:00" pubdate data-updated="true">Jan 10<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/#disqus_thread">Comments</a>
-        
-      </p>
+    <h1 class="entry-title">Category: Tool</h1>
     
   </header>
-
-
-  <div class="entry-content"><blockquote><p>网站上线之前一般都会先检查下网站的抗压能力，比如并发和最大请求数等。那么我们可以使用httpd来做一些简单的测试。其中Httpd又简称ab.</p></blockquote>
-
-<h4>1.ubuntu上Ab安装 </h4>
-
-
-<p>执行<code>sudo apt-get install httpd</code>会得到诸如 &ldquo;Package httpd is a virtual package provided by: &#8220;的提示，这是因为httpd是作为一个lib，会被给出的包所自动安装，所以随便选择一个提示的包就好，比如选择<code>apache2-mpm-worker 2.2.22-6ubuntu5.1</code>。
-安装命令:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install apache2-mpm-worker 2.2.22-6ubuntu5.1</span></code></pre></td></tr></table></div></figure>
+  
+  <div id="blog-archives" class="category">
 
 
 
+  
+  <h2>2014</h2>
 
-<h4>2.Ab命令的使用 </h4>
+<article>
+  
+<h1><a href="/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/">利用httpd做简单的web应用性能检测</a></h1>
+<time datetime="2014-01-10T23:37:05+08:00" pubdate><span class='month'>Jan</span> <span class='day'>10</span> <span class='year'>2014</span></time>
 
-
-<p>使用ab命令进行测试的时候，主要用到的参数-c 和-n ; 其中-c 表示并发量（模拟同时多少人访问），-n表示一共发送的http请求数，所谓请求数量越大，数据相对越准确。</p>
-
-<p><strong>以Ruby-China为例子</strong></p>
-
-<p>测试语句：
- <code>ab -c 20 -n 2000 http://ruby-china.org/</code><br/>
-执行结果:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Server Software:        nginx/1.4.2
-</span><span class='line'>Server Hostname:        ruby-china.org
-</span><span class='line'>Server Port:            80
-</span><span class='line'>
-</span><span class='line'>Document Path:          /
-</span><span class='line'>Document Length:        33568 bytes
-</span><span class='line'>
-</span><span class='line'>Concurrency Level:      20
-</span><span class='line'>Time taken for tests:   116.274 seconds
-</span><span class='line'>Complete requests:      2000
-</span><span class='line'>Failed requests:        1128
-</span><span class='line'>   (Connect: 0, Receive: 0, Length: 1128, Exceptions: 0)
-</span><span class='line'>Write errors:           0
-</span><span class='line'>Non-2xx responses:      22
-</span><span class='line'>Total transferred:      68131781 bytes
-</span><span class='line'>HTML transferred:       66399247 bytes
-</span><span class='line'>Requests per second:    17.20 [#/sec] (mean)
-</span><span class='line'>Time per request:       1162.744 [ms] (mean)
-</span><span class='line'>Time per request:       58.137 [ms] (mean, across all concurrent requests)
-</span><span class='line'>Transfer rate:          572.22 [Kbytes/sec] received
-</span><span class='line'>
-</span><span class='line'>Connection Times (ms)
-</span><span class='line'>              min  mean[+/-sd] median   max
-</span><span class='line'>Connect:       17  144  70.0    140    1183
-</span><span class='line'>Processing:    18 1017 422.2   1005    2925
-</span><span class='line'>Waiting:       18  302 163.9    261    1429
-</span><span class='line'>Total:         37 1160 417.0   1147    3041
-</span></code></pre></td></tr></table></div></figure>
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/performace/'>performace</a>, <a class='category' href='/blog/categories/tool/'>tool</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>, <a class='category' href='/blog/categories/web/'>web</a></span>
+</footer>
 
 
-<p>通过分析结果可以知道，ruby-china 使用的是nginx web 服务器，大约每秒可以处理的请求是17个，每个请求大概耗时1162ms, 网络流量572Kb/每秒 .</p>
+</article>
+
 </div>
-  
-  
 
-
-    </article>
   
-  <div class="pagination">
-    
-    <a href="/blog/archives/"> Archives </a>
-    
-  </div>
+</article>
+
 </div>
+
 <aside class="sidebar">
   
     <section id="titles">
@@ -255,7 +160,7 @@
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/songjiayang">@songjiayang</a> on GitHub
@@ -287,6 +192,7 @@
 
   
 </aside>
+
 
     </div>
   </div>

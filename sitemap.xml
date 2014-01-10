@@ -1,2 +1,27 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'/>
+<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
+    <url>
+        <loc>
+            http://songjiayang.github.io/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/
+        </loc>
+        <lastmod>2014-01-11T01:27:43+08:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://songjiayang.github.io/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an/
+        </loc>
+        <lastmod>2014-01-11T01:59:49+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://songjiayang.github.io/robots.txt</loc>
+        <lastmod>2014-01-11T01:27:43+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://songjiayang.github.io/blog/archives/</loc>
+        <lastmod>2014-01-11T01:59:49+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://songjiayang.github.io/</loc>
+        <lastmod>2014-01-11T01:59:49+08:00</lastmod>
+    </url>
+</urlset>

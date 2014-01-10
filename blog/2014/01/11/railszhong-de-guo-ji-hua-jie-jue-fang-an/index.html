@@ -1,24 +1,113 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[/boot]]></title>
-  <link href="http://songjiayang.github.io/atom.xml" rel="self"/>
-  <link href="http://songjiayang.github.io/"/>
-  <updated>2014-01-11T02:03:07+08:00</updated>
-  <id>http://songjiayang.github.io/</id>
-  <author>
-    <name><![CDATA[Jiayang Song]]></name>
-    <email><![CDATA[songjiayang1@gmial.com]]></email>
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Rails中的国际化解决方案 - /boot</title>
+  <meta name="author" content="Jiayang Song">
 
   
-  <entry>
-    <title type="html"><![CDATA[Rails中的国际化解决方案]]></title>
-    <link href="http://songjiayang.github.io/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an/"/>
-    <updated>2014-01-11T01:41:39+08:00</updated>
-    <id>http://songjiayang.github.io/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an</id>
-    <content type="html"><![CDATA[<p>工作经常会在rails中遇到I18n的相关问题，目前为止，我所使用过的方案有两种，各自有各自的好处。</p>
+  <meta name="description" content="工作经常会在rails中遇到I18n的相关问题，目前为止，我所使用过的方案有两种，各自有各自的好处。 方案1:使用rails官方自带的I18n，文档链接http://guides.rubyonrails.org/i18n.html 此方法主要使用了I18n这个Module, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://songjiayang.github.io/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="/boot" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-47040092-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:songjiayang.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Rails中的国际化解决方案</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-11T01:41:39+08:00" pubdate data-updated="true">Jan 11<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>工作经常会在rails中遇到I18n的相关问题，目前为止，我所使用过的方案有两种，各自有各自的好处。</p>
 
 <h4>方案1:使用rails官方自带的I18n，文档链接<a href="http://guides.rubyonrails.org/i18n.html">http://guides.rubyonrails.org/i18n.html</a></h4>
 
@@ -209,98 +298,198 @@
 <p>参考资料：<br/>
 1. <a href="https://github.com/grosser/gettext_i18n_rails">https://github.com/grosser/gettext_i18n_rails</a> <br/>
 2. <a href="https://github.com/nubis/gettext_i18n_rails_js">https://github.com/nubis/gettext_i18n_rails_js</a></p>
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[利用httpd做简单的web应用性能检测]]></title>
-    <link href="http://songjiayang.github.io/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/"/>
-    <updated>2014-01-10T23:37:05+08:00</updated>
-    <id>http://songjiayang.github.io/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce</id>
-    <content type="html"><![CDATA[<blockquote><p>网站上线之前一般都会先检查下网站的抗压能力，比如并发和最大请求数等。那么我们可以使用httpd来做一些简单的测试。其中Httpd又简称ab.</p></blockquote>
 
-<h4>1.ubuntu上Ab安装 </h4>
+<span class="byline author vcard">Posted by <span class="fn">Jiayang Song</span></span>
 
-
-<p>执行<code>sudo apt-get install httpd</code>会得到诸如 &ldquo;Package httpd is a virtual package provided by: &#8220;的提示，这是因为httpd是作为一个lib，会被给出的包所自动安装，所以随便选择一个提示的包就好，比如选择<code>apache2-mpm-worker 2.2.22-6ubuntu5.1</code>。
-安装命令:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install apache2-mpm-worker 2.2.22-6ubuntu5.1</span></code></pre></td></tr></table></div></figure>
+      
 
 
 
 
-<h4>2.Ab命令的使用 </h4>
 
 
-<p>使用ab命令进行测试的时候，主要用到的参数-c 和-n ; 其中-c 表示并发量（模拟同时多少人访问），-n表示一共发送的http请求数，所谓请求数量越大，数据相对越准确。</p>
-
-<p><strong>以Ruby-China为例子</strong></p>
-
-<p>测试语句：
- <code>ab -c 20 -n 2000 http://ruby-china.org/</code><br/>
-执行结果:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Server Software:        nginx/1.4.2
-</span><span class='line'>Server Hostname:        ruby-china.org
-</span><span class='line'>Server Port:            80
-</span><span class='line'>
-</span><span class='line'>Document Path:          /
-</span><span class='line'>Document Length:        33568 bytes
-</span><span class='line'>
-</span><span class='line'>Concurrency Level:      20
-</span><span class='line'>Time taken for tests:   116.274 seconds
-</span><span class='line'>Complete requests:      2000
-</span><span class='line'>Failed requests:        1128
-</span><span class='line'>   (Connect: 0, Receive: 0, Length: 1128, Exceptions: 0)
-</span><span class='line'>Write errors:           0
-</span><span class='line'>Non-2xx responses:      22
-</span><span class='line'>Total transferred:      68131781 bytes
-</span><span class='line'>HTML transferred:       66399247 bytes
-</span><span class='line'>Requests per second:    17.20 [#/sec] (mean)
-</span><span class='line'>Time per request:       1162.744 [ms] (mean)
-</span><span class='line'>Time per request:       58.137 [ms] (mean, across all concurrent requests)
-</span><span class='line'>Transfer rate:          572.22 [Kbytes/sec] received
-</span><span class='line'>
-</span><span class='line'>Connection Times (ms)
-</span><span class='line'>              min  mean[+/-sd] median   max
-</span><span class='line'>Connect:       17  144  70.0    140    1183
-</span><span class='line'>Processing:    18 1017 422.2   1005    2925
-</span><span class='line'>Waiting:       18  302 163.9    261    1429
-</span><span class='line'>Total:         37 1160 417.0   1147    3041
-</span></code></pre></td></tr></table></div></figure>
 
 
-<p>通过分析结果可以知道，ruby-china 使用的是nginx web 服务器，大约每秒可以处理的请求是17个，每个请求大概耗时1162ms, 网络流量572Kb/每秒 .</p>
-]]></content>
-  </entry>
   
-</feed>
+
+
+<time datetime="2014-01-11T01:41:39+08:00" pubdate data-updated="true">Jan 11<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/i18n/'>I18n</a>, <a class='category' href='/blog/categories/rails/'>Rails</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://songjiayang.github.io/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an/" data-via="small_fish__" data-counturl="http://songjiayang.github.io/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/" title="Previous Post: 利用httpd做简单的web应用性能检测">&laquo; 利用httpd做简单的web应用性能检测</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="http://songjiayang.github.io" title="/boot"></a>
+  <h1 id="site_title"><a href="http://songjiayang.github.io" title="/boot">/boot</a></h1>
+  <h3 id="site_subtitle">Never say give up unless you had a try.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://songjiayang.github.io"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="/atom.xml"> Feed </a></li>
+  </ul>
+</section>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+    <a href="https://github.com/songjiayang" title="songjiayang"><i class="fa fa-github fa-2x"></i></a>
+  
+
+  
+
+  
+    <a href="https://twitter.com/small_fish__" title="small_fish__"><i class="fa fa-twitter fa-2x"></i></a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an/">Rails中的国际化解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/">利用httpd做简单的web应用性能检测</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/songjiayang">@songjiayang</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'songjiayang',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Jiayang Song -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'songjiayang';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://songjiayang.github.io/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an/';
+        var disqus_url = 'http://songjiayang.github.io/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

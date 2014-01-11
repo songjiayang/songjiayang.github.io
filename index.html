@@ -9,7 +9,7 @@
   <meta name="author" content="Jiayang Song">
 
   
-  <meta name="description" content="工作经常会在rails中遇到I18n的相关问题，目前为止，我所使用过的方案有两种，各自有各自的好处。 方案1:使用rails官方自带的I18n，文档链接http://guides.rubyonrails.org/i18n.html 此方法主要使用了I18n这个Module, &hellip;">
+  <meta name="description" content="Plupload是一款比较流行的文件上传插件，能够轻易实现多文本上传,拖拽上传等效果，而且兼容性比较好。 什么是TempImage? 通常我们会将Image作为一个多态的资源,然后有一些特定的图片继承于它,比如MaterialImage(belongs_to Material). &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +79,138 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/11/shi-yong-pluploadchuang-jian-tempimage/">使用Plupload创建TempImage</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-11T19:57:14+08:00" pubdate data-updated="true">Jan 11<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/01/11/shi-yong-pluploadchuang-jian-tempimage/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://www.plupload.com/">Plupload</a>是一款比较流行的文件上传插件，能够轻易实现多文本上传,拖拽上传等效果，而且兼容性比较好。</p>
+
+<p>什么是TempImage?</p>
+
+<p>通常我们会将Image作为一个多态的资源,然后有一些特定的图片继承于它,比如<code>MaterialImage</code>(belongs_to Material).</p>
+
+<p>假如Material在创建的时候需要上传一张图片，通常的做法是图片和表单数据一起上传。这样的做法有一个问题就是图片表单的提交会因为图片上传而耗费大量时间。</p>
+
+<p>有什么办法可以解决这个问题呢？那就是采用TempImage的方式。具体而言就是先使用Plupload插件，异步将图片上传到后台，然后在表单中绑定新创建的图片的id即可。</p>
+
+<figure class='code'><figcaption><span>一段比较常用的创建TempImage的coffeescript代码 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'> <span class="nv">initialize_uploader: </span><span class="nf">(options) -&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">## CSRF Tokens Into Hash</span>
+</span><span class='line'>    <span class="c1"># Initialize a params hash</span>
+</span><span class='line'>    <span class="vi">@params = </span><span class="p">{}</span>
+</span><span class='line'>    <span class="c1"># Load csrf tokens from page</span>
+</span><span class='line'>    <span class="nv">csrf_name = </span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;meta[name=&#39;csrf-param&#39;]&quot;</span><span class="p">)</span><span class="o">?</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;content&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="nv">csrf_value = </span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;meta[name=&#39;csrf-token&#39;]&quot;</span><span class="p">)</span><span class="o">?</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;content&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># Load csrf tokens into params hash</span>
+</span><span class='line'>    <span class="nx">@params</span><span class="p">[</span><span class="nx">csrf_name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">csrf_value</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">## Default options for the uploader</span>
+</span><span class='line'>    <span class="nv">options = </span><span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nv">url: </span><span class="s">&quot;/images.json?temp=true&quot;</span>
+</span><span class='line'>      <span class="nv">multipart_params: </span><span class="nx">@params</span>
+</span><span class='line'>      <span class="nv">label: </span><span class="s">&#39;&#39;</span>
+</span><span class='line'>      <span class="nv">prompt: </span><span class="s">&#39;&#39;</span>
+</span><span class='line'>      <span class="nv">chunk_size : </span><span class="s">&#39;1mb&#39;</span>
+</span><span class='line'>      <span class="nv">browse_button: </span><span class="s">&#39;browser&#39;</span>
+</span><span class='line'>      <span class="nv">unique_names : </span><span class="kc">true</span>
+</span><span class='line'>      <span class="nv">multi_selection : </span><span class="kc">false</span>  <span class="err">＃</span><span class="nx">single</span> <span class="o">or</span> <span class="nx">multi</span> <span class="nx">select</span>
+</span><span class='line'>      <span class="nv">max_file_size: </span><span class="s">&#39;10mb&#39;</span>
+</span><span class='line'>      <span class="nv">filters: </span><span class="p">[{</span> <span class="nv">title: </span><span class="nx">__</span><span class="p">(</span><span class="s">&quot;Image files&quot;</span><span class="p">),</span> <span class="nv">extensions: </span><span class="s">&quot;gif,png,jpg,jpeg,tiff&quot;</span><span class="p">}]</span>
+</span><span class='line'>    <span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">## Initialize a new uploader</span>
+</span><span class='line'>    <span class="vi">@uploader = </span><span class="k">new</span> <span class="nx">plupload</span><span class="p">.</span><span class="nx">Uploader</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">@uploader</span><span class="p">.</span><span class="nx">init</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># This is a simple uploader; bind file upload directly after choice</span>
+</span><span class='line'>    <span class="nx">@uploader</span><span class="p">.</span><span class="nx">bind</span> <span class="s">&#39;FilesAdded&#39;</span><span class="p">,</span> <span class="nf">(uploader, files) -&gt;</span>
+</span><span class='line'>      <span class="nx">uploader</span><span class="p">.</span><span class="nx">start</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># Once a file is uploaded, add the tempimage id to input</span>
+</span><span class='line'>    <span class="nx">@uploader</span><span class="p">.</span><span class="nx">bind</span> <span class="s">&#39;FileUploaded&#39;</span><span class="p">,</span> <span class="nf">(uploader, file, response) =&gt;</span>
+</span><span class='line'>      <span class="nv">data = </span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">response</span><span class="p">)</span><span class="o">?</span><span class="p">.</span><span class="nx">image</span>
+</span><span class='line'>      <span class="nx">@browser</span> <span class="o">||</span> <span class="o">=</span> <span class="nx">@$el</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;</span><span class="err">#</span><span class="s">browser&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">@browser</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;src&#39;</span><span class="p">,</span><span class="nx">data</span><span class="p">.</span><span class="nx">file_url</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">@temp_image_input</span> <span class="o">||=</span> <span class="nx">@$el</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s">&#39;#temp_image_id&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">@temp_image_input</span><span class="p">.</span><span class="nx">val</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -472,6 +604,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/11/shi-yong-pluploadchuang-jian-tempimage/">使用Plupload创建TempImage</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an/">Rails中的国际化解决方案</a>

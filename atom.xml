@@ -4,7 +4,7 @@
   <title><![CDATA[/boot]]></title>
   <link href="http://songjiayang.github.io/atom.xml" rel="self"/>
   <link href="http://songjiayang.github.io/"/>
-  <updated>2014-01-11T20:31:21+08:00</updated>
+  <updated>2014-01-11T23:13:21+08:00</updated>
   <id>http://songjiayang.github.io/</id>
   <author>
     <name><![CDATA[Jiayang Song]]></name>
@@ -12,6 +12,146 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[为什么选择nginx服务器]]></title>
+    <link href="http://songjiayang.github.io/blog/2014/01/11/wei-shi-yao-xuan-ze-nginxfu-wu-qi/"/>
+    <updated>2014-01-11T22:29:50+08:00</updated>
+    <id>http://songjiayang.github.io/blog/2014/01/11/wei-shi-yao-xuan-ze-nginxfu-wu-qi</id>
+    <content type="html"><![CDATA[<p>以前Apache一直是web静态服务器领域的老大哥，占有绝对的市场分额，但是这种局面随着nginx的出现而不断改变。</p>
+
+<p>现在越来越多的大公司已经从apache迁移到了nginx，主要原因就是nginx的超高的性能，甚至远远超过apache.那么了解nginx的安装，部署基本成为了每一个web工程师的必修课(尤其是Rails工程师).</p>
+
+<p><strong>1. 通过源码安装Nginx</strong></p>
+
+<ul>
+<li>从<a href="http://nginx.org/en/download.html">nginx官网</a>下载源代码 (选用最新的stable版本，假设下载到本地~/Download目录)</li>
+<li><code>sudo mv ~/Download/nginx-1.4.4.tar.gz /var/local</code></li>
+<li><code>cd /var/local/ ; sudo tar -xvf nginx-1.4.4.tar.gz</code></li>
+<li><code>sudo ./config</code></li>
+<li><code>sudo make</code></li>
+<li><code>sudo make install</code></li>
+<li><code>cd /usr/local/nginx/</code></li>
+</ul>
+
+
+<p>好了，如果没有报错的情况下的化，那么nginx已经安装成功了，并且默认安装到了/user/local/nginx目录.在/user/local/nginx目录下执行<code>ls -l</code>你将看到如下输出:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">drwx</span><span class="o">------</span> <span class="mi">2</span> <span class="n">nobody</span> <span class="n">root</span> <span class="mi">4096</span>  <span class="mi">1</span><span class="err">月</span> <span class="mi">11</span> <span class="mi">22</span><span class="p">:</span><span class="mi">13</span> <span class="n">client_body_temp</span>
+</span><span class='line'><span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span> <span class="mi">2</span> <span class="n">root</span>   <span class="n">root</span> <span class="mi">4096</span>  <span class="mi">1</span><span class="err">月</span> <span class="mi">11</span> <span class="mi">22</span><span class="p">:</span><span class="mi">22</span> <span class="n">conf</span>  <span class="c1">#nginx配置文件</span>
+</span><span class='line'><span class="n">drwx</span><span class="o">------</span> <span class="mi">2</span> <span class="n">nobody</span> <span class="n">root</span> <span class="mi">4096</span>  <span class="mi">1</span><span class="err">月</span> <span class="mi">11</span> <span class="mi">22</span><span class="p">:</span><span class="mi">13</span> <span class="n">fastcgi_temp</span>
+</span><span class='line'><span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span> <span class="mi">2</span> <span class="n">root</span>   <span class="n">root</span> <span class="mi">4096</span>  <span class="mi">1</span><span class="err">月</span> <span class="mi">11</span> <span class="mi">22</span><span class="p">:</span><span class="mi">12</span> <span class="n">html</span> <span class="c1">#nginx默认网页</span>
+</span><span class='line'><span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span> <span class="mi">2</span> <span class="n">root</span>   <span class="n">root</span> <span class="mi">4096</span>  <span class="mi">1</span><span class="err">月</span> <span class="mi">11</span> <span class="mi">22</span><span class="p">:</span><span class="mi">22</span> <span class="n">logs</span>
+</span><span class='line'><span class="n">drwx</span><span class="o">------</span> <span class="mi">2</span> <span class="n">nobody</span> <span class="n">root</span> <span class="mi">4096</span>  <span class="mi">1</span><span class="err">月</span> <span class="mi">11</span> <span class="mi">22</span><span class="p">:</span><span class="mi">13</span> <span class="n">proxy_temp</span>
+</span><span class='line'><span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span> <span class="mi">2</span> <span class="n">root</span>   <span class="n">root</span> <span class="mi">4096</span>  <span class="mi">1</span><span class="err">月</span> <span class="mi">11</span> <span class="mi">22</span><span class="p">:</span><span class="mi">12</span> <span class="n">sbin</span> <span class="c1">#nginx命令文件</span>
+</span><span class='line'><span class="n">drwx</span><span class="o">------</span> <span class="mi">2</span> <span class="n">nobody</span> <span class="n">root</span> <span class="mi">4096</span>  <span class="mi">1</span><span class="err">月</span> <span class="mi">11</span> <span class="mi">22</span><span class="p">:</span><span class="mi">13</span> <span class="n">scgi_temp</span>
+</span><span class='line'><span class="n">drwx</span><span class="o">------</span> <span class="mi">2</span> <span class="n">nobody</span> <span class="n">root</span> <span class="mi">4096</span>  <span class="mi">1</span><span class="err">月</span> <span class="mi">11</span> <span class="mi">22</span><span class="p">:</span><span class="mi">13</span> <span class="n">uwsgi_temp</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装完成后，可以使用<code>sudo ./sbin/nginx</code> 启动nginx, 如果没有任何输入，那么表示启动成功，如果提示<em>(98: Address already in use)</em>之类的表示nginx启动的端口已经被占用,那么只需停掉该端口占用的进程或者修改nginx的监听的端口（默认80）就好。</p>
+
+<p>Nginx的默认配置文件是<code>conf/nginx.conf</code>,如果想修改监听端口只需如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>    <span class="n">server</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">listen</span>       <span class="mi">81</span><span class="p">;</span>  <span class="c1">#将原来的80修改为任意未被占用的端口</span>
+</span><span class='line'>        <span class="n">server_name</span>  <span class="n">localhost</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">#charset koi8-r;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">#access_log  logs/host.access.log  main;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">location</span> <span class="o">/</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">root</span>   <span class="n">html</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">index</span>  <span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">index</span><span class="o">.</span><span class="n">htm</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2. Nginx和Apache服务器性能简单比较</strong></p>
+
+<p>Nginx执行<code>ab -n 10000 http://localhost:81/index.html</code> 的结果是:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Concurrency</span> <span class="ss">Level</span><span class="p">:</span>      <span class="mi">1</span>
+</span><span class='line'><span class="no">Time</span> <span class="n">taken</span> <span class="k">for</span> <span class="ss">tests</span><span class="p">:</span>   <span class="mi">2</span><span class="o">.</span><span class="mi">239</span> <span class="n">seconds</span>
+</span><span class='line'><span class="no">Complete</span> <span class="ss">requests</span><span class="p">:</span>      <span class="mi">10000</span>
+</span><span class='line'><span class="no">Failed</span> <span class="ss">requests</span><span class="p">:</span>        <span class="mi">0</span>
+</span><span class='line'><span class="no">Write</span> <span class="ss">errors</span><span class="p">:</span>           <span class="mi">0</span>
+</span><span class='line'><span class="no">Total</span> <span class="ss">transferred</span><span class="p">:</span>      <span class="mi">8440000</span> <span class="n">bytes</span>
+</span><span class='line'><span class="no">HTML</span> <span class="ss">transferred</span><span class="p">:</span>       <span class="mi">6120000</span> <span class="n">bytes</span>
+</span><span class='line'><span class="no">Requests</span> <span class="n">per</span> <span class="ss">second</span><span class="p">:</span>    <span class="mi">4466</span><span class="o">.</span><span class="mo">03</span> <span class="o">[</span><span class="c1">#/sec] (mean)</span>
+</span><span class='line'><span class="no">Time</span> <span class="n">per</span> <span class="ss">request</span><span class="p">:</span>       <span class="mi">0</span><span class="o">.</span><span class="mi">224</span> <span class="o">[</span><span class="n">ms</span><span class="o">]</span> <span class="p">(</span><span class="n">mean</span><span class="p">)</span>
+</span><span class='line'><span class="no">Time</span> <span class="n">per</span> <span class="ss">request</span><span class="p">:</span>       <span class="mi">0</span><span class="o">.</span><span class="mi">224</span> <span class="o">[</span><span class="n">ms</span><span class="o">]</span> <span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">across</span> <span class="n">all</span> <span class="n">concurrent</span> <span class="n">requests</span><span class="p">)</span>
+</span><span class='line'><span class="no">Transfer</span> <span class="ss">rate</span><span class="p">:</span>          <span class="mi">3680</span><span class="o">.</span><span class="mi">99</span> <span class="o">[</span><span class="no">Kbytes</span><span class="o">/</span><span class="n">sec</span><span class="o">]</span> <span class="n">received</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Apache执行<code>ab -n 10000 http://localhost/index.html</code> 的结果是:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Concurrency</span> <span class="ss">Level</span><span class="p">:</span>      <span class="mi">1</span>
+</span><span class='line'><span class="no">Time</span> <span class="n">taken</span> <span class="k">for</span> <span class="ss">tests</span><span class="p">:</span>   <span class="mi">4</span><span class="o">.</span><span class="mi">453</span> <span class="n">seconds</span>
+</span><span class='line'><span class="no">Complete</span> <span class="ss">requests</span><span class="p">:</span>      <span class="mi">10000</span>
+</span><span class='line'><span class="no">Failed</span> <span class="ss">requests</span><span class="p">:</span>        <span class="mi">0</span>
+</span><span class='line'><span class="no">Write</span> <span class="ss">errors</span><span class="p">:</span>           <span class="mi">0</span>
+</span><span class='line'><span class="no">Total</span> <span class="ss">transferred</span><span class="p">:</span>      <span class="mi">4550000</span> <span class="n">bytes</span>
+</span><span class='line'><span class="no">HTML</span> <span class="ss">transferred</span><span class="p">:</span>       <span class="mi">1770000</span> <span class="n">bytes</span>
+</span><span class='line'><span class="no">Requests</span> <span class="n">per</span> <span class="ss">second</span><span class="p">:</span>    <span class="mi">2245</span><span class="o">.</span><span class="mi">57</span> <span class="o">[</span><span class="c1">#/sec] (mean)</span>
+</span><span class='line'><span class="no">Time</span> <span class="n">per</span> <span class="ss">request</span><span class="p">:</span>       <span class="mi">0</span><span class="o">.</span><span class="mi">445</span> <span class="o">[</span><span class="n">ms</span><span class="o">]</span> <span class="p">(</span><span class="n">mean</span><span class="p">)</span>
+</span><span class='line'><span class="no">Time</span> <span class="n">per</span> <span class="ss">request</span><span class="p">:</span>       <span class="mi">0</span><span class="o">.</span><span class="mi">445</span> <span class="o">[</span><span class="n">ms</span><span class="o">]</span> <span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">across</span> <span class="n">all</span> <span class="n">concurrent</span> <span class="n">requests</span><span class="p">)</span>
+</span><span class='line'><span class="no">Transfer</span> <span class="ss">rate</span><span class="p">:</span>          <span class="mi">997</span><span class="o">.</span><span class="mi">79</span> <span class="o">[</span><span class="no">Kbytes</span><span class="o">/</span><span class="n">sec</span><span class="o">]</span> <span class="n">received</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上是两个服务器在没有任何调优的情况下的测试结果,通过数据不难发现，nginx的请求量/每秒基本比apache多了1/3,可见nginx不是一般的快,这就是为什么我使用nginx的原因。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[使用Plupload创建TempImage]]></title>

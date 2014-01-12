@@ -5,14 +5,25 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - /boot</title>
+  <title>Transform Hash Key Type In Rails - /boot</title>
   <meta name="author" content="Jiayang Song">
 
   
-  <meta name="description" content="Blog Archive 2014 Transform Hash Key Type In Rails
-Jan 12 2014 posted in Rails 为什么选择nginx服务器
-Jan 11 2014 使用Plupload创建TempImage
-Jan 11 2014 posted in &hellip;">
+  <meta name="description" content="Symbol To String 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+foo = { :a =&gt; 1, :b =&gt; 2
+} foo.with_indifferent_access
+=&gt;
+{ &quot;a&quot; =&gt; 1, &quot;b&quot; =& &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +32,7 @@ Jan 11 2014 posted in &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://songjiayang.github.io/blog/archives/">
+  <link rel="canonical" href="http://songjiayang.github.io/blog/2014/01/12/transform-hash-key-type-in-rails/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -81,88 +92,147 @@ Jan 11 2014 posted in &hellip;">
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Blog Archive</h1>
+    
+      <h1 class="entry-title">Transform Hash Key Type in Rails</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-12T15:11:08+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<div class="entry-content"><p>Symbol To String</p>
 
-  
-  <h2>2014</h2>
-
-<article>
-  
-<h1><a href="/blog/2014/01/12/transform-hash-key-type-in-rails/">Transform Hash Key Type In Rails</a></h1>
-<time datetime="2014-01-12T15:11:08+08:00" pubdate><span class='month'>Jan</span> <span class='day'>12</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/rails/'>Rails</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/01/11/wei-shi-yao-xuan-ze-nginxfu-wu-qi/">为什么选择nginx服务器</a></h1>
-<time datetime="2014-01-11T22:29:50+08:00" pubdate><span class='month'>Jan</span> <span class='day'>11</span> <span class='year'>2014</span></time>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/01/11/shi-yong-pluploadchuang-jian-tempimage/">使用Plupload创建TempImage</a></h1>
-<time datetime="2014-01-11T19:57:14+08:00" pubdate><span class='month'>Jan</span> <span class='day'>11</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/plupload/'>Plupload</a>, <a class='category' href='/blog/categories/rails/'>Rails</a></span>
-</footer>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">foo</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:b</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">foo</span><span class="o">.</span><span class="n">with_indifferent_access</span>
+</span><span class='line'><span class="o">=&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;a&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;b&quot;</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-</article>
+<p>String To Symbol</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">foo</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;a&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;b&quot;</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">foo</span><span class="o">.</span><span class="n">symbolize_keys</span>
+</span><span class='line'><span class="o">=&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:b</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-
-<article>
-  
-<h1><a href="/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an/">Rails中的国际化解决方案</a></h1>
-<time datetime="2014-01-11T01:41:39+08:00" pubdate><span class='month'>Jan</span> <span class='day'>11</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/i18n/'>I18n</a>, <a class='category' href='/blog/categories/rails/'>Rails</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/">利用httpd做简单的web应用性能检测</a></h1>
-<time datetime="2014-01-10T23:37:05+08:00" pubdate><span class='month'>Jan</span> <span class='day'>10</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/performace/'>performace</a>, <a class='category' href='/blog/categories/tool/'>tool</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>, <a class='category' href='/blog/categories/web/'>web</a></span>
-</footer>
-
-
-</article>
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Jiayang Song</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-12T15:11:08+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>Rails</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://songjiayang.github.io/blog/2014/01/12/transform-hash-key-type-in-rails/" data-via="small_fish__" data-counturl="http://songjiayang.github.io/blog/2014/01/12/transform-hash-key-type-in-rails/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/01/11/wei-shi-yao-xuan-ze-nginxfu-wu-qi/" title="Previous Post: 为什么选择nginx服务器">&laquo; 为什么选择nginx服务器</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -279,7 +349,10 @@ Jan 11 2014 posted in &hellip;">
       var disqus_shortname = 'songjiayang';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://songjiayang.github.io/blog/2014/01/12/transform-hash-key-type-in-rails/';
+        var disqus_url = 'http://songjiayang.github.io/blog/2014/01/12/transform-hash-key-type-in-rails/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

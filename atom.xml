@@ -4,7 +4,7 @@
   <title><![CDATA[/boot]]></title>
   <link href="http://songjiayang.github.io/atom.xml" rel="self"/>
   <link href="http://songjiayang.github.io/"/>
-  <updated>2014-01-11T23:13:21+08:00</updated>
+  <updated>2014-01-12T15:15:54+08:00</updated>
   <id>http://songjiayang.github.io/</id>
   <author>
     <name><![CDATA[Jiayang Song]]></name>
@@ -12,6 +12,69 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Transform Hash Key Type In Rails]]></title>
+    <link href="http://songjiayang.github.io/blog/2014/01/12/transform-hash-key-type-in-rails/"/>
+    <updated>2014-01-12T15:11:08+08:00</updated>
+    <id>http://songjiayang.github.io/blog/2014/01/12/transform-hash-key-type-in-rails</id>
+    <content type="html"><![CDATA[<p>Symbol To String</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">foo</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:b</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">foo</span><span class="o">.</span><span class="n">with_indifferent_access</span>
+</span><span class='line'><span class="o">=&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;a&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;b&quot;</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>String To Symbol</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">foo</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;a&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;b&quot;</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">foo</span><span class="o">.</span><span class="n">symbolize_keys</span>
+</span><span class='line'><span class="o">=&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:b</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[为什么选择nginx服务器]]></title>

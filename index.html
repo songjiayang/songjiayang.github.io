@@ -9,7 +9,21 @@
   <meta name="author" content="Jiayang Song">
 
   
-  <meta name="description" content="以前Apache一直是web静态服务器领域的老大哥，占有绝对的市场分额，但是这种局面随着nginx的出现而不断改变。 现在越来越多的大公司已经从apache迁移到了nginx，主要原因就是nginx的超高的性能，甚至远远超过apache.那么了解nginx的安装， &hellip;">
+  <meta name="description" content="Symbol To String 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+foo = { :a =&gt; 1, :b =&gt; 2
+} foo.with_indifferent_access
+=&gt;
+{ &quot;a&quot; =&gt; 1, &quot;b&quot; =& &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +93,98 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/12/transform-hash-key-type-in-rails/">Transform Hash Key Type in Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-12T15:11:08+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/01/12/transform-hash-key-type-in-rails/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Symbol To String</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">foo</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:b</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">foo</span><span class="o">.</span><span class="n">with_indifferent_access</span>
+</span><span class='line'><span class="o">=&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;a&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;b&quot;</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>String To Symbol</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">foo</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;a&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;b&quot;</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">foo</span><span class="o">.</span><span class="n">symbolize_keys</span>
+</span><span class='line'><span class="o">=&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:b</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -773,6 +879,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/12/transform-hash-key-type-in-rails/">Transform Hash Key Type In Rails</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/01/11/wei-shi-yao-xuan-ze-nginxfu-wu-qi/">为什么选择nginx服务器</a>

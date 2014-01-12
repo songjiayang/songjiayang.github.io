@@ -9,21 +9,9 @@
   <meta name="author" content="Jiayang Song">
 
   
-  <meta name="description" content="Symbol To String 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-foo = { :a =&gt; 1, :b =&gt; 2
-} foo.with_indifferent_access
-=&gt;
-{ &quot;a&quot; =&gt; 1, &quot;b&quot; =& &hellip;">
+  <meta name="description" content="Postgresql9安装方法和步骤： 在 /etc/apt/sources.list.d/pgdg.list 文件中添加源 1
+deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main 跟新软件源 1
+sudo apt-get &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -93,6 +81,397 @@ foo = { :a =&gt; 1, :b =&gt; 2
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/12/ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/">Ubuntu + Rails4 + Postgresql9.3 初体验</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-12T15:40:03+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/01/12/ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>Postgresql9安装方法和步骤：</p></blockquote>
+
+<p>在  /etc/apt/sources.list.d/pgdg.list 文件中添加源</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main</span></code></pre></td></tr></table></div></figure>
+
+
+<p>跟新软件源</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get update</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装postgresql 9.3</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install postgresql-9.3</span></code></pre></td></tr></table></div></figure>
+
+
+<p>添加用户</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u postgres psql postgres</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- truncate -->
+
+
+<p>设置密码</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>\password postgres</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>Rails 相关配置</p></blockquote>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;pg&#39;</span>  <span class="c1">#在gemfile中添加</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>修改database.yml</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># common config
+</span><span class='line'> common: &common
+</span><span class='line'>   adapter: postgresql
+</span><span class='line'>   encoding: utf8
+</span><span class='line'>   pool: 10
+</span><span class='line'>   username: postgres
+</span><span class='line'>   password: password
+</span><span class='line'>   host: localhost
+</span><span class='line'> 
+</span><span class='line'># development config
+</span><span class='line'> development:
+</span><span class='line'>   database: kindergarten_development
+</span><span class='line'>   &lt;&lt;: *common
+</span><span class='line'> 
+</span><span class='line'># test config
+</span><span class='line'> test:
+</span><span class='line'>   database: kindergarten_test
+</span><span class='line'>   &lt;&lt;: *common
+</span><span class='line'>   
+</span><span class='line'>#production config    
+</span><span class='line'> production:
+</span><span class='line'>   &lt;&lt;: *common
+</span><span class='line'>   database: kindergarten</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/12/rails4-herokubu-shu-chu-ti-yan/">Rails4 + Heroku 部署初体验</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-12T15:22:23+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/01/12/rails4-herokubu-shu-chu-ti-yan/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>想必做Rails 开发的很少有人不知道<a href="heroku.com">heroku</a>的吧,它它其实是一个pass平台。操作简单，文档齐全，唯一不好的就是国内访问速度比较慢（不过，人家是免费的哦）。</p>
+
+<p><strong>Q</strong> ： 到底使用heroku部署一个Rails 项目有多容易？  <br/>
+<strong>A</strong> ： 真的太容易了.</p>
+
+<p>步骤如下：</p>
+
+<ol>
+<li>注册heroku帐号</li>
+<li>安装heroku gem</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install heroku</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+3.  配置Gemfile</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rails_12factor&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;pg&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4 . 发布到heroku</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>heroku login
+</span><span class='line'>heroku create
+</span><span class='line'>git add .
+</span><span class='line'>git commit  -m  "for heroku"
+</span><span class='line'>git push heroku master</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+5. heroku 一些常用命令</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>heroku run rake db:migrate
+</span><span class='line'>heroku run rake db:seed</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>每个项目都会自动生成一个免费的亚马逊的postgresql数据库用户，可以到heroku 控制台查询。需要特别指出的是这个免费的数据库已经给出的database，所以不想要执行db:create等命令，不然会报出权限相关的错误。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/12/ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/">Ubuntu+Passager+Nginx Rails部署搭建</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-12T15:18:38+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/01/12/ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>跟新软件源</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get update  .</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果升级报错，那么请执行sudo rm -rf /var/lib/apt/lists/* -vf 试试
+安装git</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install git-core</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装curl</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install curl</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- truncate -->
+
+
+<p>安装rvm</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl -L https://get.rvm.io | bash -s   </span></code></pre></td></tr></table></div></figure>
+
+
+<p>获得最新稳定版rvm和安装ruby的依赖</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rvm get stable
+</span><span class='line'>rvm requirements</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+安装所有rvm requirements依赖</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装ruby</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rvm install 2.0.0
+</span><span class='line'>rvm use 2.0.0 default</span></code></pre></td></tr></table></div></figure>
+
+
+<p>升级gem并设置gem的配置</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem update
+</span><span class='line'>echo -e "install: --no-rdoc --no-ri \ninstall: --no-rdoc --no-ri"&gt;&gt; ~/.gemrc</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装Rials</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install rails --version 3.2.13</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装Rails一些常见依赖</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install mysql-server mysql-client nodejs</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装passager/nginx</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install passenger
+</span><span class='line'>rvmsudo passenger-install-nginx-module</span></code></pre></td></tr></table></div></figure>
+
+
+<p>所有选项选择默认即可.<br/>
+nginx安装目录也选择默认 /opt/nginx/ <br/>
+passenger 会自动修改config, 添加passenger所在的rvm的ruby和gem环境地址</p>
+
+<p>安装nginx脚本</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget https://raw.github.com/gist/1548664/53f6d7ccb9dfc82a50c95e9f6e2e60dc59e4c2fb/nginx
+</span><span class='line'>sudo cp nginx /etc/init.d/
+</span><span class='line'>sudo chmod +x /etc/init.d/nginx
+</span><span class='line'>sudo update-rc.d nginx defaults</span></code></pre></td></tr></table></div></figure>
+
+
+<p>配置nginx,文件在 /opt/nginx/config/nginx.conf</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>server {
+</span><span class='line'>   listen 80;
+</span><span class='line'>   server_name www.yourhost.com;
+</span><span class='line'>   root /home/railsu/project/public;   # &lt;--- 这里是你项目的public目录
+</span><span class='line'>   passenger_enabled on;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>启动nginx</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo ./opt/nginx/sbin/nginx</span></code></pre></td></tr></table></div></figure>
+
+
+<p>重启项目</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd yourapp
+</span><span class='line'>touch tmp/restart.txt</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -879,6 +1258,18 @@ foo = { :a =&gt; 1, :b =&gt; 2
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/12/ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/">Ubuntu + Rails4 + Postgresql9.3 初体验</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/12/rails4-herokubu-shu-chu-ti-yan/"> Rails4 + Heroku 部署初体验 </a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/12/ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/">Ubuntu+Passager+Nginx  Rails部署搭建</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/01/12/transform-hash-key-type-in-rails/">Transform Hash Key Type In Rails</a>

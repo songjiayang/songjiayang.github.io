@@ -5,25 +5,15 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Transform Hash Key Type In Rails - /boot</title>
+  <title>Ubuntu+Passager+Nginx  Rails部署搭建 - /boot</title>
   <meta name="author" content="Jiayang Song">
 
   
-  <meta name="description" content="Symbol To String 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-foo = { :a =&gt; 1, :b =&gt; 2
-} foo.with_indifferent_access
-=&gt;
-{ &quot;a&quot; =&gt; 1, &quot;b&quot; =& &hellip;">
+  <meta name="description" content="跟新软件源 1
+sudo apt-get update . 如果升级报错，那么请执行sudo rm -rf /var/lib/apt/lists/* -vf 试试
+安装git 1
+sudo apt-get install git-core 安装curl 1
+sudo apt-get install &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -32,7 +22,7 @@ foo = { :a =&gt; 1, :b =&gt; 2
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://songjiayang.github.io/blog/2014/01/12/transform-hash-key-type-in-rails/">
+  <link rel="canonical" href="http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -96,7 +86,7 @@ foo = { :a =&gt; 1, :b =&gt; 2
   
   <header>
     
-      <h1 class="entry-title">Transform Hash Key Type in Rails</h1>
+      <h1 class="entry-title">Ubuntu+Passager+Nginx Rails部署搭建</h1>
     
     
       <p class="meta">
@@ -112,7 +102,7 @@ foo = { :a =&gt; 1, :b =&gt; 2
   
 
 
-<time datetime="2014-01-12T15:11:08+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
+<time datetime="2014-01-12T15:18:38+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -121,7 +111,104 @@ foo = { :a =&gt; 1, :b =&gt; 2
   </header>
 
 
-<div class="entry-content"><p>Symbol To String</p>
+<div class="entry-content"><p>跟新软件源</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get update  .</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果升级报错，那么请执行sudo rm -rf /var/lib/apt/lists/* -vf 试试
+安装git</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install git-core</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装curl</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install curl</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- truncate -->
+
+
+<p>安装rvm</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl -L https://get.rvm.io | bash -s   </span></code></pre></td></tr></table></div></figure>
+
+
+<p>获得最新稳定版rvm和安装ruby的依赖</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rvm get stable
+</span><span class='line'>rvm requirements</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+安装所有rvm requirements依赖</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装ruby</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rvm install 2.0.0
+</span><span class='line'>rvm use 2.0.0 default</span></code></pre></td></tr></table></div></figure>
+
+
+<p>升级gem并设置gem的配置</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem update
+</span><span class='line'>echo -e "install: --no-rdoc --no-ri \ninstall: --no-rdoc --no-ri"&gt;&gt; ~/.gemrc</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装Rials</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install rails --version 3.2.13</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装Rails一些常见依赖</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install mysql-server mysql-client nodejs</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装passager/nginx</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install passenger
+</span><span class='line'>rvmsudo passenger-install-nginx-module</span></code></pre></td></tr></table></div></figure>
+
+
+<p>所有选项选择默认即可.<br/>
+nginx安装目录也选择默认 /opt/nginx/ <br/>
+passenger 会自动修改config, 添加passenger所在的rvm的ruby和gem环境地址</p>
+
+<p>安装nginx脚本</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget https://raw.github.com/gist/1548664/53f6d7ccb9dfc82a50c95e9f6e2e60dc59e4c2fb/nginx
+</span><span class='line'>sudo cp nginx /etc/init.d/
+</span><span class='line'>sudo chmod +x /etc/init.d/nginx
+</span><span class='line'>sudo update-rc.d nginx defaults</span></code></pre></td></tr></table></div></figure>
+
+
+<p>配置nginx,文件在 /opt/nginx/config/nginx.conf</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -129,50 +216,26 @@ foo = { :a =&gt; 1, :b =&gt; 2
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">foo</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>    <span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
-</span><span class='line'>    <span class="ss">:b</span> <span class="o">=&gt;</span> <span class="mi">2</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">foo</span><span class="o">.</span><span class="n">with_indifferent_access</span>
-</span><span class='line'><span class="o">=&gt;</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;a&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;b&quot;</span> <span class="o">=&gt;</span> <span class="mi">2</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>server {
+</span><span class='line'>   listen 80;
+</span><span class='line'>   server_name www.yourhost.com;
+</span><span class='line'>   root /home/railsu/project/public;   # &lt;--- 这里是你项目的public目录
+</span><span class='line'>   passenger_enabled on;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<p>String To Symbol</p>
+<p>启动nginx</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo ./opt/nginx/sbin/nginx</span></code></pre></td></tr></table></div></figure>
+
+
+<p>重启项目</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">foo</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;a&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;b&quot;</span> <span class="o">=&gt;</span> <span class="mi">2</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">foo</span><span class="o">.</span><span class="n">symbolize_keys</span>
-</span><span class='line'><span class="o">=&gt;</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="ss">:a</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
-</span><span class='line'>    <span class="ss">:b</span> <span class="o">=&gt;</span> <span class="mi">2</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd yourapp
+</span><span class='line'>touch tmp/restart.txt</span></code></pre></td></tr></table></div></figure>
 
 
 
@@ -198,12 +261,12 @@ foo = { :a =&gt; 1, :b =&gt; 2
   
 
 
-<time datetime="2014-01-12T15:11:08+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
+<time datetime="2014-01-12T15:18:38+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/rails/'>Rails</a>
+    <a class='category' href='/blog/categories/deploy/'>Deploy</a>, <a class='category' href='/blog/categories/nginx/'>Nginx</a>
   
 </span>
 
@@ -212,7 +275,7 @@ foo = { :a =&gt; 1, :b =&gt; 2
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://songjiayang.github.io/blog/2014/01/12/transform-hash-key-type-in-rails/" data-via="small_fish__" data-counturl="http://songjiayang.github.io/blog/2014/01/12/transform-hash-key-type-in-rails/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/" data-via="small_fish__" data-counturl="http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/" >Tweet</a>
   
   
   
@@ -221,10 +284,10 @@ foo = { :a =&gt; 1, :b =&gt; 2
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/11/wei-shi-yao-xuan-ze-nginxfu-wu-qi/" title="Previous Post: 为什么选择nginx服务器">&laquo; 为什么选择nginx服务器</a>
+        <a class="basic-alignment left" href="/blog/2014/01/12/transform-hash-key-type-in-rails/" title="Previous Post: Transform Hash Key Type In Rails">&laquo; Transform Hash Key Type In Rails</a>
       
       
-        <a class="basic-alignment right" href="/blog/2014/01/12/ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/" title="Next Post: Ubuntu+Passager+Nginx  Rails部署搭建">Ubuntu+Passager+Nginx  Rails部署搭建 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2014/01/12/rails4-herokubu-shu-chu-ti-yan/" title="Next Post:  Rails4 + Heroku 部署初体验 "> Rails4 + Heroku 部署初体验  &raquo;</a>
       
     </p>
   </footer>
@@ -364,8 +427,8 @@ foo = { :a =&gt; 1, :b =&gt; 2
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://songjiayang.github.io/blog/2014/01/12/transform-hash-key-type-in-rails/';
-        var disqus_url = 'http://songjiayang.github.io/blog/2014/01/12/transform-hash-key-type-in-rails/';
+        var disqus_identifier = 'http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/';
+        var disqus_url = 'http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/';
         var disqus_script = 'embed.js';
       
     (function () {

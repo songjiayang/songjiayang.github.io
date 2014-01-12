@@ -5,11 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: ubuntu - /boot</title>
+  <title>Ubuntu + Rails4 + Postgresql9.3 初体验 - /boot</title>
   <meta name="author" content="Jiayang Song">
 
   
-  <meta name="description" content="Category: ubuntu">
+  <meta name="description" content="Postgresql9安装方法和步骤： 在 /etc/apt/sources.list.d/pgdg.list 文件中添加源 1
+deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main 跟新软件源 1
+sudo apt-get &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://songjiayang.github.ioblog/categories/ubuntu/">
+  <link rel="canonical" href="http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -78,36 +80,187 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Ubuntu</h1>
+    
+      <h1 class="entry-title">Ubuntu + Rails4 + Postgresql9.3 初体验</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-12T15:40:03+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
+
+
+<div class="entry-content"><blockquote><p>Postgresql9安装方法和步骤：</p></blockquote>
+
+<p>在  /etc/apt/sources.list.d/pgdg.list 文件中添加源</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main</span></code></pre></td></tr></table></div></figure>
+
+
+<p>跟新软件源</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get update</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装postgresql 9.3</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install postgresql-9.3</span></code></pre></td></tr></table></div></figure>
+
+
+<p>添加用户</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u postgres psql postgres</span></code></pre></td></tr></table></div></figure>
 
 
 
-  
-  <h2>2014</h2>
 
-<article>
-  
-<h1><a href="/blog/2014/01/10/li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/">利用httpd做简单的web应用性能检测</a></h1>
-<time datetime="2014-01-10T23:37:05+08:00" pubdate><span class='month'>Jan</span> <span class='day'>10</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/performace/'>performace</a>, <a class='category' href='/blog/categories/tool/'>tool</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>, <a class='category' href='/blog/categories/web/'>web</a></span>
-</footer>
+<!-- truncate -->
 
 
-</article>
+<p>设置密码</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>\password postgres</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>Rails 相关配置</p></blockquote>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;pg&#39;</span>  <span class="c1">#在gemfile中添加</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>修改database.yml</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># common config
+</span><span class='line'> common: &common
+</span><span class='line'>   adapter: postgresql
+</span><span class='line'>   encoding: utf8
+</span><span class='line'>   pool: 10
+</span><span class='line'>   username: postgres
+</span><span class='line'>   password: password
+</span><span class='line'>   host: localhost
+</span><span class='line'> 
+</span><span class='line'># development config
+</span><span class='line'> development:
+</span><span class='line'>   database: kindergarten_development
+</span><span class='line'>   &lt;&lt;: *common
+</span><span class='line'> 
+</span><span class='line'># test config
+</span><span class='line'> test:
+</span><span class='line'>   database: kindergarten_test
+</span><span class='line'>   &lt;&lt;: *common
+</span><span class='line'>   
+</span><span class='line'>#production config    
+</span><span class='line'> production:
+</span><span class='line'>   &lt;&lt;: *common
+</span><span class='line'>   database: kindergarten</span></code></pre></td></tr></table></div></figure>
+
+
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Jiayang Song</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-12T15:40:03+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/postgresql/'>Postgresql</a>, <a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/" data-via="small_fish__" data-counturl="http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/01/12/rails4-herokubu-shu-chu-ti-yan/" title="Previous Post:  Rails4 + Heroku 部署初体验 ">&laquo;  Rails4 + Heroku 部署初体验 </a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -236,7 +389,10 @@
       var disqus_shortname = 'songjiayang';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/';
+        var disqus_url = 'http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

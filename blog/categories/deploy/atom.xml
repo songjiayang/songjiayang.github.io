@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Deploy | /boot]]></title>
+  <link href="http://songjiayang.github.io/blog/categories/deploy/atom.xml" rel="self"/>
+  <link href="http://songjiayang.github.io/"/>
+  <updated>2014-01-12T15:47:12+08:00</updated>
+  <id>http://songjiayang.github.io/</id>
+  <author>
+    <name><![CDATA[Jiayang Song]]></name>
+    <email><![CDATA[songjiayang1@gmial.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ Rails4 + Heroku 部署初体验 ]]></title>
+    <link href="http://songjiayang.github.io/blog/2014/01/12/rails4-herokubu-shu-chu-ti-yan/"/>
+    <updated>2014-01-12T15:22:23+08:00</updated>
+    <id>http://songjiayang.github.io/blog/2014/01/12/rails4-herokubu-shu-chu-ti-yan</id>
+    <content type="html"><![CDATA[<p>想必做Rails 开发的很少有人不知道<a href="heroku.com">heroku</a>的吧,它它其实是一个pass平台。操作简单，文档齐全，唯一不好的就是国内访问速度比较慢（不过，人家是免费的哦）。</p>
+
+<p><strong>Q</strong> ： 到底使用heroku部署一个Rails 项目有多容易？  <br/>
+<strong>A</strong> ： 真的太容易了.</p>
+
+<p>步骤如下：</p>
+
+<ol>
+<li>注册heroku帐号</li>
+<li>安装heroku gem</li>
+</ol>
+
+
+<p><code>
+gem install heroku
+</code><br/>
+3.  配置Gemfile
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;gem &#39;rails_12factor&#39;</span>
+</span><span class='line'><span class="sr">gem &#39;pg&#39;</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>4 . 发布到heroku</p>
+
+<p><code>
+heroku login
+heroku create
+git add .
+git commit  -m  "for heroku"
+git push heroku master
+</code><br/>
+5. heroku 一些常用命令
+<code>
+heroku run rake db:migrate
+heroku run rake db:seed
+</code></p>
+
+<p>每个项目都会自动生成一个免费的亚马逊的postgresql数据库用户，可以到heroku 控制台查询。需要特别指出的是这个免费的数据库已经给出的database，所以不想要执行db:create等命令，不然会报出权限相关的错误。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu+Passager+Nginx  Rails部署搭建]]></title>
+    <link href="http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/"/>
+    <updated>2014-01-12T15:18:38+08:00</updated>
+    <id>http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian</id>
+    <content type="html"><![CDATA[<p>跟新软件源<br/>
+<code>
+sudo apt-get update  .
+</code>
+如果升级报错，那么请执行sudo rm -rf /var/lib/apt/lists/* -vf 试试
+安装git <br/>
+<code>
+sudo apt-get install git-core
+</code></p>
+
+<p>安装curl<br/>
+<code>
+sudo apt-get install curl
+</code></p>
+
+<!-- truncate -->
+
+
+<p>安装rvm
+<code>
+curl -L https://get.rvm.io | bash -s   
+</code>
+获得最新稳定版rvm和安装ruby的依赖
+<code>
+rvm get stable
+rvm requirements
+</code>
+安装所有rvm requirements依赖
+<code>
+sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config
+</code>
+安装ruby
+<code>
+rvm install 2.0.0
+rvm use 2.0.0 default
+</code>
+升级gem并设置gem的配置
+<code>
+gem update
+echo -e "install: --no-rdoc --no-ri \ninstall: --no-rdoc --no-ri"&gt;&gt; ~/.gemrc
+</code>
+安装Rials
+<code>
+gem install rails --version 3.2.13
+</code>
+安装Rails一些常见依赖
+<code>
+sudo apt-get install mysql-server mysql-client nodejs
+</code>
+安装passager/nginx
+<code>
+gem install passenger
+rvmsudo passenger-install-nginx-module
+</code>
+所有选项选择默认即可.<br/>
+nginx安装目录也选择默认 /opt/nginx/ <br/>
+passenger 会自动修改config, 添加passenger所在的rvm的ruby和gem环境地址</p>
+
+<p>安装nginx脚本
+<code>
+wget https://raw.github.com/gist/1548664/53f6d7ccb9dfc82a50c95e9f6e2e60dc59e4c2fb/nginx
+sudo cp nginx /etc/init.d/
+sudo chmod +x /etc/init.d/nginx
+sudo update-rc.d nginx defaults
+</code></p>
+
+<p>配置nginx,文件在 /opt/nginx/config/nginx.conf
+<code>
+server {
+   listen 80;
+   server_name www.yourhost.com;
+   root /home/railsu/project/public;   # &lt;--- 这里是你项目的public目录
+   passenger_enabled on;
+}
+</code>
+启动nginx
+<code>
+sudo ./opt/nginx/sbin/nginx
+</code>
+重启项目
+<code>
+cd yourapp
+touch tmp/restart.txt
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

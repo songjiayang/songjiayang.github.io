@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Rails | /boot]]></title>
   <link href="http://songjiayang.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://songjiayang.github.io/"/>
-  <updated>2014-01-12T15:15:54+08:00</updated>
+  <updated>2014-01-12T15:47:12+08:00</updated>
   <id>http://songjiayang.github.io/</id>
   <author>
     <name><![CDATA[Jiayang Song]]></name>
@@ -12,6 +12,111 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu + Rails4 + Postgresql9.3 初体验]]></title>
+    <link href="http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/"/>
+    <updated>2014-01-12T15:40:03+08:00</updated>
+    <id>http://songjiayang.github.io/blog/2014/01/12/ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan</id>
+    <content type="html"><![CDATA[<blockquote><p>Postgresql9安装方法和步骤：</p></blockquote>
+
+<p>在  /etc/apt/sources.list.d/pgdg.list 文件中添加源
+<code>
+deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main
+</code>
+跟新软件源
+<code>
+sudo apt-get update
+</code>
+安装postgresql 9.3
+<code>
+sudo apt-get install postgresql-9.3
+</code>
+添加用户
+<code>
+sudo -u postgres psql postgres
+</code></p>
+
+<!-- truncate -->
+
+
+<p>设置密码
+<code>
+\password postgres
+</code></p>
+
+<blockquote><p>Rails 相关配置</p></blockquote>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">pg</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>  <span class="c1">#在gemfile中添加</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>修改database.yml</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>common config&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p> common: &amp;common
+</span><span class='line'>   adapter: postgresql
+</span><span class='line'>   encoding: utf8
+</span><span class='line'>   pool: 10
+</span><span class='line'>   username: postgres
+</span><span class='line'>   password: password
+</span><span class='line'>   host: localhost&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>development config&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p> development:
+</span><span class='line'>   database: kindergarten_development
+</span><span class='line'>   &lt;&lt;: *common&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>test config&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p> test:
+</span><span class='line'>   database: kindergarten_test
+</span><span class='line'>   &lt;&lt;: *common&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>production config&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p> production:
+</span><span class='line'>   &lt;&lt;: *common
+</span><span class='line'>   database: kindergarten&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Transform Hash Key Type In Rails]]></title>

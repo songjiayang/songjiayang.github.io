@@ -3,7 +3,7 @@ layout: post
 title: "为什么选择nginx服务器"
 date: 2014-01-11 22:29:50 +0800
 comments: true
-categories: 
+categories: [Ubuntu, Nginx]
 ---
 
 以前Apache一直是web静态服务器领域的老大哥，占有绝对的市场分额，但是这种局面随着nginx的出现而不断改变。

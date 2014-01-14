@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Heroku | /boot]]></title>
+  <link href="http://songjiayang.github.io/blog/categories/heroku/atom.xml" rel="self"/>
+  <link href="http://songjiayang.github.io/"/>
+  <updated>2014-01-12T15:47:12+08:00</updated>
+  <id>http://songjiayang.github.io/</id>
+  <author>
+    <name><![CDATA[Jiayang Song]]></name>
+    <email><![CDATA[songjiayang1@gmial.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ Rails4 + Heroku 部署初体验 ]]></title>
+    <link href="http://songjiayang.github.io/blog/2014/01/12/rails4-herokubu-shu-chu-ti-yan/"/>
+    <updated>2014-01-12T15:22:23+08:00</updated>
+    <id>http://songjiayang.github.io/blog/2014/01/12/rails4-herokubu-shu-chu-ti-yan</id>
+    <content type="html"><![CDATA[<p>想必做Rails 开发的很少有人不知道<a href="heroku.com">heroku</a>的吧,它它其实是一个pass平台。操作简单，文档齐全，唯一不好的就是国内访问速度比较慢（不过，人家是免费的哦）。</p>
+
+<p><strong>Q</strong> ： 到底使用heroku部署一个Rails 项目有多容易？  <br/>
+<strong>A</strong> ： 真的太容易了.</p>
+
+<p>步骤如下：</p>
+
+<ol>
+<li>注册heroku帐号</li>
+<li>安装heroku gem</li>
+</ol>
+
+
+<p><code>
+gem install heroku
+</code><br/>
+3.  配置Gemfile
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;gem &#39;rails_12factor&#39;</span>
+</span><span class='line'><span class="sr">gem &#39;pg&#39;</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>4 . 发布到heroku</p>
+
+<p><code>
+heroku login
+heroku create
+git add .
+git commit  -m  "for heroku"
+git push heroku master
+</code><br/>
+5. heroku 一些常用命令
+<code>
+heroku run rake db:migrate
+heroku run rake db:seed
+</code></p>
+
+<p>每个项目都会自动生成一个免费的亚马逊的postgresql数据库用户，可以到heroku 控制台查询。需要特别指出的是这个免费的数据库已经给出的database，所以不想要执行db:create等命令，不然会报出权限相关的错误。</p>
+]]></content>
+  </entry>
+  
+</feed>

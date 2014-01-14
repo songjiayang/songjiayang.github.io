@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: I18n | /boot]]></title>
+  <link href="http://songjiayang.github.io/blog/categories/i18n/atom.xml" rel="self"/>
+  <link href="http://songjiayang.github.io/"/>
+  <updated>2014-01-12T15:47:12+08:00</updated>
+  <id>http://songjiayang.github.io/</id>
+  <author>
+    <name><![CDATA[Jiayang Song]]></name>
+    <email><![CDATA[songjiayang1@gmial.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rails中的国际化解决方案]]></title>
+    <link href="http://songjiayang.github.io/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an/"/>
+    <updated>2014-01-11T01:41:39+08:00</updated>
+    <id>http://songjiayang.github.io/blog/2014/01/11/railszhong-de-guo-ji-hua-jie-jue-fang-an</id>
+    <content type="html"><![CDATA[<p>工作经常会在rails中遇到I18n的相关问题，目前为止，我所使用过的方案有两种，各自有各自的好处。</p>
+
+<h4>方案1:使用rails官方自带的I18n，文档链接<a href="http://guides.rubyonrails.org/i18n.html">http://guides.rubyonrails.org/i18n.html</a></h4>
+
+<p>此方法主要使用了I18n这个Module,而I18n最为重要的两个方法是 <strong>translate</strong>，<strong>localize</strong>
+他们的使用十分简单，如下：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="no">I18n</span><span class="o">.</span><span class="n">t</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">hello</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>  <span class="o">=&gt;</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">translation</span> <span class="ss">missing</span><span class="p">:</span> <span class="n">xxx</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'> <span class="no">I18n</span><span class="o">.</span><span class="n">l</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>   <span class="o">=&gt;</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="no">Tue</span><span class="p">,</span> <span class="mi">12</span> <span class="no">Nov</span> <span class="mi">2013</span> <span class="mo">05</span><span class="p">:</span><span class="mi">56</span><span class="p">:</span><span class="mi">47</span> <span class="n">pm</span> <span class="no">CST</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>日常国际化做翻译的时候，需要用到<strong>t</strong>这个方法，如上。这个方法可以在直接使用，而不需要I18n来call.如果你的I18n.locale 没有对应的翻译，那么系统将显示 “translating missing: xxx”的字样。既然这样，你需要做的就是，将对应的翻译的字表（yml文件）事先写好，这样rails就会根据这个字表来做翻译。</p>
+
+<p>具体操作：</p>
+
+<p>配置翻译文件的路径
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;in config/ini</span><span class="n">tializers</span><span class="o">/</span><span class="n">locale</span><span class="o">.</span><span class="n">rb</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;tell the I18n library where to find your translations&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">I18n</span><span class="o">.</span><span class="n">load_path</span> <span class="o">+=</span> <span class="no">Dir</span><span class="o">[</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">lib</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">locale</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">*.</span><span class="p">{</span><span class="n">rb</span><span class="p">,</span><span class="n">yml</span><span class="p">}</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;)</span><span class="o">]&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;set default locale to something other than :en&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">I18n</span><span class="o">.</span><span class="n">default_locale</span> <span class="o">=</span> <span class="ss">:pt</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>在对应配置路径下面补充对应的yml文件
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;config/</span><span class="n">locales</span><span class="o">/</span><span class="n">zh</span><span class="o">.</span><span class="n">yml</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;zh-CN:</span>
+</span><span class='line'><span class="sr">  hello: 你好</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+通过以上设置，然后通过I18n.locale=&ldquo;zh-CN&rdquo; 将本地语言环境切换到中文环境，然后再调用t(&lsquo;hello&rsquo;),将显示“你好”。</p>
+
+<p>采用官方自带的I18n，无需依赖其他gem, 从而代码维护成本低，版本依赖小，上手更容易，代码容易维护。不过这种方式的缺点也很明显，需要书写大量的yml,这样对于yml文件中的key的命名就很头痛，既要满足hash key的命名语法，又要解决翻译过多带来的命名冲突，所以无奈会引入命名空间，导致yml中key的结构层数太多，会出现很多冗余的翻译。</p>
+
+<h4>方案2: 使用gettext来做翻译</h4>
+
+<p>1） 添加gem依赖</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;I18n support&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">gem</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">i18n</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'><span class="n">gem</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">rails</span><span class="o">-</span><span class="n">i18n</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'><span class="n">gem</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">gettext</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span>  <span class="ss">:require</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:development</span>
+</span><span class='line'><span class="n">gem</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">gettext_i18n_rails</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span><span class='line'><span class="n">gem</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">gettext_i18n_rails_js</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="ss">github</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">songjiayang</span><span class="o">/</span><span class="n">gettext_i18n_rails_js</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'><span class="n">gem</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">ruby_parser</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="ss">:require</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:group</span> <span class="o">=&gt;</span> <span class="ss">:development</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>2）执行bundle install</p>
+
+<p>3)  在项目下建立一个locale/zh_CN的文件夹，其中zh_CN可以叫任意名字，它表示你要翻译的目标语言。</p>
+
+<p>4)  执行 <code>rake -T</code> 查看相关命令，命令包括</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rake</span> <span class="ss">gettext</span><span class="p">:</span><span class="n">add_language</span> <span class="no">LANGUAGE</span><span class="o">=</span><span class="n">xx</span>
+</span><span class='line'><span class="n">rake</span> <span class="ss">gettext</span><span class="p">:</span><span class="n">find</span>                    <span class="c1"># Update pot/po files</span>
+</span><span class='line'><span class="n">rake</span> <span class="ss">gettext</span><span class="p">:</span><span class="n">pack</span>                    <span class="c1"># Create mo-files for L10n</span>
+</span><span class='line'><span class="n">rake</span> <span class="ss">gettext</span><span class="p">:</span><span class="n">po_to_json</span>              <span class="c1"># Convert PO files to js files in app/assets/locales</span>
+</span><span class='line'><span class="n">rake</span> <span class="ss">gettext</span><span class="p">:</span><span class="n">store_model_attributes</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>5)  新建config/initializers/fast_gettext.rb 文件，并配置如下</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">I18n</span><span class="o">.</span><span class="n">default_locale</span> <span class="o">=</span> <span class="ss">:en</span>
+</span><span class='line'><span class="no">FastGettext</span><span class="o">.</span><span class="n">add_text_domain</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">app</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="ss">:path</span> <span class="o">=&gt;</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">locale</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="ss">:po</span><span class="p">,</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;                           :ignore_fuzzy =&amp;gt; true, :report_warning =&amp;gt; false</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;FastGettext.default_available_locales = [&amp;lsquo;en_US&amp;rsquo;,&amp;lsquo;zh_CN&amp;rsquo;]  #all you want to allow</span>
+</span><span class='line'><span class="sr">FastGettext.default_text_domain = &amp;lsquo;app&amp;rsquo;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>6) 执行 <code>rake gettext:po_to_json</code>，此命令会新建app/assets/javascripts/locale/<lang>/app.js文件。</p>
+
+<p>7）在application.js中引入gettext
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sr">//</span><span class="o">=</span> <span class="n">require_tree</span> <span class="o">.</span><span class="n">/locale</span>
+</span><span class='line'><span class="sr">//</span><span class="o">=</span> <span class="nb">require</span> <span class="n">gettext</span><span class="o">/</span><span class="n">all</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>8) 项目中添加I18n切换的操作,例如
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="ss">ActionController</span><span class="p">:</span><span class="ss">:Base</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  protect_from_forgery with: :exception</span>
+</span><span class='line'><span class="sr">  before_filter :set_gettext_locale&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="kp">protected</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;def set_gettext_locale</span>
+</span><span class='line'><span class="sr">  requested_locale = params[:locale] || session[:locale] || request.env[&#39;HTTP_ACCEPT_LANGUAGE&#39;] || I18n.default_locale</span>
+</span><span class='line'><span class="sr">  requested_locale = &#39;zh_CN&#39; if %w(zh zh-tw zh_tw).include?(requested_locale.downcase)</span>
+</span><span class='line'><span class="sr">  requested_locale = &#39;en_US&#39; if %w(en en-gb en_gb).include?(requested_locale.downcase)</span>
+</span><span class='line'><span class="sr">  locale = FastGettext.set_locale(requested_locale)</span>
+</span><span class='line'><span class="sr">  I18n.locale = locale</span>
+</span><span class='line'><span class="sr">  puts I18n.locale</span>
+</span><span class='line'><span class="sr">  session[:locale] = I18n.locale.to_s</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>9)  在页面中添加locale，例如在application.html.erb中添加
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">html</span> <span class="n">lang</span> <span class="o">=</span> <span class="o">&lt;%=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">I18n</span><span class="o">.</span><span class="n">locale</span><span class="si">}</span><span class="s2">&quot;</span><span class="sx">%&gt;&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>10)  添加需要翻译的语句，并执行翻译</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>ruby代码中写法</span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">%=</span><span class="n">_</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">hello</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;)</span><span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>js代码中写法</span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">__</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">hello</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>执行 <code>rake gettext:find</code> 分析需要翻译的语句，然后到locale/xxx/app.po文件中去执行翻译即可，翻译完毕后，需要执行<code>rake gettext:po_to_json</code> 将翻译也复制一份到js当中去。</p>
+
+<p>总结：至此大工告成，可以浏览器中访问 <code>http://localhost:3000/?locale=zh</code> 测试了，这里有一个我写的例子<a href="https://github.com/songjiayang/rails_i18n_example">rails_i18n_example</a></p>
+
+<p>参考资料：<br/>
+1. <a href="https://github.com/grosser/gettext_i18n_rails">https://github.com/grosser/gettext_i18n_rails</a> <br/>
+2. <a href="https://github.com/nubis/gettext_i18n_rails_js">https://github.com/nubis/gettext_i18n_rails_js</a></p>
+]]></content>
+  </entry>
+  
+</feed>

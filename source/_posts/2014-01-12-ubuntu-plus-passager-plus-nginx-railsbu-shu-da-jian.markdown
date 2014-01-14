@@ -7,38 +7,36 @@ categories: [Deploy, Nginx]
 ---
 
 
-跟新软件源  
+跟新软件源
 ```
 sudo apt-get update  .
 ```
 如果升级报错，那么请执行sudo rm -rf /var/lib/apt/lists/* -vf 试试
-安装git   
+安装git
 ```
 sudo apt-get install git-core
 ```
 
-安装curl  
+安装curl
 ```
 sudo apt-get install curl
 ```
 
 
-<!-- truncate -->
-
-安装rvm 
+安装rvm
 ```
-curl -L https://get.rvm.io | bash -s   
+curl -L https://get.rvm.io | bash -s
 ```
 获得最新稳定版rvm和安装ruby的依赖
 ```
 rvm get stable
 rvm requirements
-``` 
+```
 安装所有rvm requirements依赖
 ```
 sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config
 ```
-安装ruby 
+安装ruby
 ```
 rvm install 2.0.0
 rvm use 2.0.0 default
@@ -61,8 +59,8 @@ sudo apt-get install mysql-server mysql-client nodejs
 gem install passenger
 rvmsudo passenger-install-nginx-module
 ```
-所有选项选择默认即可.  
-nginx安装目录也选择默认 /opt/nginx/   
+所有选项选择默认即可.
+nginx安装目录也选择默认 /opt/nginx/
 passenger 会自动修改config, 添加passenger所在的rvm的ruby和gem环境地址
 
 安装nginx脚本

@@ -1,0 +1,15 @@
+.highlight  { background: #1d1f21 !important; color: #c5c8c6 !important; }
+.highlight .line-numbers{display: none;}
+.highlight code { background-color: #1d1f21 !important; }
+.highlight code .c1 { color: #969896 !important; }
+.highlight code .k { color: #b294bb !important;} /* Keyword */
+.highlight code .o { color: #8abeb7 !important; } /* Operator */
+.highlight code .nc { color: #f0c674 !important; font-weight: bold } /* Name.Class */
+.highlight code .no { color: #c66 !important; } /* Name.Constant */
+.highlight code .nf { color: #81a2be !important;} /* Name.Function */
+.highlight code .ss { color: #c66 !important; } /* Literal.String.Symbol */
+.highlight code .s2 { color: #D0EAE8 !important; } /* Literal.String.Symbol */
+.highlight code .s1 { color: #D0EAE8 !important; } /* Literal.String.Symbol */
+
+.highlight code .n { color: #c5c8c6 !important; } /* Literal.Number.Integer.Long */
+.highlight code .p { color: #c5c8c6 !important;}

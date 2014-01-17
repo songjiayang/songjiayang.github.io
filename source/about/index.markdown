@@ -2,7 +2,7 @@
 layout: page
 title: "A Web Develop Engineer with 2 year experience."
 date: 2014-01-11 10:18
-comments: false
+comments: true
 sharing: true
 footer: true
 ---

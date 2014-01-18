@@ -98,8 +98,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
   before_filter :set_gettext_locale
-
-
+  
   protected
     def set_gettext_locale
       requested_locale = params[:locale] || session[:locale] || request.env['HTTP_ACCEPT_LANGUAGE'] || I18n.default_locale

@@ -8,6 +8,6 @@ categories: [Mysql]
 
 
 * 删除某个表的一个字段
-```shell
+```
  ALTER TABLE tb_name DROP COLUMN column_name ;
 ```

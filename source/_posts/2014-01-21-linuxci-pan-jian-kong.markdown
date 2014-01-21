@@ -13,13 +13,14 @@ categories: [ubuntu,io]
 top命令很好，唯独无法清楚的监控系统磁盘I/O的读写情况，iotop这个软件就可以很好的弥补top不足，能对服务器的磁盘进行实时监控。
 
 1. iotop安装   
- ```
-  sudo apt-get install iotop
- ```
-2. 运行iotop  
- ```
- sudo iotop  
- ```
-3. 运行效果 
+```ruby
+ sudo apt-get install iotop
+``` 
+2.  运行iotop   
+```ruby
+sudo iotop  
+``` 
+3. 运行效果   
+
 ![](http://book-share.qiniudn.com/Screenshot%20from%202014-01-21%2022:01:56.png)
 

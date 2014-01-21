@@ -3,7 +3,7 @@ layout: post
 title: "Rails中的国际化解决方案"
 date: 2014-01-11 01:41:39 +0800
 comments: true
-categories: [Rails, I18n]
+categories: [rails, i18n]
 ---
 
 工作经常会在rails中遇到I18n的相关问题，目前为止，我所使用过的方案有两种，各自有各自的好处。

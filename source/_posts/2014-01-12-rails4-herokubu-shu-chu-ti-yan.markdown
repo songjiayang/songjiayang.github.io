@@ -3,7 +3,7 @@ layout: post
 title: " Rails4 + Heroku 部署初体验 "
 date: 2014-01-12 15:22:23 +0800
 comments: true
-categories: [Rails4, Heroku, Deploy]
+categories: [rails4, heroku, deploy]
 ---
 
 想必做Rails 开发的很少有人不知道[heroku](heroku.com)的吧,它它其实是一个pass平台。操作简单，文档齐全，唯一不好的就是国内访问速度比较慢（不过，人家是免费的哦）。

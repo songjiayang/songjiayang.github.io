@@ -3,7 +3,7 @@ layout: post
 title: "使用Plupload创建TempImage"
 date: 2014-01-11 19:57:14 +0800
 comments: true
-categories: [Plupload, Rails]
+categories: [plupload, rails]
 ---
 
 [Plupload](http://www.plupload.com/)是一款比较流行的文件上传插件，能够轻易实现多文本上传,拖拽上传等效果，而且兼容性比较好。

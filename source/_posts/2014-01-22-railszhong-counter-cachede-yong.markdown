@@ -20,7 +20,7 @@ class Post < ActiveRecord::Base
 end
 ```
 
-现在我们有这样一个需求： 统计每个文章评论数,这里 我们采用rails的`counter_cache`来处理。
+现在我们有这样一个需求： 统计每个文章评论数,这里我们采用rails的`counter_cache`来处理。
 现在我们开始一步一步使用rails 的counter_cache
 
 

@@ -15,7 +15,7 @@ end
 ```
 
 ```ruby app/models/comment.rb
-class Post < ActiveRecord::Base
+class Comment < ActiveRecord::Base
   belongs_to :posts
 end
 ```
@@ -30,7 +30,7 @@ rails g migration add_comment_count_to_post comment_count:integer
 ```
 2 修改comment.rb文件，添加counter_cache的支持:  
 ```ruby app/models/comment.rb
-class Post < ActiveRecord::Base
+class Comment < ActiveRecord::Base
   belongs_to :posts, counter_cache: :comment_count
 end
 ```

@@ -10,16 +10,16 @@ categories: [ssh, capistrano, agent]
 
 具体操作如下：
 
-1.配置deploy文件,手动开启代理服务. 
+1.配置deploy文件,手动开启代理服务.
 
 	{% codeblock lang:ruby deploy.rb %}
 	set :ssh_options, {:forward_agent => true}
 	{% endcodeblock %}
 
-2.告诉SSH Agent你的key  
+2.告诉SSH Agent你的key
 
 	{% codeblock lang:ruby console%}
-	$ ssh-add -K
+	$ ssh-add ~/.ssh/id_rsa
 	{% endcodeblock %}
 
 

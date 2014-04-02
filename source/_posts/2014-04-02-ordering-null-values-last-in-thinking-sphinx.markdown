@@ -23,7 +23,6 @@ order by `example_nil`
 sphinx_options[:order] = "example_nil  ASC, xxx"
 ```
 
-links:
 
 https://github.com/pat/thinking-sphinx/issues/737
 

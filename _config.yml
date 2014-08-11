@@ -1,0 +1,18 @@
+# Site settings
+title: /boot
+email: "songjiayang1#gmail.com"
+description: "极简主义者，喜欢颜色视觉冲击，大爱纹路线条和菱角设计."
+baseurl: ""
+url: "http://songjiayang.github.io/"
+twitter_username: small_fish__
+github_username:  songjiayang
+weibo_username:  songjiayang1
+
+# Build settings
+markdown: redcarpet
+permalink: pretty
+
+
+tag_page_layout: tag_page
+tag_page_dir: tag
+tag_permalink_style: pretty

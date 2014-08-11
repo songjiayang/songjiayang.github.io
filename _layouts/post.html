@@ -1,0 +1,29 @@
+---
+layout: default
+---
+<div class="post">
+
+  <header class="post-header">
+    <h1>{{ page.title }}</h1>
+    <p class="meta">
+      <i class="fa fa-calendar"></i>{{ page.date | date: "%b %-d, %Y" }}
+      <i class="fa fa-tags"></i>{{ page | tags }}
+      {% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}
+    </p>
+  </header>
+
+  <article class="post-content">
+  {{ content }}
+  </article>
+
+ <!-- JiaThis Button BEGIN -->
+  <div class="jiathis_style_24x24 share-btn btn-group">
+    <a class="jiathis_button_qzone"></a>
+    <a class="jiathis_button_tsina"></a>
+    <a class="jiathis_button_weixin"></a>
+    <a class="jiathis_counter_style"></a>
+  </div>
+  <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1399190709098277" charset="utf-8"></script>
+  <!-- JiaThis Button END -->
+
+</div>

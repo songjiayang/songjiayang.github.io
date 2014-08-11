@@ -10,33 +10,40 @@ tags: [git, tag]
 
 以下是我经常用到的几条命令：
 
-1.1 列出项目中所有的tags
+####1、列出项目中所有的tags
 
 ```
 
 git tag
 ```
 
-1.2 给项目添加一个tag, 一般情况下tag都是以v开头命名的，例如v1.0.1
+####2、给项目添加一个tag, 一般情况下tag都是以v开头命名的，例如v1.0.1
 
 ```
 git tag vTAGNAME
 ```
 
-1.3 给指定某一个commit 打上tag，一般用于tag修改和遗漏的tag
+####3、给指定某一个commit 打上tag，一般用于tag修改和遗漏的tag
 
 ```
 git tag vTAGNAME COMMIT-HASH
 ```
-1.4 根据tag名称删除tag
+####4、根据tag名称删除tag
 
 ```
 git tag -d vTAGNAME
 ```
 
-1.5 推送所有的tags到远程仓库
+####5、推送所有的tags到远程仓库
 
 ```
 git push origin —tags
+```
+
+####6、删除tag
+
+``` 
+git tag -d TAGNAME #本地删除
+git push origin :refs/tags/TAGNAME #删除远程仓库
 ```
 

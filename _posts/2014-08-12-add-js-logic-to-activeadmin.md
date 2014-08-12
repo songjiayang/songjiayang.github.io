@@ -1,6 +1,7 @@
 ---
 layout: post
-title: "A non-invasive way adding logic js codes to activeadmin"
+title: "A non-invasive way adding js logic codes to activeadmin"
+description: "如何以一种比较优雅的方式在activeadmin中添加javascript代码"
 tags:
  - activeadmin 
  - javascript
@@ -92,7 +93,7 @@ tags:
 
 至此，通过js的方式，我们已经完成了上述功能的实现。
 
-通过js的方式，避免了直接修改后端代码，我认为这种方式处理简单，而且代码也好维护，您不妨一试！
+通过此方式，避免了直接修改后端代码。我认为这种方式处理简单，代码也更好维护，您不妨一试！
 
 
 

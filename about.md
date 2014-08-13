@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About
+title: about
 showtitle: false
 date: 2014-01-11 10:18
 permalink: /about/

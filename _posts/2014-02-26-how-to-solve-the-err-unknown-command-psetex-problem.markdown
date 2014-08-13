@@ -3,6 +3,7 @@ layout: post
 title: "How to solve the 'ERB unknown command psetex' problem"
 date: 2014-02-26 10:19:47 +0800
 comments: true
+category: archive
 tags: [sidekiq, rails]
 ---
 

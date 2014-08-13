@@ -3,7 +3,8 @@ layout: post
 title: "七周七语言之elixir初级篇"
 date: 2014-08-03 20:19:04 +0800
 comments: true
-tags: [erlang, elixir, 七周七语言]
+category: archive
+tags: [elixir, 七周七语言]
 ---
 
 今天听闻ElixirConf 2014 slide出来了，关于报道请移步 [RubyChina讨论帖子](https://ruby-china.org/topics/20809)。

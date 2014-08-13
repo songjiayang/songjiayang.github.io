@@ -3,7 +3,8 @@ layout: post
 title: "Ubuntu + Rails4 + Postgresql9.3 初体验"
 date: 2014-01-12 15:40:03 +0800
 comments: true
-tags: [ubuntu, rails, postgresql]
+category: archive
+tags: [rails, postgresql]
 ---
 
 > Postgresql9安装方法和步骤：

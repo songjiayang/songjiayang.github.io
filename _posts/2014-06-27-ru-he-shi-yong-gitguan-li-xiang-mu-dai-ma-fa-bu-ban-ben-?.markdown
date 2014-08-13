@@ -3,6 +3,7 @@ layout: post
 title: "如何使用git管理项目代码发布版本"
 date: 2014-06-27 10:49:22 +0800
 comments: true
+category: archive
 tags: [git, tag]
 ---
 

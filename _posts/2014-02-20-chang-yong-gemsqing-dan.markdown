@@ -3,6 +3,7 @@ layout: post
 title: "常用gems清单"
 date: 2014-02-20 13:38:46 +0800
 comments: true
+category: archive
 tags: [gems, ruby]
 ---
 

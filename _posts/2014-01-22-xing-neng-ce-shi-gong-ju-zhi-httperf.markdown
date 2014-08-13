@@ -3,7 +3,8 @@ layout: post
 title: "性能测试工具之httperf"
 date: 2014-01-22 19:56:06 +0800
 comments: true
-tags: [web, performace, tool, ubuntu]
+category: archive
+tags: [performace, tool]
 ---
 
 1. 下载[httperf](https://httperf.googlecode.com/files/httperf-0.9.0.tar.gz)

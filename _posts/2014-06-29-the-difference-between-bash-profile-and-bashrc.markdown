@@ -3,6 +3,7 @@ layout: post
 title: "The difference between .bash_profile and .bashrc"
 date: 2014-06-29 14:43:23 +0800
 comments: true
+category: archive
 tags: [bash] 
 ---
 

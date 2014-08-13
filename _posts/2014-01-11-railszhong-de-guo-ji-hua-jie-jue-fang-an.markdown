@@ -3,6 +3,7 @@ layout: post
 title: "Rails中的国际化解决方案"
 date: 2014-01-11 01:41:39 +0800
 comments: true
+category: archive
 tags: [rails, i18n]
 ---
 

@@ -3,6 +3,7 @@ layout: post
 title: "松本行弘的编程世界（中文版）读书勘误"
 date: 2014-02-03 12:50:48 +0800
 comments: true
+category: archive
 tags: [读书笔记, 松本行弘, ruby] 
 ---
 

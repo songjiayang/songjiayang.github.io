@@ -3,6 +3,7 @@ layout: post
 title: "A good way to manage aliases in Unix-like using BASH"
 date: 2014-06-29 14:19:11 +0800
 comments: true
+category: archive
 tags: [bash, alias] 
 ---
 

@@ -3,7 +3,9 @@ layout: post
 title: "利用httpd做简单的web应用性能检测"
 date: 2014-01-10 23:37:05 +0800
 comments: true
-tags: [web, performace, tool, ubuntu] 
+category: archive
+tags: 
+  - tool 
 ---
 
 

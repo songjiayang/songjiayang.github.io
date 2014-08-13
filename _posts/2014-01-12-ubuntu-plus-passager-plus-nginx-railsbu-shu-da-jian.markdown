@@ -3,6 +3,7 @@ layout: post
 title: "Ubuntu+Passager+Nginx  Rails部署搭建"
 date: 2014-01-12 15:18:38 +0800
 comments: true
+category: archive
 tags: [deploy, nginx]
 ---
 

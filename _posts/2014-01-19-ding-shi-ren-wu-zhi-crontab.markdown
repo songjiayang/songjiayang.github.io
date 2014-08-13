@@ -3,7 +3,8 @@ layout: post
 title: "定时任务之crontab"
 date: 2014-01-19 22:48:59 +0800
 comments: true
-tags: [ubuntu,crontab,定时任务]
+category: archive
+tags: [ubuntu,crontab]
 ---
 
 ####1. 编辑定时任务 `crontab -e`

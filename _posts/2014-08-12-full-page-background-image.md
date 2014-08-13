@@ -2,8 +2,9 @@
 layout: post
 title: "Perfect Full Page Background Image"
 description: "web前端, CSS, Full Page, Background, fixed, center"
+category: archive
 tags:
- - css tips
+ - css 101
 ---
 
 今天有一人来我们公司面试"web前端开发工程"一职。

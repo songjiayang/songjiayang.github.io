@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Building Your First Web Page"
+category: archive
 tags:
  - Learn to Code HTML & CSS
 ---

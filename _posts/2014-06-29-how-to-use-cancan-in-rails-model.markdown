@@ -3,6 +3,7 @@ layout: post
 title: "How to use cancan in rails model?"
 date: 2014-06-29 14:38:38 +0800
 comments: true
+category: archive
 tags: [rails, cancan] 
 ---
 

@@ -3,6 +3,7 @@ layout: post
 title: 'How to solve "Out Of Sort Memrory" problem of mysql'
 date: 2014-03-14 11:38:29 +0800
 comments: true
+category: archive
 tags: [shpinx, mysql]
 ---
 

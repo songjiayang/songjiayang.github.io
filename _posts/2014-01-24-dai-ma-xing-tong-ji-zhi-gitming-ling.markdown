@@ -3,6 +3,7 @@ layout: post
 title: "代码行统计之git命令"
 date: 2014-01-24 21:23:49 +0800
 comments: true
+category: archive
 tags: [git]
 ---
 

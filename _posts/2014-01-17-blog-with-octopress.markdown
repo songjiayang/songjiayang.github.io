@@ -3,7 +3,8 @@ layout: post
 title: "Blog With Octopress"
 date: 2014-01-17 13:48:15 +0800
 comments: true
-tags: [blog, octopress]
+category: archive
+tags: [tool, octopress]
 ---
 
 

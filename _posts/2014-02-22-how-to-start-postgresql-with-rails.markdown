@@ -3,6 +3,7 @@ layout: post
 title: "How to start postgresql with rails "
 date: 2014-02-22 00:24:32 +0800
 comments: true
+category: archive
 tags: [rails, postgresql, ruby, gem]
 ---
 

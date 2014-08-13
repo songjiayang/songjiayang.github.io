@@ -3,6 +3,7 @@ layout: post
 title: "Newrelic让你的Rails子弹飞"
 date: 2014-08-04 22:31:00 +0800
 comments: true
+category: archive
 tags: [newrelic, rails ]
 ---
 

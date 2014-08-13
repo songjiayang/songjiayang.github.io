@@ -3,6 +3,7 @@ layout: post
 title: "Linux下磁盘性能简单检测"
 date: 2014-01-28 20:30:48 +0800
 comments: true
+category: archive
 tags: [linux]
 ---
 

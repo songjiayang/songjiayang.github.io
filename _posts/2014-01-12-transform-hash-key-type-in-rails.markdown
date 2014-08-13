@@ -3,6 +3,7 @@ layout: post
 title: "Transform Hash Key Type In Rails"
 date: 2014-01-12 15:11:08 +0800
 comments: true
+category: archive
 tags: [rails] 
 ---
 

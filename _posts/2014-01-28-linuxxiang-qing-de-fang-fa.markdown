@@ -3,6 +3,7 @@ layout: post
 title: "Linux下查看cpu详情的方法"
 date: 2014-01-28 20:10:42 +0800
 comments: true
+category: archive
 tags: [linux]
 ---
 

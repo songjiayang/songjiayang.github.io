@@ -3,7 +3,8 @@ layout: post
 title: "两个查看Linux端口占用情况的命令"
 date: 2014-01-21 22:42:26 +0800
 comments: true
-tags: [ubuntu,point]
+category: archive
+tags: [point]
 ---
 
 `netstat` 和 `lsof`是两个很好的查看服务器上端口占用情况的命令，其常用参数如下：

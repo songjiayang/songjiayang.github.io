@@ -3,6 +3,7 @@ layout: post
 title: "Rails中counter_cache的使用"
 date: 2014-01-22 17:27:30 +0800
 comments: true
+category: archive
 tags: [rails, counter_cache]
 ---
 

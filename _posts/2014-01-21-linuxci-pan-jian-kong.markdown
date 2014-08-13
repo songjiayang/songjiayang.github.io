@@ -3,7 +3,8 @@ layout: post
 title: "linux磁盘监控"
 date: 2014-01-21 21:58:41 +0800
 comments: true
-tags: [ubuntu,io] 
+category: archive
+tags: [io] 
 ---
 
 大家可能都知道Linux上的`top`命令，使用它可以实时显示系统的运行状况，如图:

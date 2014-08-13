@@ -2,6 +2,7 @@
 layout: post
 title: "A non-invasive way adding js logic codes to activeadmin"
 description: "如何以一种比较优雅的方式在activeadmin中添加javascript代码"
+category: archive
 tags:
  - activeadmin 
  - javascript

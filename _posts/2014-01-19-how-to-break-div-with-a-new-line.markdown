@@ -3,7 +3,9 @@ layout: post
 title: "how to break div with a new line"
 date: 2014-01-19 22:41:25 +0800
 comments: true
-tags: [css]
+category: archive
+tags: 
+  - css 101
 ---
 
 ```css some css

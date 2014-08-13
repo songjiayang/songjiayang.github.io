@@ -12,7 +12,6 @@ weibo_username:  songjiayang1
 markdown: redcarpet
 permalink: pretty
 
-
 tag_page_layout: tag_page
 tag_page_dir: tag
 tag_permalink_style: pretty
@@ -20,3 +19,5 @@ tag_permalink_style: pretty
 #analytics
 google_code: UA-47040092-1
 youyan_code: "1956833"
+
+

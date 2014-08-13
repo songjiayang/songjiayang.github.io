@@ -3,6 +3,7 @@ layout: post
 title: "Ordering null values last in thinking-sphinx"
 date: 2014-04-02 15:12:38 +0800
 comments: true
+category: archive
 tags: [think-shpinx, order]
 ---
 

@@ -3,6 +3,7 @@ layout: post
 title: "Mysql Wiki"
 date: 2014-01-21 15:07:16 +0800
 comments: true
+category: archive
 tags: [mysql]
 ---
 

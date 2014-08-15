@@ -427,3 +427,10 @@ i{
     margin: 0 0 15px; }
 
 }
+
+@media screen and (max-width: 400px){
+  .site-sub-title {
+    font-size: 10px;
+    margin: 24px 0px 0px 8px;
+  }
+}

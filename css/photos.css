@@ -327,9 +327,7 @@ aside.photo-box-caption p {
   color: #828282;
 }
 
-.fotorama{
- margin-top:  -220px; 
-}
+.fotorama{ margin-top:  -220px; }
 
 @media (min-width: 30em) {
   .photo-box, .text-box {
@@ -339,4 +337,8 @@ aside.photo-box-caption p {
   .photo-box-thin {
     height: 250px;
   }
+}
+
+@media screen and (max-width: 400px){
+  .fotorama{ margin-top: 28px; }
 }

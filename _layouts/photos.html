@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+  {% include photos_head.html %}
+
+    <body clsss='photos'>
+
+    {% include photos_header.html %}
+
+    {{ content }}
+    {% include footer.html %}
+    
+    {% if site.google_code %}
+      {% include google_analytics.html %}
+    {% endif %}
+    
+    </body>
+</html>

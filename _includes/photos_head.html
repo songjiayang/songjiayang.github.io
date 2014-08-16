@@ -1,0 +1,15 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+  <link rel="shortcut icon" href="http://zuoyouba.qiniudn.com/cat.png">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="http://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.css">
+  <link rel="stylesheet" href="{{ "/css/pure-min.css" | prepend: site.baseurl }}">
+  <link rel="stylesheet" href="http://cdn.staticfile.org/fotorama/4.5.2/fotorama.css">
+  <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
+  <link rel="stylesheet" href="{{ "/css/photos.css" | prepend: site.baseurl }}">
+</head>

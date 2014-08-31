@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Rails4.2中很少有人知道的特性"
+title: "Rails 4.2 中很少有人知道的特性"
 category: archive
 tags:
  - 翻译
@@ -110,7 +110,7 @@ Rails.application.config.x.block_phone_calls = app_config["block_phone_calls"]
 
 #### 更多
 
-Rails 4.2 将是一个令人兴奋的发布版本。但是那些小的改进确保了 Rails 每天都变得更好。所以你还不太了解，那请快速浏览一下 [4.2 发布注意](http://edgeguides. rubyonrails.org/4_2_release_notes.html), 你将发现更多非常有用的改变。
+Rails 4.2 将是一个令人兴奋的发布版本。但是那些小的改进确保了 Rails 每天都变得更好。所以如果你还不太了解，那请快速浏览一下 [4.2 发布注意](http://edgeguides. rubyonrails.org/4_2_release_notes.html), 你将发现更多非常有用的改变。
 
 (如果你发现其他很酷的功能，请不要保密，在此分享，如此，我们将会学习到更多新的东西)
 

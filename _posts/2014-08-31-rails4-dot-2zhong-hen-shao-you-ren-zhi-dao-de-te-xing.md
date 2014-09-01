@@ -9,7 +9,7 @@ tags:
 
 原文链接 [The Lesser-known Features in Rails 4.2](http://www.justinweiss.com/blog/2014/08/25/the-lesser-known-features-in-rails-4-dot-2/)  
 
-[Rails4.2的第一个beta版本](http://weblog.rubyonrails.org/2014/8/20/Rails-4-2-beta1/)于上周发布了，这次引入的新的特性真的太酷了。想到马上就要在我的项目中使用 ActiveJob, Web Console, Adequate Record, 以及 Foreign Key support, 不免兴奋起来。 
+[Rails 4.2 的第一个beta版本](http://weblog.rubyonrails.org/2014/8/20/Rails-4-2-beta1/)于上周发布了，这次引入的新的特性真的太酷了。想到马上就要在我的项目中使用 ActiveJob, Web Console, Adequate Record, 以及 Foreign Key support, 不免兴奋起来。 
 
 **但是Rails最美丽的地方是它的细节。** 如果多一点的挖掘，你可能会发现一些很少有人提到但却有可能极大提升你开发效率的新特性。
 

@@ -38,7 +38,7 @@ git tag -d vTAGNAME
 ####5、推送所有的tags到远程仓库
 
 ```
-git push origin —tags
+git push origin —-tags
 ```
 
 ####6、删除tag

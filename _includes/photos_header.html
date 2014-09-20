@@ -1,13 +1,11 @@
 <header >
-  <nav class="site-nav">
+  <nav class="site-nav photos">
     <a href="#" class="menu-icon"><i class="fa fa-bars"></i></a>
     <div class="trigger">
       {% for category in site.categories %}
 
         <a class="page-link"  href="/{{ category | first }}">{{ category | first }} </a>
       {% endfor %}
-
-      <a class="page-link" href="/book">books online</a>
       <a class="page-link" href="/about">about</a>
     </div>
   </nav>

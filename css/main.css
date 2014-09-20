@@ -9,7 +9,7 @@
 html, body { height: 100%; }
 
 body {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
   font-size: 16px;
   line-height: 1.5;
   font-weight: 300;
@@ -46,25 +46,32 @@ img { max-width: 100%;}
   border-top: 5px solid #333;
   border-bottom: 1px solid #e8e8e8;
   min-height: 56px;
-  background-color: white;
+  background-color: #2f2f2f;
+  padding: 10px 0;
 }
 
 .site-title,
 .site-title:hover,
 .site-title:visited {
   display: block;
-  color: #333;
+  color: #fff;
   font-size: 26px;
   letter-spacing: -1px;
   float: left;
-  line-height: 56px;
   position: relative;
   z-index: 1;
+  text-decoration: none;
+  margin-top: -15px;
+  padding: 0 10px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  background-color: #e58c7c;
 }
 
 .site-sub-title {
   display: block;
-  color: #333;
+  color: #fff;
   font-size: 12px;
   float: left;
   margin: 21px 0px 0px 10px;
@@ -79,16 +86,18 @@ img { max-width: 100%;}
 
 .site-nav .page-link {
   margin-left: 20px;
-  color: #727272;
+  color: #fff;
   letter-spacing: -.5px;
   text-transform: capitalize;
 }
 
+.site-nav.photos .page-link{ color: #000;}
+
 /* Site footer */
 
 .site-footer {
-  border-top: 1px solid #e8e8e8;
-  padding: 30px 0;
+  padding: 60px 0;
+  background: rgb(49, 49, 49);
 }
 
 .footer-heading {
@@ -150,21 +159,23 @@ img { max-width: 100%;}
 
 .home h1 { margin-bottom: 25px; }
 
+.home section { padding-bottom:  20px; line-height: 35px;}
+.home section.latest-posts ul{  list-style-type: decimal; margin-left: 25px; }
+section p.title { font-size: 20px; padding-bottom: 10px; }
 .posts { list-style-type: none; }
 
-.posts li { margin-bottom: 30px; }
+.posts li { margin-bottom: 15px; }
 
 .posts.tag li {margin-bottom: 10px;}
 
 .posts .post-link {
-  font-size: 24px;
   letter-spacing: -1px;
   line-height: 1;
 }
 
 .posts .post-date{
-   display: block;
   font-size: 15px;
+  margin-left: 10px;
   color: #818181;
 }
 
@@ -175,19 +186,20 @@ i{
 /* Post styles */
 /* ----------------------------------------------------------*/
 
-.post-header { margin: 10px 0 30px; }
-
 .post-header h1 {
-  font-size: 42px;
+  padding-right: 40px;
+  display: inherit;
+  color: #3b3b3b;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 36px;
   letter-spacing: -1.75px;
-  line-height: 1;
-  font-weight: 300;
 }
 
 .post-header .meta {
-  font-size: 15px;
-  color: #818181;
-  margin-top: 5px;
+  font-size: 12px;
+  color: #b3b3b3;
+  margin-top: 10px;
 }
 
 .post-header .meta .fa-tags {
@@ -273,10 +285,11 @@ i{
 
 .post pre.terminal code { background-color: #333; }
 
-#tag-cloud { margin-top: 40px; }
+#tag-cloud a {
+  padding-right: 10px;
+}
 
 #uyan_frame { padding-top: 100px;}
-
 
 /* Syntax highlighting styles */
 /* ----------------------------------------------------------*/
@@ -410,6 +423,7 @@ i{
     padding: 5px 10px;
     margin: 0;
     text-transform: capitalize;
+    color: #000; 
   }
 
   .post-header h1 { font-size: 36px; }

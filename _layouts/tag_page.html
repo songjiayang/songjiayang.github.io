@@ -1,13 +1,16 @@
 ---
 layout: default
 ---
-<ul class='posts tag'>
-{% for post in page.posts %}
-  <li><a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date: "%b %-d, %Y"  }})</li>
-{% endfor %}
-</ul>
 
-<div id="tag-cloud">
-  <p>Tag <i class="fa fa-soundcloud"></i></p>
+<section>
+  <ul class='posts tag'>
+    {% for post in page.posts %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date: "%b %-d, %Y"  }})</li>
+    {% endfor %}
+  </ul>
+</section>
+<br/>
+<section id="tag-cloud">
+  <p class="title">博客归档<p>
   {{ site | tag_cloud }}
-</div>
+</section>

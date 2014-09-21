@@ -29,3 +29,14 @@ task :gen_deploy do
   Rake::Task[:generate].execute
   Rake::Task[:deploy].execute
 end
+
+
+desc "Push Source code to github"
+task :push_code do
+  system "git add -A"
+  puts "\n## Committing: Site updated at #{Time.now.utc}"
+  message = "Site updated at #{Time.now.utc}"
+  system "git commit -m \"#{message}\""
+  system "git push origin"
+  puts "\n## Code push complete"
+end

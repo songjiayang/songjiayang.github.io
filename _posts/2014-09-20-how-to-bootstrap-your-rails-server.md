@@ -11,7 +11,7 @@ tags:
 
 这篇文章转载于同事（[小光](https://github.com/serco-chen)）的经验总结，特在此分享。如果在你实践过程中，发现有部分内容过时，请告知一下，谢谢。
 
-### 0. Setup user for deployment
+#### 0. Setup user for deployment
     # Install openssh-server
     sudo apt-get update 
     sudo apt-get install openssh-server  # This step may not required in Aliyun host
@@ -29,7 +29,7 @@ tags:
     AuthorizedKeysFile %h/.ssh/authorized_keys
     # restart ssh server
     sudo service ssh restart
-### 1. Install packages
+#### 1. Install packages
     sudo apt-get update
     sudo apt-get install -y build-essential openssl curl libcurl3-dev libreadline6 libreadline6-dev git zlib1g zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev autoconf automake libtool imagemagick libmagickwand-dev libpcre3-dev libsqlite3-dev libmysql-ruby libmysqlclient-dev
     sudo apt-get install git
@@ -77,7 +77,7 @@ tags:
     sudo service nginx start
     cd /etc/nginx/sites-enabled/
     sudo rm default
-### 2. Problems with locale
+#### 2. Problems with locale
     # ls 初始化月份字符串出错
     sudo vi /var/lib/locales/supported.d/local
     # 改成如下内容
@@ -93,7 +93,7 @@ tags:
     LANGUAGE="zh_CN.UTF-8" 
     LC_ALL="zh_CN.UTF-8" 
 
-### 3. Install database
+#### 3. Install database
     # PostgreSQL
     sudo apt-get install postgresql-9.1
     sudo apt-get install postgresql-client-9.1 postgresql-contrib-9.1 postgresql-server-dev-9.1
@@ -112,7 +112,7 @@ tags:
     mysql> CREATE USER 'deploy'@'localhost' IDENTIFIED BY 'lohaswork';
     mysql> GRANT ALL PRIVILEGES ON *.* TO 'deploy'@'localhost' WITH GRANT OPTION;
     mysql> \q
-### 4. Autoload services
+#### 4. Autoload services
     # unicorn
     cd /etc/init.d
     sudo touch nicorn.teamind_deploy

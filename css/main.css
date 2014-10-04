@@ -68,14 +68,6 @@ img { max-width: 100%;}
   line-height: 40px;
   background-color: #e58c7c;
 }
-/*.site-title:hover {
-  -moz-transform: rotate(-60deg);  
-  -webkit-transform: rotate(-60deg);  
-  -o-transform: rotate(-60deg);  
-  -ms-transform: rotate(-60deg);  
-  transform: rotate(-60deg);  
-  transform: 1s;
-}*/
 
 .site-sub-title {
   display: block;
@@ -299,6 +291,16 @@ i{
 
 #uyan_frame { padding-top: 100px;}
 
+/* archive post list */
+
+.home.archive  h3{
+  font-size: 24px;
+  padding-bottom: 10px;
+}
+.home.archive ul{
+  list-style-type: decimal;
+  margin-left: 50px;
+}
 /* Syntax highlighting styles */
 /* ----------------------------------------------------------*/
 

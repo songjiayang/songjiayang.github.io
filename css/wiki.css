@@ -1,0 +1,12 @@
+.wiki h2 {
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.wiki  ul {
+  margin-left: 40px
+}
+
+.wiki .hide {
+  display: none;
+}

@@ -4,7 +4,7 @@ title: "How to start active_admin with existing model"
 date: 2014-04-03 11:20:20 +0800
 comments: true
 category: archive
-tags: [gems, active_admin]
+tags: [gems, activeadmin]
 ---
 
 

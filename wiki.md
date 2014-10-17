@@ -381,7 +381,7 @@ title: Wiki
     <li><a href="http://java.sun.com/docs/books/tutorial/essential/regex/">Lesson: Regular Expressions(Java)</a></li>
     <li><a href="http://docs.python.org/library/re.html">Regular expression operations(Python)</a></li>
     <li><a href="http://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式 - 维基百科</a></li>
-    <li><a href="https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/RegExp#Special_characters_in_regular_expressions">RegExp - Mozilla</a></li>
+    <li>[RegExp - Mozilla](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#Special_characters_in_regular_expressions)</li>
     <li><a href="http://www.ibm.com/developerworks/cn/linux/l-lpic1-v3-103-7/?ca=drs-tp4608">学习 Linux，101: 使用正则表达式搜索文本文件</a></li>
     <li><a href="http://www.ibm.com/developerworks/cn/java/wa-regexp/index.html">构建用于正则表达式的抽象 Java API</a></li>
     <li><a href="http://www.greenend.org.uk/rjk/2002/06/regexp.html">Regexp Syntax Summary</a></li>

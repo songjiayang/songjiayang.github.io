@@ -19,7 +19,7 @@ task :deploy do
     message = "Site updated at #{Time.now.utc}"
     system "git commit -m \"#{message}\""
     puts "\n## Pushing generated #{deploy_dir} website"
-    system "git push origin #{deploy_branch}"
+    system "git push -f origin #{deploy_branch}"
     puts "\n## Github Pages deploy complete"
   end
 end
@@ -37,6 +37,6 @@ task :push_code do
   puts "\n## Committing: Site updated at #{Time.now.utc}"
   message = "Site updated at #{Time.now.utc}"
   system "git commit -m \"#{message}\""
-  system "git push origin"
+  system "git push -f origin"
   puts "\n## Code push complete"
 end

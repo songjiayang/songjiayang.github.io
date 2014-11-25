@@ -40,3 +40,8 @@ task :push_code do
   system "git push -f origin"
   puts "\n## Code push complete"
 end
+
+desc "new post with title, eg: rake new_post title=TITLE"
+task :new_post do
+  system "thor jekyll:new \"#{ENV['title']}\""
+end

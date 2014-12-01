@@ -13,6 +13,9 @@ layout: default
   </header>
 
   <article class="post-content">
+  {% if page.img %}
+  <p><img class="post-image" src="{{ page.img }}"></p>
+  {% endif %}
   {{ content }}
   </article>
 

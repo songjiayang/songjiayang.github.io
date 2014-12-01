@@ -2,6 +2,7 @@
 layout: post
 title: "使用 css counter 实现简单计数 "
 category: archive
+description: "css counter 实现给table tr添加行号"
 tags:
  - css 101
 ---

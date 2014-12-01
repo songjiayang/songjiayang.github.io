@@ -1,5 +1,6 @@
 require "rubygems"
 require "bundler/setup"
+require "stringex"
 
 deploy_dir = '_site'
 deploy_branch = 'master'
@@ -43,5 +44,29 @@ end
 
 desc "new post with title, eg: rake new_post title=TITLE"
 task :new_post do
-  system "thor jekyll:new \"#{ENV['title']}\""
+  title = ENV['title']
+  unless title
+   print "blog title: "
+   title = STDIN.gets.chomp
+  end
+  date = Time.now.strftime('%Y-%m-%d')
+  filename = "_posts/#{date}-#{title.to_url}.md"
+
+  if File.exist?(filename)
+    abort("#{filename} already exists!")
+  end
+
+  puts "Creating new post: #{filename}"
+  open(filename, 'w') do |post|
+    post.puts "---"
+    post.puts "layout: post"
+    post.puts "title: \"#{title.gsub(/&/,'&amp;')}\""
+    post.puts "category: archive"
+    post.puts "description: \"\""
+    post.puts "tags:"
+    post.puts " -"
+    post.puts "---"
+  end
+
+  system("atom", filename)
 end

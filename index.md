@@ -4,7 +4,7 @@ layout: default
 
 <div class="home">
   <section id="tag-cloud">
-    <p class="title">博客归档<p>
+    <p class="title">标签归档<p>
     {{ site | tag_cloud }}
   </section>
 
@@ -23,7 +23,7 @@ layout: default
   <section class="latest-posts books">
     <p class="title" >在线电子书<p>
     <ul>
-      <li><a href="http://www.redisbook.com/en/latest/" target="_blank">Redis 设计与实现</a> </li>
+      <li><a href="http://redisbook.com" target="_blank">Redis 设计与实现</a> </li>
 
       <li><a href="http://vbird.dic.ksu.edu.tw/" target="_blank">鸟哥私房菜</a></li>
       <li><a href="http://billie66.github.io/TLCL/" target="_blank">TLCL</a></li>

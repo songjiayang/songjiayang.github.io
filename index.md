@@ -29,6 +29,7 @@ layout: default
       <li><a href="http://billie66.github.io/TLCL/" target="_blank">TLCL</a></li>
 
       <li><a href="https://gettingreal.37signals.com/GR_chn.php" target="_blank">Getting Real</a></li>
+      <li><a href="http://www.tldp.org/LDP/Bash-Beginners-Guide/html" target="_blank">Bash Guide for Beginners</a></li>
     </ul>
   </section>
 </div>

@@ -23,6 +23,7 @@ layout: default
   <section class="latest-posts books">
     <p class="title" >在线电子书<p>
     <ul>
+      <li><a href="https://github.com/justjavac/free-programming-books-zh_CN" target="_blank">免费的编程中文书籍索引</a> </li>
       <li><a href="http://redisbook.com" target="_blank">Redis 设计与实现</a> </li>
 
       <li><a href="http://vbird.dic.ksu.edu.tw/" target="_blank">鸟哥私房菜</a></li>

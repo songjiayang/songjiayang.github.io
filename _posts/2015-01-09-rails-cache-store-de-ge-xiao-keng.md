@@ -31,6 +31,7 @@ end
 那就要分析下 Rails 的源代码了.
 
 首先看 Rails 的 fetch 方法的定义：
+
 ``` ruby
 def fetch(name, options = nil)
   if block_given?
@@ -54,6 +55,7 @@ end
 其中与 key 相关的是 namespaced_key 这个方法：
 
 ```ruby
+
 # File activesupport/lib/active_support/cache.rb, line 532
 def namespaced_key(key, options)
   key = expanded_key(key)
@@ -65,6 +67,7 @@ end
 ```
 
 namespaced_key 里面调用了 expanded_key 方法：
+
 ```ruby
 # File activesupport/lib/active_support/cache.rb, line 513
 def expanded_key(key) # :nodoc:

@@ -3,7 +3,7 @@ layout: post
 title: "2014想要做的事"
 date: 2014-01-31 20:43:06 +0800
 comments: true
-category: life
+category: archive
 tags: ["2014", todo]
 ---
 

@@ -186,15 +186,21 @@ i{
 /* Post styles */
 /* ----------------------------------------------------------*/
 
+.post-header {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
 .post-header h1 {
   padding-right: 40px;
   display: inherit;
   color: #3b3b3b;
-  font-size: 24px;
+  font-size: 40px;
   font-weight: bold;
-  line-height: 36px;
   letter-spacing: -1.75px;
 }
+
+.post-header h1:first-letter {text-transform: uppercase;}
 
 .post-header .meta {
   font-size: 12px;

@@ -66,7 +66,7 @@ def namespaced_key(key, options)
 end
 ```
 
-namespaced_key 里面调用了 expanded_key 方法：
+`namespaced_key` 里面调用了 `expanded_key` 方法：
 
 ```ruby
 # File activesupport/lib/active_support/cache.rb, line 513
@@ -90,7 +90,7 @@ end
 
 OK，到这里，你该知道问题了，`[@user]` 和 `@user` 分别生成了怎样的 key，你也一定了解了吧。
 
-出现这个问题核心是，如果生成的key的相关因子只有1个，如果写成 [@user] 这样的形式，
+出现这个问题核心是，如果生成的key的相关因子只有1个，写成 [@user] 这样的形式，
 key的生成，最终调用的其实只是是 `to_param` 这个方法，而它始终 == `"#{@user.id}"`，所以key一直不会有变化。
 
 <hr/>

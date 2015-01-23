@@ -23,6 +23,7 @@ tags:
 git tag -a v1.4 -m 'my version 1.4' #当前提交添加 tag
 git tag -a v1.4 9fceb02  #给任意提交添加 tag
 git tag -d v1.4 # 删除一个tag
+git push origin :refs/tags/v1.4 # 删除远程仓库tag
 git show v1.4
 git push origin --tags
 ```

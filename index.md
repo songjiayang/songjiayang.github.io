@@ -3,11 +3,6 @@ layout: default
 ---
 
 <div class="home">
-  <section id="tag-cloud">
-    <p class="title">标签归档<p>
-    {{ site | tag_cloud }}
-  </section>
-
   <section class="latest-posts">
     <p class="title" >最新博客<p>
     <ul>

@@ -4,7 +4,7 @@ title: "git 常见问题汇总"
 category: archive
 description: "git 常见问题汇总"
 tags:
- -git
+ - git
 ---
 
 #### 1. `git log` 常用命令：

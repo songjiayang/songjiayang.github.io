@@ -1,11 +1,8 @@
 ---
 layout: post
-title: "[转载] 正则表达式简明参考"
-category: archive
+title: " 正则表达式简明参考"
+category: reprinted
 description: 我想在网上最出名的正则相关的一篇文章就是《正则表达式30分钟入门教程》了，说实话这篇文章确实是我的正则入门，但是随着使用熟练，冗长的文章已经不能满足我了，在此做个归纳总结，用于快速查阅。
-tags:
- - 正则
- - 转载
 ---
 
 本文章转载于 http://www.xiaoleilu.com/regex-guide/ ,感谢作者的干货，以备日后查询检索之用，以下属于转载内容，版权归原作者。

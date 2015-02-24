@@ -192,8 +192,7 @@ i{
   margin-bottom: 40px;
 }
 .post-header h1 {
-  padding-right: 40px;
-  display: inherit;
+  display: block;
   color: #3b3b3b;
   font-size: 40px;
   font-weight: bold;
@@ -271,7 +270,7 @@ i{
 .post code { padding: 1px 5px; }
 
 .post ul,
-.post ol { margin-left: 1.35em; }
+.post ol { margin-left: 1.60em; }
 
 .post pre code {
   border: 0;
@@ -306,6 +305,10 @@ i{
 .home.archive ul{
   list-style-type: decimal;
   margin-left: 50px;
+}
+.center {
+  display: block;
+  text-align: center;
 }
 /* Syntax highlighting styles */
 /* ----------------------------------------------------------*/
@@ -459,6 +462,7 @@ i{
 }
 
 @media screen and (max-width: 400px){
+  .post-header h1 { font-size: 24px; }
   .site-sub-title {
     font-size: 10px;
     margin: 24px 0px 0px 8px;

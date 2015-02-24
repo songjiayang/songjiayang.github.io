@@ -1,10 +1,8 @@
 ---
 layout: post
-title: "[转载] 免费的编程中文书籍索引"
-category: archive
+title: "免费的编程中文书籍索引"
+category: reprinted
 description: ""
-tags:
- - 转载
 ---
 
 本文为 github 开源项目 [《免费的编程中文书籍索引》](https://github.com/justjavac/free-programming-books-zh_CN) 的镜像版本，方便访问国外网络有问题的童鞋。

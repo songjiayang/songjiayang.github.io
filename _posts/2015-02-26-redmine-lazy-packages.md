@@ -12,7 +12,7 @@ tags:
 
 #### Why this repository
 所有的一切都源自一篇博客 [5-redmine-plugins-will-change-way-you-work](http://it-consultis.com/blog/5-redmine-plugins-will-change-way-you-work)。
-当我一个一个寻找它们的时候，才发现这时一件蛮费时间事情，更何况 [redminecrm](http://www.redminecrm.com) （一个最大redmine资源的站点 ）
+当我一个一个寻找这些插件的时候，发现这是一件超级浪费时间的事情，更何况 [redminecrm](http://www.redminecrm.com) （一个redmine资源站点 ）
 还被墙了；所以，我决定将我常用的一些插件和皮肤汇总在这里，方便有需求的朋友使用。
 
 项目地址： [https://github.com/songjiayang/redmine-lazy-package](https://github.com/songjiayang/redmine-lazy-package) 。
@@ -27,7 +27,7 @@ tags:
 ps：所有插件均成功跑在 redmine 3.0版本之上
 
 #### How to use
-#####1. plugins 和 public/thmemes 的文件拷贝到你的 redmine 项目对应目录中。
+#####1. 将plugins 和 public/thmemes 的文件拷贝到你的 redmine 项目对应目录中。
 #####2. 依次执行命令
 ```ruby
 bundle install --without development test

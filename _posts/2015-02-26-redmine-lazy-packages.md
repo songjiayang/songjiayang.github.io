@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Redmine lazy package"
-category: archive
+category: project
 description: "It is a redmine plugin and theme collection, all of them are very useful."
 tags:
  - redmine
- - tools
+ - tool
 imagefeature: redminecrm.png
 comments: true
 share: true
@@ -13,8 +13,8 @@ share: true
 
 ####Why this repository
 所有的一切都源自一篇博客 [5-redmine-plugins-will-change-way-you-work](http://it-consultis.com/blog/5-redmine-plugins-will-change-way-you-work)。
-当我一个一个寻找这些插件的时候，发现这是一件超级浪费时间的事情，更何况 [redminecrm](http://www.redminecrm.com) （一个redmine资源站点 ）
-还被墙了；所以，我决定将我常用的一些插件和皮肤汇总在这里，方便有需求的朋友使用。
+当我一个一个寻找这些插件时，发现这是一件超级浪费时间的事，更何况 [redminecrm](http://www.redminecrm.com) （一个redmine资源站点 ）
+还被墙了 (>﹏<) 不～  ；所以，我决定将我常用的一些插件和皮肤汇总在这里，方便有需求的朋友使用。
 
 项目地址： [https://github.com/songjiayang/redmine-lazy-package](https://github.com/songjiayang/redmine-lazy-package) 。
 

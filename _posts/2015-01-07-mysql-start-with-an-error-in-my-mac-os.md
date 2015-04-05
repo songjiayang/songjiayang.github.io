@@ -1,0 +1,29 @@
+---
+layout: post
+title: "mysql start with an error in my mac os"
+category: technical
+share: true
+comments: true
+description: " ERROR! The server quit without updating PID file"
+tags:
+ - mysql
+---
+
+元旦放假归来，打开电脑，启动 mysql.server 得到一如下错误提示：
+
+>> . ERROR! The server quit without updating PID file (/usr/local/var/mysql/dev.pid).
+
+查看错误日志，发现有这么一句提示：
+
+{% highlight bash %}
+2015-01-04 11:53:45 1694 [Warning] Setting lower_case_table_names=2 because file system for /usr/local/var/mysql/ is case insensitive
+2015-01-04 11:53:45 1694 [Note] Plugin 'FEDERATED' is disabled.
+/usr/local/Cellar/mysql/5.6.21/bin/mysqld: Can't find file: './mysql/plugin.frm' (errno: 13 - Permission denied)
+{% endhighlight %}
+
+已经隐隐约约感觉到是权限问题了，那修改此目录的 owner 为当前用户试试：
+
+{% highlight bash %}
+sudo chown -R dev /usr/local/var/mysql/
+{% endhighlight %}
+重新启动 mysql, 错误提示不见了，问题解决。

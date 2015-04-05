@@ -2,7 +2,7 @@
 layout: post
 title: "A better way to reindex associations in thinking-sphinx"
 category: technical
-tags: [technical, thinking-sphinx, ruby, refactor]
+tags: [thinking-sphinx, ruby, refactor]
 imagefeature:
 comments: true
 share: true

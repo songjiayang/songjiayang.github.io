@@ -272,6 +272,9 @@ pre {
 .text-italic {
   font-style: italic;
 }
+.jtico_weixin {
+  margin-left: 15px;
+}
 /* Responsive typography */
 @media (max-width: 767px) {
   h1 {

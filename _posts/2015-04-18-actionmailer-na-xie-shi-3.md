@@ -67,7 +67,6 @@ end
 需运行的测试命令是 `rake test` or `rake test %{FILE_NAME}` 。
 
 
-参考文章:
-[http://guides.rubyonrails.org/4_1_release_notes.html#action-mailer-previews](http://guides.rubyonrails.org/4_1_release_notes.html#action-mailer-previews)
+参考: [http://api.rubyonrails.org/v4.2.1/classes/ActionMailer/Base.html#class-ActionMailer::Base-label-Previewing+emails](http://api.rubyonrails.org/v4.2.1/classes/ActionMailer/Base.html#class-ActionMailer::Base-label-Previewing+emails)
 
 温馨提示： 我在github上新开了一个 rails-example 项目，用于平时博客代码演示，例如这篇博客代码，在[这里](https://github.com/songjiayang/rails-example/pull/1/files) 。

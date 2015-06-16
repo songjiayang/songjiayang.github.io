@@ -1,6 +1,6 @@
 title:            小鱼驿站
 description:      "风起，听风 ｜ 云涌，看云"
-logo:             omikron.png
+logo:            omikron.png
 disqus_shortname: songjiayang
 # Assign a default image for your site's header and footer
 default_bg:       default_bg2.jpg
@@ -59,6 +59,8 @@ links:
     url: /categories
   - title: Tags
     url: /tags
+  - title: Zuji
+    url: /zuji
   - title: JiaYang who?
     url: /me
 

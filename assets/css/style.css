@@ -48,7 +48,7 @@ h3 {
   line-height: 24px;
   margin-top: 24px;
   margin-bottom: 20px;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
 }
 h3 small {
   font-size: 13px;
@@ -62,7 +62,7 @@ h4 {
   margin-top: 24px;
   margin-bottom: 16px;
   font-size: 16px;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
 }
 h4 small {
   font-size: 16px;

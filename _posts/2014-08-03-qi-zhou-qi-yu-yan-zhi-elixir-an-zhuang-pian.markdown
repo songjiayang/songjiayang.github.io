@@ -11,11 +11,11 @@ tags: [elixir, 七周七语言]
 
 看到这个消息心中不免有些小激动，因为它的语法终于快稳定下来了，版本1.0的发布也是紧接的事情，于是决定尝尝鲜。
 
-###1.1 Elixir初级篇###
+### Elixir初级篇###
 
 >>测试环境： Mac OS 10.9.4
 
-####1.1 安装Erlang###
+####1.1 安装Erlang####
 
 由于Elixir是一门运行在erlng虚拟机上的函数式、面向并行的编程语言，自然需要erlang运行环境。
 
@@ -42,7 +42,7 @@ tags: [elixir, 七周七语言]
 Erlang/OTP 17 [erts-6.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false]
 {% endhighlight %}
 
-####1.2 elixir安装###
+####1.2 elixir安装####
 
 由于我的系统是OS，为了不折腾所以采用homebrew安装。
 
@@ -60,7 +60,7 @@ Interactive Elixir (0.15.0) - press Ctrl+C to exit (type h() ENTER for help)
 
 其他系统使用源的安装方式以及预编译安装方式，请参考[官网](http://elixir-lang.org/getting_started/1.html#1.2-distributions)
 
-####1.3 elixir初体验###
+####1.3 elixir初体验####
 
 进入`iex`
 
@@ -94,4 +94,7 @@ Hello World
 1. 在elixir中的字符串拼接使用的是 `<>` 而不是`+`。  
 2. 方法的定义必须在`module`中。  
 
-总的来说，Elixir安装容易，它的语法也和ruby有几分相识之处（毕竟就是搞ruby那帮人写的嘛）。它的出现感觉就是在语言高性能和语法优雅中寻找平衡。只是目前语言还在逐步完善中，1.0版本发布，将是一个里程碑；社区也还不够强大，不过对于才出现1年多点elixir而言，它有足够的时间去成长。
+总结:  
+1. Elixir安装容易，它的语法也和ruby有几分相识之处（毕竟就是搞ruby那帮人写的嘛）。  
+2. 它的出现感觉就是在语言高性能和语法优雅中寻找平衡。只是目前语言还在逐步完善中，1.0版本发布，将是一个里程碑。   
+3. 社区也还不够强大，不过对于才出现1年多点elixir而言，它有足够的时间去成长。

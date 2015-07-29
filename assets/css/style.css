@@ -4050,10 +4050,17 @@ body.slide{
 
 
 @media screen and (max-width:500px){
-
-    a#slide{
-        position:absolute
-        }
-
-
+  a#slide{
+    position:absolute
+  }
+  .post-template a#slide, .post-template #masthead,.post-template .post-share {
+    display: none;
+  }
+  .post-template #main{ padding-top: 40px;}
+  .post-template .post-title {font-size: 1.2em;}
+  .post-template .post-body {font-size: 0.8em}
+  .cursive {
+    font-size: 16px;
+  }
+}
 /*      End-Responsive      */

@@ -99,6 +99,7 @@ blockquote {
   padding-left: 0;
   border: 0;
   position: relative;
+  margin-left: 25px;
 }
 blockquote:before {
   content: "";
@@ -332,7 +333,7 @@ pre {
     line-height: 1em;
   }
   .lead {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 @media (max-width: 320px) {
@@ -4061,6 +4062,18 @@ body.slide{
   .post-template .post-body {font-size: 0.8em}
   .cursive {
     font-size: 16px;
+  }
+  blockquote {
+    margin-left: 0px;
+  }
+  p {
+    margin: 0 0 10px;
+  }
+  #footer {
+    display: none;
+  }
+  ul, ol{
+    font-size: 14px;
   }
 }
 /*      End-Responsive      */

@@ -26,10 +26,8 @@ tags:
 答案就是使用 console.log 的 `%c` 参数（ 及 css style 打印输出 ）。
 
 打印上图淘宝内容对应代码大致为：
-{% highlight javascript %}
-console.log('%c安全警告!','color:red; background:yellow;font-size:30px;');console.log('%c请勿在此控制台输入或粘贴你不明白的.....','font-size:18px;')
-{% endhighlight %}
 
+![code.png](/images/caidan/code.png)
 后记： 原来大公司也喜欢在自己网站留下一些好玩的 『 彩蛋 』 ，不过好奇，因为这个京东一年会收到多少封简历。
 
 参考链接：

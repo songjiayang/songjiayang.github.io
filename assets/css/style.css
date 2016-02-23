@@ -293,8 +293,8 @@ pre {
     font-size: 16px;
   }
   h3 {
-    font-size: 20px;
-    line-height: 36px;
+    font-size: 16px;
+    line-height: 0px;
   }
   h3 small {
     font-size: 16px;
@@ -321,6 +321,17 @@ pre {
   }
   .small-screen-margin-bottom {
     margin-bottom: 24px !important;
+  }
+  .post-author {
+    font-size: 12px;
+    margin-bottom: 30px !important;
+  }
+
+  #disqus_thread {
+    display: none !important;
+  }
+  .post-avatar {
+    max-width: 120px !important;
   }
 }
 @media (max-width: 480px) {
@@ -2662,6 +2673,15 @@ figcaption {
     font-size: 14px;
     font-style:italic;
 }
+
+.figcaption {
+    margin-top: -15px;
+    text-align: center;
+    font-size: 14px;
+    font-style:italic;
+    display: block;
+}
+
 #disqus_thread {
     margin-top: 2em;
 }

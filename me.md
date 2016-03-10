@@ -13,19 +13,19 @@ image:
 ###基本档案
 
 -	姓名: 宋佳洋
--	年龄: 25
+-	年龄: 26
 -	学历: 大学本科(西南石油大学2013届)
 -	英语: 四级
--	邮件: songjiayang1#gmail.com
+-	邮件: songjiayang1@gmail.com
 -	博客：http://songjiayang.github.io
 -	github: https://github.com/songjiayang
 
 ### 职业技能
 
--	3年互联网行业开发经验，1年带团队经验（4人）；
+-	3年互联网行业工作经验，1年带团队经验（4人）；
 -	熟悉 *nux 环境开发和部署;
 -	熟悉 Ruby/Rails 开发,有3年使用经验,熟悉常见的gems,有源码阅读习惯。
--	熟悉 MySQL,PostgreSQL, Redis;
+-	熟悉 MySQL, PostgreSQL, Redis;
 -	了解 Python, NodeJs, Java, elixir等其他语言;
 -	了解和使用一些前端框架，例如 css (bootstrap,pure)， js (ember, react, backbone) 等。
 
@@ -33,7 +33,7 @@ image:
 
 -	2009入学西南石油大学,就读计算机科学与技术专业,从此开始了我的程序员之路.
 -	2012.10~2013.03 到 团 800 公司做 Ruby 实习.
--	2013.04.25 来上海，工作于现在的公司( GIGA循旅生态科技有限公司)，目前任职技术主管。
+-	2013.04.25 来上海，工作于现在的公司( GIGA循旅生态科技有限公司)，目前任职技术主管。主要负责 [gigabase](http://www.gigabase.org/en/) 和 [matter](https://giga.matter.build/users/sign_in?locale=zh) 的研发工作。
 
 ###岗位职责：
 -	负责公司日常系统功能开发。

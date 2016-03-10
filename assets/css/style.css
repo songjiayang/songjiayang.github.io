@@ -251,7 +251,7 @@ pre {
   line-height: 1.5em;
 }
 .hyper {
-  font-size: 72px;
+  font-size: 70px;
   font-weight: bold;
   text-align: center;
   line-height: 1;
@@ -528,6 +528,7 @@ html {
   margin-top: 0;
   margin-bottom: 12px;
   padding-bottom: 12px;
+  text-transform: capitalize;
 }
 /* - Post info - */
 .post-info {

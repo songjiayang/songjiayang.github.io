@@ -334,6 +334,15 @@ pre {
     max-width: 120px !important;
   }
 }
+
+.banner img {
+  margin-bottom: 0px !important;
+}
+
+.banner {
+  margin-bottom: 1em;
+}
+
 @media (max-width: 480px) {
   .super {
     font-size: 36px;
@@ -4097,4 +4106,5 @@ body.slide{
     font-size: 14px;
   }
 }
+
 /*      End-Responsive      */

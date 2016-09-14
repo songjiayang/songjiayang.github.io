@@ -18,23 +18,22 @@ tags:
 
 ### 一、了解 ruby 闭包创建方式
 
-1. `blocks`
-
+#### 1. `blocks`
 ![proc_1.png](/images/proc/proc_1.png)
-2. `proc`
 
+#### 2. `proc`
 ![proc_6.png](/images/proc/proc_6.png)
-3. `Proc.new`
 
+#### 3. `Proc.new`
 ![proc_2.png](/images/proc/proc_2.png)
-4. `lambda`
 
+#### 4. `lambda`
 ![proc_3.png](/images/proc/proc_3.png)
-5. `->`
 
+#### 5. `->`
 ![proc_4.png](/images/proc/proc_4.png)
-6. method to `to_proc`
 
+#### 6. method to `to_proc`
 ![proc_5.png](/images/proc/proc_5.png)
 
 好了，以上就是在 Ruby 中创建闭包的不同方式，通过运行结果你不难发现：

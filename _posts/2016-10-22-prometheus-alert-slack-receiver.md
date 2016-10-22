@@ -10,7 +10,7 @@ tags:
 ---
 
 在过去一篇文章 [Prometheus With Alertmanager](/technical/prometheus-with-alertmanager) 中，
-已介绍了 prometheus 的告警模块，Alertmanager 用法；今天我们将一起学习，使用 slack 接收告警通知，让咱们的运维看上去高大上。我们想做：
+已介绍了 prometheus 的告警模块，Alertmanager 用法；今天我们将一起学习，使用 slack 接收告警通知，让咱们的运维看上去高大上，我们想做：
 
 1. 使用 slack 接受消息。    
 2. 消息能够带有 url， 自动跳转到 prometheus 对应 graph 查询页面。  
@@ -69,16 +69,16 @@ ALERT InstanceStatus
 
 ![slack-alert5.png](/images/slack-alert5.png)
 
-消息一条一条的，瞬间清晰很多。有了那几个自定义字断，稍作扩展，你将想到一些有趣的事情，比如自动分配任务，标记不同警报级别。
+消息一条一条的，瞬间清晰很多。有了那几个自定义字段，稍作扩展，你将想到一些有趣的事情，比如自动分配任务，标记不同警报级别。
 
 最后点击 title 或者 `Click here`， 即可跳转到 Prometheus graph 页面：
 
 ![slack-alert6.png](/images/slack-alert6.png)
 
-真的太方便了，有没有，再也不用担心多个 Prometheus 查询各种切换的的烦恼。
+真的太方便了，有没有，再也不用担心多个 Prometheus 节点，切换查询的烦恼了。
 
 ----
 
-不得不说，slack 还是非常好用的。经过我测试下来，无论网站，桌面客户端，APP，都没有被墙，消息到达及时，只是网页版，启动较慢。要知道，slack 在 IM 工具里，算很靠谱的了，你不用担心突然关掉之类，我个人比较推荐使用用它的。
+不得不说，slack 还是非常好用的。经过我测试下来，无论网站，桌面客户端，APP，都没有被墙，消息到达及时，只是网页版，启动较慢。要知道，slack 在 IM 工具里，算很靠谱的了，你不用担心突然关掉之类，我个人比较推荐使用它。
 
-当然如果你还是觉得慢，那么推荐下零信，号称国内 slack, 他们文档上上说是兼容 slack。
+当然如果你还是觉得慢，那么再推荐下零信，号称国内 slack, 他们文档上说是兼容 slack 的。

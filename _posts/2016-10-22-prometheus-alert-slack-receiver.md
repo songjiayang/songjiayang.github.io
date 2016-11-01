@@ -23,12 +23,12 @@ tags:
 
 一.  为 `#test` 频道创建一个 incomming webhooks 应用
 
-点击频道标题，选择 `Add an app or integration`，然后在 app store 中搜索 `incomming webhooks`，选择第一个即可。
+1. 点击频道标题，选择 `Add an app or integration`
 
 ![slack-alert1.png](/images/slack-alert1.png)
+2. 然后在 app store 中搜索 `incomming webhooks`，选择第一个
 
 ![slack-alert2.png](/images/slack-alert2.png)
-
 创建成功以后，拷贝 app webhook 地址，以被后面使用。
 
 二.  修改 prometheus rules，添加一些字段

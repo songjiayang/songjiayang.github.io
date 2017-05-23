@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "use Textfile Collector to make your node exporter more Powerful"
+title: "Use Textfile Collector to make your node exporter more Powerful"
 category: technical
 comments: true
 share: true

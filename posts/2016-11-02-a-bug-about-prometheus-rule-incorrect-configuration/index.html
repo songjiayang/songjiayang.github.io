@@ -11,12 +11,12 @@
 <title>A bug about prometheus rule incorrect configuration - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="A bug about prometheus rule incorrect configuration" />
 <meta property="og:description" content="随着对 Prometheus Alertmanager 深入了解，我们配置的告警通知已非常具有可读性。
@@ -30,12 +30,12 @@
 func labelSetToFastFingerprint(ls LabelSet) Fingerprint { if len(ls) == 0 { return Fingerprint(emptyLabelSignature) } var result uint64 for labelName, labelValue := range ls { sum := hashNew() sum = hashAdd(sum, string(labelName)) sum = hashAddByte(sum, SeparatorByte) sum = hashAdd(sum, string(labelValue)) result ^= sum } return Fingerprint(result) } 详情请参考 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2016-11-02-a-bug-about-prometheus-rule-incorrect-configuration/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2016-11-02T22:31:00+08:00" />
 <meta property="article:modified_time" content="2016-11-02T22:31:00+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="A bug about prometheus rule incorrect configuration"/>
 <meta name="twitter:description" content="随着对 Prometheus Alertmanager 深入了解，我们配置的告警通知已非常具有可读性。
@@ -193,7 +193,7 @@ func labelSetToFastFingerprint(ls LabelSet) Fingerprint { if len(ls) == 0 { retu
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/prometheus">#prometheus</a></li>
+                        <li><a href="/tags/prometheus">#prometheus</a></li>
                     
                 </ul>
         

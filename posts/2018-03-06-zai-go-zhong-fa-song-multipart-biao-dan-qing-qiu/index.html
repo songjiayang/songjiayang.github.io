@@ -11,12 +11,12 @@
 <title>如何在 Go 中发送表单请求 - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="如何在 Go 中发送表单请求" />
 <meta property="og:description" content="通常我们与第三方交互使用的是 json，但偶尔也会遇到要求使用表单方式来提交数据，故今天我们就一起来学习下如何在 Go 中发送表单请求。
@@ -24,12 +24,12 @@
 package main import ( &#34;fmt&#34; &#34;log&#34; &#34;net/http&#34; ) func urlencodedHandler(w http.ResponseWriter, r *http.Request) { err := r.ParseForm() if err != nil { log.Printf(&#34;r.ParseForm(): %v&#34;, err) return } result := &#34;&#34; for k, v := range r.Form { result &#43;= fmt.Sprintf(&#34;%s:%v\n&#34;, k, v) } fmt.Fprintf(w, result) } func multipartHandler(w http.ResponseWriter, r *http.Request) { err := r.ParseMultipartForm(4 * 1024 * 1024) if err != nil { log." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2018-03-06-zai-go-zhong-fa-song-multipart-biao-dan-qing-qiu/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2018-03-06T16:51:25+08:00" />
 <meta property="article:modified_time" content="2018-03-06T16:51:25+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="如何在 Go 中发送表单请求"/>
 <meta name="twitter:description" content="通常我们与第三方交互使用的是 json，但偶尔也会遇到要求使用表单方式来提交数据，故今天我们就一起来学习下如何在 Go 中发送表单请求。
@@ -242,7 +242,7 @@ tmp.png:[0xc420082410]
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/go">#go</a></li>
+                        <li><a href="/tags/go">#go</a></li>
                     
                 </ul>
         

@@ -11,12 +11,12 @@
 <title>Rails中 counter_cache 的使用 - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688446" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688446">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="Rails中 counter_cache 的使用" />
 <meta property="og:description" content="假设我们现在已经有了post和comment两个model:
@@ -28,12 +28,12 @@ rails g migration add_comment_count_to_post comment_count:integer 2.修改commen
 #spec/models/post.rb context &quot;comment_count&quot; do let(:post){create :post} let(:comment1){ create :comment, :post =&gt; post} it &quot;comment_count should &#43;1&quot; do expect { create :comment, :post =&gt; post }.to change{post.reload.comment_count}.by(1) end it &quot;comment_count should -1&quot; do expect { comment1." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2014-01-22-railszhong-counter-cachede-yong/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2014-01-22T17:27:30+08:00" />
 <meta property="article:modified_time" content="2014-01-22T17:27:30+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="Rails中 counter_cache 的使用"/>
 <meta name="twitter:description" content="假设我们现在已经有了post和comment两个model:
@@ -149,7 +149,7 @@ end
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/ruby">#ruby</a></li>
+                        <li><a href="/tags/ruby">#ruby</a></li>
                     
                 </ul>
         

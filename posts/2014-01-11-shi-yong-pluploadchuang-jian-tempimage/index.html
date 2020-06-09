@@ -11,12 +11,12 @@
 <title>使用 Plupload 创建 TempImage - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688446" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688446">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="使用 Plupload 创建 TempImage" />
 <meta property="og:description" content="Plupload是一款比较流行的文件上传插件，能够轻易实现多文本上传,拖拽上传等效果，而且兼容性比较好。
@@ -27,12 +27,12 @@
  initialize_uploader: (options) -&gt; ## CSRF Tokens Into Hash # Initialize a params hash @params = {} # Load csrf tokens from page csrf_name = $(&quot;meta[name=&#39;csrf-param&#39;]&quot;)?.attr(&#39;content&#39;) csrf_value = $(&quot;meta[name=&#39;csrf-token&#39;]&quot;)?.attr(&#39;content&#39;) # Load csrf tokens into params hash @params[csrf_name] = csrf_value ## Default options for the uploader options = $.extend(options, { url: &quot;/images.json?temp=true&quot; multipart_params: @params label: &#39;&#39; prompt: &#39;&#39; chunk_size : &#39;1mb&#39; browse_button: &#39;browser&#39; unique_names : true multi_selection : false ＃single or multi select max_file_size: &#39;10mb&#39; filters: [{ title: __(&quot;Image files&quot;), extensions: &quot;gif,png,jpg,jpeg,tiff&quot;}] }) ## Initialize a new uploader @uploader = new plupload." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2014-01-11-shi-yong-pluploadchuang-jian-tempimage/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2014-01-11T19:57:14+08:00" />
 <meta property="article:modified_time" content="2014-01-11T19:57:14+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="使用 Plupload 创建 TempImage"/>
 <meta name="twitter:description" content="Plupload是一款比较流行的文件上传插件，能够轻易实现多文本上传,拖拽上传等效果，而且兼容性比较好。
@@ -144,7 +144,7 @@
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/ruby">#ruby</a></li>
+                        <li><a href="/tags/ruby">#ruby</a></li>
                     
                 </ul>
         

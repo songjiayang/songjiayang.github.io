@@ -11,12 +11,12 @@
 <title>Rails deploy with capistrano3 - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="Rails deploy with capistrano3" />
 <meta property="og:description" content="今天将公司 Reset 项目的部署由 capistrano2&#43;unicorn&#43;sidekiq 换成了 capistrano3&#43;puma&#43;sidekiq 。
@@ -24,12 +24,12 @@
 1. 修改 Gemfile 文件 #Gemfile gem &#39;puma&#39; group :development do ..... # cap deploy plugins gem &#39;capistrano&#39;, &#39;~&gt; 3.2.0&#39; gem &#39;capistrano-rvm&#39;, &#39;~&gt; 0.1.2&#39; gem &#39;capistrano-bundler&#39;, &#39;~&gt; 1.1.3&#39; gem &#39;capistrano-rails&#39;, &#39;~&gt; 1.1.2&#39; gem &#39;capistrano-sidekiq&#39;, &#39;~&gt; 0.4.0&#39; gem &#39;capistrano3-puma&#39;, &#39;~&gt; 0.8.3&#39; ..... end 2. 修改 Capfile 文件 #Capfile # Load DSL and Setup Up Stages require &#39;capistrano/setup&#39; # Includes default deployment tasks require &#39;capistrano/deploy&#39; # Includes tasks from other gems included in your Gemfile # # For documentation on these, see for example: # # https://github." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2014-11-20-rails-deploy-with-capistrano3/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2014-11-20T22:31:00+08:00" />
 <meta property="article:modified_time" content="2014-11-20T22:31:00+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="Rails deploy with capistrano3"/>
 <meta name="twitter:description" content="今天将公司 Reset 项目的部署由 capistrano2&#43;unicorn&#43;sidekiq 换成了 capistrano3&#43;puma&#43;sidekiq 。
@@ -176,7 +176,7 @@ server 'gigareset.org', user: 'deploy', roles: %w{web app db}
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/ruby">#ruby</a></li>
+                        <li><a href="/tags/ruby">#ruby</a></li>
                     
                 </ul>
         

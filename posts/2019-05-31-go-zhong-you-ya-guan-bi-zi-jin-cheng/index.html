@@ -11,24 +11,24 @@
 <title>如何在 Go 中优雅关闭子进程 - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="如何在 Go 中优雅关闭子进程" />
 <meta property="og:description" content="如何在 Go 中运行一个外部命令 有时我们会遇到这样的需求，在一个主进程中启动另外一个进程，而在 Go 中可以使用 exec 包的 Cmd 来轻松实现这类需求，例如代码：
 package main import ( &#34;fmt&#34; &#34;log&#34; &#34;os&#34; &#34;os/exec&#34; &#34;os/signal&#34; ) func main() { cmd := exec.Cmd{ Path: &#34;nc&#34;, Args: []string{&#34;-u&#34;, &#34;-l&#34;, &#34;8888&#34;}, Dir: &#34;/usr/bin&#34;, } if err := cmd.Start(); err != nil { log.Panic(err) } fmt.Println(&#34;Start child process with pid&#34;, cmd.Process.Pid) c := make(chan os.Signal, 1) signal.Notify(c, os.Interrupt) s := &lt;-c fmt.Println(&#34;Got signal:&#34;, s) } 这段代码的含义是： 使用 nc -u -l 8888 来模拟一个常驻进程，然后通过 Go 的 exec." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2019-05-31-go-zhong-you-ya-guan-bi-zi-jin-cheng/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2019-05-31T14:51:06+08:00" />
 <meta property="article:modified_time" content="2019-05-31T14:51:06+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="如何在 Go 中优雅关闭子进程"/>
 <meta name="twitter:description" content="如何在 Go 中运行一个外部命令 有时我们会遇到这样的需求，在一个主进程中启动另外一个进程，而在 Go 中可以使用 exec 包的 Cmd 来轻松实现这类需求，例如代码：
@@ -204,7 +204,7 @@ cmd.Process.Kill()
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/go">#go</a></li>
+                        <li><a href="/tags/go">#go</a></li>
                     
                 </ul>
         

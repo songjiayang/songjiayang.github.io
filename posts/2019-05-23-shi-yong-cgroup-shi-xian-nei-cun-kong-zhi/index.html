@@ -11,12 +11,12 @@
 <title>如何在 Go 中使用 CGroup 实现进程内存控制 - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="如何在 Go 中使用 CGroup 实现进程内存控制" />
 <meta property="og:description" content="背景 从 Linux 内核 2.6.25 开始，CGroup 支持对进程内存的隔离和限制，这也是 Docker 等容器技术的底层支撑。
@@ -25,12 +25,12 @@
 $ mount -t cgroup cgroup on /sys/fs/cgroup/systemd type cgroup (rw,nosuid,nodev,noexec,relatime,xattr,release_agent=/usr/lib/systemd/systemd-cgroups-agent,name=systemd) cgroup on /sys/fs/cgroup/net_cls type cgroup (rw,nosuid,nodev,noexec,relatime,net_cls) cgroup on /sys/fs/cgroup/cpuset type cgroup (rw,nosuid,nodev,noexec,relatime,cpuset) cgroup on /sys/fs/cgroup/perf_event type cgroup (rw,nosuid,nodev,noexec,relatime,perf_event) cgroup on /sys/fs/cgroup/freezer type cgroup (rw,nosuid,nodev,noexec,relatime,freezer) cgroup on /sys/fs/cgroup/memory type cgroup (rw,nosuid,nodev,noexec,relatime,memory) cgroup on /sys/fs/cgroup/cpu,cpuacct type cgroup (rw,nosuid,nodev,noexec,relatime,cpuacct,cpu) cgroup on /sys/fs/cgroup/hugetlb type cgroup (rw,nosuid,nodev,noexec,relatime,hugetlb) cgroup on /sys/fs/cgroup/devices type cgroup (rw,nosuid,nodev,noexec,relatime,devices) cgroup on /sys/fs/cgroup/blkio type cgroup (rw,nosuid,nodev,noexec,relatime,blkio) CGroup 相关的资源包括 cpu,memory,blkio等，而我们今天主要关心的是内存，即 /sys/fs/cgroup/memory。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2019-05-23-shi-yong-cgroup-shi-xian-nei-cun-kong-zhi/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2019-05-23T18:12:57+08:00" />
 <meta property="article:modified_time" content="2019-05-23T18:12:57+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="如何在 Go 中使用 CGroup 实现进程内存控制"/>
 <meta name="twitter:description" content="背景 从 Linux 内核 2.6.25 开始，CGroup 支持对进程内存的隔离和限制，这也是 Docker 等容器技术的底层支撑。
@@ -362,7 +362,7 @@ Alloc <span style="color:#f92672">=</span> <span style="color:#ae81ff">12</span>
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/go">#go</a></li>
+                        <li><a href="/tags/go">#go</a></li>
                     
                 </ul>
         

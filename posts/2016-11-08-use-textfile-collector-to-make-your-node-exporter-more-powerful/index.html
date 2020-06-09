@@ -11,24 +11,24 @@
 <title>Use Textfile Collector to make your node exporter more Powerful - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="Use Textfile Collector to make your node exporter more Powerful" />
 <meta property="og:description" content="有时 node_exporter 不能完全满足机器信息的收集，相较于 fork 代码，使用官方推荐的 Textfile Collector 是一种更简便的方式。
 Textfile Collector 使用逻辑大致如下：  使用 -collector.textfile.directory 参数启动 node_exporter。 将我们自己收集的数据，按照 prometheus 的 文本格式 存储到 textfile collector 目录下的 *.prom 文件中。 每当 Prometheus server 到 node_exporter 拉数据的时候，node_exporter 会自动解析所有 *.prom 文件，将数据全部返回。  Prometheus 文本格式的规则  使用 # 开头表示注视，将被忽略。 如果以 # HELP 开头，将视为 Metric 帮助信息。 如果以 # TYPE 开头，将视为 Metric 类型定义，如果没有定义类型，Metric 默认为 Gauge, 例如：  # Minimalistic line: metric_without_timestamp_and_labels 12.47 # HELP http_requests_total The total number of HTTP requests." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2016-11-08-use-textfile-collector-to-make-your-node-exporter-more-powerful/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2016-11-08T22:31:00+08:00" />
 <meta property="article:modified_time" content="2016-11-08T22:31:00+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="Use Textfile Collector to make your node exporter more Powerful"/>
 <meta name="twitter:description" content="有时 node_exporter 不能完全满足机器信息的收集，相较于 fork 代码，使用官方推荐的 Textfile Collector 是一种更简便的方式。
@@ -130,7 +130,7 @@ http_requests_total{method=&quot;post&quot;,code=&quot;400&quot;}    3 139506636
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/prometheus">#prometheus</a></li>
+                        <li><a href="/tags/prometheus">#prometheus</a></li>
                     
                 </ul>
         

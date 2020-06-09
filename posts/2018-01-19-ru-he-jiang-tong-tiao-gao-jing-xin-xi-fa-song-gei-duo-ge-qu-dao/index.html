@@ -11,12 +11,12 @@
 <title>如何将同一条告警信息发送给多个渠道 - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="如何将同一条告警信息发送给多个渠道" />
 <meta property="og:description" content="背景： 有时我们需要将告警信息同时发送给多个渠道（例如短信或邮件），那么我们的 Alertmanager 该如何配置呢？
@@ -26,12 +26,12 @@ route: receiver: my-receiver receivers: - name: my-receiver webhook_configs: - u
 方法二 route: receiver: email # 默认配置一个 routes: - match: severity: Critical continue: true receiver: webhook - match: severity: Critical receiver: email receivers: - name: webhook webhook_configs: - url: &#39;https://hooks.xxx.com/xxxx&#39; - name: email email_configs: - to: &#39;xx@xxxx&#39; auth_username: &#39;xxx&#39; auth_password: &#39;xxx&#39; 定义多个独立的 receiver, 然后使用 routes 中的 continue 选项进行配置：" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2018-01-19-ru-he-jiang-tong-tiao-gao-jing-xin-xi-fa-song-gei-duo-ge-qu-dao/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2018-01-19T23:55:26+00:00" />
 <meta property="article:modified_time" content="2018-01-19T23:55:26+00:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="如何将同一条告警信息发送给多个渠道"/>
 <meta name="twitter:description" content="背景： 有时我们需要将告警信息同时发送给多个渠道（例如短信或邮件），那么我们的 Alertmanager 该如何配置呢？
@@ -142,7 +142,7 @@ receivers:
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/prometheus">#prometheus</a></li>
+                        <li><a href="/tags/prometheus">#prometheus</a></li>
                     
                 </ul>
         

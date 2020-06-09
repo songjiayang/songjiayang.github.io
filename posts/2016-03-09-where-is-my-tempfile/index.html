@@ -11,12 +11,12 @@
 <title>where is my tempfile? - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="where is my tempfile?" />
 <meta property="og:description" content="The benefits of Tempfile are:
@@ -24,12 +24,12 @@
 def qr_file(url) temp = Tempfile.new([&#39;qr&#39;, &#39;.png&#39;]) path = temp.path qrcode = RQRCode::QRCode.new(url) qrcode.as_png( resize_gte_to: false, resize_exactly_to: false, fill: &#39;white&#39;, color: &#39;black&#39;, size: 200, border_modules: 0, module_px_size: 0 file: path ) path end def build_qr_cell(url, opts={}) @excel.add_image(image_src: qr_file(url), noSelect: false, noMove: false) do |image| image." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2016-03-09-where-is-my-tempfile/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2016-03-09T22:31:00+08:00" />
 <meta property="article:modified_time" content="2016-03-09T22:31:00+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="where is my tempfile?"/>
 <meta name="twitter:description" content="The benefits of Tempfile are:
@@ -162,7 +162,7 @@ File.exist? file # should be false
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/ruby">#ruby</a></li>
+                        <li><a href="/tags/ruby">#ruby</a></li>
                     
                 </ul>
         

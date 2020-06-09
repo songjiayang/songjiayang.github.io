@@ -11,24 +11,24 @@
 <title>Go http.Flusher 在实际项目中的应用 - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="Go http.Flusher 在实际项目中的应用" />
 <meta property="og:description" content="最近在使用 Docker Go SDK 做开发的时候，参考了官方的示例代码:
 package main import ( &#34;io&#34; &#34;os&#34; &#34;github.com/docker/docker/api/types&#34; &#34;github.com/docker/docker/api/types/container&#34; &#34;github.com/docker/docker/client&#34; &#34;golang.org/x/net/context&#34; ) func main() { ctx := context.Background() cli, err := client.NewEnvClient() if err != nil { panic(err) } reader, err := cli.ImagePull(ctx, &#34;docker.io/library/alpine&#34;, types.ImagePullOptions{}) if err != nil { panic(err) } io.Copy(os.Stdout, reader) resp, err := cli.ContainerCreate(ctx, &amp;container.Config{ Image: &#34;alpine&#34;, Cmd: []string{&#34;echo&#34;, &#34;hello world&#34;}, Tty: true, }, nil, nil, &#34;&#34;) if err != nil { panic(err) } if err := cli." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2019-03-21-go-http-zhong-flusher-zai-shi-ji-kai-fa-zhong-de-ying-yong/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2019-03-21T20:16:31+08:00" />
 <meta property="article:modified_time" content="2019-03-21T20:16:31+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="Go http.Flusher 在实际项目中的应用"/>
 <meta name="twitter:description" content="最近在使用 Docker Go SDK 做开发的时候，参考了官方的示例代码:
@@ -240,7 +240,7 @@ if err != nil {
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/go">#go</a></li>
+                        <li><a href="/tags/go">#go</a></li>
                     
                 </ul>
         

@@ -11,12 +11,12 @@
 <title>The Problem &#34;Uncaught Error: Error calling method on NPObject&#34; with plupload-rails - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="The Problem &#34;Uncaught Error: Error calling method on NPObject&#34; with plupload-rails" />
 <meta property="og:description" content="昨天，突然发现在 IE 上传图片的时候，报出错误 Uncaught Error: Error calling method on NPObject, google了一下，发现这个是 flash 抛出来的错误，主要是跨站的问题。
@@ -25,12 +25,12 @@ plupload-rails 中关于资源加载代码是这样的：
 // Assigns default Plupload settings that work with the asset pipeline. (function ($) { var proxied = plupload.Uploader; plupload.Uploader = function (settings) { settings = $.extend({}, settings, { multipart: true, flash_swf_url: &#39;&lt;%= asset_path(&quot;Moxie.swf&quot;) %&gt;&#39;, silverlight_xap_url: &#39;&lt;%= asset_path(&quot;Moxie.xap&quot;) %&gt;&#39; }); return proxied.call(this, settings); }; plupload.Uploader.prototype = proxied.prototype; }(jQuery)); 很显然，问题出现在 asset_path(&quot;Moxie." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2014-11-12-plupload-rails-error-uncaught-error-error-calling-method-on-npobject/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2014-11-12T22:31:00+08:00" />
 <meta property="article:modified_time" content="2014-11-12T22:31:00+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="The Problem &#34;Uncaught Error: Error calling method on NPObject&#34; with plupload-rails"/>
 <meta name="twitter:description" content="昨天，突然发现在 IE 上传图片的时候，报出错误 Uncaught Error: Error calling method on NPObject, google了一下，发现这个是 flash 抛出来的错误，主要是跨站的问题。
@@ -146,7 +146,7 @@ silverlight_xap_url: '/misc/Moxie.xap'
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/ruby">#ruby</a></li>
+                        <li><a href="/tags/ruby">#ruby</a></li>
                     
                 </ul>
         

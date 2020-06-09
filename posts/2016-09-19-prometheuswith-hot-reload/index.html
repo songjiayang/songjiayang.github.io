@@ -11,12 +11,12 @@
 <title>Prometheus with hot reload - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="Prometheus with hot reload" />
 <meta property="og:description" content="当 Prometheus 有配置文件修改，我们想加载新的配置信息而不停掉服务的时候，可以采用 Prometheus 提供的热更新的方法。
@@ -29,12 +29,12 @@ ERRO[0161] Error reloading config: couldn&#39;t load configuration (-config.file
 首先 Prometheus 在 cmd/promethteus/main.go 中实现了对进程系统调用监听， 如果发现是 syscall.SIGHUP 的信号，那么就会执行 reloadConfig 函数。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2016-09-19-prometheuswith-hot-reload/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2016-09-19T22:31:00+08:00" />
 <meta property="article:modified_time" content="2016-09-19T22:31:00+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="Prometheus with hot reload"/>
 <meta name="twitter:description" content="当 Prometheus 有配置文件修改，我们想加载新的配置信息而不停掉服务的时候，可以采用 Prometheus 提供的热更新的方法。
@@ -154,7 +154,7 @@ go func() {
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/prometheus">#prometheus</a></li>
+                        <li><a href="/tags/prometheus">#prometheus</a></li>
                     
                 </ul>
         

@@ -11,12 +11,12 @@
 <title>前后端分离简单玩法 - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="前后端分离简单玩法" />
 <meta property="og:description" content="前后端分离原因，这里就不展开讨论了，大家可以去了解下相关技术文章。
@@ -30,12 +30,12 @@ API 的请求全部拥有统一的前缀，只是为了方便 nginx 作代理请
 location /api { expires -1; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header Host $http_host; proxy_set_header X-Real-IP $remote_addr; proxy_set_header X-Scheme $scheme; proxy_redirect off; proxy_pass http://localhost:9090; // Application location break; } 前端处理 404 问题： 默认前端只有 index.html 页面， 那么当用户访问 example.com/index2.html 的时候， 如果不做特殊处理，将得到一个默认的 404 页面。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2016-06-26-qian-hou-duan-fen-chi-ji-ben-wan-fa/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2016-06-26T22:31:00+08:00" />
 <meta property="article:modified_time" content="2016-06-26T22:31:00+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="前后端分离简单玩法"/>
 <meta name="twitter:description" content="前后端分离原因，这里就不展开讨论了，大家可以去了解下相关技术文章。
@@ -142,7 +142,7 @@ location /api { expires -1; proxy_set_header X-Forwarded-For $proxy_add_x_forwar
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/%E6%9E%B6%E6%9E%84">#架构</a></li>
+                        <li><a href="/tags/%E6%9E%B6%E6%9E%84">#架构</a></li>
                     
                 </ul>
         

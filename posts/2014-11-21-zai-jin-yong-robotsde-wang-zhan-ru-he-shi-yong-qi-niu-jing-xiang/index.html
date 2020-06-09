@@ -11,12 +11,12 @@
 <title>如何在禁用爬虫的网站上使用七牛镜像 - 小鱼驿站</title>
 <meta name="description" content="">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="/favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+<link rel="stylesheet" href="/css/style.css?rnd=1591689410" />
 
-<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+<link rel="stylesheet" href="/css/my.css?rnd=1591689410">
 
 <meta property="og:title" content="如何在禁用爬虫的网站上使用七牛镜像" />
 <meta property="og:description" content="测试服务器上由于某种原因需要禁用所有爬虫，完全禁用的代码很简单， 只需要在public下面的 robots.txt 文件中添加如下代码即可。
@@ -25,12 +25,12 @@
  修改七牛镜像源为一个以 cdn开头的二级域名, 例如 cdn.eradai.com。 在public下面新建一个 robots.allow.txt 的文件，内容为空。 修改 nginx 配置,在 server 里面添加如下代码：  # HTTP server { ...... location /robots.txt { if ($host = &#39;cdn.eradai.com&#39;) { rewrite ^/robots\.txt /robots.allow.txt last; } } ." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/2014-11-21-zai-jin-yong-robotsde-wang-zhan-ru-he-shi-yong-qi-niu-jing-xiang/" />
-<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:image" content="/images/og-featured.png"/>
 <meta property="article:published_time" content="2014-11-21T22:31:00+08:00" />
 <meta property="article:modified_time" content="2014-11-21T22:31:00+08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="images/og-featured.png"/>
+<meta name="twitter:image" content="/images/og-featured.png"/>
 
 <meta name="twitter:title" content="如何在禁用爬虫的网站上使用七牛镜像"/>
 <meta name="twitter:description" content="测试服务器上由于某种原因需要禁用所有爬虫，完全禁用的代码很简单， 只需要在public下面的 robots.txt 文件中添加如下代码即可。
@@ -123,7 +123,7 @@ server {
             
                 <ul class="post-tags">
                     
-                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                        <li><a href="/tags/%E6%95%88%E7%8E%87">#效率</a></li>
                     
                 </ul>
         

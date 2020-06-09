@@ -1,5 +1,5 @@
 languageCode: "en-us"
-baseUrl: ""
+baseUrl: "/"
 title: "小鱼驿站"
 theme: "anubis"
 paginate: 10

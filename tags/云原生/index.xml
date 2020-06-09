@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>云原生 on 小鱼驿站</title>
+    <link>/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/</link>
+    <description>小鱼驿站 (云原生)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 04 Jun 2020 17:03:04 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>containerd 启动报 `undefined symbol: seccomp_version` 错误的解决办法</title>
+      <link>/posts/2020-06-04-containerd-qi-dong-bao-cuo-jie-jue-ban-fa/</link>
+      <pubDate>Thu, 04 Jun 2020 17:03:04 +0800</pubDate>
+      
+      <guid>/posts/2020-06-04-containerd-qi-dong-bao-cuo-jie-jue-ban-fa/</guid>
+      <description>&lt;p&gt;最近开始研究 containerd, 按照官网教程 在 Centos7.2 上下载了 &lt;a href=&#34;https://github.com/containerd/containerd/releases/download/v1.3.4/containerd-1.3.4.linux-amd64.tar.gz&#34;&gt;containerd-1.3.4.linux-amd64.tar.gz&lt;/a&gt; ，解压缩运行程序的时候遇到如下报错信息：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./containerd: symbol lookup error: ./containerd: undefined symbol: seccomp_version
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;网上查了下，这个错误意思是说系统缺少对应版本的 &lt;code&gt;libseccomp&lt;/code&gt;， 有两个可能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;系统没有安装 libseccomp&lt;/li&gt;
+&lt;li&gt;系统安装的 libseccomp 版本不匹配（较低），建议使用 2.4.2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;libseccomp-是什么&#34;&gt;libseccomp 是什么？&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;library provides an easy to use, platform independent, interface to the Linux Kernel&amp;rsquo;s syscall filtering mechanism.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;它是一个 C 语言开发的 Linux 内核系统调用过滤帮助库，很多容器项目都使用到它，比如 containerd、docker、runc ，其源代码地址为 &lt;a href=&#34;https://github.com/seccomp/libseccomp&#34;&gt;https://github.com/seccomp/libseccomp&lt;/a&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;libseccomp-安装&#34;&gt;libseccomp 安装&lt;/h3&gt;
+&lt;p&gt;因为 containerd 需要依赖的 libseccomp 较新，经过测试，v2.4.2 可以在 Centos7.2 成功运行，所以我们直接通过源代码来安装。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;下载源代码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;curl -LO https://github.com/seccomp/libseccomp/releases/download/v2.4.2/libseccomp-2.4.2.tar.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;解压缩&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;tar -vxf libseccomp-2.4.2.tar.gz
+cd libseccomp-2.4.2
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;编译构建&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;./configure --prefix=/usr --disable-static &amp;amp;&amp;amp;  make 
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;安装&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;make install 
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;通过 &lt;code&gt;whereis libseccomp&lt;/code&gt; 查看安装目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;libseccomp: /usr/lib/libseccomp.so /usr/lib/libseccomp.la
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;注意：如果以前使用系统包管理工具安装了低版本的 libseccomp，即使通过编译安装最新版本，还是会报错。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这是因为引用路径的优先级的缘故，其 containerd 还是使用了老版本，故需要先删除系统包管理安装的老版本，删除命令根据操作系统的类别而定，比如 Centos 可以使用 &lt;code&gt;yum remove libseccomp&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;再次运行-containerd&#34;&gt;再次运行 containerd&lt;/h3&gt;
+&lt;p&gt;当安装了 v2.4.2 的 libseccomp 后， 我们再次运行 containerd，报错信息消失。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;INFO[2020-06-04T17:47:34.306847085+08:00] starting containerd                           revision=814b7956fafc7a0980ea07e950f983d0837e5578 version=v1.3.4
+INFO[2020-06-04T17:47:34.361473441+08:00] loading plugin &amp;quot;io.containerd.content.v1.content&amp;quot;...  type=io.containerd.content.v1
+INFO[2020-06-04T17:47:34.361589154+08:00] loading plugin &amp;quot;io.containerd.snapshotter.v1.btrfs&amp;quot;...  type=io.containerd.snapshotter.v1
+INFO[2020-06-04T17:47:34.362042869+08:00] skip loading plugin &amp;quot;io.containerd.snapshotter.v1.btrfs&amp;quot;..
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参考资料：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/containerd/containerd/issues/4008&#34;&gt;containerd/issues/4008&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/seccomp/libseccomp&#34;&gt;libseccomp 代码库&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.linuxfromscratch.org/blfs/view/svn/general/libseccomp.html&#34;&gt;libseccomp 安装&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.fpliu.com/it/software/libseccomp&#34;&gt;libseccomp 介绍&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>我所理解的云原生</title>
+      <link>/posts/2020-04-28-wo-li-jie-de-yun-yuan-sheng/</link>
+      <pubDate>Tue, 28 Apr 2020 16:15:17 +0800</pubDate>
+      
+      <guid>/posts/2020-04-28-wo-li-jie-de-yun-yuan-sheng/</guid>
+      <description>&lt;p&gt;云原生对应的英文是做 Cloud Native, 属于最近几年比较火的技术，那到底什么是云原生，它和 CNCF、Kubernetes、Docker 又是什么关系？&lt;/p&gt;
+&lt;p&gt;今天我们就从云原生的定义，解决的核心问题，以及主要的开源产品等维度出发，一起来探究云原生的本质，希望能够对它有个宏观的认识。&lt;/p&gt;
+&lt;h2 id=&#34;什么是云原生&#34;&gt;什么是云原生？&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Cloud native technologies are used to develop applications built with services packaged in containers, deployed as microservices and managed on elastic infrastructure through agile DevOps processes and continuous delivery workflows.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;— Writes Janakiram MSV, principal analyst at Janakiram &amp;amp; Associates and an adjunct faculty member at the International Institute of Information Technology.&lt;/p&gt;
+&lt;p&gt;根据这段话我们可以大概知道，云原生并不是一种具体的技术，而是一类思想的集合，它包含了微服务（MicroServices）、DevOps、持续交付，以及容器等一系列技术。&lt;/p&gt;
+&lt;h2 id=&#34;为什么需要云原生&#34;&gt;为什么需要云原生？&lt;/h2&gt;
+&lt;p&gt;长期以来，我们一直在追求三个目标：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Availability (可用性)&lt;/li&gt;
+&lt;li&gt;Scale （可伸缩性）&lt;/li&gt;
+&lt;li&gt;Performance （性能）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;但现在时代变了，仅有这三个目标是不够的(或传统方式在当今很难满足这三个指标），究其原因，主要是&lt;code&gt;速度&lt;/code&gt;，我们在不断的追求速度。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;追求速度能够给我们带来好处：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cloudnative/cloudnative-01.png&#34; alt=&#34;cloudnative-01.png&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;追求速度意味着改变频率的加快：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cloudnative/cloudnative-02.png&#34; alt=&#34;cloudnative-02.png&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;改变频率加快意味着故障概率增加：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cloudnative/cloudnative-03.png&#34; alt=&#34;cloudnative-03.png&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;节点的故障概率影响可用性：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cloudnative/cloudnative-05.png&#34; alt=&#34;cloudnative-05.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;可以看到这是一个连锁反应，那是否可以做到在追求速度的情况下，依然保证可用性，减少故障率呢？&lt;/p&gt;
+&lt;p&gt;这就是云原生存在的价值，它总结了很多成功的经验，集大家的思想，让我们避免前人踩过的坑，让我们在追求速度的前提下，依然能够保证可用性和弹性伸缩的能力，真正做到又快又好。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cloudnative/cloudnative-04.png&#34; alt=&#34;cloudnative-04.png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;什么是云原生应用&#34;&gt;什么是云原生应用？&lt;/h2&gt;
+&lt;p&gt;前面我们已经了解了什么是云原生以及为什么需要云原生，那什么是云原生应用就好理解，即按照云原生思想部署的应用就可以叫做云原生应用。&lt;/p&gt;
+&lt;p&gt;云原生应用的 10 个特征：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;打包为轻量级容器。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;使用最佳语言和框架开发。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;设计为松耦合的微服务。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;以API为中心进行交互和协作。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;以无状态和有状态服务的清晰分离为架构基础。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;与服务器和操作系统依赖关系隔离。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;部署在自服务、弹性、云基础架构上。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过敏捷 DevOps 流程进行管理。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;自动化功能。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;定义的、策略驱动的资源分配。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;特征详细解释参考链接 &lt;a href=&#34;https://thenewstack.io/10-key-attributes-of-cloud-native-applications&#34;&gt;https://thenewstack.io/10-key-attributes-of-cloud-native-applications&lt;/a&gt; 。&lt;/p&gt;
+&lt;h2 id=&#34;云原生和-cncf&#34;&gt;云原生和 CNCF&lt;/h2&gt;
+&lt;p&gt;前面讲到云原生是一套思想，它的落地需要各种工具。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cloudnative/cloudnative-06.png&#34; alt=&#34;cloudnative-06.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;当今是一个开源的时代，我们绝大多数应用都构建在开源项目的基础上，云原生领域也是如此，开源社区有大量云原生相关的项目，首当其冲的就是 Kubernets，当 Google
+将 kubernets 捐赠给 CNCF（云原生计算基金会）的那一刻起，标志着 CNCF 的正式诞生。&lt;/p&gt;
+&lt;p&gt;CNCF 作为一个厂商中立的基金会，致力于 Github 上的快速成长的开源技术的推广，帮助云原生开源产品的孵化，让云原生应用得到推广和普及。&lt;/p&gt;
+&lt;p&gt;我们可以通过 CNCF 全景图（https://landscape.cncf.io） 了解当前云原生相关开源产品的具体情况。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cloudnative/cloudnative-07.png&#34; alt=&#34;cloudnative-07.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;从这个图我们可以看到，云原生相关的产品也非常之多，例如我们常见的：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kubernetes：最流行的容器编排工具，它能够屏蔽操作的差异，让我们应用部署、伸缩变得更加容易。&lt;/li&gt;
+&lt;li&gt;Prometheus：云原生领域最流行的基于指标的监控告警工具，很多云原生应用或者开源项目直接集成了 Prometheus，通过 exporter 暴露了其指标。&lt;/li&gt;
+&lt;li&gt;Jaeger： 分布式调用链追踪系统，它用来监控复杂的微服务环境并对其进行故障排除。&lt;/li&gt;
+&lt;li&gt;containerd：开源可信赖的容器运行时，类似轻量版的 Docker。&lt;/li&gt;
+&lt;li&gt;Istio： 服务网格最火的开源产品，为微服务提供保护、连接和监控微服务的统一方法。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;写到这里已是文末，再次回到文章开头提出的几个问题，什么是云原生，它和 CNCF、Kubernetes、Docker 又是什么关系？我想此时大家心中已有答案。&lt;/p&gt;
+&lt;p&gt;希望通过本文能够帮助大家揭开云原生的神秘面纱，对其有个整体认识，希望你在云原生的实践中一帆风顺。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;参考链接：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://thenewstack.io/category/cloud-native&#34;&gt;https://thenewstack.io/category/cloud-native&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://thenewstack.io/10-key-attributes-of-cloud-native-applications&#34;&gt;https://thenewstack.io/10-key-attributes-of-cloud-native-applications&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.slideshare.net/AmazonWebServices/dmg206&#34;&gt;https://www.slideshare.net/AmazonWebServices/dmg206&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.cncf.io/wp-content/uploads/2017/11/What-is-Cloud-Native-CNCF-Webinar-23-Feb-2017-1.pdf&#34;&gt;https://www.cncf.io/wp-content/uploads/2017/11/What-is-Cloud-Native-CNCF-Webinar-23-Feb-2017-1.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Unit Test In Go With Docker</title>
+      <link>/posts/2019-04-02-golang-test-with-docker/</link>
+      <pubDate>Tue, 02 Apr 2019 18:10:29 +0800</pubDate>
+      
+      <guid>/posts/2019-04-02-golang-test-with-docker/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/docker-testing.png&#34; alt=&#34;docker-testing.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;本篇文章主要讲解如何在 Docker 中进行 Go 单元测试，依赖 Docker 和 Go Modules。&lt;/p&gt;
+&lt;h3 id=&#34;为什么是-docker&#34;&gt;为什么是 Docker&lt;/h3&gt;
+&lt;p&gt;在 Docker 之前我们往往需要在 Jenkins 服务器上配置不同的 Go 版本以及针对每个项目配置 GOPATH，项目之间的隔离性差，经常出现基础库版本冲突的问题。&lt;/p&gt;
+&lt;p&gt;有了 Docker，我们可以在不同容器中运行单元测试，该测试不局限不同项目，甚至可以是同一项目不同分支。&lt;/p&gt;
+&lt;p&gt;所以在测试隔离性和项目测试并发度上都有很大提升，而且测试结束后，环境清理也简单许多。&lt;/p&gt;
+&lt;h3 id=&#34;为什么是-go-modules&#34;&gt;为什么是 Go Modules&lt;/h3&gt;
+&lt;p&gt;Go Modules 作为官方默认的包管理工具，基本解决了 Go 长期存在的包管理问题，它为我们的项目管理带来很多好处：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;自动解析和添加依赖&lt;/li&gt;
+&lt;li&gt;签名验证&lt;/li&gt;
+&lt;li&gt;依赖缓存&lt;/li&gt;
+&lt;li&gt;支持相对路径依赖&lt;/li&gt;
+&lt;li&gt;支持依赖一键打包，方便在离线环境下运行程序&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;实际例子&#34;&gt;实际例子&lt;/h3&gt;
+&lt;p&gt;下面我们来看一个简单例子，来自 &lt;a href=&#34;https://gin-gonic.com/docs/testing/&#34;&gt;Gin Testing Example&lt;/a&gt;，项目目录结构为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ tree .
+.
+├── go.mod
+├── go.sum
+├── main.go
+└── main_test.go
+
+0 directories, 4 files
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;main.go 内容：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+func setupRouter() *gin.Engine {
+	r := gin.Default()
+	r.GET(&amp;quot;/ping&amp;quot;, func(c *gin.Context) {
+		c.String(200, &amp;quot;pong&amp;quot;)
+	})
+	return r
+}
+
+func main() {
+	r := setupRouter()
+	r.Run(&amp;quot;:8080&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;main_test.go 内容：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+	&amp;quot;net/http&amp;quot;
+	&amp;quot;net/http/httptest&amp;quot;
+	&amp;quot;testing&amp;quot;
+
+	&amp;quot;github.com/stretchr/testify/assert&amp;quot;
+)
+
+func TestPingRoute(t *testing.T) {
+	router := setupRouter()
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest(&amp;quot;GET&amp;quot;, &amp;quot;/ping&amp;quot;, nil)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, 200, w.Code)
+	assert.Equal(t, &amp;quot;pong&amp;quot;, w.Body.String())
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;首先尝试在主机执行 &lt;code&gt;go test ./...&lt;/code&gt; ，测试通过，下面我们想办法在 Docker 中进行测试。&lt;/p&gt;
+&lt;h3 id=&#34;docker-运行测试&#34;&gt;Docker 运行测试&lt;/h3&gt;
+&lt;p&gt;步骤1: 对项目依赖进行打包，方便在 Docker 无网环境下运行单元测试&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;go mod vendor
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;此时所有的依赖都打包放在项目根目录的 vendor 下面：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ tree .
+.
+├── go.mod
+├── go.sum
+├── main.go
+├── main_test.go
+└── vendor
+    ├── github.com
+    │   ├── davecgh
+    │   │   └── go-spew
+    │   │       ├── LICENSE
+    │   │       └── spew
+    │   │           ├── bypass.go
+    │   │           ├── bypasssafe.go
+    │   │           ├── common.go
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;步骤2: 制作 Go Docker 镜像&lt;/p&gt;
+&lt;p&gt;因为我们只需要 Go 的标准环境，所以可以使用官方的标准镜像，例如 golang:1.12.1。&lt;/p&gt;
+&lt;p&gt;如果你有特殊需求，可以定制自己的 Go 镜像, 例如自定义启动命令，添加数据库依赖等：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Dockerfile:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;FROM ubuntu
+RUN apt-get update &amp;amp;&amp;amp; apt-get install -y libssl1.0.0 libssl-dev gcc
+
+RUN mkdir -p /data/db /opt/go/ /opt/gopath
+
+# go1.xx.x.linux-amd64.tar.gz 解压缩后为 go
+ADD go /opt/go 
+RUN cp /opt/go/bin/* /usr/local/bin/
+ENV GOROOT=/opt/go GOPATH=/opt/gopath
+
+WORKDIR /ws
+CMD GOPROXY=off go test -mod=vendor ./...
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;执行 docker build:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;docker build . -t gotesting:v0.0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;步骤3: 在 Docker 中运行 Golang 测试&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 golang:1.12.1:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;$ docker run --volume=$(pwd):/ws \
+     --workdir=/ws golang:1.12.1 \
+    /bin/bash -c &amp;quot;GOPROXY=off go test -mod=vendor ./...&amp;quot;
+ok  	github.com/songjiayang/gin-test	0.011s
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;使用自定义镜像 gotesting:v0.0.1:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;docker run --volume=$(pwd):/ws gotesting:v0.0.1
+ok  	github.com/songjiayang/gin-test	0.014s
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以看到两种方式都能在 Docker 中运行 Go 单元测试，自定义镜像可以指定默认运行命令，使操作更简单，上面命令的含义是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&amp;ndash;volume=$(pwd):/ws ：将项目根目录映射到 Docker 容器中的 /ws 目录。&lt;/li&gt;
+&lt;li&gt;&amp;ndash;workdir=/ws ： 指定容器运行工作目录为 /ws, 即映射外面项目根目录。&lt;/li&gt;
+&lt;li&gt;/bin/bash -c &amp;ldquo;GOPROXY=off go test -mod=vendor ./&amp;hellip;&amp;rdquo; : 表示在 Docker 中以离线，vendor 模式运行 Go 单元测试。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;做的更好&#34;&gt;做的更好&lt;/h3&gt;
+&lt;p&gt;到目前为止，我们已经掌握在 Docker 中运行 Go 单元测试的方法。当然我们还可以做的更好，Docker 运行的标准输出可以和 Jenkins 天然集成，实现项目的自动测试。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>cadvisor 与 Prometheus 集成</title>
+      <link>/posts/2018-04-11-rong-qi-jian-kong-zhi-cadvisor-zhi-prometheus-ji-cheng/</link>
+      <pubDate>Wed, 11 Apr 2018 11:44:56 +0800</pubDate>
+      
+      <guid>/posts/2018-04-11-rong-qi-jian-kong-zhi-cadvisor-zhi-prometheus-ji-cheng/</guid>
+      <description>&lt;p&gt;在上一篇文章 &lt;a href=&#34;http://www.songjiayang.com/posts/jrong-qi-jian-kong-zhi-cadvisor&#34;&gt;容器监控之 cadvisor （一）&lt;/a&gt; 已经介绍了如何通过 cadvisor 来收集容器的运行状态信息，那这篇文章将具体讲解如何与 Prometheus 集成并通过 Prometheus 查看收集的数据。&lt;/p&gt;
+&lt;p&gt;主要内容：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;cadvisor 与 Prometheus 集成&lt;/li&gt;
+&lt;li&gt;在 Prometheus 中查看容器的 CPU，内存，网络流量等信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;cadvisor-与-prometheus-集成&#34;&gt;cadvisor 与 Prometheus 集成&lt;/h3&gt;
+&lt;p&gt;Step1: 修改 Prometheus 配置信息，添加 cadvisor 访问地址：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#prometheus.yml
+
+scrape_configs:
+  - job_name: &#39;node&#39;
+    static_configs:
+      - targets: [&#39;127.0.0.1:9100&#39;]
+
+  - job_name: &#39;container&#39;
+    static_configs:
+      - targets: [&#39;127.0.0.1:8080&#39;]  # 本地 cadvisor 访问地址
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Step2: 重新加载配置，访问 &lt;code&gt;http://localhost:9090/targets&lt;/code&gt; 你将看到新加的 &lt;code&gt;cadvisor&lt;/code&gt; 已经生效。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus01.png&#34; alt=&#34;/images/cadvisor/prometheus01.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Step3: 此时访问 Prometheus 的 graph 页面 &lt;code&gt;http://localhost:9090/graph&lt;/code&gt;，搜索 &lt;code&gt;container&lt;/code&gt; 你将看到容器相关数据。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus02.png&#34; alt=&#34;/images/cadvisor/prometheus02.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;prometheus-中查看容器的-cpu内存网络流量等数据&#34;&gt;Prometheus 中查看容器的 CPU，内存，网络流量等数据&lt;/h3&gt;
+&lt;p&gt;CPU 使用率查询：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sum by (name) (rate(container_cpu_usage_seconds_total{image!=&amp;quot;&amp;quot;}[1m])) / scalar(count(node_cpu{mode=&amp;quot;user&amp;quot;})) * 100
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus03.png&#34; alt=&#34;/images/cadvisor/prometheus03.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;内存使用量：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sum by (name)(container_memory_usage_bytes{image!=&amp;quot;&amp;quot;})
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus04.png&#34; alt=&#34;/images/cadvisor/prometheus04.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;网络入口流量&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sum by (name) (rate(container_network_receive_bytes_total{image!=&amp;quot;&amp;quot;}[1m]))
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus06.png&#34; alt=&#34;/images/cadvisor/prometheus06.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;网络出口流量&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sum by (name) (rate(container_network_transmit_bytes_total{image!=&amp;quot;&amp;quot;}[1m]))
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus05.png&#34; alt=&#34;/images/cadvisor/prometheus05.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;磁盘使用量：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sum by (name) (container_fs_usage_bytes{image!=&amp;quot;&amp;quot;})
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus07.png&#34; alt=&#34;/images/cadvisor/prometheus07.png&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>容器监控之 cadvisor</title>
+      <link>/posts/2018-04-10-jrong-qi-jian-kong-zhi-cadvisor/</link>
+      <pubDate>Tue, 10 Apr 2018 17:49:39 +0800</pubDate>
+      
+      <guid>/posts/2018-04-10-jrong-qi-jian-kong-zhi-cadvisor/</guid>
+      <description>&lt;p&gt;想必大家在生产环境中已大量使用到了容器，那对于容器的监控（CPU, 内存，网络请求）是如何处理的呢？&lt;/p&gt;
+&lt;h3 id=&#34;docker-stats-对-cadvisor&#34;&gt;docker stats 对 cadvisor&lt;/h3&gt;
+&lt;p&gt;众所周知 &lt;code&gt;dokcer stats&lt;/code&gt; 可以查看运行的 Docker 镜像的运行状态，例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;CONTAINER ID        NAME                CPU %               MEM USAGE / LIMIT    MEM %               NET I/O             BLOCK I/O           PIDS
+a25dd77a5237        cadvisor            0.91%               14.8MiB / 1.952GiB   0.74%               749kB / 11.5MB      18.9MB / 0B         11
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这种方式比较原始，因为你无法通过 http 的方式来获取数据，而且没有界面，数据可视化还需要做大量的工作。&lt;/p&gt;
+&lt;p&gt;由于 &lt;code&gt;dokcer stats&lt;/code&gt; 有这些问题，所以 &lt;code&gt;cadvisor&lt;/code&gt; 诞生了。&lt;code&gt;cadvisor&lt;/code&gt; 不仅可以搜集一台机器上所有运行的容器信息还提供基础查询界面和 http 接口，方便 Prometheus 进行数据抓取。&lt;/p&gt;
+&lt;p&gt;正是因为 &lt;code&gt;cadvisor&lt;/code&gt; 与 Prometheus 的完美结合，所以它成为了容器监控的第一选择。&lt;/p&gt;
+&lt;h3 id=&#34;cadvisor-的安装&#34;&gt;cadvisor 的安装&lt;/h3&gt;
+&lt;p&gt;Step1: 使用 &lt;code&gt;docker pull&lt;/code&gt; 下载最新版本的 &lt;code&gt;cadvisor&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ docker pull google/cadvisor:latest
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Step2: 使用 &lt;code&gt;docker images&lt;/code&gt; 查看下载的版本&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ docker images  
+
+google/cadvisor      latest              75f88e3ec333        4 months ago        62.2MB
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Step3: 使用 &lt;code&gt;docker run&lt;/code&gt; 启动&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo docker run \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run:/var/run:rw \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  --volume=/dev/disk/:/dev/disk:ro \
+  --publish=8080:8080 \
+  --detach=true \
+  --name=cadvisor \
+  google/cadvisor:latest
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当启动成功后，使用 &lt;code&gt;docker ps&lt;/code&gt; 你会看到&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;CONTAINER ID        IMAGE                    COMMAND                  CREATED             STATUS              PORTS                    NAMES
+742a464fa631        google/cadvisor:latest   &amp;quot;/usr/bin/cadvisor -…&amp;quot;   1 second ago        Up 1 second         0.0.0.0:8080-&amp;gt;8080/tcp   cadvisor
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Step4: 访问 &lt;code&gt;http://localhost:8080&lt;/code&gt; 你将看到：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/cadvisor-01.png&#34; alt=&#34;/images/cadvisor/cadvisor-01.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;这说明 &lt;code&gt;cadvisor&lt;/code&gt; 已运行成功。&lt;/p&gt;
+&lt;h3 id=&#34;cadvisor-深入了解&#34;&gt;cadvisor 深入了解&lt;/h3&gt;
+&lt;p&gt;Tips1: 访问 &lt;code&gt;http://localhost:8080/docker&lt;/code&gt; 可以查看到所有运行的 dokcer 镜像：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/cadvisor-02.png&#34; alt=&#34;/images/cadvisor/cadvisor-02.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Tips2: 选择任意一个镜像，你将看到其运行状态的详细信息：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/cadvisor-03.png&#34; alt=&#34;/images/cadvisor/cadvisor-03.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/cadvisor-04.png&#34; alt=&#34;/images/cadvisor/cadvisor-04.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Tips3: 访问 &lt;code&gt;http://localhost:8080/metrics&lt;/code&gt; 可以查看其暴露给 Prometheus 的所有数据：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/cadvisor-05.png&#34; alt=&#34;/images/cadvisor/cadvisor-05.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结：&lt;/h3&gt;
+&lt;p&gt;cadvisor 是一个非常好的容器数据收集的工具，它提供良好的 Web 界面，方便查询。&lt;/p&gt;
+&lt;p&gt;既然 cadvisor 已经将所有容器的数据收集了，那接下来就是结合 Prometheus 和 Grafana 做监控和告警了，这部分的内容我们将在后面的文章中详细讲解，敬请期待。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

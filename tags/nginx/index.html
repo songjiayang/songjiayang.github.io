@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>nginx - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/nginx/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="nginx" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/nginx/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2014-10-04T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="nginx"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: nginx</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-10-04-how-to-disable-nginx-ip-visit/">How to disable nginx&#39;s ip visit</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        有时我们需要用户必须使用域名访问主机(及禁止IP访问)，只需简单修改下nginx配置即可：
+server { listen 80 default; return 404; # or 500 } 上面代码意思是nginx监听ip访问的80端口，然后直接返回404/500; 其中404和500会对应默认的html页面。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-10-04</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/nginx">#nginx</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-11-wei-shi-yao-xuan-ze-nginxfu-wu-qi/">为什么选择 Nginx 服务器</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        以前Apache一直是web静态服务器领域的老大哥，占有绝对的市场分额，但是这种局面随着nginx的出现而不断改变。
+现在越来越多的大公司已经从apache迁移到了nginx，主要原因就是nginx的超高的性能，甚至远远超过apache.那么了解nginx的安装，部署基本成为了每一个web工程师的必修课(尤其是Rails工程师).
+1. 通过源码安装Nginx
+ 从nginx官网下载源代码 (选用最新的stable版本，假设下载到本地~/Download目录) sudo mv ~/Download/nginx-1.4.4.tar.gz /var/local cd /var/local/ ; sudo tar -xvf nginx-1.4.4.tar.gz  sudo ./config sudo make sudo make install cd /usr/local/nginx/  好了，如果没有报错的情况下的化，那么nginx已经安装成功了，并且默认安装到了/user/local/nginx目录.在/user/local/nginx目录下执行ls -l你将看到如下输出:
+drwx------ 2 nobody root 4096 1月 11 22:13 client_body_temp drwxr-xr-x 2 root root 4096 1月 11 22:22 conf #nginx配置文件 drwx------ 2 nobody root 4096 1月 11 22:13 fastcgi_temp drwxr-xr-x 2 root root 4096 1月 11 22:12 html #nginx默认网页 drwxr-xr-x 2 root root 4096 1月 11 22:22 logs drwx------ 2 nobody root 4096 1月 11 22:13 proxy_temp drwxr-xr-x 2 root root 4096 1月 11 22:12 sbin #nginx命令文件 drwx------ 2 nobody root 4096 1月 11 22:13 scgi_temp drwx------ 2 nobody root 4096 1月 11 22:13 uwsgi_temp 安装完成后，可以使用sudo .
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-11</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/nginx">#nginx</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

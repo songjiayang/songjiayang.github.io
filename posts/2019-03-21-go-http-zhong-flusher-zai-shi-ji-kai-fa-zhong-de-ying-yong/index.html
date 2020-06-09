@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Go http.Flusher 在实际项目中的应用 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="Go http.Flusher 在实际项目中的应用" />
+<meta property="og:description" content="最近在使用 Docker Go SDK 做开发的时候，参考了官方的示例代码:
+package main import ( &#34;io&#34; &#34;os&#34; &#34;github.com/docker/docker/api/types&#34; &#34;github.com/docker/docker/api/types/container&#34; &#34;github.com/docker/docker/client&#34; &#34;golang.org/x/net/context&#34; ) func main() { ctx := context.Background() cli, err := client.NewEnvClient() if err != nil { panic(err) } reader, err := cli.ImagePull(ctx, &#34;docker.io/library/alpine&#34;, types.ImagePullOptions{}) if err != nil { panic(err) } io.Copy(os.Stdout, reader) resp, err := cli.ContainerCreate(ctx, &amp;container.Config{ Image: &#34;alpine&#34;, Cmd: []string{&#34;echo&#34;, &#34;hello world&#34;}, Tty: true, }, nil, nil, &#34;&#34;) if err != nil { panic(err) } if err := cli." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2019-03-21-go-http-zhong-flusher-zai-shi-ji-kai-fa-zhong-de-ying-yong/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2019-03-21T20:16:31+08:00" />
+<meta property="article:modified_time" content="2019-03-21T20:16:31+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="Go http.Flusher 在实际项目中的应用"/>
+<meta name="twitter:description" content="最近在使用 Docker Go SDK 做开发的时候，参考了官方的示例代码:
+package main import ( &#34;io&#34; &#34;os&#34; &#34;github.com/docker/docker/api/types&#34; &#34;github.com/docker/docker/api/types/container&#34; &#34;github.com/docker/docker/client&#34; &#34;golang.org/x/net/context&#34; ) func main() { ctx := context.Background() cli, err := client.NewEnvClient() if err != nil { panic(err) } reader, err := cli.ImagePull(ctx, &#34;docker.io/library/alpine&#34;, types.ImagePullOptions{}) if err != nil { panic(err) } io.Copy(os.Stdout, reader) resp, err := cli.ContainerCreate(ctx, &amp;container.Config{ Image: &#34;alpine&#34;, Cmd: []string{&#34;echo&#34;, &#34;hello world&#34;}, Tty: true, }, nil, nil, &#34;&#34;) if err != nil { panic(err) } if err := cli."/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">Go http.Flusher 在实际项目中的应用</h1>
+        </header>
+        <div class="content">
+            <p><img src="/images/flush/cover01.png" alt="cover.png"></p>
+<p>最近在使用 Docker Go SDK 做开发的时候，参考了官方的<a href="https://docs.docker.com/develop/sdk/examples/">示例</a>代码:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;io&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+
+	<span style="color:#e6db74">&#34;github.com/docker/docker/api/types&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/docker/docker/api/types/container&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/docker/docker/client&#34;</span>
+	<span style="color:#e6db74">&#34;golang.org/x/net/context&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">ctx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>()
+	<span style="color:#a6e22e">cli</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">NewEnvClient</span>()
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		panic(<span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#a6e22e">reader</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cli</span>.<span style="color:#a6e22e">ImagePull</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#e6db74">&#34;docker.io/library/alpine&#34;</span>, <span style="color:#a6e22e">types</span>.<span style="color:#a6e22e">ImagePullOptions</span>{})
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		panic(<span style="color:#a6e22e">err</span>)
+	}
+	<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Copy</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>, <span style="color:#a6e22e">reader</span>)
+
+	<span style="color:#a6e22e">resp</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cli</span>.<span style="color:#a6e22e">ContainerCreate</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">container</span>.<span style="color:#a6e22e">Config</span>{
+		<span style="color:#a6e22e">Image</span>: <span style="color:#e6db74">&#34;alpine&#34;</span>,
+		<span style="color:#a6e22e">Cmd</span>:   []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;echo&#34;</span>, <span style="color:#e6db74">&#34;hello world&#34;</span>},
+		<span style="color:#a6e22e">Tty</span>:   <span style="color:#66d9ef">true</span>,
+	}, <span style="color:#66d9ef">nil</span>, <span style="color:#66d9ef">nil</span>, <span style="color:#e6db74">&#34;&#34;</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		panic(<span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cli</span>.<span style="color:#a6e22e">ContainerStart</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">ID</span>, <span style="color:#a6e22e">types</span>.<span style="color:#a6e22e">ContainerStartOptions</span>{}); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		panic(<span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#a6e22e">statusCh</span>, <span style="color:#a6e22e">errCh</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cli</span>.<span style="color:#a6e22e">ContainerWait</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">ID</span>, <span style="color:#a6e22e">container</span>.<span style="color:#a6e22e">WaitConditionNotRunning</span>)
+	<span style="color:#66d9ef">select</span> {
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">errCh</span>:
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			panic(<span style="color:#a6e22e">err</span>)
+		}
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">statusCh</span>:
+	}
+
+	<span style="color:#a6e22e">out</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cli</span>.<span style="color:#a6e22e">ContainerLogs</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">ID</span>, <span style="color:#a6e22e">types</span>.<span style="color:#a6e22e">ContainerLogsOptions</span>{<span style="color:#a6e22e">ShowStdout</span>: <span style="color:#66d9ef">true</span>})
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		panic(<span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Copy</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>, <span style="color:#a6e22e">out</span>)
+}
+</code></pre></div><p>这段代码主要做了 4 件事：</p>
+<ol>
+<li>拉取镜像</li>
+<li>创建容器</li>
+<li>启动容器</li>
+<li>获取容器日志输出</li>
+</ol>
+<p>其中有个地方引起了我的注意：</p>
+<pre><code>reader, err := cli.ImagePull(ctx, &quot;docker.io/library/alpine&quot;, types.ImagePullOptions{})
+if err != nil {
+    panic(err)
+}
+io.Copy(os.Stdout, reader)
+</code></pre><p>因为没有用到返回结果 <code>reader</code>，所以不假思素地将它去掉：</p>
+<pre><code>_, err := cli.ImagePull(ctx, &quot;docker.io/library/alpine&quot;, types.ImagePullOptions{})
+if err != nil {
+    panic(err)
+}
+</code></pre><p>保存代码，再次执行，当运行到 <code>cli.ContainerCreate</code> 的时候，会收到<code>No such image: xx</code>之类的错误。</p>
+<p>能够运行到  <code>cli.ContainerCreate</code> 说明已经执行了 <code>cli.ImagePull</code>，而且没有错误，那为何还会提示找不到镜像？</p>
+<p>想到的唯一解释是：</p>
+<blockquote>
+<p>当通过 <code>cli.ImagePull</code> 拉取镜像的时候，虽然请求返回了结果，并不表示 Docker 服务端真的将镜像拉取完成，因为从远程仓库拉取镜像往往耗时较长，很有可能正在拉取中。</p>
+</blockquote>
+<p>为了验证猜想，我们深入 Docker 源码，一探究竟。</p>
+<h2 id="docker-源码探究">Docker 源码探究</h2>
+<h3 id="客户端代码">客户端代码：</h3>
+<p>当客户端执行 <code>ImagePull</code> 的时候，实际发送了一个 <code>POST</code> 请求，地址为 <code>/images/create</code>,  可以参考<a href="https://github.com/moby/moby/blob/master/client/image_create.go#L34">代码</a> :</p>
+<p><img src="/images/flush/flush05.png" alt="flush05.png"></p>
+<h3 id="服务端代码">服务端代码：</h3>
+<p>/images/create 请求处理<a href="https://github.com/moby/moby/blob/master/api/server/router/image/image_routes.go#L26">代码</a>为:</p>
+<p><img src="/images/flush/flush01.png" alt="ImagePull.png"></p>
+<blockquote>
+<p>这段代码主要通过 <code>output   = ioutils.NewWriteFlusher(w)</code> 封装一个 <code>WriteFlusher</code> 返回结果。</p>
+</blockquote>
+<p>WriteFlusher 的 <a href="https://github.com/moby/moby/blob/8e610b2b55bfd1bfa9436ab110d311f5e8a74dcb/pkg/ioutils/writeflusher.go#L26">Write 函数</a> 为 :</p>
+<p><img src="/images/flush/flush02.png" alt="flush02.png"></p>
+<p>最后请求是通过 <code>progressOutput</code> 的 <a href="https://github.com/moby/moby/blob/a3f54d45709b3b48022fafd3c4796b1088be1b9d/pkg/streamformatter/streamformatter.go#L115">WriteProgress</a> 返回进度：</p>
+<p><img src="/images/flush/flush03.png" alt="flush03.png"></p>
+<p>到目前为止我们大致弄明白了 Docker <code>ImagePull</code> 的逻辑，简单总结一下：</p>
+<ol>
+<li>客户端发送 <code>POST</code> 请求到 Docker 服务端  <code>/images/create</code>。</li>
+<li>服务端通过  <code>WriteFlusher</code> 来负责请求的返回，这里使用了 Go http.Flusher， 可以不断向客户端刷新数据。</li>
+</ol>
+<p>所以当我们客户端发送 <code>ImagePull</code> 请求后，虽然可以很快获得 http.Response 对象，但它并不表示最终任务完成（请求结束），而是先返回请求状态码，再不断返回拉取进度，那怎样才知道任务完成了呢？</p>
+<p>可以使用官方例子中的 <code>io.Copy(os.Stdout, reader)</code> 或 <code>ioutil.ReadAll(reader)</code> ，因为它们读取 Body 内容，会阻塞在这里，直到任务结束（读取报错，或者 EOF 标记）。</p>
+<p>我把 Docker API 简单梳理了下，大致可以分为两类：</p>
+<ul>
+<li>使用 WriteFlusher 返回结果：主要用于耗时的任务，不仅可以通过快速向客户端返回状态码（200）来表明请求合法已经被接受处理，还可以不断向客户端刷新任务进度，实现实时效果，类似 Pusher。</li>
+<li>直接返回结果：主要用于耗时较短的状态查询接口。</li>
+</ul>
+<h2 id="go-中-httpflusher-示例">Go 中 http.Flusher 示例</h2>
+<p>在某些场景下 Go 的 <code>http.Flusher</code>  还是非常有用的，比如可以用它来做流式 IO，如文件上传/下载/内容预处理等，那我们来看一个简单 http.Flusher 的用法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;net/http&#34;</span>
+	<span style="color:#e6db74">&#34;time&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
+		<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Header</span>().<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;x-request-id&#34;</span>, <span style="color:#e6db74">&#34;x-request-id&#34;</span>)
+
+		<span style="color:#a6e22e">f</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Flusher</span>)
+
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">10</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintf</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;time.now(): %v \n\r&#34;</span>, <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>())
+			<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">Flush</span>()
+			<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
+		}
+
+	})
+
+	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;:8888&#34;</span>, <span style="color:#66d9ef">nil</span>))
+}
+
+</code></pre></div><blockquote>
+<p>代码逻辑为： 每隔一秒向客户端  flush 当前时间。</p>
+</blockquote>
+<p>当运行代码，并使用 <code>curl -i http://localhost:8888</code> 查看结果，可以看到类似输出：</p>
+<p><img src="/images/flush/flush04.png" alt="flush04.png"></p>
+<blockquote>
+<p>注意：想要看到整个刷新过程，需要客户端的支持 (这里使用的是 curl, 你还可以使用 wget），我们可以看到终端每隔一秒从服务端获取输出结果，10 秒后请求结束。</p>
+</blockquote>
+<p>在调用 Flush 之前，需要保证写入 <code>http.ResponseWriter</code> 的内容以 <code>\n</code> 结尾，不然不会输出到客户端。</p>
+<h2 id="写在最后">写在最后</h2>
+<p>我们通过 Docker 客户端 <code>ImagePull</code> 接口一个问题出发，通过 Docker 源码了解了整个 Docker 镜像拉取流程，
+也弄明白使用 <code>io.Copy(os.Stdout, reader)</code> 确保拉取任务结束的必要性。</p>
+<p>举一反三，根据这个实现逻辑，我们可以将 Docker API 分为使用 WriteFlusher 和直接返回 body 内容两类。</p>
+<p>最后还通过简单例子学习了 Go 的 <code>http.Flusher</code> 用法，希望在实际的工作中对大家有所帮助。</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-03-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

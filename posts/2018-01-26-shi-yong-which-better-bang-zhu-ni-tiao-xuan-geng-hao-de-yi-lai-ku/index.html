@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>使用 which-better 帮助你挑选更好的依赖库 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="使用 which-better 帮助你挑选更好的依赖库" />
+<meta property="og:description" content="作为一名职场新人对于工具或者开源库的选择往往会陷入长时间的纠结，因为你不知道选择哪个更好。如果没有老司机的指导，一步小心你就会 make a bad chose。
+基于此，我开发了一个小工具来帮助大家，用它会大大缩短你选择时间，而且不会出现大问题。
+前言  我们选择的是具有相似功能的库或者系统。 备选方案都放在 GitHub，因为 GitHub 是最火的开源软件平台。  工作原理 我们从 关注人数， 最近更新日期， 贡献人数 三个维度給备选方案进行排名，最后再按照各维度的排名进行汇总从而出总排名，排名越靠前表现越好，说明更值得选择。
+为什么是这三个维度？ 我是这么认为的：
+ 关注人数可以反应项目火热程度。 最后更新日期可以反应项目的维护情况，是否有被作者弃坑的风险。 贡献人数说明项目开源社区参与度。  好了，下面我们来看一个实际的例子。
+举个例子 Go 语言里面选择哪个包管理工具更好？
+我们的备选方案有:
+ golang/dep Masterminds/glide tools/godep kardianos/govendor pote/gpm  当我们使用 which-better 来评测的结果为：
+$ which-better -r golang/dep,Masterminds/glide,tools/godep,kardianos/govendor,pote/gpm golang/dep: 3 Masterminds/glide: 8 tools/godep: 9 kardianos/govendor: 11 pote/gpm: 15 可以看到 golang/dep 在三个维度都是第一名，优势明显，所以在这个例子中我会毫不犹豫的选择 golang/dep 作为包管理工具。
+写在最后 如果你对这个项目感兴趣的话，可以访问地址 https://github.com/songjiayang/which-better 查看具体的安装步骤。
+这么好用的工具你还等什么？ just enjoy it." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2018-01-26-shi-yong-which-better-bang-zhu-ni-tiao-xuan-geng-hao-de-yi-lai-ku/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2018-01-26T23:55:58+00:00" />
+<meta property="article:modified_time" content="2018-01-26T23:55:58+00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="使用 which-better 帮助你挑选更好的依赖库"/>
+<meta name="twitter:description" content="作为一名职场新人对于工具或者开源库的选择往往会陷入长时间的纠结，因为你不知道选择哪个更好。如果没有老司机的指导，一步小心你就会 make a bad chose。
+基于此，我开发了一个小工具来帮助大家，用它会大大缩短你选择时间，而且不会出现大问题。
+前言  我们选择的是具有相似功能的库或者系统。 备选方案都放在 GitHub，因为 GitHub 是最火的开源软件平台。  工作原理 我们从 关注人数， 最近更新日期， 贡献人数 三个维度給备选方案进行排名，最后再按照各维度的排名进行汇总从而出总排名，排名越靠前表现越好，说明更值得选择。
+为什么是这三个维度？ 我是这么认为的：
+ 关注人数可以反应项目火热程度。 最后更新日期可以反应项目的维护情况，是否有被作者弃坑的风险。 贡献人数说明项目开源社区参与度。  好了，下面我们来看一个实际的例子。
+举个例子 Go 语言里面选择哪个包管理工具更好？
+我们的备选方案有:
+ golang/dep Masterminds/glide tools/godep kardianos/govendor pote/gpm  当我们使用 which-better 来评测的结果为：
+$ which-better -r golang/dep,Masterminds/glide,tools/godep,kardianos/govendor,pote/gpm golang/dep: 3 Masterminds/glide: 8 tools/godep: 9 kardianos/govendor: 11 pote/gpm: 15 可以看到 golang/dep 在三个维度都是第一名，优势明显，所以在这个例子中我会毫不犹豫的选择 golang/dep 作为包管理工具。
+写在最后 如果你对这个项目感兴趣的话，可以访问地址 https://github.com/songjiayang/which-better 查看具体的安装步骤。
+这么好用的工具你还等什么？ just enjoy it."/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">使用 which-better 帮助你挑选更好的依赖库</h1>
+        </header>
+        <div class="content">
+            <p>作为一名职场新人对于工具或者开源库的选择往往会陷入长时间的纠结，因为你不知道选择哪个更好。如果没有老司机的指导，一步小心你就会 make a bad chose。</p>
+<p>基于此，我开发了一个小工具来帮助大家，用它会大大缩短你选择时间，而且不会出现大问题。</p>
+<h3 id="前言">前言</h3>
+<ul>
+<li>我们选择的是具有相似功能的库或者系统。</li>
+<li>备选方案都放在 GitHub，因为 GitHub 是最火的开源软件平台。</li>
+</ul>
+<h3 id="工作原理">工作原理</h3>
+<p>我们从 <code>关注人数</code>， <code>最近更新日期</code>， <code>贡献人数</code> 三个维度給备选方案进行排名，最后再按照各维度的排名进行汇总从而出总排名，排名越靠前表现越好，说明更值得选择。</p>
+<p>为什么是这三个维度？ 我是这么认为的：</p>
+<ul>
+<li>关注人数可以反应项目火热程度。</li>
+<li>最后更新日期可以反应项目的维护情况，是否有被作者弃坑的风险。</li>
+<li>贡献人数说明项目开源社区参与度。</li>
+</ul>
+<p>好了，下面我们来看一个实际的例子。</p>
+<h3 id="举个例子">举个例子</h3>
+<p>Go 语言里面选择哪个包管理工具更好？</p>
+<p>我们的备选方案有:</p>
+<ul>
+<li>golang/dep</li>
+<li>Masterminds/glide</li>
+<li>tools/godep</li>
+<li>kardianos/govendor</li>
+<li>pote/gpm</li>
+</ul>
+<p>当我们使用 which-better 来评测的结果为：</p>
+<pre><code>$ which-better -r golang/dep,Masterminds/glide,tools/godep,kardianos/govendor,pote/gpm
+
+golang/dep: 3
+Masterminds/glide: 8
+tools/godep: 9
+kardianos/govendor: 11
+pote/gpm: 15
+</code></pre><p>可以看到 <code>golang/dep</code> 在三个维度都是第一名，优势明显，所以在这个例子中我会毫不犹豫的选择 <code>golang/dep</code> 作为包管理工具。</p>
+<h3 id="写在最后">写在最后</h3>
+<p>如果你对这个项目感兴趣的话，可以访问地址 <a href="https://github.com/songjiayang/which-better">https://github.com/songjiayang/which-better</a> 查看具体的安装步骤。</p>
+<p>这么好用的工具你还等什么？ just enjoy it.</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-01-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE">#开源项目</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>如何将同一条告警信息发送给多个渠道 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="如何将同一条告警信息发送给多个渠道" />
+<meta property="og:description" content="背景： 有时我们需要将告警信息同时发送给多个渠道（例如短信或邮件），那么我们的 Alertmanager 该如何配置呢？
+ 使用版本：Alertmanager 版本： 0.13.0
+方法一 在同一个 recevier 定义多个接收渠道，例如：
+route: receiver: my-receiver receivers: - name: my-receiver webhook_configs: - url: &#39;https://hooks.xxx.com/xxxx&#39; email_configs: - to: &#39;xx@xxxx&#39; auth_username: &#39;xxx&#39; auth_password: &#39;xxx&#39; 说明: 可以看到同一条消息既使用 webhook 又使用 email 配置，所有在这两个渠道我们都收到消息。
+方法二 route: receiver: email # 默认配置一个 routes: - match: severity: Critical continue: true receiver: webhook - match: severity: Critical receiver: email receivers: - name: webhook webhook_configs: - url: &#39;https://hooks.xxx.com/xxxx&#39; - name: email email_configs: - to: &#39;xx@xxxx&#39; auth_username: &#39;xxx&#39; auth_password: &#39;xxx&#39; 定义多个独立的 receiver, 然后使用 routes 中的 continue 选项进行配置：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2018-01-19-ru-he-jiang-tong-tiao-gao-jing-xin-xi-fa-song-gei-duo-ge-qu-dao/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2018-01-19T23:55:26+00:00" />
+<meta property="article:modified_time" content="2018-01-19T23:55:26+00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="如何将同一条告警信息发送给多个渠道"/>
+<meta name="twitter:description" content="背景： 有时我们需要将告警信息同时发送给多个渠道（例如短信或邮件），那么我们的 Alertmanager 该如何配置呢？
+ 使用版本：Alertmanager 版本： 0.13.0
+方法一 在同一个 recevier 定义多个接收渠道，例如：
+route: receiver: my-receiver receivers: - name: my-receiver webhook_configs: - url: &#39;https://hooks.xxx.com/xxxx&#39; email_configs: - to: &#39;xx@xxxx&#39; auth_username: &#39;xxx&#39; auth_password: &#39;xxx&#39; 说明: 可以看到同一条消息既使用 webhook 又使用 email 配置，所有在这两个渠道我们都收到消息。
+方法二 route: receiver: email # 默认配置一个 routes: - match: severity: Critical continue: true receiver: webhook - match: severity: Critical receiver: email receivers: - name: webhook webhook_configs: - url: &#39;https://hooks.xxx.com/xxxx&#39; - name: email email_configs: - to: &#39;xx@xxxx&#39; auth_username: &#39;xxx&#39; auth_password: &#39;xxx&#39; 定义多个独立的 receiver, 然后使用 routes 中的 continue 选项进行配置："/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">如何将同一条告警信息发送给多个渠道</h1>
+        </header>
+        <div class="content">
+            <blockquote>
+<p>背景： 有时我们需要将告警信息同时发送给多个渠道（例如短信或邮件），那么我们的 Alertmanager 该如何配置呢？</p>
+</blockquote>
+<p>使用版本：Alertmanager 版本： 0.13.0</p>
+<h3 id="方法一">方法一</h3>
+<p>在同一个 recevier 定义多个接收渠道，例如：</p>
+<pre><code>route:
+  receiver: my-receiver
+
+receivers:
+  - name: my-receiver
+    webhook_configs:
+    - url: 'https://hooks.xxx.com/xxxx'
+    email_configs:
+    - to: 'xx@xxxx'
+      auth_username: 'xxx'
+      auth_password: 'xxx'
+</code></pre><p>说明: 可以看到同一条消息既使用 <code>webhook</code> 又使用 email 配置，所有在这两个渠道我们都收到消息。</p>
+<h3 id="方法二">方法二</h3>
+<pre><code>route:
+  receiver: email # 默认配置一个
+  
+routes:
+  - match:
+      severity: Critical
+    continue: true
+    receiver: webhook
+    
+ - match:
+     severity: Critical
+   receiver: email
+   
+receivers:
+  - name: webhook
+    webhook_configs:
+    - url: 'https://hooks.xxx.com/xxxx'
+  - name: email
+    email_configs:
+    - to: 'xx@xxxx'
+      auth_username: 'xxx'
+      auth_password: 'xxx'
+</code></pre><p>定义多个独立的 receiver, 然后使用 routes 中的 <code>continue</code> 选项进行配置：</p>
+<p>说明： 我们采用独立的两个 receiver 来接收消息，通过配置多个 routes 进行分发控制。</p>
+<h3 id="总结">总结</h3>
+<p>我们可以使用以上两种方式实现同一条消息发送给不同渠道的效果，但是如果你的告警消息具有多类责任人（组），那么应该采用多个 routes 来分发消息，因为一个 receiver 代表了同一类接收者，这样配置也更灵活。</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-01-19</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

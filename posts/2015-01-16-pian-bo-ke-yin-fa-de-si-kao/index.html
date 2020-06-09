@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>一篇帖子引发的思考 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="一篇帖子引发的思考" />
+<meta property="og:description" content="这是一篇在 Ruby－China 上讨论的比较激烈的帖子，原帖地址 https://ruby-china.org/topics/23766。
+原帖属于楼主的经验分享帖，一个关于 sidekiq 的 worker 被全部占用，无法释放的问题。 出现这个问题的原因是，楼主 sidekiq worker 中有一段网络请求的代码，但由于网络请求服务不稳定，导致无响应或者响应很慢，所以，worker 全部都被占用了。
+解决这个问题的办法很简单，就是设置 Timeout 时间。
+ IO 请求都需要设置超时时间。
+ 楼主在原帖中还提到了 sidekiq 常见 Frozen worker 的两种情况：
+ DNS lookup - resolving a hostname might hang. This has a serious side effect in MRI of locking up everything because of the way MRI uses DNS by default. The solution is to run require &lsquo;resolv-replace&rsquo; in your initializer, which installs a pure Ruby DNS resolver that works concurrently." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2015-01-16-pian-bo-ke-yin-fa-de-si-kao/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2015-01-16T22:31:00+08:00" />
+<meta property="article:modified_time" content="2015-01-16T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="一篇帖子引发的思考"/>
+<meta name="twitter:description" content="这是一篇在 Ruby－China 上讨论的比较激烈的帖子，原帖地址 https://ruby-china.org/topics/23766。
+原帖属于楼主的经验分享帖，一个关于 sidekiq 的 worker 被全部占用，无法释放的问题。 出现这个问题的原因是，楼主 sidekiq worker 中有一段网络请求的代码，但由于网络请求服务不稳定，导致无响应或者响应很慢，所以，worker 全部都被占用了。
+解决这个问题的办法很简单，就是设置 Timeout 时间。
+ IO 请求都需要设置超时时间。
+ 楼主在原帖中还提到了 sidekiq 常见 Frozen worker 的两种情况：
+ DNS lookup - resolving a hostname might hang. This has a serious side effect in MRI of locking up everything because of the way MRI uses DNS by default. The solution is to run require &lsquo;resolv-replace&rsquo; in your initializer, which installs a pure Ruby DNS resolver that works concurrently."/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">一篇帖子引发的思考</h1>
+        </header>
+        <div class="content">
+            <p>这是一篇在 Ruby－China 上讨论的比较激烈的帖子，原帖地址 <a href="https://ruby-china.org/topics/23766">https://ruby-china.org/topics/23766</a>。</p>
+<p>原帖属于楼主的经验分享帖，一个关于 sidekiq 的 worker 被全部占用，无法释放的问题。
+出现这个问题的原因是，楼主 sidekiq worker 中有一段网络请求的代码，但由于网络请求服务不稳定，导致无响应或者响应很慢，所以，worker 全部都被占用了。</p>
+<p>解决这个问题的办法很简单，就是设置 Timeout 时间。</p>
+<blockquote>
+<p>IO 请求都需要设置超时时间。</p>
+</blockquote>
+<p>楼主在原帖中还提到了 sidekiq 常见 Frozen worker 的两种情况：</p>
+<ol>
+<li>DNS lookup - resolving a hostname might hang. This has a serious side effect in MRI of locking up everything because of the way MRI uses DNS by default. The solution is to run require &lsquo;resolv-replace&rsquo; in your initializer, which installs a pure Ruby DNS resolver that works concurrently.</li>
+<li>Net::HTTP - unresponsive remote servers can cause a Net::HTTP call to hang and lock up your workers. Set open_timeout to ensure your code raises an exception rather than hanging forever.</li>
+</ol>
+<p>楼主的问题属于第2点，但是第1点却更引起我的兴趣，因为它提到了 MRI 的 <a href="http://www.jstorimer.com/blogs/workingwithcode/8085491-nobody-understands-the-gil">GIL</a> 。</p>
+<p>假设有线程a,b，其中a 调用了一个会被 block的 C 扩展，那么 b 线程也会被 block 吗 ？</p>
+<p>第一步： a 线程未调用 C 扩展，执行如下代码：</p>
+<pre><code># test.rb
+
+a = Thread.new do
+  while true do
+    puts &quot;aaa&quot;
+  end
+end
+
+b = Thread.new do
+  while true do
+    puts &quot;bbb&quot;
+  end
+end
+
+sleep
+
+</code></pre><p>输出结果：<code>bbb aaa</code> ,  可见， a,b 线程都执行了。</p>
+<p>第二步：编写一个会被block的 C 扩展（死循环）：</p>
+<pre><code># 一个会被 block的 C 扩展程序
+
+#include &quot;ruby.h&quot;
+
+VALUE BlockExt = Qnil;
+VALUE perform(VALUE self);
+
+void Init_block_ext() {
+  BlockExt = rb_define_class(&quot;BlockExt&quot;, 0);
+  rb_define_singleton_method(BlockExt, &quot;run&quot;, perform, 0);
+}
+
+VALUE perform(VALUE self) {
+  while(Qtrue){  }
+  return Qnil;
+}
+
+</code></pre><p>第三步： a 线程调用 C 扩展：</p>
+<pre><code># test.rb
+require_relative 'ext/block_ext'
+a = Thread.new { BlockExt.run }
+b = Thread.new do
+  while true do
+    puts &quot;bbb&quot;
+  end
+end
+
+sleep
+</code></pre><p>运行 <code>ruby test.rb</code>， 你会发现 b 线程也会 block。</p>
+<p>出现这个问题的原因是因为 a 线程调用了外部扩展程序，由于 Ruby GIL 的缘故，
+同一时间只能有一个线程(a) active, 而由于外部程序 block住了，导致无返回，
+从而a程序一直处于active状态，所以b线程一直处于 unactive状态，也就被block住了。</p>
+<p>结论：Ruby 多线程都需要注意一些 C Extensions 的 GIL block 住整个进程的问题，自己编写的 C 扩展，一定要确保返回和结束。</p>
+<p>代码地址： <a href="https://github.com/songjiayang/rc-ext-gil">https://github.com/songjiayang/rc-ext-gil</a></p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-16</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>瑞士军刀之 MotionModel 初体验 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="瑞士军刀之 MotionModel 初体验" />
+<meta property="og:description" content="写在前面 MotionModel 是一个 RubyMotion 平台的 ORM 类库，有点类似于 Rails 中的 ActiveRecord。 它将业务模型与数据存储高度抽象，采用统一的调用方式，目前支持内存和数据库两种主要使用方式。
+严格意义上来讲它能支持多种数据库，因为只需实现对应适配器即可。当然它已将我们常用的 Sqlite3 适配器写好了，所以可以直接使用。
+我们项目数据存储使用的是 Sqlite3 &#43; FMDB 的方案，所以将以此作为例子。
+安装步骤 1. 修改 Gemfile 文件，添加 以下代码： #Gemfile gem &#39;motion_model&#39;, git:&#39;https://github.com/sxross/MotionModel.git&#39;, branch:&#39;sql&#39; 说明： 之所以使用 sql 分支是因为目前项目已将数据库使用方式的代码剥离出来，还没打包合并到 master 分支， 所以如果你项目中使用了数据库，那就不能使用 master 分支， 详情请点击 wiki 。
+2. 执行 bundle install 3. 使用 cocoapods 引入 FMDB 修改 Rakefile 文件，添加 FMDB
+#Rakefile ..... app.pods do pod &#39;FMDB&#39; end ..... 修改文件后，执行 rake pod:install
+4. 修改 Rakefile 文件， require motion_model 相关代码。 #Rakefile require &#39;motion_model&#39; require &#39;motion_model/array&#39; ＃ 如果不需内存存储方式，那么此句代码可以删除 require &#39;motion_model/sql&#39; 具体使用 前提假设： 1." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2015-05-31-rui-shi-jun-dao-zhi-motionmodel/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2015-05-31T23:31:00+08:00" />
+<meta property="article:modified_time" content="2015-05-31T23:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="瑞士军刀之 MotionModel 初体验"/>
+<meta name="twitter:description" content="写在前面 MotionModel 是一个 RubyMotion 平台的 ORM 类库，有点类似于 Rails 中的 ActiveRecord。 它将业务模型与数据存储高度抽象，采用统一的调用方式，目前支持内存和数据库两种主要使用方式。
+严格意义上来讲它能支持多种数据库，因为只需实现对应适配器即可。当然它已将我们常用的 Sqlite3 适配器写好了，所以可以直接使用。
+我们项目数据存储使用的是 Sqlite3 &#43; FMDB 的方案，所以将以此作为例子。
+安装步骤 1. 修改 Gemfile 文件，添加 以下代码： #Gemfile gem &#39;motion_model&#39;, git:&#39;https://github.com/sxross/MotionModel.git&#39;, branch:&#39;sql&#39; 说明： 之所以使用 sql 分支是因为目前项目已将数据库使用方式的代码剥离出来，还没打包合并到 master 分支， 所以如果你项目中使用了数据库，那就不能使用 master 分支， 详情请点击 wiki 。
+2. 执行 bundle install 3. 使用 cocoapods 引入 FMDB 修改 Rakefile 文件，添加 FMDB
+#Rakefile ..... app.pods do pod &#39;FMDB&#39; end ..... 修改文件后，执行 rake pod:install
+4. 修改 Rakefile 文件， require motion_model 相关代码。 #Rakefile require &#39;motion_model&#39; require &#39;motion_model/array&#39; ＃ 如果不需内存存储方式，那么此句代码可以删除 require &#39;motion_model/sql&#39; 具体使用 前提假设： 1."/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">瑞士军刀之 MotionModel 初体验</h1>
+        </header>
+        <div class="content">
+            <h2 id="写在前面">写在前面</h2>
+<p><a href="https://github.com/sxross/MotionModel">MotionModel</a> 是一个 RubyMotion 平台的 ORM 类库，有点类似于 Rails 中的 ActiveRecord。
+它将业务模型与数据存储高度抽象，采用统一的调用方式，目前支持内存和数据库两种主要使用方式。</p>
+<p>严格意义上来讲它能支持多种数据库，因为只需实现对应适配器即可。当然它已将我们常用的 Sqlite3 适配器写好了，所以可以直接使用。</p>
+<p>我们项目数据存储使用的是 Sqlite3 + FMDB 的方案，所以将以此作为例子。</p>
+<h2 id="安装步骤">安装步骤</h2>
+<h3 id="1-修改-gemfile-文件添加-以下代码">1. 修改 Gemfile 文件，添加 以下代码：</h3>
+<pre><code>#Gemfile
+gem 'motion_model', git:'https://github.com/sxross/MotionModel.git', branch:'sql'
+</code></pre><p>说明： 之所以使用 <code>sql</code> 分支是因为目前项目已将数据库使用方式的代码剥离出来，还没打包合并到 master 分支，
+所以如果你项目中使用了数据库，那就不能使用 master 分支， 详情请点击 <a href="https://github.com/sxross/MotionModel/wiki/RoadMap#how-to-jump-on-board">wiki</a> 。</p>
+<h3 id="2-执行-bundle-install">2. 执行 <code>bundle install</code></h3>
+<h3 id="3-使用-cocoapods-引入-fmdb">3. 使用 cocoapods 引入 FMDB</h3>
+<p>修改 Rakefile 文件，添加 FMDB</p>
+<pre><code>#Rakefile
+.....
+app.pods do
+  pod 'FMDB'
+end
+.....
+
+</code></pre><p>修改文件后，执行 <code>rake pod:install</code></p>
+<h3 id="4-修改-rakefile-文件-require-motion_model-相关代码">4. 修改 Rakefile 文件， require motion_model 相关代码。</h3>
+<pre><code>#Rakefile
+
+require 'motion_model'
+require 'motion_model/array' ＃ 如果不需内存存储方式，那么此句代码可以删除
+require 'motion_model/sql'
+
+</code></pre><h2 id="具体使用">具体使用</h2>
+<p>前提假设： 1. 所有 model 都使用 FMDB。 2. 目录结构是这样：</p>
+<p><img src="/images/motionmodel.png" alt="motionmodel"></p>
+<h3 id="1-在-lib-文件下新建-一个-databaserb-文件用于初始化数据库链接并根据-model-自动创建表代码如下">1. 在 lib 文件下新建 一个 database.rb 文件用于初始化数据库链接并根据 model 自动创建表。代码如下：</h3>
+<pre><code>
+# app/lib/database.rb
+
+class Database
+  def self.init
+    MotionModel::Store.config(MotionModel::FMDBAdapter.new('app.db'))
+    models = Dir.entries(File.expand_path(&quot;../../models&quot;, __FILE__)).select{ |file| file =~ /\.rb/ }.map{ |file| file.sub('.rb', '').capitalize.constantize }
+    models.each { |clzss| clzss.create_table unless clzss.table_exists? }
+  end
+end
+</code></pre><p>看到这段代码，有没有觉得 Ruby 文件操作和对象反射吊炸，处理初始化数据库真是再合适不过了， 好奇，不知 OC 方案是怎样。</p>
+<h3 id="2-修改-app_delegaterb-在项目启动的时候附带启动数据库">2. 修改 app_delegate.rb， 在项目启动的时候附带启动数据库：</h3>
+<pre><code># app_delegate.rb
+class AppDelegate
+  def application(application, didFinishLaunchingWithOptions:launchOptions)
+    Database.init
+    true
+  end
+end
+
+</code></pre><h3 id="3-在-appmodels-目录下创建任意-model-例如-userrb">3. 在 app/models 目录下创建任意 model, 例如 user.rb</h3>
+<pre><code>#user.rb
+
+class User
+  include MotionModel::Model
+  include MotionModel::FMDBModelAdapter
+
+  columns :name =&gt; :string,
+          :email =&gt; :string,
+          :created_at =&gt; :date,
+          :updated_at =&gt; :date
+end
+
+</code></pre><p>当启动项目的时候，会先执行 Database.init, 此时会自动检查所有 model, 如果对应表没有创建，将自动创建。当然表的字段和配置的 columns 一致。</p>
+<h2 id="motionmodel-的好处">MotionModel 的好处</h2>
+<ol>
+<li>避免直接操作 sql， 例如我要查询所有学生，我可以写成 <code>User.all</code>;  查询名字是小明的学生 <code>User.where(:name =&gt; '小明')</code> 。</li>
+<li>更面向对象，支持模型之间的 RelationShip 。</li>
+<li>提供一些 validates, 例如 要求用户名不能为空,那么我们可以这样 <code>validates :name, :presence =&gt; true</code> 。</li>
+</ol>
+<p>更多使用请参见官网。</p>
+<h2 id="写在最后">写在最后：</h2>
+<p>其实我也是今天才开始使用 MotionModel 的，它给我的第一感觉就是太像 ActiveRecord , 在大概看了源码的基础上，决定先试试。
+虽然不知道其 owner 会不会哪天弃坑，管它，到目前为止用的还顺心。欢迎有使用经验者以及有其他方案者多多交流经验。</p>
+<!-- raw HTML omitted -->
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-05-31</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

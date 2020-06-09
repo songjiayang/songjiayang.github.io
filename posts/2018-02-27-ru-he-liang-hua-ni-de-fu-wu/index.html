@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>如何量化你的服务 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="如何量化你的服务" />
+<meta property="og:description" content="我们经常被问到：“你服务运行的质量如何？“
+问题很简单，几个字，但想要回答好并不容易，因为你需要有明确的数据来支持你的结论。
+ 那我们该如何量化我们的服务呢？
+ 使用 USE 方法 通常我们使用 USE 方法来量化我们的硬件资源使用情况，它具体指：
+ Utilisation: % time that the resource was busy Saturation: amount of work resource has to do, often queue length Errors: the count of error events  我们的硬件资源常见检测项包括：
+我们来看看一个 Prometheus 关于内存查询的例子：
+内存使用率（Utilisation）:
+1 - sum( node_memory_MemFree{job=“…”} &#43; node_memory_Cached{job=“…”} &#43; node_memory_Buffers{job=“…”}) / sum(node_memory_MemTotal{job=“…”}) 内存饱和（Saturation）:
+1e3 * sum( rate(node_vmstat_pgpgin{job=“…”}[1m]) &#43; rate(node_vmstat_pgpgout{job=“…”}[1m])) ) 使用 RED 方法 通常我们使用 RED 方法来量化我们后端服务的运行情况（尤其微服务），它具体指：
+ Rate: number of requests per second Errors: the number of those requests that are failing Duration: the amount of time those requests take  使用 Prometheus 查询例子：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2018-02-27-ru-he-liang-hua-ni-de-fu-wu/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2018-02-26T18:02:53+00:00" />
+<meta property="article:modified_time" content="2018-02-26T18:02:53+00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="如何量化你的服务"/>
+<meta name="twitter:description" content="我们经常被问到：“你服务运行的质量如何？“
+问题很简单，几个字，但想要回答好并不容易，因为你需要有明确的数据来支持你的结论。
+ 那我们该如何量化我们的服务呢？
+ 使用 USE 方法 通常我们使用 USE 方法来量化我们的硬件资源使用情况，它具体指：
+ Utilisation: % time that the resource was busy Saturation: amount of work resource has to do, often queue length Errors: the count of error events  我们的硬件资源常见检测项包括：
+我们来看看一个 Prometheus 关于内存查询的例子：
+内存使用率（Utilisation）:
+1 - sum( node_memory_MemFree{job=“…”} &#43; node_memory_Cached{job=“…”} &#43; node_memory_Buffers{job=“…”}) / sum(node_memory_MemTotal{job=“…”}) 内存饱和（Saturation）:
+1e3 * sum( rate(node_vmstat_pgpgin{job=“…”}[1m]) &#43; rate(node_vmstat_pgpgout{job=“…”}[1m])) ) 使用 RED 方法 通常我们使用 RED 方法来量化我们后端服务的运行情况（尤其微服务），它具体指：
+ Rate: number of requests per second Errors: the number of those requests that are failing Duration: the amount of time those requests take  使用 Prometheus 查询例子："/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">如何量化你的服务</h1>
+        </header>
+        <div class="content">
+            <p>我们经常被问到：“你服务运行的质量如何？“</p>
+<p>问题很简单，几个字，但想要回答好并不容易，因为你需要有明确的数据来支持你的结论。</p>
+<blockquote>
+<p>那我们该如何量化我们的服务呢？</p>
+</blockquote>
+<h3 id="使用-use-方法">使用 USE 方法</h3>
+<p>通常我们使用 <code>USE</code> 方法来量化我们的硬件资源使用情况，它具体指：</p>
+<ul>
+<li>Utilisation: % time that the resource was busy</li>
+<li>Saturation: amount of work resource has to do, often queue length</li>
+<li>Errors: the count of error events</li>
+</ul>
+<p>我们的硬件资源常见检测项包括：</p>
+<p><img src="/images/method/use02.png" alt="use02.png"></p>
+<p>我们来看看一个 Prometheus 关于内存查询的例子：</p>
+<p>内存使用率（Utilisation）:</p>
+<pre><code>1 - sum( node_memory_MemFree{job=“…”} +
+  node_memory_Cached{job=“…”} +
+  node_memory_Buffers{job=“…”})
+  / sum(node_memory_MemTotal{job=“…”})
+</code></pre><p>内存饱和（Saturation）:</p>
+<pre><code>1e3 * sum(
+  rate(node_vmstat_pgpgin{job=“…”}[1m]) +
+  rate(node_vmstat_pgpgout{job=“…”}[1m]))
+)
+</code></pre><h3 id="使用-red-方法">使用 RED 方法</h3>
+<p>通常我们使用 <code>RED</code> 方法来量化我们后端服务的运行情况（尤其微服务），它具体指：</p>
+<ul>
+<li>Rate: number of requests per second</li>
+<li>Errors: the number of those requests that are failing</li>
+<li>Duration: the amount of time those requests take</li>
+</ul>
+<p>使用 Prometheus 查询例子：</p>
+<pre><code>// rate:
+sum(rate(request_duration_seconds_count{job=“…”}[1m]))
+// errors:
+sum(rate(request_duration_seconds_count{job=“…”,  
+  status_code!~”2..”}[1m]))
+// duration: 
+histogram_quantile(0.99,  
+  sum(rate(request_duration_seconds_bucket{job=“…}[1m])) by (le))
+</code></pre><h3 id="google-sre-4-黄金指标">Google SRE 4 黄金指标</h3>
+<ul>
+<li>Latency: time taken to serve a request</li>
+<li>Trafﬁc: how much demand is places on your system</li>
+<li>Errors: rate or requests that are failing</li>
+<li>Saturation: how “full” your services is</li>
+</ul>
+<p>对于 Google SRE 的指标是很多公司参考和努力的方向，不过通常我们可以将它简化为 <code>RED</code> 方法。</p>
+<p>参考链接： <a href="https://www.slideshare.net/kausalco/the-red-method-how-to-instrument-your-services-83653970">The RED Method: How To Instrument Your Services</a></p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-02-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

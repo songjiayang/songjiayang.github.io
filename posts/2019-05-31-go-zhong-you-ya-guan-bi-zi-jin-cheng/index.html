@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>如何在 Go 中优雅关闭子进程 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="如何在 Go 中优雅关闭子进程" />
+<meta property="og:description" content="如何在 Go 中运行一个外部命令 有时我们会遇到这样的需求，在一个主进程中启动另外一个进程，而在 Go 中可以使用 exec 包的 Cmd 来轻松实现这类需求，例如代码：
+package main import ( &#34;fmt&#34; &#34;log&#34; &#34;os&#34; &#34;os/exec&#34; &#34;os/signal&#34; ) func main() { cmd := exec.Cmd{ Path: &#34;nc&#34;, Args: []string{&#34;-u&#34;, &#34;-l&#34;, &#34;8888&#34;}, Dir: &#34;/usr/bin&#34;, } if err := cmd.Start(); err != nil { log.Panic(err) } fmt.Println(&#34;Start child process with pid&#34;, cmd.Process.Pid) c := make(chan os.Signal, 1) signal.Notify(c, os.Interrupt) s := &lt;-c fmt.Println(&#34;Got signal:&#34;, s) } 这段代码的含义是： 使用 nc -u -l 8888 来模拟一个常驻进程，然后通过 Go 的 exec." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2019-05-31-go-zhong-you-ya-guan-bi-zi-jin-cheng/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2019-05-31T14:51:06+08:00" />
+<meta property="article:modified_time" content="2019-05-31T14:51:06+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="如何在 Go 中优雅关闭子进程"/>
+<meta name="twitter:description" content="如何在 Go 中运行一个外部命令 有时我们会遇到这样的需求，在一个主进程中启动另外一个进程，而在 Go 中可以使用 exec 包的 Cmd 来轻松实现这类需求，例如代码：
+package main import ( &#34;fmt&#34; &#34;log&#34; &#34;os&#34; &#34;os/exec&#34; &#34;os/signal&#34; ) func main() { cmd := exec.Cmd{ Path: &#34;nc&#34;, Args: []string{&#34;-u&#34;, &#34;-l&#34;, &#34;8888&#34;}, Dir: &#34;/usr/bin&#34;, } if err := cmd.Start(); err != nil { log.Panic(err) } fmt.Println(&#34;Start child process with pid&#34;, cmd.Process.Pid) c := make(chan os.Signal, 1) signal.Notify(c, os.Interrupt) s := &lt;-c fmt.Println(&#34;Got signal:&#34;, s) } 这段代码的含义是： 使用 nc -u -l 8888 来模拟一个常驻进程，然后通过 Go 的 exec."/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">如何在 Go 中优雅关闭子进程</h1>
+        </header>
+        <div class="content">
+            <p><img src="/images/golang-fork.png" alt="golang-fork.png"></p>
+<h2 id="如何在-go-中运行一个外部命令">如何在 Go 中运行一个外部命令</h2>
+<p>有时我们会遇到这样的需求，在一个主进程中启动另外一个进程，而在 Go 中可以使用 exec 包的 <code>Cmd</code> 来轻松实现这类需求，例如代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+	<span style="color:#e6db74">&#34;os/exec&#34;</span>
+	<span style="color:#e6db74">&#34;os/signal&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">exec</span>.<span style="color:#a6e22e">Cmd</span>{
+		<span style="color:#a6e22e">Path</span>: <span style="color:#e6db74">&#34;nc&#34;</span>,
+		<span style="color:#a6e22e">Args</span>: []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;-u&#34;</span>, <span style="color:#e6db74">&#34;-l&#34;</span>, <span style="color:#e6db74">&#34;8888&#34;</span>},
+		<span style="color:#a6e22e">Dir</span>:  <span style="color:#e6db74">&#34;/usr/bin&#34;</span>,
+	}
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Start</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Panic</span>(<span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Start child process with pid&#34;</span>, <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Process</span>.<span style="color:#a6e22e">Pid</span>)
+
+	<span style="color:#a6e22e">c</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Signal</span>, <span style="color:#ae81ff">1</span>)
+	<span style="color:#a6e22e">signal</span>.<span style="color:#a6e22e">Notify</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Interrupt</span>)
+	<span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">c</span>
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Got signal:&#34;</span>, <span style="color:#a6e22e">s</span>)
+}
+</code></pre></div><p>这段代码的含义是： 使用 <code>nc -u -l 8888</code> 来模拟一个常驻进程，然后通过 Go 的 <code>exec.Cmd</code> 来运行它，并且 Go 代码不退出，运行代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ go run main.go
+
+Start child process with pid <span style="color:#ae81ff">35904</span>
+</code></pre></div><p>输出结果表明我们已经通过 Go 成功调用外部命令，起了一个子进程，其进程号为 <code>35904</code>，我们还可以通过命令 <code>ps -ef 35904</code> 来确认：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> UID   PID  PPID   C STIME   TTY           TIME CMD
+<span style="color:#ae81ff">2062309935</span> <span style="color:#ae81ff">35904</span> <span style="color:#ae81ff">35903</span>   <span style="color:#ae81ff">0</span>  3:36PM ttys008    0:00.00 -u -l <span style="color:#ae81ff">8888</span>
+</code></pre></div><h3 id="如何结束子进程">如何结束子进程</h3>
+<ul>
+<li>首先想到的就是 <code>kill</code> 命令，尝试使用 <code>kill 35904</code></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kill <span style="color:#ae81ff">35904</span>
+$ ps -ef <span style="color:#ae81ff">35904</span>
+
+UID   PID  PPID   C STIME   TTY           TIME CMD
+<span style="color:#ae81ff">2062309935</span> <span style="color:#ae81ff">35904</span> <span style="color:#ae81ff">35903</span>   <span style="color:#ae81ff">0</span>  3:36PM ttys008    0:00.00 <span style="color:#f92672">(</span>nc<span style="color:#f92672">)</span>
+</code></pre></div><p>发现 kill 命令并不好用，进程还在，然后换成  <code>kill -9</code> 也同样不起作用。不过该进程已经停止运行了，可以看到监听由 <code>0:00.00 -u -l 8888</code> 变成了 <code>0:00.00 (nc)</code>, 不再监听 8888 端口，只是进程资源还没释放而已。</p>
+<ul>
+<li>使用 Go 代码结束该进程</li>
+</ul>
+<p>因为 Go 的 Cmd 内置了 <code>Process.Kill()</code> 函数，我们可以尝试使用它来关闭子进程，修改代码，添加如下内容：</p>
+<pre><code>// After five second, kill cmd's process
+time.Sleep(5 * time.Second)
+cmd.Process.Kill()
+</code></pre><p>重新运行代码，发现 5 秒过后，该子进程还在。其实调用 <code>cmd.Process.Kill()</code> 和外部使用 kill 命令是一样的，父进程还没有释放资源，所以子进程不能清理完成。</p>
+<ul>
+<li>使用 <code>cmd.Wait()</code> 完成资源清理，修改后的完整代码如下：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+	<span style="color:#e6db74">&#34;os/exec&#34;</span>
+	<span style="color:#e6db74">&#34;os/signal&#34;</span>
+	<span style="color:#e6db74">&#34;time&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">exec</span>.<span style="color:#a6e22e">Cmd</span>{
+		<span style="color:#a6e22e">Path</span>: <span style="color:#e6db74">&#34;nc&#34;</span>,
+		<span style="color:#a6e22e">Args</span>: []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;-u&#34;</span>, <span style="color:#e6db74">&#34;-l&#34;</span>, <span style="color:#e6db74">&#34;8888&#34;</span>},
+		<span style="color:#a6e22e">Dir</span>:  <span style="color:#e6db74">&#34;/usr/bin&#34;</span>,
+	}
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Start</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Panic</span>(<span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Start child process with pid&#34;</span>, <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Process</span>.<span style="color:#a6e22e">Pid</span>)
+
+	<span style="color:#75715e">// Wait releases any resources associated with the Cmd
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Wait</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Child process %d exit with err: %v\n&#34;</span>, <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Process</span>.<span style="color:#a6e22e">Pid</span>, <span style="color:#a6e22e">err</span>)
+		}
+	}()
+
+	<span style="color:#75715e">// After five second, kill cmd&#39;s process
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">5</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
+	<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Process</span>.<span style="color:#a6e22e">Kill</span>()
+
+	<span style="color:#a6e22e">c</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Signal</span>, <span style="color:#ae81ff">1</span>)
+	<span style="color:#a6e22e">signal</span>.<span style="color:#a6e22e">Notify</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Interrupt</span>)
+	<span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">c</span>
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Got signal:&#34;</span>, <span style="color:#a6e22e">s</span>)
+}
+</code></pre></div><p>运行代码，可以得到如下结果：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">run</span> <span style="color:#a6e22e">main</span>.<span style="color:#66d9ef">go</span>
+
+<span style="color:#a6e22e">Start</span> <span style="color:#a6e22e">child</span> <span style="color:#a6e22e">process</span> <span style="color:#a6e22e">with</span> <span style="color:#a6e22e">pid</span> <span style="color:#ae81ff">41666</span>
+<span style="color:#a6e22e">Child</span> <span style="color:#a6e22e">process</span> <span style="color:#ae81ff">41666</span> <span style="color:#a6e22e">exit</span> <span style="color:#a6e22e">with</span> <span style="color:#a6e22e">err</span>: <span style="color:#a6e22e">signal</span>: <span style="color:#a6e22e">killed</span>
+</code></pre></div><p>再通过 <code>ps -el 41666</code> 命令确认子进程 <code>41666</code> 已不存在。</p>
+<h3 id="结语">结语</h3>
+<p>Go 中 exec.Cmd 封装的很好，对于外部命令调用非常方便，但是使用它的时候，需要注意对子进程的资源进行释放，其关键函数就是 <code>cmd.Wait()</code>,
+所以用到 cmd 的地方，一定添加 <code>cmd.Wait()</code> 的逻辑。</p>
+<hr>
+<p>参考链接：</p>
+<ul>
+<li><a href="https://golang.org/pkg/os/exec/#Cmd.Wait">https://golang.org/pkg/os/exec/#Cmd.Wait</a></li>
+</ul>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-05-31</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

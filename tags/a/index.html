@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>a - 欢迎来到小鱼客栈</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/a/index.xml" title="欢迎来到小鱼客栈" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591682886" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591682886">
+
+<meta property="og:title" content="a" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/a/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="a"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">欢迎来到小鱼客栈</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/about" title="About">About</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: a</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2020-06-04-containerd-qi-dong-bao-cuo-jie-jue-ban-fa/">containerd 启动报 `undefined symbol: seccomp_version` 错误的解决办法</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        最近开始研究 containerd, 按照官网教程 在 Centos7.2 上下载了 containerd-1.3.4.linux-amd64.tar.gz ，解压缩运行程序的时候遇到如下报错信息：
+./containerd: symbol lookup error: ./containerd: undefined symbol: seccomp_version 网上查了下，这个错误意思是说系统缺少对应版本的 libseccomp， 有两个可能：
+ 系统没有安装 libseccomp 系统安装的 libseccomp 版本不匹配（较低），建议使用 2.4.2  libseccomp 是什么？  library provides an easy to use, platform independent, interface to the Linux Kernel&rsquo;s syscall filtering mechanism.
+ 它是一个 C 语言开发的 Linux 内核系统调用过滤帮助库，很多容器项目都使用到它，比如 containerd、docker、runc ，其源代码地址为 https://github.com/seccomp/libseccomp。
+libseccomp 安装 因为 containerd 需要依赖的 libseccomp 较新，经过测试，v2.4.2 可以在 Centos7.2 成功运行，所以我们直接通过源代码来安装。
+ 下载源代码  curl -LO https://github.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-06-04</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/a">#a</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>js on 小鱼驿站</title>
+    <link>/tags/js/</link>
+    <description>小鱼驿站 (js)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 18 Oct 2015 23:31:00 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/js/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Kick.js 分享</title>
+      <link>/posts/2015-10-18-kick-dot-js-fen-xiang/</link>
+      <pubDate>Sun, 18 Oct 2015 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-10-18-kick-dot-js-fen-xiang/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/kick.png&#34; alt=&#34;kick.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/giga-opensource/kick.js&#34;&gt;Kick.js&lt;/a&gt; 是我们公司自己编写,并在项目中使用的一个 js 库。它其实就是在 Jquery 的 ajax 基础上
+包装了一下，使其 json api 请求的写法更简单。&lt;/p&gt;
+&lt;p&gt;有了 kick.js, 你的请求可以写成这样：&lt;/p&gt;
+&lt;h4 id=&#34;1-get-request&#34;&gt;1. GET request&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;Kick(&#39;materials&#39;).get()
+# GET http://example.com/materials
+
+Kick(&#39;materials&#39;).get({q:&#39;panda&#39;})
+# GET http://example.com/materials?q=panda
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;2-post-request&#34;&gt;2. POST request&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;Kick(&#39;materials&#39;).post({name: &#39;foo&#39;})
+# POST http://example.com/materials
+# Request Payload
+# {name: &amp;quot;foo&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;3-put-request&#34;&gt;3. PUT request&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;Kick(&#39;materials&#39;, &#39;1&#39;).put({name: &#39;foo&#39;})
+# PUT http://example.com/materials/1
+# Request Payload
+# {name: &amp;quot;foo&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;4-patch-request&#34;&gt;4. PATCH request&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;Kick(&#39;materials&#39;, &#39;1&#39;).patch({name: &#39;foo&#39;})
+# PATCH http://example.com/materials/1
+# Request Payload
+# {name: &amp;quot;foo&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;5-delete-request&#34;&gt;5. DELETE request&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;Kick(&#39;materials&#39;, &#39;1&#39;).delete()
+# DELETE http://example.com/materials/1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;源码中最值得分享的部分：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+var Kick = function() {
+   if (!(this instanceof Kick)) {
+     var instance = Object.create(Kick.prototype);
+     return Kick.apply(instance, arguments);
+   }
+
+   # 此处省略部分代码
+
+   return this;
+ };
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;点评：代码中， Kick 类作为方法调用，自动创建一个实例，避免了显示实例化的过程， 不然代码可能会写成 &lt;code&gt;(new Kick(&#39;materials&#39;)).get()&lt;/code&gt; 。&lt;/p&gt;
+&lt;p&gt;目前，Kick.js 已提交到 github，欢迎大家使用。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>也许，你真的不需要 jQuery</title>
+      <link>/posts/2015-08-27-wo-bing-bu-xu-yao-jquery/</link>
+      <pubDate>Thu, 27 Aug 2015 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-08-27-wo-bing-bu-xu-yao-jquery/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;在 web 发展的历史过程中，jQuery 扮演了非常重要的角色，相对写原生的 javascript ，相同功能代码量少很多，语法简单，对新手友好。&lt;/p&gt;
+&lt;p&gt;这点大家可以通过 &lt;a href=&#34;http://blog.garstasio.com/you-dont-need-jquery/&#34;&gt;you-dont-need-jquery&lt;/a&gt; 系列文章对比两者代码差异。
+该文章主要讲述的是如何使用原生 javascript 来实现 jQuery 主要功能，
+目的是为了让大家深入理解 jQeury 背后的原理知识，知其所以然。&lt;/p&gt;
+&lt;p&gt;但作者肯定并不是真的让大家完全抛弃 jQuery ，直接裸写 js 的，想想，也没人这么做吧！&lt;/p&gt;
+&lt;p&gt;但时代总是发展变化的，而且很快，尤其是在移动设备占据了大部分的网络流量的情况下， jQuery 的地位和作用显得有些尴尬了。&lt;/p&gt;
+&lt;p&gt;对于传统网站，它还是第一选择，但是越来越多的 web 应用 (SPA) ，交互和功能太过复杂，它的表现就没那么好用了（相比很多现代的框架）。&lt;/p&gt;
+&lt;p&gt;背景： 最近在写 &lt;a href=&#34;https://github.com/giga-opensource/mario-ui&#34;&gt;mario-ui&lt;/a&gt;, 采用的是 Flux 架构，依赖 &lt;a href=&#34;http://facebook.github.io/react/&#34;&gt;react&lt;/a&gt; 。&lt;/p&gt;
+&lt;p&gt;下面就从项目具体实践来谈谈，为什么此项目不需要 jQuery。&lt;/p&gt;
+&lt;h3 id=&#34;1-选择器&#34;&gt;1. 选择器&lt;/h3&gt;
+&lt;p&gt;react 有声明 ref 的功能， 例如在一个表单中有一个 &lt;code&gt;email&lt;/code&gt; 的 ref, 我可以通过 &lt;code&gt;this.refs.email.getDOMNode()&lt;/code&gt; 来达到同样效果。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;form className=&amp;quot;login-block__form&amp;quot; onSubmit={this.onSubmit}&amp;gt;
+  &amp;lt;input className=&amp;quot;form__input login-block__input&amp;quot; placeholder=&amp;quot;Email&amp;quot; type=&amp;quot;email&amp;quot; ref=&#39;email&#39;/&amp;gt; type=&amp;quot;submit&amp;quot; /&amp;gt;
+&amp;lt;/form&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;2-dom-操作&#34;&gt;2. DOM 操作&lt;/h3&gt;
+&lt;p&gt;要知道 DOM 操作是一件性能很低下的操作，它会导致 DOM refresh/rerender.&lt;/p&gt;
+&lt;p&gt;由于 react 使用了 VIRTUAL DOM 的技术，DOM 操作这个根本就不存在，它直接根据 component 的 status，指定需要显示的内容。&lt;/p&gt;
+&lt;h3 id=&#34;3-ajax-请求&#34;&gt;3. Ajax 请求&lt;/h3&gt;
+&lt;p&gt;我们使用 &lt;a href=&#34;https://visionmedia.github.io/superagent/&#34;&gt;SuperAgent&lt;/a&gt; 来处理 Ajax 请求，它只负责请求相关的问题，因为专注，所以做的更好，更多，更人性！&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Super Agent is light-weight progressive ajax API crafted for flexibility, readability, and a low learning curve after being frustrated with many of the existing request APIs. It also works with Node.js!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;4-事件绑定&#34;&gt;4. 事件绑定&lt;/h3&gt;
+&lt;p&gt;我们使用 &lt;a href=&#34;https://github.com/Gozala/events&#34;&gt;events&lt;/a&gt; 来处理事件监听和触发。&lt;/p&gt;
+&lt;h3 id=&#34;5-一些帮助方法&#34;&gt;5. 一些帮助方法&lt;/h3&gt;
+&lt;p&gt;jQeury 提供了一些帮助方法，例如对象合并的 extend， 数据迭代操作！&lt;/p&gt;
+&lt;p&gt;我们项目使用了 &lt;a href=&#34;https://github.com/sindresorhus/object-assign&#34;&gt;object-assign&lt;/a&gt; 来处理对象合并。
+数据迭代操作之类，可是使用&lt;a href=&#34;https://github.com/facebook/immutable-js&#34;&gt;immutable&lt;/a&gt;,虽然现在项目还没开始使用，因为直接写的 for 循环！&lt;/p&gt;
+&lt;h3 id=&#34;6-animate-动画&#34;&gt;6. animate 动画&lt;/h3&gt;
+&lt;p&gt;对于现在浏览器而言，css animate 表现越来越好，这个也是未来趋势！个人觉得 animate 就属于 css 范畴。&lt;/p&gt;
+&lt;h3 id=&#34;7-生态和插件&#34;&gt;7. 生态和插件&lt;/h3&gt;
+&lt;p&gt;jQeury 这么多年了，插件是一抓一大把，react 虽然才出道 2 年多，但插件也不少，到 &lt;a href=&#34;https://www.npmjs.com/search?q=react&#34;&gt;npmjs&lt;/a&gt; 随便一搜，都有5000左右。 社区也越来越活跃，要知道前端造轮子的速度真的超乎想象。&lt;/p&gt;
+&lt;p&gt;项目目前为止用到的一些插件：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;quot;react-dropzone&amp;quot;: &amp;quot;^1.3.0&amp;quot;,
+&amp;quot;react-modal&amp;quot;: &amp;quot;^0.3.0&amp;quot;,
+&amp;quot;react-paginate&amp;quot;: &amp;quot;^0.1.35&amp;quot;,
+&amp;quot;react-router&amp;quot;: &amp;quot;^0.13.3&amp;quot;,
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;8-浏览器兼容性&#34;&gt;8. 浏览器兼容性&lt;/h3&gt;
+&lt;p&gt;好吧，如果真的要谈这个，我只想说，I don&amp;rsquo;t care, 毕竟现在浏览器更新很快，看看 IE 份额，直接 IE11 ，好么！&lt;/p&gt;
+&lt;p&gt;总结： 在很多 SPA 的项目中， jQeury 这种大而全的库也许不再适合，你完全可以根据自己需求， DIY 插件库。按需使用，总是不错的！&lt;/p&gt;
+&lt;p&gt;最后，推荐大家尝试下 react 以及一起来玩 &lt;a href=&#34;https://github.com/giga-opensource/mario-ui&#34;&gt;mario-ui&lt;/a&gt;。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>JS 中如何忽略大小正则匹配动态字符串</title>
+      <link>/posts/2014-09-15-javascriptzhong-ru-he-hu-lue-da-xiao-zheng-ze-pi-pei-dong-tai-zi-fu-chuan/</link>
+      <pubDate>Mon, 15 Sep 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-09-15-javascriptzhong-ru-he-hu-lue-da-xiao-zheng-ze-pi-pei-dong-tai-zi-fu-chuan/</guid>
+      <description>&lt;p&gt;大家应该都知道在 Javascript 中正则匹配可以使用 &lt;a href=&#34;http://www.w3schools.com/jsref/jsref_match.asp&#34;&gt;match&lt;/a&gt; 方法。&lt;/p&gt;
+&lt;p&gt;一个最简单的正则匹配例子 ：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; &amp;quot;Foo&amp;quot;.match(/foo/i);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;输出结果：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[&#39;Foo&#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Ok, 要解决标题中所说问题，我有必要先说明下在这里动态字符串指的是个什么？&lt;/p&gt;
+&lt;p&gt;动态字符串是指： 正则表达式是个变量，具体内容无法提前知道，例如需要对用户输入的结果进行正则匹配。那该如何处理这种情况？&lt;/p&gt;
+&lt;p&gt;我们可以通过实例化一个带有字符串参数的 RegExp 对象来处理这个问题，例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var input = &amp;quot;foo&amp;quot; ;
+var re = new RegExp(input, &amp;quot;i&amp;quot;) ;
+&amp;quot;Foo&amp;quot;.match(re) ;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;输出结果：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[&#39;Foo&#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;代码中 input 变量表示用户输入的值（可以根据具体情况获取）， re 就是根据输入内容生成的 RegExp 实例，其中 &lt;code&gt;i&lt;/code&gt; 这个参数表示忽略大小写。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;参考资料：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match&#34;&gt;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.w3schools.com/jsref/jsref_obj_regexp.asp&#34;&gt;http://www.w3schools.com/jsref/jsref_obj_regexp.asp&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

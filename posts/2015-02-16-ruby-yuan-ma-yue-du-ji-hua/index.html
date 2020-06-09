@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>一起阅读 Ruby 类库的源码吧！ - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="一起阅读 Ruby 类库的源码吧！" />
+<meta property="og:description" content="(I want you: 图片来源 500px)事情源于一天和同事讨论 Ruby 单例实现，当时为了了解 Singleton 这个 module 更多东西 ，顺手将 Ruby 代码 clone 下来，结果惊奇发现其代码注释非常详细，十分方便阅读：
+所以就有了这个阅读计划。
+开始阅读  克隆最新的ruby代码， git clone git@github.com:ruby/ruby.git 。 需要阅读的代码在 ruby_xx/lib 文件夹里面。 ok, 开始吧，先从自己最熟悉的 module 下手。  结束时间 现在我正阅读的版本是 2.2, 需要阅读的文件总计 find . -name &quot;*.rb&quot; | wc -l（626个）。 这意味着，即使每天阅读一个模块，几乎都要花费半年时间了，可见这是一件长期的计划。
+阅读源码是一种好的习惯，也是持续学习的过程，而且好的代码总能让人反复咀嚼，因为此计划暂无 deadline。
+阅读产物 阅读会根据自己理解，不定期通过博客给出有一些代码演示或旧代码重构，你期待了吗？如果你感兴趣，加入此计划吧。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2015-02-16-ruby-yuan-ma-yue-du-ji-hua/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2015-02-16T22:31:00+08:00" />
+<meta property="article:modified_time" content="2015-02-16T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="一起阅读 Ruby 类库的源码吧！"/>
+<meta name="twitter:description" content="(I want you: 图片来源 500px)事情源于一天和同事讨论 Ruby 单例实现，当时为了了解 Singleton 这个 module 更多东西 ，顺手将 Ruby 代码 clone 下来，结果惊奇发现其代码注释非常详细，十分方便阅读：
+所以就有了这个阅读计划。
+开始阅读  克隆最新的ruby代码， git clone git@github.com:ruby/ruby.git 。 需要阅读的代码在 ruby_xx/lib 文件夹里面。 ok, 开始吧，先从自己最熟悉的 module 下手。  结束时间 现在我正阅读的版本是 2.2, 需要阅读的文件总计 find . -name &quot;*.rb&quot; | wc -l（626个）。 这意味着，即使每天阅读一个模块，几乎都要花费半年时间了，可见这是一件长期的计划。
+阅读源码是一种好的习惯，也是持续学习的过程，而且好的代码总能让人反复咀嚼，因为此计划暂无 deadline。
+阅读产物 阅读会根据自己理解，不定期通过博客给出有一些代码演示或旧代码重构，你期待了吗？如果你感兴趣，加入此计划吧。"/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">一起阅读 Ruby 类库的源码吧！</h1>
+        </header>
+        <div class="content">
+            <p><img src="https://drscdn.500px.org/photo/23171313/m=1170/c150b74f80ce6008772339fb30b2c9c8" alt="I want you">
+<!-- raw HTML omitted -->(I want you: 图片来源 500px)<!-- raw HTML omitted --></p>
+<p>事情源于一天和同事讨论 Ruby 单例实现，当时为了了解 <code>Singleton</code> 这个 module 更多东西 ，顺手将 Ruby
+代码 clone 下来，结果惊奇发现其代码注释非常详细，十分方便阅读：</p>
+<p><img src="http://songjiayang.qiniudn.com/singleton-code.png" alt="singleton-code"></p>
+<p>所以就有了这个阅读计划。</p>
+<h4 id="开始阅读">开始阅读</h4>
+<ol>
+<li>克隆最新的ruby代码， git clone <a href="mailto:git@github.com">git@github.com</a>:ruby/ruby.git 。</li>
+<li>需要阅读的代码在 ruby_xx/lib 文件夹里面。</li>
+<li>ok, 开始吧，先从自己最熟悉的 module 下手。</li>
+</ol>
+<h4 id="结束时间">结束时间</h4>
+<p>现在我正阅读的版本是 2.2, 需要阅读的文件总计 <code>find . -name &quot;*.rb&quot; | wc -l</code>（626个）。
+这意味着，即使每天阅读一个模块，几乎都要花费半年时间了，可见这是一件长期的计划。</p>
+<p>阅读源码是一种好的习惯，也是持续学习的过程，而且好的代码总能让人反复咀嚼，因为此计划暂无 deadline。</p>
+<h4 id="阅读产物">阅读产物</h4>
+<p>阅读会根据自己理解，不定期通过博客给出有一些代码演示或旧代码重构，你期待了吗？如果你感兴趣，加入此计划吧。</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-02-16</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on 小鱼驿站</title>
+    <link>/tags/git/</link>
+    <description>小鱼驿站 (git)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 22 Feb 2018 16:00:25 +0000</lastBuildDate>
+    
+    <atom:link href="/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>.gitignore 瘦身秘诀</title>
+      <link>/posts/2018-02-23-ru-pei-zhi-zi-ding-yi-de-gitignore/</link>
+      <pubDate>Thu, 22 Feb 2018 16:00:25 +0000</pubDate>
+      
+      <guid>/posts/2018-02-23-ru-pei-zhi-zi-ding-yi-de-gitignore/</guid>
+      <description>&lt;p&gt;我们在使用 &lt;code&gt;git&lt;/code&gt; 的时候经常会遇到这样一个问题，团队成员使用的编辑器很多，比如 &lt;code&gt;vscode, vim, idea&lt;/code&gt; ，而它们产生的临时文件又各不相同，这时我们该怎么处理？&lt;/p&gt;
+&lt;h3 id=&#34;常见方法&#34;&gt;常见方法&lt;/h3&gt;
+&lt;p&gt;将用到的编辑器产生的临时文件格式都添加到 .gitignore 文件中，所以最后它就变成这样或者更多：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Editor files #	
+################	
+*~	
+.*.swp	
+.*.swo	
+*.iml	
+.idea	
+tags	
+.history	
+.vscode
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样的问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;需要修改 .gitignore，添加新的文件格式，然后 git commit。&lt;/li&gt;
+&lt;li&gt;编辑器很多而且有新的产生，何时是个头。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;改进方法&#34;&gt;改进方法&lt;/h3&gt;
+&lt;p&gt;其实在项目目录下，有个叫做 &lt;code&gt;.git/info/exclude&lt;/code&gt; 的文件，它可以用于自定义个人忽略选项，从而避免以上问题。&lt;/p&gt;
+&lt;p&gt;以 vscode 编辑器为例，我们做以下简单调整即可：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;删除 &lt;code&gt;.gitignore&lt;/code&gt; 中 Editor files 有关内容。&lt;/li&gt;
+&lt;li&gt;在 &lt;code&gt;.git/info/exclude&lt;/code&gt; 中添加 &lt;code&gt;.vscode&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>win32 小白用户 GitHub 埋坑指南</title>
+      <link>/posts/2017-07-24-win32-xiao-bai-yong-hu-github-mai-keng-zhi-nan/</link>
+      <pubDate>Mon, 24 Jul 2017 22:02:52 +0000</pubDate>
+      
+      <guid>/posts/2017-07-24-win32-xiao-bai-yong-hu-github-mai-keng-zhi-nan/</guid>
+      <description>&lt;p&gt;这周作为教练参加了上海举办的 Girl&amp;rsquo;s Coding Day 活动，期间发现有部分学员使用的是 win 32位的操作系统，出现了按照教程无法安装 GitHub Desktop 的问题 ，故编写了本篇指导，帮助那些对  Git,  GitHub 不是很了解的同学，方便其快速上手。&lt;/p&gt;
+&lt;p&gt;本篇指导主要运行在 win32 操作系统上。&lt;/p&gt;
+&lt;h3 id=&#34;概念&#34;&gt;概念&lt;/h3&gt;
+&lt;p&gt;Git: 是一个分布式的代码管理系统，使用它可以很方便的做到多人协作，同步，回滚代码，而使用频率较高的命令包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;git  init&lt;/code&gt; （初始化项目）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;git  add .&lt;/code&gt; （添加修改文件)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;git commit -m &amp;quot;xxx&amp;quot;&lt;/code&gt; （提交修改到本地仓库)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;git push  origin xxxx&lt;/code&gt; （提交代码到中央仓库）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;git pull  origin xxxx&lt;/code&gt; （从中央仓库下载代码）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;GitHub: 是一个git 代码在线托管网站，主要实现了使用浏览器查看代码，分享和管理代码，简单理解就是代码中央仓库的可视化管理平台&lt;/p&gt;
+&lt;h3 id=&#34;使用步骤&#34;&gt;使用步骤&lt;/h3&gt;
+&lt;p&gt;Step 1: 访问 &lt;a href=&#34;https://pan.baidu.com/s/1dFfAzyL&#34;&gt;https://pan.baidu.com/s/1dFfAzyL&lt;/a&gt; ，下载安装 win32 版本 git。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装完成后，点击开始菜单 -&amp;gt;  输入 git -&amp;gt; 点击 Git CMD  进入 git 终端。&lt;/li&gt;
+&lt;li&gt;在终端光标处输入 &lt;code&gt;git config  --global user.name xxxx&lt;/code&gt; 设置账号名称。&lt;/li&gt;
+&lt;li&gt;在终端光标处输入 &lt;code&gt;git config  --global user.email xxxx&lt;/code&gt;  设置账号 email。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/github/pic1.png&#34; alt=&#34;pic1.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Step 2: 访问 &lt;a href=&#34;https://github.com/new&#34;&gt;https://github.com/new&lt;/a&gt; ， 创建任意项目，如图&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/github/pic2.png&#34; alt=&#34;pic2.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Step3: 使用 git https 管理管理项目&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如图拷贝项目地址&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/github/pic3.png&#34; alt=&#34;pic3.png&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 git clone 拉取代码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;点击开始菜单 -&amp;gt; 输入  git -&amp;gt; 点击 Git CMD  进入 git 终端。&lt;/li&gt;
+&lt;li&gt;在终端光标处输入 cd  Desktop , 将工作目录切换到电脑桌面。&lt;/li&gt;
+&lt;li&gt;在终端光标处 &lt;code&gt;git clone  &amp;lt;项目链接&amp;gt;&lt;/code&gt; ，比如我这里的 git clone &lt;a href=&#34;https://github.com/songjiayang/GirlsCodingDay.git&#34;&gt;https://github.com/songjiayang/GirlsCodingDay.git&lt;/a&gt; ，此时你将看到桌面会产生项目目录文件，表示项目已从 GitHub 拉取成功。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/images/github/pic4.png&#34; alt=&#34;pic4.png&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;修改并提交代码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;使用 atom 编辑器，打开此项目，开始编写代码（可以考虑使用模版，将模版的内容全部拷贝到这个项目目录下）&lt;/li&gt;
+&lt;li&gt;代码修改完后，执行 git add . 添加所有修改的文件。&lt;/li&gt;
+&lt;li&gt;执行 &lt;code&gt;git commit -m &amp;quot;add xxxx&amp;quot;&lt;/code&gt; 提交修改文件到本地。&lt;/li&gt;
+&lt;li&gt;执行 &lt;code&gt;git push origin master&lt;/code&gt;，提交代码到 GitHub, 这一步会提示输入 GitHub 账号。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/images/github/pic5.png&#34; alt=&#34;pic5.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Step4:  设置 GitHub Pages&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;访问项目的  GitHub 页面设置页面，比如我的， &lt;a href=&#34;https://github.com/songjiayang/GirlsCodingDay/settings&#34;&gt;https://github.com/songjiayang/GirlsCodingDay/settings&lt;/a&gt; 。&lt;/li&gt;
+&lt;li&gt;修改 GitHub Pages 选择，并保存。&lt;/li&gt;
+&lt;li&gt;使用自动生成的 GitHub Pages 地址即可访问自己的网站了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;写在最后&#34;&gt;写在最后&lt;/h3&gt;
+&lt;p&gt;学员对于这次活动这样说：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;以前看到这些东西都是一堆乱码，而现在发现它们都是有逻辑的。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我想这就是最大收获吧，敢于挑战自我，不断学习，进步的人都是可敬的！&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>git 常见问题汇总</title>
+      <link>/posts/2015-01-22-gitchang-jian-wen-ti-hui-zong/</link>
+      <pubDate>Thu, 22 Jan 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-01-22-gitchang-jian-wen-ti-hui-zong/</guid>
+      <description>&lt;h4 id=&#34;1-git-log-常用命令&#34;&gt;1. &lt;code&gt;git log&lt;/code&gt; 常用命令：&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;下一条:  return
+下一页:  space bar
+前一页:  w
+退出:  q
+帮助:  h
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;2-git-tag-常用命令&#34;&gt;2. &lt;code&gt;git tag&lt;/code&gt; 常用命令：&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;git tag -a v1.4 -m &#39;my version 1.4&#39; #当前提交添加 tag
+git tag -a v1.4 9fceb02  #给任意提交添加 tag
+git tag -d v1.4 # 删除一个tag
+git push origin :refs/tags/v1.4 # 删除远程仓库tag
+git show v1.4
+git push origin --tags
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参考： &lt;a href=&#34;http://git-scm.com/book/en/v2/Git-Basics-Tagging&#34;&gt;http://git-scm.com/book/en/v2/Git-Basics-Tagging&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何使用 git 管理项目代码发布版本</title>
+      <link>/posts/2014-06-27-ru-he-shi-yong-gitguan-li-xiang-mu-dai-ma-fa-bu-ban-ben-/</link>
+      <pubDate>Fri, 27 Jun 2014 10:49:22 +0800</pubDate>
+      
+      <guid>/posts/2014-06-27-ru-he-shi-yong-gitguan-li-xiang-mu-dai-ma-fa-bu-ban-ben-/</guid>
+      <description>&lt;p&gt;这里我们主要使用git的tag命令；tag命令的详情查看可以使用 &lt;code&gt;git tag —help&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;以下是我经常用到的几条命令：&lt;/p&gt;
+&lt;p&gt;####1、列出项目中所有的tags&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+git tag
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####2、给项目添加一个tag, 一般情况下tag都是以v开头命名的，例如v1.0.1&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git tag vTAGNAME
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####3、给指定某一个commit 打上tag，一般用于tag修改和遗漏的tag&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git tag vTAGNAME COMMIT-HASH
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####4、根据tag名称删除tag&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git tag -d vTAGNAME
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####5、推送所有的tags到远程仓库&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git push origin --tags
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####6、删除tag&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git tag -d TAGNAME #本地删除
+git push origin :refs/tags/TAGNAME #删除远程仓库
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>代码行统计之 git 命令</title>
+      <link>/posts/2014-01-24-dai-ma-xing-tong-ji-zhi-gitming-ling/</link>
+      <pubDate>Fri, 24 Jan 2014 21:23:49 +0800</pubDate>
+      
+      <guid>/posts/2014-01-24-dai-ma-xing-tong-ji-zhi-gitming-ling/</guid>
+      <description>&lt;p&gt;年底下，突然想看下今年项目提交代码的行数，于是在网上找到了如下命令:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git log --author=&amp;quot;&amp;lt;USERNAME&amp;gt;&amp;quot; --pretty=tformat: --numstat | gawk &#39;{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf &amp;quot;added lines: %s removed lines : %s total lines: %s\n&amp;quot;,add,subs,loc }&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;具体使用只需要将&lt;!-- raw HTML omitted --&gt;替换成某某一个git comment user，如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git log --author=&amp;quot;songjiayang&amp;quot; --pretty=tformat: --numstat | gawk &#39;{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf &amp;quot;added lines: %s removed lines : %s total lines: %s\n&amp;quot;,add,subs,loc }&#39;
+
+added lines: 164821 removed lines : 287743 total lines: -122922
+
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

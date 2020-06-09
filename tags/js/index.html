@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>js - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/js/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="js" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/js/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2015-10-18T23:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="js"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: js</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-10-18-kick-dot-js-fen-xiang/">Kick.js 分享</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Kick.js 是我们公司自己编写,并在项目中使用的一个 js 库。它其实就是在 Jquery 的 ajax 基础上 包装了一下，使其 json api 请求的写法更简单。
+有了 kick.js, 你的请求可以写成这样：
+1. GET request Kick('materials').get() # GET http://example.com/materials Kick('materials').get({q:'panda'}) # GET http://example.com/materials?q=panda 2. POST request Kick('materials').post({name: 'foo'}) # POST http://example.com/materials # Request Payload # {name: &quot;foo&quot;} 3. PUT request Kick('materials', '1').put({name: 'foo'}) # PUT http://example.com/materials/1 # Request Payload # {name: &quot;foo&quot;} 4. PATCH request Kick('materials', '1').patch({name: 'foo'}) # PATCH http://example.com/materials/1 # Request Payload # {name: &quot;foo&quot;} 5.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-10-18</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/js">#js</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-08-27-wo-bing-bu-xu-yao-jquery/">也许，你真的不需要 jQuery</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        在 web 发展的历史过程中，jQuery 扮演了非常重要的角色，相对写原生的 javascript ，相同功能代码量少很多，语法简单，对新手友好。
+这点大家可以通过 you-dont-need-jquery 系列文章对比两者代码差异。 该文章主要讲述的是如何使用原生 javascript 来实现 jQuery 主要功能， 目的是为了让大家深入理解 jQeury 背后的原理知识，知其所以然。
+但作者肯定并不是真的让大家完全抛弃 jQuery ，直接裸写 js 的，想想，也没人这么做吧！
+但时代总是发展变化的，而且很快，尤其是在移动设备占据了大部分的网络流量的情况下， jQuery 的地位和作用显得有些尴尬了。
+对于传统网站，它还是第一选择，但是越来越多的 web 应用 (SPA) ，交互和功能太过复杂，它的表现就没那么好用了（相比很多现代的框架）。
+背景： 最近在写 mario-ui, 采用的是 Flux 架构，依赖 react 。
+下面就从项目具体实践来谈谈，为什么此项目不需要 jQuery。
+1. 选择器 react 有声明 ref 的功能， 例如在一个表单中有一个 email 的 ref, 我可以通过 this.refs.email.getDOMNode() 来达到同样效果。
+&lt;form className=&quot;login-block__form&quot; onSubmit={this.onSubmit}&gt; &lt;input className=&quot;form__input login-block__input&quot; placeholder=&quot;Email&quot; type=&quot;email&quot; ref='email'/&gt; type=&quot;submit&quot; /&gt; &lt;/form&gt; 2. DOM 操作 要知道 DOM 操作是一件性能很低下的操作，它会导致 DOM refresh/rerender.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-08-27</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/js">#js</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-09-15-javascriptzhong-ru-he-hu-lue-da-xiao-zheng-ze-pi-pei-dong-tai-zi-fu-chuan/">JS 中如何忽略大小正则匹配动态字符串</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        大家应该都知道在 Javascript 中正则匹配可以使用 match 方法。
+一个最简单的正则匹配例子 ：
+ &quot;Foo&quot;.match(/foo/i); 输出结果：
+['Foo'] Ok, 要解决标题中所说问题，我有必要先说明下在这里动态字符串指的是个什么？
+动态字符串是指： 正则表达式是个变量，具体内容无法提前知道，例如需要对用户输入的结果进行正则匹配。那该如何处理这种情况？
+我们可以通过实例化一个带有字符串参数的 RegExp 对象来处理这个问题，例如：
+var input = &quot;foo&quot; ; var re = new RegExp(input, &quot;i&quot;) ; &quot;Foo&quot;.match(re) ; 输出结果：
+['Foo'] 代码中 input 变量表示用户输入的值（可以根据具体情况获取）， re 就是根据输入内容生成的 RegExp 实例，其中 i 这个参数表示忽略大小写。
+参考资料：
+ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match http://www.w3schools.com/jsref/jsref_obj_regexp.asp  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-09-15</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%AD%A3%E5%88%99">#正则</a></li>
+                    
+                        <li><a href="tags/js">#js</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

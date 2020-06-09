@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>正则 on 小鱼驿站</title>
+    <link>/tags/%E6%AD%A3%E5%88%99/</link>
+    <description>小鱼驿站 (正则)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 09 Oct 2014 22:31:00 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/%E6%AD%A3%E5%88%99/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>正则表达式简明参考</title>
+      <link>/posts/2014-10-09-zhuan-zai-zheng-ze-biao-da-shi-jian-ming-can-kao/</link>
+      <pubDate>Thu, 09 Oct 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-10-09-zhuan-zai-zheng-ze-biao-da-shi-jian-ming-can-kao/</guid>
+      <description>&lt;p&gt;本文章转载于 &lt;a href=&#34;http://www.xiaoleilu.com/regex-guide/&#34;&gt;http://www.xiaoleilu.com/regex-guide/&lt;/a&gt; ,感谢作者的干货，以备日后查询检索之用，以下属于转载内容，版权归原作者。&lt;/p&gt;
+&lt;h4 id=&#34;前言&#34;&gt;前言&lt;/h4&gt;
+&lt;p&gt;我想在网上最出名的正则相关的一篇文章就是《正则表达式30分钟入门教程》了，说实话这篇文章确实是我的正则入门，但是随着使用熟练，冗长的文章已经不能满足我了，在此做个归纳总结，用于快速查阅。&lt;/p&gt;
+&lt;p&gt;以下语法在&lt;strong&gt;Java&lt;/strong&gt;中有效，大部分应该是通用的。&lt;/p&gt;
+&lt;h4 id=&#34;元字符&#34;&gt;元字符&lt;/h4&gt;
+&lt;p&gt;元字符，又叫字符集，就是用一些特殊符号表示特定种类的字符或位置。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;匹配字符&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;.&lt;/code&gt;      匹配除换行符以外的任意字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\w&lt;/code&gt;     匹配字母或数字或下划线或汉字&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\s&lt;/code&gt;     匹配任意的空白符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\d&lt;/code&gt;     匹配数字&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;匹配位置&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;\b&lt;/code&gt;     匹配单词的开始或结束&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;^&lt;/code&gt;      匹配字符串的开始&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$&lt;/code&gt;      匹配字符串的结束&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\G&lt;/code&gt;     上一个匹配的结尾（本次匹配开始）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\A&lt;/code&gt;     字符串开头(类似&lt;code&gt;^&lt;/code&gt;，但不受处理多行选项的影响)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\Z&lt;/code&gt;     字符串结尾或行尾(不受处理多行选项的影响)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\z&lt;/code&gt;     字符串结尾(类似&lt;code&gt;$&lt;/code&gt;，但不受处理多行选项的影响)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;重复&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;*&lt;/code&gt;      重复零次或更多次&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;+&lt;/code&gt;      重复一次或更多次&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;?&lt;/code&gt;      重复零次或一次&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;{n}&lt;/code&gt;    重复n次&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;{n,}&lt;/code&gt;   重复n次或更多次&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;{n,m}&lt;/code&gt;  重复n到m次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;字符转义&#34;&gt;字符转义&lt;/h4&gt;
+&lt;p&gt;如果想匹配元字符本身或者正则中的一些特殊字符，使用&lt;code&gt;\&lt;/code&gt;转义。例如匹配&lt;code&gt;*&lt;/code&gt;这个字符则使用&lt;code&gt;\*&lt;/code&gt;，匹配&lt;code&gt;\&lt;/code&gt;这个字符，使用&lt;code&gt;\\&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;需要转义的字符：&lt;code&gt;$&lt;/code&gt;, &lt;code&gt;(&lt;/code&gt;, &lt;code&gt;)&lt;/code&gt;, &lt;code&gt;*&lt;/code&gt;, &lt;code&gt;+&lt;/code&gt;, &lt;code&gt;.&lt;/code&gt;, &lt;code&gt;[&lt;/code&gt;, &lt;code&gt;]&lt;/code&gt;, &lt;code&gt;?&lt;/code&gt;, &lt;code&gt;\&lt;/code&gt;, &lt;code&gt;^&lt;/code&gt;, &lt;code&gt;{&lt;/code&gt;, &lt;code&gt;}&lt;/code&gt;, &lt;code&gt;|&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&#34;字符类&#34;&gt;字符类&lt;/h4&gt;
+&lt;p&gt;当需要匹配明确的字符或字符集合时候，就用到字符类。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;特殊字符&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;\0hh&lt;/code&gt;      8进制值hh所表示的字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\xhh&lt;/code&gt;      16进制值hh所表示的字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\uhhhh&lt;/code&gt;    16进制值hhhh所表示的Unicode字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\t&lt;/code&gt;        Tab&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\n&lt;/code&gt;        换行符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\r&lt;/code&gt;        回车符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\f&lt;/code&gt;        换页符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\e&lt;/code&gt;        Escape&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\cN&lt;/code&gt;       ASCII控制字符。比如&lt;code&gt;\cC&lt;/code&gt;代表&lt;code&gt;Ctrl+C&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\p{name}&lt;/code&gt;  Unicode中命名为name的字符类，例如&lt;code&gt;\p{IsGreek}&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;陈列&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;[aeiou]&lt;/code&gt;  匹配一个元音字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;[.?!]&lt;/code&gt;    匹配给定的一个标点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;范围&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;[0-9]&lt;/code&gt;        匹配0~9的数字，同&lt;code&gt;\d&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;[a-z]&lt;/code&gt;        匹配所有小写字母&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;[a-zA-Z]&lt;/code&gt;     匹配所有字母&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;[a-z0-9A-Z_]&lt;/code&gt; 等同于&lt;code&gt;\w&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;反义&#34;&gt;反义&lt;/h4&gt;
+&lt;p&gt;表示不属于元字符或者字符类的字符&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;反义元字符&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;\W&lt;/code&gt;    匹配任意不是字母，数字，下划线，汉字的字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\S&lt;/code&gt;    匹配任意不是空白符的字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\D&lt;/code&gt;    匹配任意非数字的字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\B&lt;/code&gt;    匹配不是单词开头或结束的位置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;反义字符类&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;[^x]&lt;/code&gt;        匹配除了x以外的任意字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;[^aeiou]&lt;/code&gt;    匹配除了aeiou这几个字母以外的任意字符&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;分枝条件&#34;&gt;分枝条件&lt;/h4&gt;
+&lt;p&gt;又叫逻辑运算符，在此&lt;code&gt;X&lt;/code&gt;和&lt;code&gt;Y&lt;/code&gt;表示两个&lt;strong&gt;表达式&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;XY&lt;/code&gt;      X紧跟Y&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;X|Y&lt;/code&gt;     表示X或Y，从左到右，满足第一个条件就不会继续匹配了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;分组&#34;&gt;分组&lt;/h4&gt;
+&lt;p&gt;在这里我把&lt;strong&gt;表达式&lt;/strong&gt;统一以&lt;code&gt;\w&lt;/code&gt;为例：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;(\w)&lt;/code&gt;          被一个括号包围起来是一个整体，表示一个分组&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(\w)(\w)&lt;/code&gt;      自动命名分组，第一个小括号是分组1，第二个小括号是分组2&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?&#39;Word&#39;\w+))&lt;/code&gt; 表示定义了一个叫做&lt;code&gt;Word&lt;/code&gt;的分组&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?&amp;lt;Word&amp;gt;\w+))&lt;/code&gt; 表示定义了一个叫做&lt;code&gt;Word&lt;/code&gt;的分组&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?:\w+)&lt;/code&gt;       匹配exp,不捕获匹配的文本，也不给此分组分配组号&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;后向引用&#34;&gt;后向引用&lt;/h4&gt;
+&lt;p&gt;后面的表达式可以引用前面的某个分组，用&lt;code&gt;\1&lt;/code&gt;表示，就好像分组1的值赋值给了&lt;code&gt;\1&lt;/code&gt;这个变量，这个变量可以在后面任意位置引用。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;\1&lt;/code&gt;       表示分组1匹配的文本&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\k&amp;lt;Word&amp;gt;&lt;/code&gt; 表示分组&lt;code&gt;Word&lt;/code&gt;匹配的文本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;匹配重复两个的英文，例如匹配&lt;code&gt;Hello Hello&lt;/code&gt;、&lt;code&gt;lei123 lei123&lt;/code&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;(\w+)\s+\1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?&amp;lt;Word&amp;gt;\w+)\s+\k&amp;lt;Word&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;零宽断言正向和负向&#34;&gt;零宽断言（正向和负向）&lt;/h4&gt;
+&lt;p&gt;零宽断言表示匹配字符的时候再添加一些定位条件，使匹配更精准。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;\w+(?=ing)&lt;/code&gt;       匹配以&lt;code&gt;ing&lt;/code&gt;结尾的多个字符（不包括ing）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\w+(?!ing)&lt;/code&gt;       匹配&lt;strong&gt;不是&lt;/strong&gt;以&lt;code&gt;ing&lt;/code&gt;结尾的多个字符&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;hr&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;(?&amp;lt;=re)\w+&lt;/code&gt;       匹配以&lt;code&gt;re&lt;/code&gt;开头的多个字符（不包括re）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?&amp;lt;!re)\w+&lt;/code&gt;       匹配&lt;strong&gt;不是&lt;/strong&gt;以&lt;code&gt;re&lt;/code&gt;开头的多个字符&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;hr&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;(?&amp;lt;=\s)\d+(?=\s)&lt;/code&gt; 匹配两边是空白符的数字，不包括空白符&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;贪婪与懒惰&#34;&gt;贪婪与懒惰&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;贪婪&lt;/strong&gt;：匹配尽可能长的字符串&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;懒惰&lt;/strong&gt;：匹配尽可能短的字符串&lt;/p&gt;
+&lt;p&gt;懒惰模式的启用只需在&lt;strong&gt;重复元字符&lt;/strong&gt;之后加&lt;code&gt;?&lt;/code&gt;既可。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;*?&lt;/code&gt;      重复任意次，但尽可能少重复&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;+?&lt;/code&gt;      重复1次或更多次，但尽可能少重复&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;??&lt;/code&gt;      重复0次或1次，但尽可能少重复&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;{n,m}?&lt;/code&gt;  重复n到m次，但尽可能少重复&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;{n,}?&lt;/code&gt;   重复n次以上，但尽可能少重复&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;处理选项&#34;&gt;处理选项&lt;/h4&gt;
+&lt;p&gt;在表达式里插记号的方式来启用绝大多数的模式，在正则的哪里插入，就从哪里启用。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;(?i)&lt;/code&gt;：忽略大小写(CASE_INSENSITIVE)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?x)&lt;/code&gt;：忽略空格字符(COMMENTS)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?s)&lt;/code&gt;：&lt;code&gt;.&lt;/code&gt;匹配任意字符，包括换行符（DOTALL）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?m)&lt;/code&gt;：多行模式（MULTILINE）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?u)&lt;/code&gt;：对Unicode符大小写不敏感（UNICODE_CASE），必须启用&lt;strong&gt;CASE_INSENSITIVE&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?d)&lt;/code&gt;：只有&amp;rsquo;\n&amp;rsquo;才被认作一行的中止（UNIX_LINES）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;平衡组递归匹配&#34;&gt;平衡组/递归匹配&lt;/h4&gt;
+&lt;p&gt;平衡组用于匹配嵌套层次结构，常用于匹配HTML标签（当HTML内容不规范，起始标签和结束标签数量不同时，匹配出正确配对的标签），在此把表达式统一以&lt;code&gt;\w&lt;/code&gt;为例。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;(?&#39;group&#39;\w)&lt;/code&gt;     捕获的分组（&lt;code&gt;\w&lt;/code&gt;匹配到的内容）命名为&lt;code&gt;group&lt;/code&gt;，并压入堆栈&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?&#39;-group&#39;\w)&lt;/code&gt;    捕获分组（&lt;code&gt;\w&lt;/code&gt;匹配到的内容）后，弹出&lt;code&gt;group&lt;/code&gt;分组栈的栈顶内容（最后压入的捕获内容），堆栈本来为空，则本分组的匹配失败&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?(group)yes|no)&lt;/code&gt; 如果&lt;code&gt;group&lt;/code&gt;栈非空匹配表达式&lt;code&gt;yes&lt;/code&gt;，否则匹配表达式&lt;code&gt;no&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(?!)&lt;/code&gt;             零宽负向先行断言，由于没有后缀表达式，试图匹配总是失败&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;注释&#34;&gt;注释&lt;/h4&gt;
+&lt;p&gt;注释语法：&lt;code&gt;(?#comment)&lt;/code&gt;，这个语法的内容会被正则忽略，用于注释含义。可以放在正则表达式的任意位置。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.jb51.net/tools/zhengze.html&#34;&gt;正则表达式30分钟入门教程&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.java3z.com/cwbwebhome/article/article2/2311.html?id=877&#34;&gt;正则表达式&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>JS 中如何忽略大小正则匹配动态字符串</title>
+      <link>/posts/2014-09-15-javascriptzhong-ru-he-hu-lue-da-xiao-zheng-ze-pi-pei-dong-tai-zi-fu-chuan/</link>
+      <pubDate>Mon, 15 Sep 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-09-15-javascriptzhong-ru-he-hu-lue-da-xiao-zheng-ze-pi-pei-dong-tai-zi-fu-chuan/</guid>
+      <description>&lt;p&gt;大家应该都知道在 Javascript 中正则匹配可以使用 &lt;a href=&#34;http://www.w3schools.com/jsref/jsref_match.asp&#34;&gt;match&lt;/a&gt; 方法。&lt;/p&gt;
+&lt;p&gt;一个最简单的正则匹配例子 ：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; &amp;quot;Foo&amp;quot;.match(/foo/i);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;输出结果：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[&#39;Foo&#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Ok, 要解决标题中所说问题，我有必要先说明下在这里动态字符串指的是个什么？&lt;/p&gt;
+&lt;p&gt;动态字符串是指： 正则表达式是个变量，具体内容无法提前知道，例如需要对用户输入的结果进行正则匹配。那该如何处理这种情况？&lt;/p&gt;
+&lt;p&gt;我们可以通过实例化一个带有字符串参数的 RegExp 对象来处理这个问题，例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var input = &amp;quot;foo&amp;quot; ;
+var re = new RegExp(input, &amp;quot;i&amp;quot;) ;
+&amp;quot;Foo&amp;quot;.match(re) ;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;输出结果：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[&#39;Foo&#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;代码中 input 变量表示用户输入的值（可以根据具体情况获取）， re 就是根据输入内容生成的 RegExp 实例，其中 &lt;code&gt;i&lt;/code&gt; 这个参数表示忽略大小写。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;参考资料：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match&#34;&gt;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.w3schools.com/jsref/jsref_obj_regexp.asp&#34;&gt;http://www.w3schools.com/jsref/jsref_obj_regexp.asp&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

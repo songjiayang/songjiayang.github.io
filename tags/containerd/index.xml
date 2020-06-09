@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>containerd on 小鱼驿站</title>
+    <link>/tags/containerd/</link>
+    <description>小鱼驿站 (containerd)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 04 Jun 2020 17:03:04 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/containerd/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>containerd 启动报 `undefined symbol: seccomp_version` 错误的解决办法</title>
+      <link>/posts/2020-06-04-containerd-qi-dong-bao-cuo-jie-jue-ban-fa/</link>
+      <pubDate>Thu, 04 Jun 2020 17:03:04 +0800</pubDate>
+      
+      <guid>/posts/2020-06-04-containerd-qi-dong-bao-cuo-jie-jue-ban-fa/</guid>
+      <description>&lt;p&gt;最近开始研究 containerd, 按照官网教程 在 Centos7.2 上下载了 &lt;a href=&#34;https://github.com/containerd/containerd/releases/download/v1.3.4/containerd-1.3.4.linux-amd64.tar.gz&#34;&gt;containerd-1.3.4.linux-amd64.tar.gz&lt;/a&gt; ，解压缩运行程序的时候遇到如下报错信息：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./containerd: symbol lookup error: ./containerd: undefined symbol: seccomp_version
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;网上查了下，这个错误意思是说系统缺少对应版本的 &lt;code&gt;libseccomp&lt;/code&gt;， 有两个可能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;系统没有安装 libseccomp&lt;/li&gt;
+&lt;li&gt;系统安装的 libseccomp 版本不匹配（较低），建议使用 2.4.2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;libseccomp-是什么&#34;&gt;libseccomp 是什么？&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;library provides an easy to use, platform independent, interface to the Linux Kernel&amp;rsquo;s syscall filtering mechanism.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;它是一个 C 语言开发的 Linux 内核系统调用过滤帮助库，很多容器项目都使用到它，比如 containerd、docker、runc ，其源代码地址为 &lt;a href=&#34;https://github.com/seccomp/libseccomp&#34;&gt;https://github.com/seccomp/libseccomp&lt;/a&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;libseccomp-安装&#34;&gt;libseccomp 安装&lt;/h3&gt;
+&lt;p&gt;因为 containerd 需要依赖的 libseccomp 较新，经过测试，v2.4.2 可以在 Centos7.2 成功运行，所以我们直接通过源代码来安装。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;下载源代码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;curl -LO https://github.com/seccomp/libseccomp/releases/download/v2.4.2/libseccomp-2.4.2.tar.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;解压缩&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;tar -vxf libseccomp-2.4.2.tar.gz
+cd libseccomp-2.4.2
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;编译构建&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;./configure --prefix=/usr --disable-static &amp;amp;&amp;amp;  make 
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;安装&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;make install 
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;通过 &lt;code&gt;whereis libseccomp&lt;/code&gt; 查看安装目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;libseccomp: /usr/lib/libseccomp.so /usr/lib/libseccomp.la
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;注意：如果以前使用系统包管理工具安装了低版本的 libseccomp，即使通过编译安装最新版本，还是会报错。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这是因为引用路径的优先级的缘故，其 containerd 还是使用了老版本，故需要先删除系统包管理安装的老版本，删除命令根据操作系统的类别而定，比如 Centos 可以使用 &lt;code&gt;yum remove libseccomp&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;再次运行-containerd&#34;&gt;再次运行 containerd&lt;/h3&gt;
+&lt;p&gt;当安装了 v2.4.2 的 libseccomp 后， 我们再次运行 containerd，报错信息消失。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;INFO[2020-06-04T17:47:34.306847085+08:00] starting containerd                           revision=814b7956fafc7a0980ea07e950f983d0837e5578 version=v1.3.4
+INFO[2020-06-04T17:47:34.361473441+08:00] loading plugin &amp;quot;io.containerd.content.v1.content&amp;quot;...  type=io.containerd.content.v1
+INFO[2020-06-04T17:47:34.361589154+08:00] loading plugin &amp;quot;io.containerd.snapshotter.v1.btrfs&amp;quot;...  type=io.containerd.snapshotter.v1
+INFO[2020-06-04T17:47:34.362042869+08:00] skip loading plugin &amp;quot;io.containerd.snapshotter.v1.btrfs&amp;quot;..
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参考资料：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/containerd/containerd/issues/4008&#34;&gt;containerd/issues/4008&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/seccomp/libseccomp&#34;&gt;libseccomp 代码库&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.linuxfromscratch.org/blfs/view/svn/general/libseccomp.html&#34;&gt;libseccomp 安装&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.fpliu.com/it/software/libseccomp&#34;&gt;libseccomp 介绍&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

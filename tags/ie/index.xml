@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>IE on 小鱼驿站</title>
+    <link>/tags/ie/</link>
+    <description>小鱼驿站 (IE)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Jun 2015 22:31:00 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/ie/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>IE 样式限制的问题</title>
+      <link>/posts/2015-06-24-ie-liu-lan-qi-yang-shi-yi-chu-de-wen-ti/</link>
+      <pubDate>Wed, 24 Jun 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-06-24-ie-liu-lan-qi-yang-shi-yi-chu-de-wen-ti/</guid>
+      <description>&lt;p&gt;昨晚进行了一次项目更新，今早发现在 IE9 上样式错乱厉害。&lt;/p&gt;
+&lt;p&gt;按照一般 CSS 问题排查， 并未发现异处。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;样式文件全部加载，写法 IE 兼容。&lt;/li&gt;
+&lt;li&gt;DOM 元素对应样式无漏。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;但是，通过 IE9 自带的开发工具发现，很多元素的样式并未起作用。大概情况就是: CSS 写法没有问题，元素也添加了对应样式，但 IE 直接把样式定义忽略了。&lt;/p&gt;
+&lt;p&gt;那在什么情况下，IE9 会忽略样式？&lt;/p&gt;
+&lt;p&gt;一篇微软开发者博客给出了详细答案： &lt;a href=&#34;http://blogs.msdn.com/b/ieinternals/archive/2011/05/14/internet-explorer-stylesheet-rule-selector-import-sheet-limit-maximum.aspx&#34;&gt;Stylesheet Limits in Internet Explorer&lt;/a&gt; 。&lt;/p&gt;
+&lt;p&gt;文章提到，一共有三种情况会出现类似问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;一个 CSS 文件超过了 4095 规则定义。&lt;/li&gt;
+&lt;li&gt;外链 CSS 文件超过 31 个。&lt;/li&gt;
+&lt;li&gt;CSS 定义嵌套层数超过 4 层。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;针对我们项目，很快将问题定位到第一点。当我将项目中一个非常大的样式文件，按照模块拆分支后，问题得以顺利解决。&lt;/p&gt;
+&lt;p&gt;BTW: 出现这个问题的本质还是 IE9 和以下版本太过古老，IE10 之后，这个限制已大大提高，基本不是问题了，当然其他浏览器就更不是问题了。&lt;/p&gt;
+&lt;p&gt;总结： 话说我还是第一次遇到这样问题，出了问题不要怕，官网有说明哦～&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Ubuntu&#43;Passager&#43;Nginx Rails 部署搭建 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688446" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688446">
+
+<meta property="og:title" content="Ubuntu&#43;Passager&#43;Nginx Rails 部署搭建" />
+<meta property="og:description" content="跟新软件源
+sudo apt-get update . 如果升级报错，那么请执行sudo rm -rf /var/lib/apt/lists/* -vf 试试 安装git
+sudo apt-get install git-core 安装curl
+sudo apt-get install curl 安装rvm
+curl -L https://get.rvm.io | bash -s 获得最新稳定版rvm和安装ruby的依赖
+rvm get stable rvm requirements 安装所有rvm requirements依赖
+sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config 安装ruby
+rvm install 2.0.0 rvm use 2.0.0 default 升级gem并设置gem的配置" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2014-01-12-ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2014-01-12T15:18:38+08:00" />
+<meta property="article:modified_time" content="2014-01-12T15:18:38+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="Ubuntu&#43;Passager&#43;Nginx Rails 部署搭建"/>
+<meta name="twitter:description" content="跟新软件源
+sudo apt-get update . 如果升级报错，那么请执行sudo rm -rf /var/lib/apt/lists/* -vf 试试 安装git
+sudo apt-get install git-core 安装curl
+sudo apt-get install curl 安装rvm
+curl -L https://get.rvm.io | bash -s 获得最新稳定版rvm和安装ruby的依赖
+rvm get stable rvm requirements 安装所有rvm requirements依赖
+sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config 安装ruby
+rvm install 2.0.0 rvm use 2.0.0 default 升级gem并设置gem的配置"/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">Ubuntu&#43;Passager&#43;Nginx Rails 部署搭建</h1>
+        </header>
+        <div class="content">
+            <p>跟新软件源</p>
+<pre><code>sudo apt-get update  .
+</code></pre><p>如果升级报错，那么请执行sudo rm -rf /var/lib/apt/lists/* -vf 试试
+安装git</p>
+<pre><code>sudo apt-get install git-core
+</code></pre><p>安装curl</p>
+<pre><code>sudo apt-get install curl
+</code></pre><p>安装rvm</p>
+<pre><code>curl -L https://get.rvm.io | bash -s
+</code></pre><p>获得最新稳定版rvm和安装ruby的依赖</p>
+<pre><code>rvm get stable
+rvm requirements
+</code></pre><p>安装所有rvm requirements依赖</p>
+<pre><code>sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config
+</code></pre><p>安装ruby</p>
+<pre><code>rvm install 2.0.0
+rvm use 2.0.0 default
+</code></pre><p>升级gem并设置gem的配置</p>
+<pre><code>gem update
+echo -e &quot;install: --no-rdoc --no-ri \ninstall: --no-rdoc --no-ri&quot;&gt;&gt; ~/.gemrc
+</code></pre><p>安装Rials</p>
+<pre><code>gem install rails --version 3.2.13
+</code></pre><p>安装Rails一些常见依赖</p>
+<pre><code>sudo apt-get install mysql-server mysql-client nodejs
+</code></pre><p>安装passager/nginx</p>
+<pre><code>gem install passenger
+rvmsudo passenger-install-nginx-module
+</code></pre><p>所有选项选择默认即可.
+nginx安装目录也选择默认 /opt/nginx/
+passenger 会自动修改config, 添加passenger所在的rvm的ruby和gem环境地址</p>
+<p>安装nginx脚本</p>
+<pre><code>wget https://raw.github.com/gist/1548664/53f6d7ccb9dfc82a50c95e9f6e2e60dc59e4c2fb/nginx
+sudo cp nginx /etc/init.d/
+sudo chmod +x /etc/init.d/nginx
+sudo update-rc.d nginx defaults
+</code></pre><p>配置nginx,文件在 /opt/nginx/config/nginx.conf</p>
+<pre><code>server {
+   listen 80;
+   server_name www.yourhost.com;
+   root /home/railsu/project/public;   # &lt;--- 这里是你项目的public目录
+   passenger_enabled on;
+}
+</code></pre><p>启动nginx</p>
+<pre><code>sudo ./opt/nginx/sbin/nginx
+</code></pre><p>重启项目</p>
+<pre><code>cd yourapp
+touch tmp/restart.txt
+</code></pre>
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

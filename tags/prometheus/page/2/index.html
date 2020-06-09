@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>prometheus - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/prometheus/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="prometheus" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/prometheus/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2018-06-26T22:06:37+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="prometheus"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: prometheus</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-02-27-ru-he-liang-hua-ni-de-fu-wu/">如何量化你的服务</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        我们经常被问到：“你服务运行的质量如何？“
+问题很简单，几个字，但想要回答好并不容易，因为你需要有明确的数据来支持你的结论。
+ 那我们该如何量化我们的服务呢？
+ 使用 USE 方法 通常我们使用 USE 方法来量化我们的硬件资源使用情况，它具体指：
+ Utilisation: % time that the resource was busy Saturation: amount of work resource has to do, often queue length Errors: the count of error events  我们的硬件资源常见检测项包括：
+我们来看看一个 Prometheus 关于内存查询的例子：
+内存使用率（Utilisation）:
+1 - sum( node_memory_MemFree{job=“…”} + node_memory_Cached{job=“…”} + node_memory_Buffers{job=“…”}) / sum(node_memory_MemTotal{job=“…”}) 内存饱和（Saturation）:
+1e3 * sum( rate(node_vmstat_pgpgin{job=“…”}[1m]) + rate(node_vmstat_pgpgout{job=“…”}[1m])) ) 使用 RED 方法 通常我们使用 RED 方法来量化我们后端服务的运行情况（尤其微服务），它具体指：
+ Rate: number of requests per second Errors: the number of those requests that are failing Duration: the amount of time those requests take  使用 Prometheus 查询例子：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-02-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-02-22-alertmanger-with-wechat/">Alertmanger With WeChat</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Alertmanger 从 v0.12 开始已经默认支持企业微信了，真的非常接地气啊，今天我们就来一起体验一下。
+准备工作 step 1: 访问网站 注册企业微信账号（不需要企业认证）。
+step 2: 访问apps 创建第三方应用，点击创建应用按钮 -&gt; 填写应用信息：
+使用版本  prometheus: 2.0.darwin-amd64 node_exporter: 0.15.0.darwin-amd64 alertmanager: 0.14.darwin-amd64  详细配置： prometheus 配置： # Alertmanager configuration alerting: alertmanagers: - static_configs: - targets: - localhost:9093 rule_files: - &quot;rules.yml&quot; scrape_configs: - job_name: 'node' static_configs: - targets: ['localhost:9100'] rules.yml 配置：
+groups: - name: node rules: - alert: server_status expr: up{job=&quot;node&quot;} == 0 for: 15s annotations: summary: &quot;机器 {{ $labels.instance }} 挂了&quot; alertmanger 配置： route: group_by: ['alertname'] receiver: 'wechat' receivers: - name: 'wechat' wechat_configs: - corp_id: 'xxx' to_party: '1' agent_id: '1000002' api_secret: 'xxxx' 参数说明：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-02-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-01-30-prometheus-shu-ju-an-quan-zhi-basic-ren-zheng/">Prometheus 数据安全之 Basic 认证</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        我们都知道 Promethetheus 是不带认证和数据加密的，但很多时候我们又想在公网中直接使用它的管理界面，如果不做任何处理，它将存在严重的数据泄漏安全问题。
+下面我将介绍如何通过 nginx 的 basic 认证来解决这一问题。
+原始 Prometheus 代理配置 server { listen 80; server_name example.coom; location / { proxy_pass http://localhost:9090/; } } 说明：使用 nignx 的 proxy_pass 代理我们 Prometheus 服务。
+使用 htpasswd 生成认证密钥对 htpasswd 属于 apache2-utils 包，下面我将演示在 Ubuntu 上的安装和配置过程。
+Step1: 安装 apache2-utils
+$ sudo apt-get install apache2-utils Step2: 生成认证密钥
+$ htpasswd -c /etc/nginx/.htpasswd monitor New password: Re-type new password: Adding password for user monitor 说明：monitor 可以修改为任意用户名。
+Step3: 使用 cat 查看生成内容:
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-01-30</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-01-22-prometheus-shu-ju-an-quan-zhi-basic-ren-zheng0/">AlertManager 邮件告警配置详解</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        邮件作为最为通用的告警手段，我想大家在平时的工作中一定不会少用，下面我就以 gmail 为例来讲解整个配置过程。
+版本：Alertmanager 版本: 0.13.0
+配置内容 修改 alertmanager.yml 文件，添加信息如下：
+route: group_by: [Alertname] receiver: email receivers: - name: 'email' email_configs: - smarthost: 'smtp.gmail.com:587' hello: 'gmail.com' from: 'xx@gmail.com' to: 'xx@gmail.com' auth_username: '' // email 账号 auth_identity: '' // email 账号 auth_password: '' // email 密码 如果你有多个 email recevier，而它们使用相同的 smtp sever，那么我们可以使用全局 smtp 来简化配置：
+global: smtp_smarthost: 'smtp.gmail.com:587' smtp_from: 'xx@gmail.com' smtp_hello: 'gmail.com' receivers: - name: 'email' email_configs: - to: 'xx@gmail.com' auth_username: '' // email 账号 auth_identity: '' // email 账号 auth_password: '' // email 密码 重要提醒：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-01-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-01-19-ru-he-jiang-tong-tiao-gao-jing-xin-xi-fa-song-gei-duo-ge-qu-dao/">如何将同一条告警信息发送给多个渠道</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        背景： 有时我们需要将告警信息同时发送给多个渠道（例如短信或邮件），那么我们的 Alertmanager 该如何配置呢？
+ 使用版本：Alertmanager 版本： 0.13.0
+方法一 在同一个 recevier 定义多个接收渠道，例如：
+route: receiver: my-receiver receivers: - name: my-receiver webhook_configs: - url: 'https://hooks.xxx.com/xxxx' email_configs: - to: 'xx@xxxx' auth_username: 'xxx' auth_password: 'xxx' 说明: 可以看到同一条消息既使用 webhook 又使用 email 配置，所有在这两个渠道我们都收到消息。
+方法二 route: receiver: email # 默认配置一个 routes: - match: severity: Critical continue: true receiver: webhook - match: severity: Critical receiver: email receivers: - name: webhook webhook_configs: - url: 'https://hooks.xxx.com/xxxx' - name: email email_configs: - to: 'xx@xxxx' auth_username: 'xxx' auth_password: 'xxx' 定义多个独立的 receiver, 然后使用 routes 中的 continue 选项进行配置：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-01-19</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-01-03-prometheus-ji-qun-fang-an-zhi-remote-read-shi-zhan/">Prometheus 集群方案之 Remote Read 实战</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        众所周知，Prometheus 被吐槽最多的就是 HA 和集群方案。
+想想以前，我们用上顶配机器，但还会遇到磁盘，网络 IO，查询超时等问题，主要因为收集的数据量太大，超过单机承受的范围。
+在过去一段时间，虽然我们已经根据业务和部门，将能拆分的数据都拆分到不同的 Prometheus 中去了，但即便如此，仍存在以下问题：
+ 有些业务无法拆分，数据量还是特别大。 数据收集和查询做的事情是完全独立的，但两者时常相互竞争占用资源。  今天我们一起探讨解决此问题的新思路，即采用 remote_read 实现 Prometheus 数据的读写分离的集群方案 。
+remote_read 简介 众所周知，从 Prometheus 1.8 开始，增加了一个叫做 remote_read 的配置，详细信息如下：
+# The URL of the endpoint to query from. url: &lt;string&gt; # Timeout for requests to the remote read endpoint. [ remote_timeout: &lt;duration&gt; | default = 30s ] # Sets the `Authorization` header on every remote read request with the # configured username and password.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-01-03</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-12-12-prometheus-2-dot-0-gao-jing-gui-ze-jie-shao/">Prometheus 2.0 告警规则介绍</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Prometheus 2.0 已经发布一段时间了，从今天开始我将分几篇文章为大家介绍其中的一些变化。
+此篇文章主要介绍 2.0 的告警规则声明的新写法。
+变化 从 1.x 到 2.0 规则声明由自定义的 DSL 语法变成了标准的 yaml。
+这么做的主要原因是 yaml 能够提供更丰富的配置信息，能够彻底解决告警规则分组问题。
+在 2.0 中我们可以很方便的给不同告警组设置不同的检查轮询时间，详情请参考官方的文档（点击原文链接）。
+升级 你的 Prometheus 1.x 已经运行一段时间了，其中配置了大量的告警规则, 如何快速将 1.x 的告警规则定义配置升级到 2.0 格式呢?
+这个问题 Prometheus 早已经为我们考虑了，你可以使用 Prometheus 安装包下面的 promtool 工具来实现批量更新，用法如下：
+注： rules-files 支持单个文件和正则表达式，当执行完命令，在对应文件目录会生成一个同名的 文件名.yml 文件存放新的定义。
+总结 本篇文章主要介绍 Prometheus 2.0 告警规则的新语法以及如何使用 promtool 批量跟新旧定义，希望对大家有所帮助。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-12-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-09-25-ge-you-yu-pei-zhi-bu-dang-dao-zhi-prometheus-gao-jing-shi-xiao-de-bug/">一个由于配置不当导致 Prometheus 告警失效的 bug</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        随着对 Prometheus, Alertmanager 深入了解，我们配置的告警通知可读性提高了不少。
+但是有一个问题不断困扰着我们，现象大致为：
+在逻辑上我们认为是同一条的告警内容，在告警通知里面出现多次，而且已经过时告警还在不断发（一直报）。
+我们可以将这个问题简单总结为以下几点:
+ Prometheus Rule 一条查询结果，在 Alertmanager 却对应了多条警告。 Alertmanager 里面有警报一直处于未恢复的状态（没有收到 Prometheus 发送的 resolved 请求）  出现问题的原因 一开始我怀疑，是不是 Prometheus 向 Alertmanager 发送的 Resolved 通知有丢失, 导致部分历史警告一直处于未恢复状态。
+经排查，发现 Prometheus 和 Alertmanager 都未重启过，所以理论上不存在丢失通知的情况，即使有也是很低频的，无法解释问题 2 的大量情况。
+为了彻底搞清楚这个问题，我们有必要先弄清楚 Prometheus 中的 Rule 触发产生的告警在 Alertmanager 中是怎么对应的。
+1. 如何区分两条告警 根据 Prometheus common/alert 中的代码可知，所有具有相同 Labels 的告警为同一告警。
+那如何才算具有相同 Labels 呢，它的计算逻辑为对一个 map 按照 key 排序，然后依次对 key, value 取值，做 hash 计算，代码逻辑大致为：
+2. Prometheus 产生一条 Alert 的逻辑 Prometheus 执行配置中的 Rule 查询的时候，如果有满足条件的结果，就会产生对应告警，而告警条目数与查询出的纪录条数一致。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-09-25</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-09-21-ge-prometheus-cha-xun-de-qi-guai-wen-ti/">一个 Prometheus 查询的奇怪问题</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        昨天下午，一同事对我说 Prometheus 告警触发了，但是没发现对应的结果，我让她发了对应的截图给我：
+原来同事使用了图一的查询来监控服务状态码为 4xx, 且非 400 和 419 的情况。
+这个查询的逻辑看上去很合理，首先计算 4xx 的总数，然后再减去 400 和 419 的总数，最后查看计算结果是否 &gt; 0 。
+但通过图一和图二我们不难发现以下两个问题：
+ 图一查询结果怎么会有负数。 根据图二结果可知，不存在非 400和 419 的 4xx 数据，但为何图一查询结果却有 &gt; 0 的情况。  这两个问题，其实本质上是一个问题，那就是浮点数的精度问题，对于这个问题，我在 github 提了一个 issue， 得到的回复也大相径庭。
+所以，我们需要尽量避免浮点数运算，尤其使用除法和减法来做监控告警的依据。
+那回到同事这个需求，我们可以采用聚合的正则匹配来解决，其语句应该是这样：
+变通了一下，查询语句简单不少，性能也有所提升。
+总结 凡是能够直接通过查询搞定的，就不要再用计算表达式；如果用了表达式，需要注意精度问题，尤其做减法和除法。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-09-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-08-18-cloudnativecon-2017-prometheus-bao-dao/">CloudNativeCon 2017 Prometheus 报道</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        最近两天 PromCon 2017 正如火如荼的进行着，具体演讲主题以及大会安排可以参考链接 http://t.cn/RCUGHoy，或者访问 Twitter 频道 #PromCon2017查看最新动态。
+目前大会还未结束，暂时无法获取相关 slide, 但是我们可以回顾一下今年 3/29～ 3/30 的 CloudNativeCon 2017 大会，下面是我整理的关于 Prometheus 的分享主题和以及对应的视频，资料链接（需要翻墙）。
+主要介绍 Prometheus 的成长历史，如何从一个公司内部系统到多人贡献的优秀开源系统的华丽转变。
+ video: http://t.cn/RCyH0mA slide: http://t.cn/RCyQluy  主要介绍 Prometheus 的 Counter 数据模型，最佳实践。
+ video: http://t.cn/RCynpyG slide: http://t.cn/RCyQluy  主要介绍最新版本 AlertManager 的高可用模型, 再也不用担心告警的 HA 问题了。
+ video: http://t.cn/RCyugqk slide: 缺失  主要介绍 Cloud Native 生产环境中如何使用 Prometheus 监控告警，释放运维人力的案例。
+ video: http://t.cn/RCUUOvt slide: 缺失  详细介绍 AlertManager 的架构，各个组建作用，配置示例，并根据实践为 AlertManager 写了一个告警历史查询的插件。
+ video: http://t.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-08-18</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/tags/prometheus/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/tags/prometheus/page/3/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

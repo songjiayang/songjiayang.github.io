@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>where is my tempfile? - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="where is my tempfile?" />
+<meta property="og:description" content="The benefits of Tempfile are:
+ Automatically deleted. Unique file name. Nice place (/var) stored at disk.  What&rsquo;s my problem? Let me show you my code:
+def qr_file(url) temp = Tempfile.new([&#39;qr&#39;, &#39;.png&#39;]) path = temp.path qrcode = RQRCode::QRCode.new(url) qrcode.as_png( resize_gte_to: false, resize_exactly_to: false, fill: &#39;white&#39;, color: &#39;black&#39;, size: 200, border_modules: 0, module_px_size: 0 file: path ) path end def build_qr_cell(url, opts={}) @excel.add_image(image_src: qr_file(url), noSelect: false, noMove: false) do |image| image." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2016-03-09-where-is-my-tempfile/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2016-03-09T22:31:00+08:00" />
+<meta property="article:modified_time" content="2016-03-09T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="where is my tempfile?"/>
+<meta name="twitter:description" content="The benefits of Tempfile are:
+ Automatically deleted. Unique file name. Nice place (/var) stored at disk.  What&rsquo;s my problem? Let me show you my code:
+def qr_file(url) temp = Tempfile.new([&#39;qr&#39;, &#39;.png&#39;]) path = temp.path qrcode = RQRCode::QRCode.new(url) qrcode.as_png( resize_gte_to: false, resize_exactly_to: false, fill: &#39;white&#39;, color: &#39;black&#39;, size: 200, border_modules: 0, module_px_size: 0 file: path ) path end def build_qr_cell(url, opts={}) @excel.add_image(image_src: qr_file(url), noSelect: false, noMove: false) do |image| image."/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">where is my tempfile?</h1>
+        </header>
+        <div class="content">
+            <p><img src="/images/tempfile.png" alt="tempfile.png"></p>
+<p>The benefits of <code>Tempfile</code> are:</p>
+<ol>
+<li>Automatically deleted.</li>
+<li>Unique file name.</li>
+<li>Nice place (<code>/var</code>) stored at disk.</li>
+</ol>
+<p>What&rsquo;s my problem? Let me show you my code:</p>
+<pre><code>def qr_file(url)
+    temp = Tempfile.new(['qr', '.png'])
+    path = temp.path
+    qrcode = RQRCode::QRCode.new(url)
+    qrcode.as_png(
+      resize_gte_to: false,
+      resize_exactly_to: false,
+      fill: 'white',
+      color: 'black',
+      size: 200,
+      border_modules: 0,
+      module_px_size: 0
+      file: path
+    )
+    path
+end
+
+def build_qr_cell(url, opts={})
+  @excel.add_image(image_src: qr_file(url), noSelect: false, noMove: false) do |image|
+    image.width = 200
+    image.height = 200
+    image.start_at opts[:column_index], opts[:row_index]+1
+  end
+end
+
+</code></pre><p>There are two methods <code>qr_file</code> and <code>build_qr_cell</code> . The first one use to create a tempfile and return file path, the other one will use the path.</p>
+<p>When I execute my code, I get <strong>file not exist?</strong> error sometimes. Yes, it is sometimes rather than always.</p>
+<p><strong>Code is logic, not accident</strong>.</p>
+<p>It&rsquo;s so strange that I want to figure out the reason.</p>
+<p>I review <a href="http://ruby-doc.org/stdlib-2.3.0/libdoc/tempfile/rdoc/Tempfile.html">Tempfile</a> doc, stop eyes at this line.</p>
+<blockquote>
+<p>When a Tempfile object is garbage collected, or when the Ruby interpreter exits, its associated temporary file is automatically deleted.</p>
+</blockquote>
+<p>Oh, Maybe I get it. I guess the reason is Ruby GC.</p>
+<p>When after <code>qr_file</code> method call, the local variable <code>temp</code> lost its context, it should be garbage collected.</p>
+<p>As you known, Ruby execute GC has time limit. Sometimes you use the file, GC doesn&rsquo;t excute, but sometimes had. when GC executed before you use it, the file should be deleted and raise <strong>not exist</strong> error.</p>
+<p>How to prove my guess? I think execute GC by hand is one way. to see:</p>
+<pre><code>#in irb, with ruby 2.3
+require 'tempfile'
+def generate_tempfile
+  temp = Tempfile.new('')
+  temp.path
+end
+file = generate_tempfile
+File.exist? file # most time is true
+GC.start # execute gc by hand
+File.exist? file # should be false
+</code></pre><p>I test my code in <code>irb</code>, I get file deleted every time after execute GC by hand. Cool, this is answer as my expect.</p>
+<p><em>When I test the code, I find it doesn&rsquo;t work at lower than the 2.3 version ruby. I guess in ruby 2.3, the GC has improved for this case. so I think 2.3 is the most fast ruby version so far.</em></p>
+<p>How to fix my code ?</p>
+<ol>
+<li>Use tempfile in one function or return the temp object.</li>
+<li>Use <code>File</code> and <code>tmpdir</code> std lib to replace <code>Tempfile</code>, and use system cron job for delete stuff.</li>
+</ol>
+<p>Conclusion:</p>
+<ol>
+<li>Don&rsquo;t use tempfile cross method.</li>
+<li>Ruby 2.3 is the best version so far, please use it relaxed。</li>
+</ol>
+<p>This is a wonderful experience， I&rsquo;m really interested in  Ruby <code>2.3</code> and <code>GC</code> now, Maybe I will write some articles about them  later.</p>
+<p>Await please!</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-03-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

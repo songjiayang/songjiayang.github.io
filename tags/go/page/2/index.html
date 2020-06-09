@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>go - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/go/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="go" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/go/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2019-10-10T16:24:35+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="go"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: go</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-09-24-why-is-gopher/">Why is gopher</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        众所周知 Golang programmer 都以 Gopher 自居，例如我加入的某微信讨论群就叫 “Gopher”，Golang Conf China 也取名为 GopherConf 。
+那对于一名长期从事 Ruby 开发的 Rubist，心中有个疑问，这 Gopher 到底啥来头，为啥取名叫 Gopher 呢？
+Gopher 是什么 Gopher， 英文直译为：地鼠（就是那个萌萌的，有两颗大暴牙的小动物）。
+而 Golang 中的 gopher 是 Go 语言的一个标志性吉祥物，也是 Golang 项目最具特色的部分。
+它的形象和地鼠一样，萌的可以， 像这样
+关于 Go gopher 的更多设计可以参见 https://github.com/golang/go/wiki/Gopher .
+那 gopher 是如何一步一步发展成今天这样子，我们有必要了解下它的前世今生。
+Gopher 成长进化史 大约在15年前（比 Go 项目还早 5 年），gopher 首先出现在新泽西州 WFMU 广播电台的推广活动中，当时法国人 Renee 被委托设计一个年度筹款活动用的 T 恤，gopher 就这样诞生了。
+接下来 gopher 又出现在了贝尔实验室，当时作为 Bob Flandrena 在贝尔实验室邮件系统中的头像，其中还使用了其他一系列萌萌的头像。
+在 Go 创建之初，当时急需要一个图标，Renee 作为自愿者参与画作，这样就诞生了第一个 Go T恤和 Google Code 网站上的标志性图案。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-09-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-06-26-benchmarks-in-golang/">benchmarks in go</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        在涉及代码性能优化的时候，benchmarks 自然少不了，那么如何在 golang 中做 benchmarking 呢？
+这里我们可以使用 testing 包，它包含了 benchmark 全部代码。
+1. 定义 benchmark 用例 与单元测试相似，benchmark 用例的定义也是靠函数名来约定，只不过函数名从 Testxx 换成了 Benchmarkxx.
+例如:
+ func BenchmarkHello(b *testing.B) { for i := 0; i &lt; b.N; i++ { fmt.Sprintf(&quot;hello&quot;) } } 2. 运行 benchmark 用例 运行 benchmark 需要使用 go test 命令，相关参数有:
+-bench regexp Run benchmarks matching the regular expression. By default, no benchmarks run. To run all benchmarks, use '-bench .' or '-bench=.'. -benchmem Print memory allocation statistics for benchmarks.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-06-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/tags/go/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item disabled">
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

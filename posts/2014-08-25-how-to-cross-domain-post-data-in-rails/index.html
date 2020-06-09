@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>How To Cross-Domain Post Data In Rails - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="How To Cross-Domain Post Data In Rails" />
+<meta property="og:description" content="今天帮同事做了一个邮件订阅的功能，订阅功能本身并不复杂；但是由于订阅页面是放在GitHub Page上的，所以涉及到浏览器中跨域提交数据的问题。
+这里我们大致可以将服务需求分为客户端和服务端。 客户端是一个Github静态页面，你可以通过 votenotes.com 访问；服务端是一个提供API调用的Rails。
+1、客户端代码, 设置Ajax请求参数crossDomain为true $.ajax({ type: &#39;POST&#39;, crossDomain: true, // sert crossDomain true url: &#39;http://localhost:3000/sub_emails&#39;, data: data , dataType: &#39;json&#39;, success: function(responseData) { //省略 } }); 2、修改Rails API代码，去除token验证并设置 CORS ACCESS HEADER class SubEmailsController &lt; ApplicationController skip_before_filter :verify_authenticity_token before_filter :cors_preflight_check after_filter :cors_set_access_control_headers def create SubEmail.create(email: params[:email]) render status: 200, json: { message: &quot;Sub Successful&quot; } end private def cors_set_access_control_headers headers[&#39;Access-Control-Allow-Origin&#39;] = &#39;*&#39; headers[&#39;Access-Control-Allow-Methods&#39;] = &#39;POST, GET, PUT, DELETE, OPTIONS&#39; headers[&#39;Access-Control-Allow-Headers&#39;] = &#39;Origin, Content-Type, Accept, Authorization, Token&#39; headers[&#39;Access-Control-Max-Age&#39;] = &quot;1728000&quot; end def cors_preflight_check if request." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2014-08-25-how-to-cross-domain-post-data-in-rails/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2014-08-25T22:31:00+08:00" />
+<meta property="article:modified_time" content="2014-08-25T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="How To Cross-Domain Post Data In Rails"/>
+<meta name="twitter:description" content="今天帮同事做了一个邮件订阅的功能，订阅功能本身并不复杂；但是由于订阅页面是放在GitHub Page上的，所以涉及到浏览器中跨域提交数据的问题。
+这里我们大致可以将服务需求分为客户端和服务端。 客户端是一个Github静态页面，你可以通过 votenotes.com 访问；服务端是一个提供API调用的Rails。
+1、客户端代码, 设置Ajax请求参数crossDomain为true $.ajax({ type: &#39;POST&#39;, crossDomain: true, // sert crossDomain true url: &#39;http://localhost:3000/sub_emails&#39;, data: data , dataType: &#39;json&#39;, success: function(responseData) { //省略 } }); 2、修改Rails API代码，去除token验证并设置 CORS ACCESS HEADER class SubEmailsController &lt; ApplicationController skip_before_filter :verify_authenticity_token before_filter :cors_preflight_check after_filter :cors_set_access_control_headers def create SubEmail.create(email: params[:email]) render status: 200, json: { message: &quot;Sub Successful&quot; } end private def cors_set_access_control_headers headers[&#39;Access-Control-Allow-Origin&#39;] = &#39;*&#39; headers[&#39;Access-Control-Allow-Methods&#39;] = &#39;POST, GET, PUT, DELETE, OPTIONS&#39; headers[&#39;Access-Control-Allow-Headers&#39;] = &#39;Origin, Content-Type, Accept, Authorization, Token&#39; headers[&#39;Access-Control-Max-Age&#39;] = &quot;1728000&quot; end def cors_preflight_check if request."/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">How To Cross-Domain Post Data In Rails</h1>
+        </header>
+        <div class="content">
+            <p>今天帮同事做了一个邮件订阅的功能，订阅功能本身并不复杂；但是由于订阅页面是放在GitHub Page上的，所以涉及到浏览器中跨域提交数据的问题。</p>
+<p>这里我们大致可以将服务需求分为客户端和服务端。 客户端是一个Github静态页面，你可以通过 <a href="http://votenotes.com/">votenotes.com</a> 访问；服务端是一个提供API调用的Rails。</p>
+<h5 id="1客户端代码-设置ajax请求参数crossdomain为true">1、客户端代码, 设置Ajax请求参数crossDomain为true</h5>
+<pre><code>$.ajax({
+  type: 'POST',
+  crossDomain: true, // sert crossDomain true
+  url: 'http://localhost:3000/sub_emails',
+  data: data ,
+  dataType: 'json',
+  success: function(responseData) {
+    //省略
+  }
+});
+</code></pre><h5 id="2修改rails-api代码去除token验证并设置-cors-access-header">2、修改Rails API代码，去除token验证并设置 CORS ACCESS HEADER</h5>
+<pre><code>class SubEmailsController &lt; ApplicationController
+
+  skip_before_filter :verify_authenticity_token
+
+  before_filter :cors_preflight_check
+  after_filter :cors_set_access_control_headers
+
+  def create
+    SubEmail.create(email: params[:email])
+    render status: 200, json: { message: &quot;Sub Successful&quot; }
+  end
+
+  private
+
+  def cors_set_access_control_headers
+    headers['Access-Control-Allow-Origin'] = '*'
+    headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+    headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token'
+    headers['Access-Control-Max-Age'] = &quot;1728000&quot;
+  end
+
+  def cors_preflight_check
+    if request.method == 'OPTIONS'
+      headers['Access-Control-Allow-Origin'] = '*'
+      headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+      headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
+      headers['Access-Control-Max-Age'] = '1728000'
+
+      render :text =&gt; '', :content_type =&gt; 'text/plain'
+    end
+  end
+end
+</code></pre><p>至此，数据已经可以从http://votenotes.com/ 提交到 http://localhost:3000/sub_emails了，实现了跨站数据提交的功能。</p>
+<blockquote>
+<p>特别注意：</p>
+</blockquote>
+<p>以上代码中Api接口关闭了CSRF Token验证，所以很容易被人CSRF攻击。解决办法可以尝试采用约定协议通信，并对通信凭证签名加密的方式。不过由于本应用本身对数据要求不是很敏感，所以暂时不考虑了。</p>
+<blockquote>
+<p>延伸思考：</p>
+</blockquote>
+<p>以上实现方式，假如在完全解决了安全问题的情况下， 是否可以做到前后端分离呢？从而开发网站也就像做App一样，后端统一为一套Api接口了。</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-25</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

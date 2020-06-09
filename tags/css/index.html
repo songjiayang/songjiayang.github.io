@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>css - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/css/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="css" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/css/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2014-12-16T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="css"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: css</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-12-16-css-zhi-white-space/">css 之 white-space</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        最近的工作需要处理一个有关文本空白显示的问题－－－文本在显示和编辑保持相同的样式，及空格是空格，换行是换行。
+具体效果如：
+这里主要使用了 white-space:pre-wrap; 详情请参数 链接 。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-12-16</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/css">#css</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-12-01-how-to-fix-the-thead-in-a-table/">how to fix the thead in a table only css</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天研究实现了一个将 table head 固定的效果。
+主要思路是在 table 外包裹一个用于滚动的 container,然后设置其滚动样式：
+.container { xxx overflow-x: scroll; overflow-y: hidden; xxx } 然后再修改 tbody的滚动样式
+.container { overflow-y: scroll; } 最后 td, th 设置最小宽度即可。
+完整代码请参考：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-12-01</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/css">#css</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-26-shi-yong-css-countershi-xian-jian-dan-ji-shu/">使用 css counter 实现简单计数</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天在 Matter 中添加了一个新功能，为 table 的每个 tr 添加一个序号， 大概效果如图：
+由于需要在 table 中进行一些比较复杂的 dom 操作,比如 tr 的移动，删除，直觉告诉我， 使用js的方式会比较麻烦，所以就打算使用纯 css 方案。
+使用 css 的 计数器 参考 https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Counters
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/css">#css</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-15-trzai-tablezhong-shang-xia-yi-dong-cao-zuo-jian-dan-shi-xian/">Table 中任意上下移动 row 的简单实现</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        刚在 matter.build 里面实现了一个给项目材料任意排序的功能，主要技术包含：
+ table中如何实现上下移动 sectionRowIndex 属性使用  Row 上下移动主要使用使用jquery 的 prev,next 和 after,before 来实现,具体代码如下： $.fn.moveUp = -&gt; $.each this, -&gt; $(this).after $(this).prev() $.fn.moveDown = -&gt; $.each this, -&gt; $(this).before $(this).next() 有了上面代码，你就可以通过 $('tr::eq(2)').moveUp() 和 $('tr::eq(0)').moveDown() 来实现 tr上下移动了。
+想获取任意一个tr在table中位置，可以使用 tr 的 sectionRowIndex 属性 。 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-15</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/css">#css</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-12-full-page-background-image/">Perfect Full Page Background Image</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天有一人来我们公司面试&quot;web前端开发工程&quot;一职。
+面试过程中，同事给他出了一道有关网页页面背景图片全屏拉伸的问题。
+效果大概事这样：
+图片来源网站
+面试者在google的帮助下，最后总算搞定了这个问题。其实对于一个有1～2年经验的前端工程师而言，这个问题应该不算难吧。
+无论如何在此分享一下有关代码，希望对大家有所帮助
+参考资料: http://css-tricks.com/perfect-full-page-background-image/
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/css">#css</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-19-how-to-break-div-with-a-new-line/">how to break div with a new line</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        word-wrap: break-word; word-break: normal; 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-19</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/css">#css</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

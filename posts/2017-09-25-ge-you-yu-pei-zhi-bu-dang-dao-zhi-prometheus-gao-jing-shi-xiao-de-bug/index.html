@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>一个由于配置不当导致 Prometheus 告警失效的 bug - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="一个由于配置不当导致 Prometheus 告警失效的 bug" />
+<meta property="og:description" content="随着对 Prometheus, Alertmanager 深入了解，我们配置的告警通知可读性提高了不少。
+但是有一个问题不断困扰着我们，现象大致为：
+在逻辑上我们认为是同一条的告警内容，在告警通知里面出现多次，而且已经过时告警还在不断发（一直报）。
+我们可以将这个问题简单总结为以下几点:
+ Prometheus Rule 一条查询结果，在 Alertmanager 却对应了多条警告。 Alertmanager 里面有警报一直处于未恢复的状态（没有收到 Prometheus 发送的 resolved 请求）  出现问题的原因 一开始我怀疑，是不是 Prometheus 向 Alertmanager 发送的 Resolved 通知有丢失, 导致部分历史警告一直处于未恢复状态。
+经排查，发现 Prometheus 和 Alertmanager 都未重启过，所以理论上不存在丢失通知的情况，即使有也是很低频的，无法解释问题 2 的大量情况。
+为了彻底搞清楚这个问题，我们有必要先弄清楚 Prometheus 中的 Rule 触发产生的告警在 Alertmanager 中是怎么对应的。
+1. 如何区分两条告警 根据 Prometheus common/alert 中的代码可知，所有具有相同 Labels 的告警为同一告警。
+那如何才算具有相同 Labels 呢，它的计算逻辑为对一个 map 按照 key 排序，然后依次对 key, value 取值，做 hash 计算，代码逻辑大致为：
+2. Prometheus 产生一条 Alert 的逻辑 Prometheus 执行配置中的 Rule 查询的时候，如果有满足条件的结果，就会产生对应告警，而告警条目数与查询出的纪录条数一致。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2017-09-25-ge-you-yu-pei-zhi-bu-dang-dao-zhi-prometheus-gao-jing-shi-xiao-de-bug/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2017-09-25T23:02:11+00:00" />
+<meta property="article:modified_time" content="2017-09-25T23:02:11+00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="一个由于配置不当导致 Prometheus 告警失效的 bug"/>
+<meta name="twitter:description" content="随着对 Prometheus, Alertmanager 深入了解，我们配置的告警通知可读性提高了不少。
+但是有一个问题不断困扰着我们，现象大致为：
+在逻辑上我们认为是同一条的告警内容，在告警通知里面出现多次，而且已经过时告警还在不断发（一直报）。
+我们可以将这个问题简单总结为以下几点:
+ Prometheus Rule 一条查询结果，在 Alertmanager 却对应了多条警告。 Alertmanager 里面有警报一直处于未恢复的状态（没有收到 Prometheus 发送的 resolved 请求）  出现问题的原因 一开始我怀疑，是不是 Prometheus 向 Alertmanager 发送的 Resolved 通知有丢失, 导致部分历史警告一直处于未恢复状态。
+经排查，发现 Prometheus 和 Alertmanager 都未重启过，所以理论上不存在丢失通知的情况，即使有也是很低频的，无法解释问题 2 的大量情况。
+为了彻底搞清楚这个问题，我们有必要先弄清楚 Prometheus 中的 Rule 触发产生的告警在 Alertmanager 中是怎么对应的。
+1. 如何区分两条告警 根据 Prometheus common/alert 中的代码可知，所有具有相同 Labels 的告警为同一告警。
+那如何才算具有相同 Labels 呢，它的计算逻辑为对一个 map 按照 key 排序，然后依次对 key, value 取值，做 hash 计算，代码逻辑大致为：
+2. Prometheus 产生一条 Alert 的逻辑 Prometheus 执行配置中的 Rule 查询的时候，如果有满足条件的结果，就会产生对应告警，而告警条目数与查询出的纪录条数一致。"/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">一个由于配置不当导致 Prometheus 告警失效的 bug</h1>
+        </header>
+        <div class="content">
+            <p>随着对 Prometheus, Alertmanager 深入了解，我们配置的告警通知可读性提高了不少。</p>
+<p>但是有一个问题不断困扰着我们，现象大致为：</p>
+<p>在逻辑上我们认为是同一条的告警内容，在告警通知里面出现多次，而且已经过时告警还在不断发（一直报）。</p>
+<p>我们可以将这个问题简单总结为以下几点:</p>
+<ul>
+<li>Prometheus Rule 一条查询结果，在 Alertmanager 却对应了多条警告。</li>
+<li>Alertmanager 里面有警报一直处于未恢复的状态（没有收到 Prometheus 发送的 resolved 请求）</li>
+</ul>
+<h3 id="出现问题的原因">出现问题的原因</h3>
+<p>一开始我怀疑，是不是 Prometheus 向 Alertmanager 发送的 Resolved 通知有丢失, 导致部分历史警告一直处于未恢复状态。</p>
+<p>经排查，发现 Prometheus 和 Alertmanager 都未重启过，所以理论上不存在丢失通知的情况，即使有也是很低频的，无法解释问题 2 的大量情况。</p>
+<p>为了彻底搞清楚这个问题，我们有必要先弄清楚 Prometheus 中的 Rule 触发产生的告警在 Alertmanager 中是怎么对应的。</p>
+<h4 id="1-如何区分两条告警">1. 如何区分两条告警</h4>
+<p>根据 Prometheus <code>common/alert</code> 中的代码可知，所有具有相同 Labels 的告警为同一告警。</p>
+<p>那如何才算具有相同 Labels 呢，它的计算逻辑为对一个 map 按照 key 排序，然后依次对 key, value 取值，做 hash 计算，代码逻辑大致为：</p>
+<p><img src="/images/alertmanager/pic1.png" alt="pic1.png"></p>
+<h4 id="2-prometheus-产生一条-alert-的逻辑">2. Prometheus 产生一条 Alert 的逻辑</h4>
+<p>Prometheus 执行配置中的 Rule 查询的时候，如果有满足条件的结果，就会产生对应告警，而告警条目数与查询出的纪录条数一致。</p>
+<p>当产生告警的时候，一条告警的 Labels 中除了 Prometheus 自动加入的 alertname，还有对应 Rule 定义的 Labels。</p>
+<h4 id="3-alertmanager-是如何分辨告警">3. Alertmanager 是如何分辨告警</h4>
+<p>首先，对于 Alertmanager ，它收到的告警是一个打平的数组。</p>
+<p>因为每个告警的 Labels 里面包含了 Rule 的 alertname，区别是否是相同的告警，对 Alertmanager 而言，只需查看是否具有完全相同的 Labels 即可。</p>
+<p>Alertmanager 中的代码大致为：</p>
+<p><img src="/images/alertmanager/pic2.png" alt="pic2.png"></p>
+<p>现在，我们已搞清楚了 Prometheus 产生告警和 Alertmanager 中判断是否为相同告警的逻辑，是时候 review 一下我们的配置了。</p>
+<p>我们很多业务类监控规则的写法类似这样:</p>
+<p><img src="/images/alertmanager/pic3.png" alt="pic3.png"></p>
+<p>可以看到，这条规则中自定义了一个 value 属性，它的值是创建告警的时候的查询结果（一个变量），当这条规则触发后，Alertmanager 接收到的告警 大致是这样：</p>
+<pre><code>｛alertname: &quot;xxxx&quot;, value: , xxx｝
+</code></pre><p>因为告警的 value 是一个动态变化值，所以当 Prometheus 触发恢复告警的时候，实际上会产生了一条全新的告警恢复，因为它和以前触发的告警的 value 不同了，所以实际上 Alertmanger 正在告警的通知并没有收到对应的恢复通知。</p>
+<p>故老得告警无法收到恢复通知，新的告警（value不同）又不断产生，最终就会导致以上两个问题。</p>
+<p>在弄清楚问题来龙去脉以后，解决起来自然简单：</p>
+<ol>
+<li>检查 Rule 配置文件，将 value 参数 放到 ANNOTATIONS，重新加载配置。</li>
+<li>删除 Alertmanager 的历史数据，重启。</li>
+</ol>
+<h3 id="总结">总结</h3>
+<p>配置 Prometheus Rule 时候，自定义的 Lables 不能存在变量，不然会产生多条告警。</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-09-25</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

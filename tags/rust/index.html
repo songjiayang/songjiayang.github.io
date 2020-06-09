@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>rust - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/rust/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="rust" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/rust/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2019-11-26T17:08:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="rust"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: rust</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-11-26-ru-he-shi-yong-jing-dong-yun-kuai-su-da-jian-gao-ke-kao-de-rust-jing-xiang-fu-wu/">如何使用京东云快速搭建高可靠的 Rust 镜像服务</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        背景 目前国内使用 Rust 的越来越多，而在使用的时候有时我们经常会遇到依赖包无法下载或下载很慢的情况，所以我们非常需要一个高可靠的国内 Rust 的镜像服务来提高 Rust 包的安装速度。
+先来分析下 Rust 依赖安装慢的原因，我们都知道 Rust 依赖安装主要分为两个步骤：
+ 依赖包索引更新， Rust 依赖包索引托管在 GitHub，仓库地址为 https://github.com/rust-lang/crates.io-index。 依赖包下载， Rust 的依赖包资源统一下载地址为 https://crates.io/api/v1/crates， 通过 dig crates.io 可以发现其服务器全部托管在国外。  以上两点原因，大大影响了 Rust 依赖安装的速度，故在搭建 Rust 镜像的时候就要把这两个服务放到国内来。
+搭建思路 解决索引托管的问题 使用京东云的云主机自己搭建 crates.io-index 的 git 服务器。这里说下为什么不使用国内已有的 git 托管服务商，原因如下：
+ 国内的 git 托管服务都不支持 GitHub 仓库的镜像服务，无法做到项目自动更新，所以还是需要额外的服务器来完成同步工作。 无法自定义 git 项目地址和域名，比如 git://rust-mirror.jdcloud.com。  解决依赖包下载的问题 这里使用京东云对象存储的镜像回源功能很容易解决这个问题：
+ 对象存储提供永久性存储，防止内容丢失，还提供 https 安全访问。 对象存储的镜像回源功能可以很简单的实现资源包从 https://crates.io/api/v1/crates 的抓取，抓取的内容还能自动进行签名校验，保证数据的准确性。  动手搭建 第一步： 创建并配置对象存储空间 因为需要在 crates.io-index 的 config.json 中配置新的 dl 地址（对象存储 Bucket 公网访问地址），所以我们先来申请和配置对象存储。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-11-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/rust">#rust</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

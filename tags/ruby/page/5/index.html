@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>ruby - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/ruby/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="ruby" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/ruby/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2017-03-27T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="ruby"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: ruby</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-04-02-ordering-null-values-last-in-thinking-sphinx/">Ordering null values last in thinking-sphinx</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Sometimes , you want to order the records by some columns that should not be nil. that is if the ordered columns values is nil the record should list the last .
+###How to deal with it by think-sphinx? ###
+Step 1: Add column nil index has &quot;example IS NULL&quot;, :as =&gt; :example_nil, :type =&gt; :boolean Step 2: Order by example_nil sphinx_options[:order] = &quot;example_nil ASC, xxx&quot; References:
+ https://github.com/pat/thinking-sphinx/issues/737  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-04-02</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-02-26-how-to-solve-the-err-unknown-command-psetex-problem/">How to solve the &#39;ERB unknown command psetex&#39; problem</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        After we upgraded sidekiq to the lastest version(v2.17.6) , we receive some error message.
+A Redis::CommandError occurred in background at 2014-02-25 09:17:55 UTC : ERR unknown command 'psetex' ......... As you see the key word is psetex. What is psetex?
+psetex is redis command, there is the official introduction. It point out psetex is available since redis v2.6.0 。
+I guess there is a redis version mistake in our server, i do a quickly check with command redis-server -v.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-02-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-02-22-how-to-start-postgresql-with-rails/">How to start postgresql with rails</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Step 1: Install postgresql server with homebrew brew install postgresql After installed, Typing brew info postgresql in Terminal ,you will get some important infomation:
+postgresql: stable 9.3.2 (bottled) http://www.postgresql.org/ Conflicts with: postgres-xc /usr/local/Cellar/postgresql/9.3.2 (2924 files, 39M) * Poured from bottle From: https://github.com/Homebrew/homebrew/commits/master/Library/Formula/postgresql.rb ==&gt; Dependencies Required: readline ✔ Recommended: ossp-uuid ✔ ==&gt; Options --32-bit Build 32-bit only --enable-dtrace Build with DTrace support --no-perl Build without Perl support --no-tcl Build without Tcl support --without-ossp-uuid Build without ossp-uuid support --without-python Build without python support ==&gt; Caveats If builds of PostgreSQL 9 are failing and you have version 8.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-02-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                        <li><a href="tags/postgresql">#postgresql</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-02-20-chang-yong-gemsqing-dan/">常用 gems 清单</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        What are awesome gems?  awesome-ruby: awesome rubygems list  What are used in my work?  immortal: 使用deleted来标识数据的删除。  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-02-20</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-22-railszhong-counter-cachede-yong/">Rails中 counter_cache 的使用</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        假设我们现在已经有了post和comment两个model:
+#app/models/post.rb class Post &lt; ActiveRecord::Base has_many :comments, dependent: :destroy end #app/models/comment.rb class Comment &lt; ActiveRecord::Base belongs_to :post end 有这样一个需求：统计每个文章评论数。这里我们采用rails的counter_cache来处理。
+我们在以上基础一步一步地添加 rails 的 counter_cache 的使用。
+1.在Post中添加一个comment_count的字段来存储comments的数量,可以直接使用migration来处理:
+rails g migration add_comment_count_to_post comment_count:integer 2.修改comment.rb文件，添加counter_cache的支持:
+#app/models/comment.rb class Comment &lt; ActiveRecord::Base belongs_to :post, counter_cache: :comment_count end 3.修改rspec测试用例:
+#spec/models/post.rb context &quot;comment_count&quot; do let(:post){create :post} let(:comment1){ create :comment, :post =&gt; post} it &quot;comment_count should +1&quot; do expect { create :comment, :post =&gt; post }.to change{post.reload.comment_count}.by(1) end it &quot;comment_count should -1&quot; do expect { comment1.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-12-ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/">Ubuntu &#43; Rails4 &#43; Postgresql9.3 初体验</a></h1>
+    </header>
+
+    <div class="content post-summary">
+         Postgresql9安装方法和步骤：
+ ####1. 在 /etc/apt/sources.list.d/pgdg.list 文件中添加源
+deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main ####2. 跟新软件源
+sudo apt-get update ####3. 安装postgresql 9.3
+sudo apt-get install postgresql-9.3 ####4. 添加用户
+sudo -u postgres psql postgres ####5. 设置密码
+\password postgres  Rails 相关配置
+ gem 'pg' #在gemfile中添加 修改database.yml
+# common config common: &amp;common adapter: postgresql encoding: utf8 pool: 10 username: postgres password: password host: localhost # development config development: database: kindergarten_development &lt;&lt;: *common # test config test: database: kindergarten_test &lt;&lt;: *common #production config production: &lt;&lt;: *common database: kindergarten 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-12-rails4-herokubu-shu-chu-ti-yan/">Rails4 &#43; Heroku 部署初体验</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        想必做Rails 开发的很少有人不知道heroku的吧,它其实是一个pass平台。操作简单，文档齐全，唯一不好的就是国内访问速度比较慢（不过，人家是免费的哦）。
+Q ： 到底使用heroku部署一个Rails 项目有多容易？
+A ： 真的太容易了.
+1. 注册heroku帐号 2. 安装heroku gem gem install heroku 3. 配置Gemfile group :production do gem 'rails_12factor' gem 'pg' end 4. 发布到heroku heroku login heroku create git add . git commit -m &quot;for heroku&quot; git push heroku master ####5. heroku 一些常用命令
+heroku run rake db:migrate heroku run rake db:seed 每个项目都会自动生成一个免费的亚马逊的postgresql数据库用户，可以到heroku 控制台查询。需要特别指出这里不需要执行db:create等命令，因为数据库已经存在，不然会报出权限相关的错误。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-12-ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/">Ubuntu&#43;Passager&#43;Nginx Rails 部署搭建</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        跟新软件源
+sudo apt-get update . 如果升级报错，那么请执行sudo rm -rf /var/lib/apt/lists/* -vf 试试 安装git
+sudo apt-get install git-core 安装curl
+sudo apt-get install curl 安装rvm
+curl -L https://get.rvm.io | bash -s 获得最新稳定版rvm和安装ruby的依赖
+rvm get stable rvm requirements 安装所有rvm requirements依赖
+sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config 安装ruby
+rvm install 2.0.0 rvm use 2.0.0 default 升级gem并设置gem的配置
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-12-transform-hash-key-type-in-rails/">Transform Hash Key Type In Rails</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Symbol To String
+foo = { :a =&gt; 1, :b =&gt; 2 } foo.with_indifferent_access =&gt; { &#34;a&#34; =&gt; 1, &#34;b&#34; =&gt; 2 } String To Symbol
+foo = { &#34;a&#34; =&gt; 1, &#34;b&#34; =&gt; 2 } foo.symbolize_keys =&gt; { :a =&gt; 1, :b =&gt; 2 } 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-11-shi-yong-pluploadchuang-jian-tempimage/">使用 Plupload 创建 TempImage</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Plupload是一款比较流行的文件上传插件，能够轻易实现多文本上传,拖拽上传等效果，而且兼容性比较好。
+什么是TempImage?
+通常我们会将Image作为一个多态的资源,然后有一些特定的图片继承于它, 比如 MaterialImage (belongs_to Material).
+假如Material在创建的时候需要上传一张图片，通常的做法是图片和表单数据一起上传。这样的做法有一个问题就是图片表单的提交会因为图片上传而耗费大量时间。
+有什么办法可以解决这个问题呢？那就是采用TempImage的方式。具体而言就是先使用Plupload插件，异步将图片上传到后台，然后在表单中绑定新创建的图片的id即可。
+ initialize_uploader: (options) -&gt; ## CSRF Tokens Into Hash # Initialize a params hash @params = {} # Load csrf tokens from page csrf_name = $(&quot;meta[name='csrf-param']&quot;)?.attr('content') csrf_value = $(&quot;meta[name='csrf-token']&quot;)?.attr('content') # Load csrf tokens into params hash @params[csrf_name] = csrf_value ## Default options for the uploader options = $.extend(options, { url: &quot;/images.json?temp=true&quot; multipart_params: @params label: '' prompt: '' chunk_size : '1mb' browse_button: 'browser' unique_names : true multi_selection : false ＃single or multi select max_file_size: '10mb' filters: [{ title: __(&quot;Image files&quot;), extensions: &quot;gif,png,jpg,jpeg,tiff&quot;}] }) ## Initialize a new uploader @uploader = new plupload.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-11</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/tags/ruby/page/4/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/tags/ruby/page/6/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

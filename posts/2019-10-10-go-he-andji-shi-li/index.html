@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Go 和 Android 集成实战 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="Go 和 Android 集成实战" />
+<meta property="og:description" content="看到这个标题，你可能会问，为什么要在 Android 中运行 Go，直接使用 Java 不挺好吗？
+是的，如果你有现成很强大的 Java 团队，这没有问题，但并不是所有团队都是如此。而且我在这里想强调的是 Android 与 Go 的集合，即在 Android 程序中使用 Go 而不是完全用 Go 来写 Android 程序。
+我能想到在 Android 中用 Go 的一些原因：
+ 团队熟悉 Go, 对 Java/Android 了解不多。 已经有现成的 Go 核心代码，比如开源类库: libp2p，turn/stun 类库等。 自己服务的 SDK 其核心逻辑复杂，繁琐，涉及大量网络或并发的操作。  能够在 Android 上使用 Go 代码，得益于 Go 强大的交叉编译能力，那该如何在 Android 上使用我们的 Go 库呢，接下来我将通过一个简单的示例来讲解。
+实例教程 本例是在 Android 程序中使用 Go 编译的一个简单动态库来实现对网站测速的简单例子。
+思路：
+ Go 交叉编译为 Android 平台支持的 so 文件。 在 Android 中使用 JNA 调用该 so 文件。  依赖：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2019-10-10-go-he-andji-shi-li/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2019-10-10T16:24:35+08:00" />
+<meta property="article:modified_time" content="2019-10-10T16:24:35+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="Go 和 Android 集成实战"/>
+<meta name="twitter:description" content="看到这个标题，你可能会问，为什么要在 Android 中运行 Go，直接使用 Java 不挺好吗？
+是的，如果你有现成很强大的 Java 团队，这没有问题，但并不是所有团队都是如此。而且我在这里想强调的是 Android 与 Go 的集合，即在 Android 程序中使用 Go 而不是完全用 Go 来写 Android 程序。
+我能想到在 Android 中用 Go 的一些原因：
+ 团队熟悉 Go, 对 Java/Android 了解不多。 已经有现成的 Go 核心代码，比如开源类库: libp2p，turn/stun 类库等。 自己服务的 SDK 其核心逻辑复杂，繁琐，涉及大量网络或并发的操作。  能够在 Android 上使用 Go 代码，得益于 Go 强大的交叉编译能力，那该如何在 Android 上使用我们的 Go 库呢，接下来我将通过一个简单的示例来讲解。
+实例教程 本例是在 Android 程序中使用 Go 编译的一个简单动态库来实现对网站测速的简单例子。
+思路：
+ Go 交叉编译为 Android 平台支持的 so 文件。 在 Android 中使用 JNA 调用该 so 文件。  依赖："/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">Go 和 Android 集成实战</h1>
+        </header>
+        <div class="content">
+            <p><img src="/images/goandroid/cover.png" alt="cover.png"></p>
+<p>看到这个标题，你可能会问，为什么要在 Android 中运行 Go，直接使用 Java 不挺好吗？</p>
+<p>是的，如果你有现成很强大的 Java 团队，这没有问题，但并不是所有团队都是如此。而且我在这里想强调的是 Android 与 Go 的集合，即在 Android 程序中使用 Go 而不是完全用 Go 来写 Android 程序。</p>
+<p>我能想到在 Android 中用 Go 的一些原因：</p>
+<ul>
+<li>团队熟悉 Go, 对 Java/Android 了解不多。</li>
+<li>已经有现成的 Go 核心代码，比如开源类库: libp2p，turn/stun 类库等。</li>
+<li>自己服务的 SDK 其核心逻辑复杂，繁琐，涉及大量网络或并发的操作。</li>
+</ul>
+<p>能够在 Android 上使用 Go 代码，得益于 Go 强大的交叉编译能力，那该如何在 Android 上使用我们的 Go 库呢，接下来我将通过一个简单的示例来讲解。</p>
+<h2 id="实例教程">实例教程</h2>
+<p>本例是在 Android 程序中使用 Go 编译的一个简单动态库来实现对网站测速的简单例子。</p>
+<p>思路：</p>
+<ul>
+<li>Go 交叉编译为 Android 平台支持的 so 文件。</li>
+<li>在 Android 中使用 JNA 调用该 so 文件。</li>
+</ul>
+<p>依赖：</p>
+<ul>
+<li><a href="https://golang.org/dl">Go</a></li>
+<li><a href="https://developer.android.com/ndk/downloads#stable-downloads">NDK r20</a></li>
+<li><a href="https://github.com/java-native-access/jna">JNA 5.4.0</a></li>
+</ul>
+<p>说明: 演示环境为 Mac。</p>
+<h3 id="编写-go-测试代码">编写 Go 测试代码</h3>
+<ul>
+<li>编写 speedtester 的核心代码，实现对任意网站访问速度的检测：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">speedtester</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;net/http&#34;</span>
+	<span style="color:#e6db74">&#34;time&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Perform</span>(<span style="color:#a6e22e">url</span> <span style="color:#66d9ef">string</span>) (<span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">MethodGet</span>, <span style="color:#a6e22e">url</span>, <span style="color:#66d9ef">nil</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">err</span>
+	}
+
+	<span style="color:#a6e22e">startAt</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>()
+
+	<span style="color:#a6e22e">resp</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">DefaultClient</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#a6e22e">req</span>)
+	<span style="color:#a6e22e">cost</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Sub</span>(<span style="color:#a6e22e">startAt</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">err</span>
+	}
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>()
+
+	<span style="color:#66d9ef">return</span> int(<span style="color:#a6e22e">cost</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Millisecond</span>), <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><ul>
+<li>编写 CGO 代码，暴露一个 <code>Perform</code> API 函数：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;github.com/songjiayang/go-android/go/speedtester&#34;</span>
+)
+
+<span style="color:#75715e">//export Perform
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Perform</span>(<span style="color:#a6e22e">url</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">char</span>) <span style="color:#a6e22e">C</span>.<span style="color:#66d9ef">int</span> {
+	<span style="color:#a6e22e">cost</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">speedtester</span>.<span style="color:#a6e22e">Perform</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GoString</span>(<span style="color:#a6e22e">url</span>))
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">C</span>.int(<span style="color:#a6e22e">cost</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {}
+</code></pre></div><h3 id="交叉编译动态链接库">交叉编译动态链接库</h3>
+<p>前面一片文章 <a href="http://localhost:4000/posts/ru-he-kua-ping-tai-bian-yi-armde-cgocheng-xu">如何在 Ubuntu 上交叉编译 ARM 架构的 CGO 程序</a> 中我已提到过如何交叉编译 CGO 代码，只不过当时交叉编译的平台是 Linux，现在我们使用类似的方式来编译 Android 版本。</p>
+<p>交叉编译 Android 版本的动态库不仅需要指定 GCC 还要指定 NDK_TOOLCHAIN，所以我们先下载对应的 NDK 。</p>
+<ul>
+<li>Step1: 下载 ndk r20</li>
+</ul>
+<pre><code>wget https://dl.google.com/android/repository/android-ndk-r20-darwin-x86_64.zip
+unzip android-ndk-r20-darwin-x86_64.zip
+</code></pre><p>解压缩后，可以看到 ndk 目录为：</p>
+<p><img src="/images/goandroid/ndk.png" alt="ndk.png"></p>
+<ul>
+<li>Step2: 编译 toolchain</li>
+</ul>
+<p>我们可以使用 ndk 自带的 make-standalone-toolchain.sh 脚本，编译特定的 toolchain，使用命令如下：</p>
+<pre><code>./android-ndk-r20/build/tools/make-standalone-toolchain.sh \
+--toolchain=aarch64-linux-android-4.9 --platform=android-29 \
+--install-dir=~/Library/toolchain --force
+</code></pre><p>参数说明：</p>
+<ol>
+<li>toolchain 参数表示对应 Android 的 ARCH，arm32 使用 arm-linux-androideabi-4.9，arm64 使用 aarch64-linux-android-4.9。</li>
+<li>platform 参数表示对应 Android API的版本，25 对应 Android7.1.1，26 对应 Android8.0，27 对应Android8.1，28 对应 Android9.0，29 对应 Android10.0。</li>
+<li>install-dir 参数表示编译的目标 toolchain 存放位置，后面交叉编译 Go 代码会用到。</li>
+</ol>
+<ul>
+<li>Step3: 执行交叉编译</li>
+</ul>
+<p>使用刚刚编译好的 toolchain 来交叉编译：</p>
+<pre><code>CGO_ENABLED=1 GOOS=android NDK_TOOLCHAIN=~/Library/toolchain \ 
+GOARCH=arm64 CC=~/Library/toolchain/bin/aarch64-linux-android-gcc \
+go build -buildmode=c-shared -o libspeedtester.so api.go
+</code></pre><p>此时会在目录下生成一个 <code>libspeedtester.so</code> 文件，通过 file 命令查看其信息如下：</p>
+<pre><code>libspeedtester.so: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, not stripped
+</code></pre><h3 id="android-代码集成">Android 代码集成</h3>
+<ul>
+<li>Step1: 使用 Android Studio 新建一个工程，名叫 goandroid 的工程。</li>
+</ul>
+<p><img src="/images/goandroid/app.png" alt="app.png"></p>
+<ul>
+<li>Step2: 添加 jna 依赖</li>
+</ul>
+<p>在 <code>build.gradle</code> 文件中的 <code>dependencies</code> 中添加依赖：</p>
+<pre><code>implementation 'net.java.dev.jna:jna:5.4.0'
+</code></pre><p><img src="/images/goandroid/app02.png" alt="app02.png"></p>
+<ul>
+<li>Step3: 添加 jna Android 平台依赖</li>
+</ul>
+<p>在 app/libs 目录下新建一个叫做 arm64-v8a 的目录，目录下存放 <code>libjnidispatch.so</code> 以及我们的动态库 <code>libspeedtester.so</code> 文件，其次还要修改 <code>build.gradle</code> 文件，添加 <code>sourceSets</code>:</p>
+<p><img src="/images/goandroid/app03.png" alt="app03.png"></p>
+<p>说明：</p>
+<ol>
+<li><code>libjnidispatch</code> 文件需要根据不同的CPU架构来选择，可以点击连接 <a href="https://github.com/java-native-access/jna/tree/master/dist">jna/dist</a> 下载对应平台的 jar 包，解压缩 jar 包后，可以提取 libjnidispatch 文件。</li>
+<li>手机不同架构，所新建的目录名称不同，比如我这里 arm64 的手机为 arm64-v8a，具体视情况而定。</li>
+</ol>
+<ul>
+<li>Step4: 新加一个 <code>SpeedTester</code> 接口来使用我们的 <code>libspeedtester.so</code> 库</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.example.goandroid<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> com.sun.jna.Library<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> com.sun.jna.Native<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SpeedTester</span> <span style="color:#66d9ef">extends</span> Library <span style="color:#f92672">{</span>
+    SpeedTester INSTANCE <span style="color:#f92672">=</span> Native<span style="color:#f92672">.</span><span style="color:#a6e22e">load</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;speedtester&#34;</span><span style="color:#f92672">,</span> SpeedTester<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">Perform</span><span style="color:#f92672">(</span>String url<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li>Step5: 修改程序首页，调用 <code>SpeedTester</code></li>
+</ul>
+<p>修改 <code>activity_main.xml</code> 文件添加如下内容：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:orientation=&quot;vertical&quot;
+    android:layout_height=&quot;match_parent&quot;
+    tools:context=&quot;.MainActivity&quot;&gt;
+
+    &lt;EditText
+        android:id=&quot;@+id/urlInput&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:hint=&quot;请输入要测试 URL&quot;
+        android:layout_marginLeft=&quot;10dp&quot;
+        android:inputType=&quot;text&quot;
+        /&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/onTest&quot;
+        android:layout_width=&quot;150dp&quot;
+        android:layout_height=&quot;45dp&quot;
+        android:text=&quot;点击测速&quot; /&gt;
+
+&lt;/LinearLayout&gt;
+</code></pre><p>修改 <code>MainActivity</code> 代码，使用 <code>SpeedTester</code> 进行测速。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.example.goandroid<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> android.os.Bundle<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> android.util.Log<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> android.view.View<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> android.widget.EditText<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> androidx.appcompat.app.AppCompatActivity<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> <span style="color:#66d9ef">extends</span> AppCompatActivity <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>savedInstanceState<span style="color:#f92672">);</span>
+        setContentView<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">layout</span><span style="color:#f92672">.</span><span style="color:#a6e22e">activity_main</span><span style="color:#f92672">);</span>
+
+        <span style="color:#75715e">// register id
+</span><span style="color:#75715e"></span>        findViewById<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">id</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onTest</span><span style="color:#f92672">).</span><span style="color:#a6e22e">setOnClickListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> View<span style="color:#f92672">.</span><span style="color:#a6e22e">OnClickListener</span><span style="color:#f92672">(){</span>
+            <span style="color:#a6e22e">@Override</span>
+            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">(</span>View v<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                EditText registerIdText <span style="color:#f92672">=(</span>EditText<span style="color:#f92672">)</span>findViewById<span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">id</span><span style="color:#f92672">.</span><span style="color:#a6e22e">urlInput</span><span style="color:#f92672">);</span>
+                String url <span style="color:#f92672">=</span> registerIdText<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">().</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
+                Log<span style="color:#f92672">.</span><span style="color:#a6e22e">d</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;GOAndroid&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;start speed testing with url: &#34;</span> <span style="color:#f92672">+</span> url<span style="color:#f92672">);</span>
+                <span style="color:#66d9ef">int</span> cost <span style="color:#f92672">=</span> SpeedTester<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Perform</span><span style="color:#f92672">(</span>url<span style="color:#f92672">);</span>
+                Log<span style="color:#f92672">.</span><span style="color:#a6e22e">d</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;GOAndroid&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;finish speed testing with result: &#34;</span> <span style="color:#f92672">+</span> cost <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;ms&#34;</span><span style="color:#f92672">);</span>
+                <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">};</span>
+        <span style="color:#f92672">});</span>
+
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul>
+<li>Step6: 修改 <code>AndroidManifest.xml</code>，开启网络权限</li>
+</ul>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;
+</code></pre><ul>
+<li>Step7: 真机模拟运行</li>
+</ul>
+<p>程序首页：</p>
+<p><img src="/images/goandroid/app04.png" alt="app04.png"></p>
+<p>输入 <code>http://jd.com</code>，点击测试，可以在 Logcat 中看到输出结果：</p>
+<p><img src="/images/goandroid/app05.png" alt="app05.png"></p>
+<p>可以看到，在 Logcat 日志中已经打印输出了测试 <a href="http://jd.com">http://jd.com</a> 网站的速度了，说明在 Android 真机中调用我们的 Go 代码已经成功。</p>
+<h2 id="总结">总结</h2>
+<p>今天我们通过一个 Android 程序中调用 Go 交叉编译的动态链接库的简单示例来演示了在 Android 中如何使用 Go，其过程大致为：</p>
+<ul>
+<li>选用 NDK 的 make-standalone-toolchain.sh 编译本机环境的 toolchain。</li>
+<li>使用编译出来的 toolchain 交叉编译 Android 系统的动态库。</li>
+<li>在 Android 中使用 jna 来使用该动态库。</li>
+</ul>
+<p>代码参考 <a href="https://github.com/songjiayang/go-android">songjiayang/go-android</a> 。</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-10-10</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

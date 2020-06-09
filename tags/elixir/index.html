@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>elixir - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/elixir/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="elixir" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/elixir/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2015-06-30T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="elixir"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: elixir</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-06-30-elixir-ji-ben-shu-ju-lei-xing/">elixir 的基本类型</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        基本类型： elixir 的基本类型包括有 integers, floats, booleans, atoms, strings, lists 和 tuples（元组）， 它们基本形式如下：
+iex&gt; 1 # integer iex&gt; 0x1F # integer iex&gt; 1.0 # float iex&gt; true # boolean iex&gt; :atom # atom / symbol iex&gt; &quot;elixir&quot; # string iex&gt; [1, 2, 3] # list iex&gt; {1, 2, 3} # tuple 注意 ⚠：  / 返回是 float，所以 10/5 的结果是 2.0, 如果想得到整数，可以使用 div 函数，如 div(10,2)。 float 在 elixir 中是 64 位的双精度数。 boolean 实质上也是 atom, 所以 is_atom(true) 和 is_boolean(true) 都是 true。 elixir 中 string 使用双引号，默认是 UTF-8 编码， 其中 byte_size(str) 用于查看字节数， String.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-06-30</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/elixir">#elixir</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-03-qi-zhou-qi-yu-yan-zhi-elixir-an-zhuang-pian/">七周七语言之 elixir 初级篇</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天听闻ElixirConf 2014 slide出来了，关于报道请移步 RubyChina讨论帖子。
+看到这个消息心中不免有些小激动，因为它的语法终于快稳定下来了，版本1.0的发布也是紧接的事情，于是决定尝尝鲜。
+Elixir初级篇###   测试环境： Mac OS 10.9.4
+  ####1.1 安装Erlang####
+由于Elixir是一门运行在erlng虚拟机上的函数式、面向并行的编程语言，自然需要erlang运行环境。
+最新的elixir(v0.14.0)需要erlang17.0或者更新。
+使用Precompiled packages 安装Erlang很容易，只是国内下载网络太慢。 如果你觉得以上链接下载太慢的话，可以尝试此链接。
+我下载的软件包是otp_src_17.1.tar.gz。
+进入otp_src_17.1.tar.gz下载根目录，解压erlang软件包，编译，安装 。
+ tar -vxzf otp_src_17.1.tar.gz cd otp_src_17.1 ./configure make make install 你可以在Terminal中运行 erl来检查Erlang的版本,你将看到类似信息：
+Erlang/OTP 17 [erts-6.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false] ####1.2 elixir安装####
+由于我的系统是OS，为了不折腾所以采用homebrew安装。
+brew update brew intall elixir 当安装结束后，你可以在Terminal中运行 iex进入elixir的交互模式，将看到以下信息：
+Erlang/OTP 17 [erts-6.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false] Interactive Elixir (0.15.0) - press Ctrl+C to exit (type h() ENTER for help) 其他系统使用源的安装方式以及预编译安装方式，请参考官网
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-03</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/elixir">#elixir</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

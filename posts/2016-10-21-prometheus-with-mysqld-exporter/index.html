@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Prometheus with mysqld_exporter - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="Prometheus with mysqld_exporter" />
+<meta property="og:description" content="一. 创建一个 MySQL 用户，并拥有适当的权限
+CREATE USER &#39;mysqld_exporter&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;password&#39;; GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO &#39;mysqld_exporter&#39;@&#39;localhost&#39; WITH MAX_USER_CONNECTIONS 3; 二. 下载和启动 mysqld_exporter
+wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.9.0/mysqld_exporter-0.9.0.linux-amd64.tar.gz tar -xzf mysqld_exporter-0.9.0.linux-amd64.tar.gz export DATA_SOURCE_NAME=&#39;mysqld_exporter:password@unix(/var/run/mysqld/mysqld.sock)/&#39; ./mysqld_exporter 如果安装成功，访问 http://localhost:9104/metrics，您将看到 mysqld_exporter 所有 metrics
+三. 修改 prometheus 配置
+# 修改 prometheus.yml, 添加如下配置 scrape_configs: - job_name: &#39;mysqld&#39; static_configs: - targets: - localhost:9104 重启 Prometheus，访问 http://localhost:9090/graph，然后查询 mysql_up, 你将看到 mysqld 的运行状态。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2016-10-21-prometheus-with-mysqld-exporter/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2016-10-21T22:31:00+08:00" />
+<meta property="article:modified_time" content="2016-10-21T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="Prometheus with mysqld_exporter"/>
+<meta name="twitter:description" content="一. 创建一个 MySQL 用户，并拥有适当的权限
+CREATE USER &#39;mysqld_exporter&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;password&#39;; GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO &#39;mysqld_exporter&#39;@&#39;localhost&#39; WITH MAX_USER_CONNECTIONS 3; 二. 下载和启动 mysqld_exporter
+wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.9.0/mysqld_exporter-0.9.0.linux-amd64.tar.gz tar -xzf mysqld_exporter-0.9.0.linux-amd64.tar.gz export DATA_SOURCE_NAME=&#39;mysqld_exporter:password@unix(/var/run/mysqld/mysqld.sock)/&#39; ./mysqld_exporter 如果安装成功，访问 http://localhost:9104/metrics，您将看到 mysqld_exporter 所有 metrics
+三. 修改 prometheus 配置
+# 修改 prometheus.yml, 添加如下配置 scrape_configs: - job_name: &#39;mysqld&#39; static_configs: - targets: - localhost:9104 重启 Prometheus，访问 http://localhost:9090/graph，然后查询 mysql_up, 你将看到 mysqld 的运行状态。"/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">Prometheus with mysqld_exporter</h1>
+        </header>
+        <div class="content">
+            <p><img src="/images/mysqld_exporter.png" alt="mysqld_exporter"></p>
+<p>一.  创建一个 MySQL 用户，并拥有适当的权限</p>
+<pre><code>CREATE USER 'mysqld_exporter'@'localhost' IDENTIFIED BY 'password';
+GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'mysqld_exporter'@'localhost'
+  WITH MAX_USER_CONNECTIONS 3;
+</code></pre><p>二. 下载和启动 mysqld_exporter</p>
+<pre><code>wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.9.0/mysqld_exporter-0.9.0.linux-amd64.tar.gz
+tar -xzf mysqld_exporter-0.9.0.linux-amd64.tar.gz
+export DATA_SOURCE_NAME='mysqld_exporter:password@unix(/var/run/mysqld/mysqld.sock)/'
+./mysqld_exporter
+</code></pre><p>如果安装成功，访问 http://localhost:9104/metrics，您将看到 mysqld_exporter 所有 metrics</p>
+<p>三. 修改 prometheus 配置</p>
+<pre><code># 修改 prometheus.yml, 添加如下配置
+scrape_configs:
+ - job_name: 'mysqld'
+   static_configs:
+    - targets:
+      - localhost:9104
+</code></pre><p>重启 Prometheus，访问 http://localhost:9090/graph，然后查询 <code>mysql_up</code>, 你将看到 mysqld 的运行状态。</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-10-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

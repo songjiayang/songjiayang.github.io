@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Thinking-sphinx can not search chinese - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="Thinking-sphinx can not search chinese" />
+<meta property="og:description" content="今天发现 Matter 在生产环境不支持中文全文搜索（英文可以），开发环境支持中文搜索。
+Matter 的全文搜索使用的是 thinking-sphinx， 底层是 sphinxsearch 。
+由于习惯性思维，我很快的查看了线上的 sphinxsearch 版本， 发现版本比较低， 所以立马升级了线上的 sphinx 版本(与开发一致)。 很不幸，不是这个原因，问题犹在，需要调整思路。
+经过对比线上和本地自动生成的 x.sphinx.conf 文件，发现本地 生成的配置文件多了 sql_query_pre = SET NAMES utf8 这句。
+也许问题就出现在这里，那为什么开发环境会多处这句配置？
+通过在 github 的 thinking-sphinx 项目里面搜索 SET NAMES utf8 和 utf8_query_pre 瞬间恍然大悟！
+原来线上的 database.yml 里面并没有设置编码方式，而默认编码并非utf8，所以不支持中文。 而开发环境支持中文搜索的原因正是在 database.yml 里面设置了 encoding: utf8。 待生产环境加上这句后，问题得以解决，可以正常搜索中文了。
+这个bug的修复并非如此顺利，因为一开始浪费了很多时间在其他方向上，最后在同事 serco-chen 的提醒下，通过对照配置文件差异后，才得以解决，在此感谢他。
+通过此次捉虫，感触最深的就是：
+  当我们调试和解决bug的时候，不妨尝试采用对照的方式，切勿先入为主，以为是必然就忽略了某些细节。
+  " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2014-11-20-thinking-sphinx-can-not-search-chinese/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2014-11-20T23:31:00+08:00" />
+<meta property="article:modified_time" content="2014-11-20T23:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="Thinking-sphinx can not search chinese"/>
+<meta name="twitter:description" content="今天发现 Matter 在生产环境不支持中文全文搜索（英文可以），开发环境支持中文搜索。
+Matter 的全文搜索使用的是 thinking-sphinx， 底层是 sphinxsearch 。
+由于习惯性思维，我很快的查看了线上的 sphinxsearch 版本， 发现版本比较低， 所以立马升级了线上的 sphinx 版本(与开发一致)。 很不幸，不是这个原因，问题犹在，需要调整思路。
+经过对比线上和本地自动生成的 x.sphinx.conf 文件，发现本地 生成的配置文件多了 sql_query_pre = SET NAMES utf8 这句。
+也许问题就出现在这里，那为什么开发环境会多处这句配置？
+通过在 github 的 thinking-sphinx 项目里面搜索 SET NAMES utf8 和 utf8_query_pre 瞬间恍然大悟！
+原来线上的 database.yml 里面并没有设置编码方式，而默认编码并非utf8，所以不支持中文。 而开发环境支持中文搜索的原因正是在 database.yml 里面设置了 encoding: utf8。 待生产环境加上这句后，问题得以解决，可以正常搜索中文了。
+这个bug的修复并非如此顺利，因为一开始浪费了很多时间在其他方向上，最后在同事 serco-chen 的提醒下，通过对照配置文件差异后，才得以解决，在此感谢他。
+通过此次捉虫，感触最深的就是：
+  当我们调试和解决bug的时候，不妨尝试采用对照的方式，切勿先入为主，以为是必然就忽略了某些细节。
+  "/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">Thinking-sphinx can not search chinese</h1>
+        </header>
+        <div class="content">
+            <p>今天发现 <a href="www.matter.build">Matter</a> 在生产环境不支持中文全文搜索（英文可以），开发环境支持中文搜索。</p>
+<p>Matter 的全文搜索使用的是 <a href="https://github.com/pat/thinking-sphinx">thinking-sphinx</a>，
+底层是 sphinxsearch 。</p>
+<p>由于习惯性思维，我很快的查看了线上的 sphinxsearch 版本，
+发现版本比较低， 所以立马升级了线上的 sphinx 版本(与开发一致)。
+很不幸，不是这个原因，问题犹在，需要调整思路。</p>
+<p>经过对比线上和本地自动生成的 x.sphinx.conf 文件，发现本地
+生成的配置文件多了 <code>sql_query_pre = SET NAMES utf8</code> 这句。</p>
+<p>也许问题就出现在这里，那为什么开发环境会多处这句配置？</p>
+<p>通过在 github 的 thinking-sphinx 项目里面搜索 <a href="https://github.com/pat/thinking-sphinx/search?utf8=%E2%9C%93&amp;q=utf8_query_pre&amp;type=Code">SET NAMES utf8</a>
+和 <a href="https://github.com/pat/thinking-sphinx/search?utf8=%E2%9C%93&amp;q=utf8_query_pre&amp;type=Code">utf8_query_pre</a>
+瞬间恍然大悟！</p>
+<p>原来线上的 database.yml 里面并没有设置编码方式，而默认编码并非utf8，所以不支持中文。
+而开发环境支持中文搜索的原因正是在 database.yml 里面设置了 <code>encoding: utf8</code>。
+待生产环境加上这句后，问题得以解决，可以正常搜索中文了。</p>
+<p>这个bug的修复并非如此顺利，因为一开始浪费了很多时间在其他方向上，最后在同事
+<a href="https://github.com/serco-chen">serco-chen</a> 的提醒下，通过对照配置文件差异后，才得以解决，在此感谢他。</p>
+<p>通过此次捉虫，感触最深的就是：</p>
+<blockquote>
+<blockquote>
+<p>当我们调试和解决bug的时候，不妨尝试采用对照的方式，切勿先入为主，以为是必然就忽略了某些细节。</p>
+</blockquote>
+</blockquote>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-20</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

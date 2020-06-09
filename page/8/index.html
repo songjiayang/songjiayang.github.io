@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta name="generator" content="Hugo 0.72.0" />
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>小鱼驿站 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="小鱼驿站" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="小鱼驿站"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <div class="homepage-content">
+        
+    </div>
+
+    
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-06-26-qian-hou-duan-fen-chi-ji-ben-wan-fa/">前后端分离简单玩法</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        前后端分离原因，这里就不展开讨论了，大家可以去了解下相关技术文章。
+需求背景：
+ 前后端分离。 利用 cookies 记住会话。  具体实践：
+路由设计： 用户直接访问的页面，全部由前端框架来 routing, 所有 API 请求以 /api 开头, 并被 nginx 代理到后端应用里 。
+为什么要这么设计？
+因为我们需要利用 cookies 来记录会话，但是 cookies 有同域保护的问题（子域名也不行）， 那么用户访问地址和 API 请求必须具有相同的域名。
+API 的请求全部拥有统一的前缀，只是为了方便 nginx 作代理请求。
+代码如下：
+location /api { expires -1; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header Host $http_host; proxy_set_header X-Real-IP $remote_addr; proxy_set_header X-Scheme $scheme; proxy_redirect off; proxy_pass http://localhost:9090; // Application location break; } 前端处理 404 问题： 默认前端只有 index.html 页面， 那么当用户访问 example.com/index2.html 的时候， 如果不做特殊处理，将得到一个默认的 404 页面。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-06-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%9E%B6%E6%9E%84">#架构</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-06-11-duan-wu-huang-shan-san-ri-you/">黄山三日游</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        2016 的端午小长假，临时兴起，决定到黄山去爬山。
+ 路线规划： 上海南站-&gt;黄山风景区汤口镇-&gt;翡翠谷-&gt;黄山-&gt;宏村-&gt;屯溪-&gt;上海 住宿： 分别在翡翠谷和宏村各住一晚 费用： 共计 1300 左右  好了，开始放图（大图，手机流量用户慎入）。
+翡翠谷：
+黄山：
+宏村：
+ 愉快的假期很快就结束了，速度恢复到工作模式；期待下一场旅行，我们不期的相遇。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-06-11</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%97%85%E6%B8%B8">#旅游</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-05-27-chang-yong-web-kuang-jia-tun-tu-lu-dui-bi/">个人常用 web 框架吞吐率对比</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        目的 测试个人经常使用的不同 App server（主要用来做 API）的吞吐率。
+测试主机  系统： MacBook Air (11-inch, Early 2015) CPU: 1.6 GHz Intel Core i5 x4 (4 核) 内存： 4 GB 1600 MHz DDR3  参数对比 1. Golang Gin 框架（协程模式）  Go 1.6 Gin v1.0rc1  2. Node Koa 框架 (多进程的异步IO模式)  Node v6.1.0 Koa 1.2.0  3. Ruby Sinatra 框架 (多进程多线程模式)  Ruby 2.3.1p112 Sinatra 1.4.7 Puma 3.4.0  测试方法  使用 wrk 测试工具 压力参数参考 http://www.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-05-27</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-03-28-zi-di-xiang-shang-zhu-bu-wan-shan-zhi-shi-ti-xi/">自顶向下，自底向上，逐步完善知识体系</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        自顶向下和自底向上, 往往被人们用来描述软件开发的不同思路，但是我觉得它们同样可以用来表示不同的学习思路和方向。
+先来说说自顶向下： 所谓自顶向下，就是根据自身职业规划（某一阶段目标），并针对该目标的实现，理清需要得知识储备，并勾勒出知识点之间的联系，简而言之即知识体系。
+自顶向下的知识体系是宏观指导，它具有重要性：
+ 大方向上不会跑偏，对各种新技术有更好的取舍标准，不至于茫然而恐慌，也不会随意跟风。 能够提升新知识的获取速度，因为你总是发散的思考问题，更容易产生联系。 能够提高问题解决能力。不知你有没有发现，请教那些经验丰富的同事的时候，他们经常很快就会定位到问题所在， 即使 google 也会比你更快搜索出结果。同样面对的是新问题，为什么他们就比你快，不知道你思考过没有。其中的奥妙我认为还是在于知识体系， 因为同事关注的不是问题表象，而是产生问题的上下文，再根据具体问题，就能很快检索出关键词。 一切的根源原来在于同事拥有比你更完善和健全的知识体系！  写到这里，我停下了很久，为的就是规划和整理自己的知识脉络（我将另起博客讨论这个问题）。
+自低向上： 如果我们将个人发展比喻成一棵不断成长的树，那么自顶向下的知识体系就好比树径，枝干；树光有躯干是不行的， 因为你还要有叶子（需要光合作用），此时自底向上的学习就好比一片片枝头的树叶，足够的树叶才能为躯干的生长提供充足的能量。
+所以，自底向上的学习也是极其重要的，它是知识体系落地实施的坚实基础，如果没有它，知识体系就是空洞的，夸夸其谈。
+作为一名 Ruby 开发者，开发新功能对你来说是容易的，因为你不需要了解太多底层技术实现，社区中总能找到对应的封装； 你只需要看看某个 gem 的文档就能快速搞定工作。
+但是这样对于个人发展而言，真的好吗？如果你仅仅只是会用 gem（工具）， 而不是了解背后的依赖的基础知识和原理，你的水平只是停留在使用工具层面。
+你会为工具变化太快而烦恼，因为工具都是为某一特定需求的具体实现， 需求和实现都是在不断变化的，它只是一些花哨的招式而已。
+自底向上的学习，恰恰可以解决这些问题，因为它学习和补充的是更底层的知识， 它们是经典而久经考验的，也不常常变化，它更像内功心法，当你真正领悟的时候， 根本不会在乎工具的一招一式，使用任何工具实现都能轻松驾驭。
+当写到这里的时候，我已经开始将我经常用到的 gem 找出来，反复阅读和推敲其源码。
+总结：
+自顶向下和自底向上是两个不同纬度的学习方法，自顶向下是自底向上的宏观指导，自底向上是自顶向下的坚实基础，它们互相联系，缺一不可。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-03-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-03-24-wo-men-kai-shi-shi-yong-okrliao/">我们开始使用 OKR</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        什么是 OKR OKR 全称是 Objectives and Key Results 即目标与关键成果法，OKR是一套定义和跟踪目标及其完成情况的管理工具和方法。
+以下是维基百科的描述:
+    OKR stands for Objectives and Key Results. It is a method of defining and tracking objectives and their outcomes.
+为什么我们开始使用 OKR 长久以来，公司没有引入任何员工考核机制，虽然不同项目组有自己的管理工具（Redmine, GitHub Issues 等）， 但当年终时，却发现很难恒定这一年的工作成绩。
+就一般个人而言，也无法第一时间知道公司战略变化，想为公司的发展更多思考都没办法，参与感不足。
+最近 OKR 挺火的，大概也是因为 google 项目组引入 OKR 缘故吧； 但是不光如此，我身边也有不少朋友所在公司正在尝试使用它（互联网创业型公司）。
+我们使用 OKR 主要想解决以下问题：
+ 信息透明： 可以在同一个地方很容易看到公司，团队，以及任何同事的目标和任务。这样可以方便地了解公司战略方针，团队任务规划，以及其他同事的想法和研究方向。 自动汇总： 如果将 OKR 迭代周期（一个季度）完成情况，加以简单汇总，就会自动得出公司，团队，个人这一年的成绩（大事件）。 提升个人能力： 首先个人 OKR 是根据公司，团队 OKR 自主制定的，这样可以驱动你对公司，项目全方位思考，寻找可以让公司变得更好的解决办法。 其次个人 OKR 往往有一定的难度，具有研究性，系统性。  如何实践 OKR  工具：Trello 分类：Company OKR, Teams OKR, Individual OKR 基本格式：  Objective: 我要实现的具体目标 KR: 具体实践结果1 KR: 具体实践结果2 .
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-03-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-03-09-where-is-my-tempfile/">where is my tempfile?</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        The benefits of Tempfile are:
+ Automatically deleted. Unique file name. Nice place (/var) stored at disk.  What&rsquo;s my problem? Let me show you my code:
+def qr_file(url) temp = Tempfile.new(['qr', '.png']) path = temp.path qrcode = RQRCode::QRCode.new(url) qrcode.as_png( resize_gte_to: false, resize_exactly_to: false, fill: 'white', color: 'black', size: 200, border_modules: 0, module_px_size: 0 file: path ) path end def build_qr_cell(url, opts={}) @excel.add_image(image_src: qr_file(url), noSelect: false, noMove: false) do |image| image.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-03-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-03-07-ruby-proc-mi-si/">Ruby Proc 迷思</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        一谈到闭包 (Proc)， Rubyist 的脑袋里往往会浮现出 blocks, Proc, lambda 之类概念。
+此时，你心中可能开始嘀咕： why ? 这概念是不是太多了， Ruby 的闭包怎么这么复杂啊。
+其实不然，Ruby 的闭包并没想象的那么复杂，我们需要通过现象看本质，揭开它的神秘面纱。
+一、了解 ruby 闭包创建方式 1. blocks 2. proc 3. Proc.new 4. lambda 5. -&gt; 6. method to to_proc 好了，以上就是在 Ruby 中创建闭包的不同方式，通过运行结果你不难发现：
+ 所有方式返回结果都是 Proc 的对象（实例）。 Proc 对象有两种： lambda 和非 lambda。 我们可以通过 lambda? 方法来检查。  二、不同方法特别说明  blocks 是我们平时写的最多的，主要配合 yield 使用，这种方式有个问题是没法共用 block 。 Proc.new 就是对象实例方法。 proc 和 lambda 是 Ruby Kernel 模块提供的方法，用于生成一般 proc 和 lambda proc 。 -&gt; 是 Ruby 操作符，用于生成 lambda proc 。 to_proc 是 Ruby Method对象的实例方法， 用于将已有 method 转变成 lambda proc 。  三、 一般 proc 和 lambda proc 区别  lambda 会对参数个数验证，proc 不会验证。 lambda 会执行 return, proc 遇到 return 会中断。  总结： 无论 proc 还是 lambda，其实本质都是一个东西，因为我们最终用到的都是 Proc 的对象，所以闭包就是 Proc 对象。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-03-07</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-03-04-translate-english-with-hacker-way/">Translate English with Hacker Way</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        背景：
+ruby 开发对英文单词量比较高，像我这种半吊子英文水平，使用英汉字典翻译的时候较多。
+前段时间看到 @lingceng 写的 bing_dictionary ，试用结果非常满意，速度快而且翻译比较准确。最近开始背诵单词，所以想将每天查询记录收集起来，以备每晚巩固之用, 故写了 dict_cache。
+安装 gem install dict_cache 如何使用 1. 翻译单词 （用到 bing_dictionary） dict apple 2. 查询每日记录，默认是当天 dict_cache date:2016-03-04 dict_cache // today is default 3. dict_cache clear 清空所有缓存记录 4. dict_cache --help/-h 帮助 欢迎大家使用，有任何问题和想法，任何 issue 和 pr 都 OK.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-03-04</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-02-23-tong-guo-fan-xiang-dai-li-jie-jue-fei-ssl-zi-yuan-yin-ru-de-wen-ti/">通过反向代理解决非 SSL 资源引入的问题</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        SSL 网站里出现非 SSL 资源会出现什么情况呢？
+看到了吗，浏览器会有警告，像这样 this page includes other resources which are not secure。
+你或许认为这个属于第三方的资源，并非不安全。但是真实情况中，用户可不这么想，因为他们不懂技术。 他们开始担心隐私，数据安全; 接着开始抱怨，更有甚者停止使用你的网站了。
+那有什么办法解决这个问题呢？答案就是 “使用反向代理”。
+反向代理的过程大致是：
+将所有用户输入的资源链接，转化成走代理服务器的安全链接,例如： &lt;img src='http://example.com/images/foo.png' /&gt; 转化为 &lt;img src='https://proxied-assets/example.com?original_src=http://example.com/images/foo.png'&gt; 转化的核心是反向代理资源链接是安全的，并且可以得到原始链接（对应关系，可以自己设计）。
+代理服务器根据请求链接，得到原始链接，然后请求该原始链接，获得内容，然后将内容转发。 这个过程看起来简单，但是有一些注意地方：
+ 反向代理服务器，必须高性能，IO 异步最好，所有选择 NodeJS 较好。 反向代理服务器，下载原始链接内容的时候，需要设置超时处理，以及不同返回状态，还有 http 和 https 不同协议的处理。 代理服务器返回原始链接内容的时候，最好跟原始链接头信息相同，尤其是过期时间之类。 可以在反向代理服务器和用户之间再添加一层 CDN, 用户直接从 CDN 下载资源，CDN 从代理服务器下载，这样做可以减少代理服务的 网络 IO 请求。  刚看了下 github issue 的图片处理，发现他们也是采用类似的思路，他们使用了 camo 这个库。参考其实现, 我迅速的给 ruby-china 提了个 pull request :smile:.
+ 参考链接：
+ https://github.com/blog/743-sidejack-prevention-phase-3-ssl-proxied-assets https://github.com/atmos/camo  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-02-23</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ssl">#ssl</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-02-22-write-professional-emails-in-english/">DOs and DON&#39;Ts in Professional Emails</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        DO  首先，你需要一个看起来比较靠谱的邮件地址，邮件名称比较正式。 邮件基本结构包含主题，称呼，正文和结束问候四部分。主题要明确，比如： ‘Canceling My Order’ 就要好于 ‘Hello, Dear xxx’。称呼要正确，我们可以使用职称，邮件名；但千万不要用错误性别的称呼，乱用了 Mrs 和 Mr 。正文要简明，邮件不是写书，所有内容要简洁，尽量用主动形式，不要使用被动语句，通常一个邮件 1~2 个段落为好。结束问候，不可缺少，可以简单的为 Regards 或者 Best Regards. 考虑你邮件发送对象的阅读理解能力，要让他能知道你讲的是什么。  DON&rsquo;T  不要出现诸如： 单词拼写，语法，标点符号，大写字母之类的低级错误。 不要写太长的邮件。 不要抱怨责备。 不要出现 Fuck, shit 之类的词语。 不要没有经过检查就发送邮件。  参考： https://www.coursera.org/learn/professional-emails-english/home/welcome。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-02-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/page/7/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/page/9/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

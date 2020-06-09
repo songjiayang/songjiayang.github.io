@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta name="generator" content="Hugo 0.72.0" />
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>小鱼驿站 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="小鱼驿站" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="小鱼驿站"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <div class="homepage-content">
+        
+    </div>
+
+    
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-06-15-prometheus-2-dot-3-geng-xin-gai-lan/">Prometheus 2.3 更新概览</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-06-15</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-05-13-json-xu-lie-hua-he-fan-xu-lie-hua-in-go/">JSON 序列化和反序列化 In Go</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-05-13</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-04-11-rong-qi-jian-kong-zhi-cadvisor-zhi-prometheus-ji-cheng/">cadvisor 与 Prometheus 集成</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        在上一篇文章 容器监控之 cadvisor （一） 已经介绍了如何通过 cadvisor 来收集容器的运行状态信息，那这篇文章将具体讲解如何与 Prometheus 集成并通过 Prometheus 查看收集的数据。
+主要内容：
+ cadvisor 与 Prometheus 集成 在 Prometheus 中查看容器的 CPU，内存，网络流量等信息  cadvisor 与 Prometheus 集成 Step1: 修改 Prometheus 配置信息，添加 cadvisor 访问地址：
+#prometheus.yml scrape_configs: - job_name: 'node' static_configs: - targets: ['127.0.0.1:9100'] - job_name: 'container' static_configs: - targets: ['127.0.0.1:8080'] # 本地 cadvisor 访问地址 Step2: 重新加载配置，访问 http://localhost:9090/targets 你将看到新加的 cadvisor 已经生效。
+Step3: 此时访问 Prometheus 的 graph 页面 http://localhost:9090/graph，搜索 container 你将看到容器相关数据。
+Prometheus 中查看容器的 CPU，内存，网络流量等数据 CPU 使用率查询：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-04-11</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                        <li><a href="tags/%E4%BA%91%E5%8E%9F%E7%94%9F">#云原生</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-04-10-jrong-qi-jian-kong-zhi-cadvisor/">容器监控之 cadvisor</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        想必大家在生产环境中已大量使用到了容器，那对于容器的监控（CPU, 内存，网络请求）是如何处理的呢？
+docker stats 对 cadvisor 众所周知 dokcer stats 可以查看运行的 Docker 镜像的运行状态，例如：
+CONTAINER ID NAME CPU % MEM USAGE / LIMIT MEM % NET I/O BLOCK I/O PIDS a25dd77a5237 cadvisor 0.91% 14.8MiB / 1.952GiB 0.74% 749kB / 11.5MB 18.9MB / 0B 11 这种方式比较原始，因为你无法通过 http 的方式来获取数据，而且没有界面，数据可视化还需要做大量的工作。
+由于 dokcer stats 有这些问题，所以 cadvisor 诞生了。cadvisor 不仅可以搜集一台机器上所有运行的容器信息还提供基础查询界面和 http 接口，方便 Prometheus 进行数据抓取。
+正是因为 cadvisor 与 Prometheus 的完美结合，所以它成为了容器监控的第一选择。
+cadvisor 的安装 Step1: 使用 docker pull 下载最新版本的 cadvisor
+$ docker pull google/cadvisor:latest Step2: 使用 docker images 查看下载的版本
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-04-10</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                        <li><a href="tags/%E4%BA%91%E5%8E%9F%E7%94%9F">#云原生</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-04-09-alertmanager-mo-ban-zhong-shi-jian-format/">如何格式化 Alertmanager 告警模版中的时间</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        AlertManger 告警模版中显示的时间使用的是 Go 默认的格式，形如：
+显然这个格式不太好看，我们更期望使用的形式为 2018-10-07 12:00:00，那我们该如何来格式化呢？
+这里主要使用 Go 的 time.Format 方法，其在 template 中的写法如下：
+.StartsAt.Format &#34;2006-01-02 15:04:05&#34; 所以我的 wechat.tmpl 修改后的结果为：
+最后的告警效果图：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-04-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-03-11-goling-ji-chu-bian-cheng-ru-men-jiao-cheng-3-fen-zhi-xun-huan/">[GO零基础编程入门教程-13] 分支循环</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        课程内容:
+ if 基本用法 switch 基本用法 for 基本用法  Go 实战交流群： 694650181
+GitBook： https://songjiayang.gitbooks.io/go-basic-courses/content/ch6/control.html
+查看所有视频，请点击链接。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-03-11</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go%E9%9B%B6%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B">#GO零基础编程入门教程</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-03-09-liu-cheng-kong-zhi-zhi-fen-zhi-xun-huan/">流程控制之分支循环</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        在编写 Go 程序的时候，我们不仅会用前面学到的数据结构来存储数据，还会用到 if、switch、for 来进行条件判断和流程控制，今天我们就来一起学习下它们。
+if if 主要用于条件判断，语法为：
+if 条件 { # 业务代码 } 先看一个简单例子:
+package main import &#34;fmt&#34; func main() { age := 7 if age &gt; 6 { fmt.Println(&#34;It&#39;s primary school&#34;) } } 我们可以在条件中使用 &amp; 或 || 来进行组合判断：
+package main import &#34;fmt&#34; func main() { age := 7 if age &gt; 6 &amp;&amp; age &lt;= 12 { fmt.Println(&#34;It&#39;s primary school&#34;) } } 我们还可以使用 if..else if..else 来实现多分支的条件判断:
+package main import &#34;fmt&#34; func main() { age := 13 if age &gt; 6 &amp;&amp; age &lt;= 12 { fmt.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-03-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go%E9%9B%B6%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B">#GO零基础编程入门教程</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-03-08-guan-yu-prometheus-target-hashmod-de-yong-fa/">关于 relabel_configs 中 hashmod 的用法</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天有朋友在群里问了一段关于 Prometheus hashmod 配置的问题，如图：
+此配置出自 Brian 的博客 scaling-and-federating-prometheus。
+那这段配置到底是什么意思？因为以前没用过这个配置，所以只好去翻看源码。
+核心源码解读 阅读的过程中，发现 relabel.go#L41 的代码与配置非常相关：
+func relabel(lset labels.Labels, cfg *config.RelabelConfig) labels.Labels { values := make([]string, 0, len(cfg.SourceLabels)) for _, ln := range cfg.SourceLabels { values = append(values, lset.Get(string(ln))) } val := strings.Join(values, cfg.Separator) lb := labels.NewBuilder(lset) switch cfg.Action { // 此处省略代码 	// 判断值是否匹配，如果不匹配那么将放弃此 target 	case config.RelabelKeep: if !cfg.Regex.MatchString(val) { return nil } // 对字段 source_labels 的值进行 md5 和取余，并将结果存到自定义目标字段中 	case config.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-03-08</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-03-06-zai-go-zhong-fa-song-multipart-biao-dan-qing-qiu/">如何在 Go 中发送表单请求</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        通常我们与第三方交互使用的是 json，但偶尔也会遇到要求使用表单方式来提交数据，故今天我们就一起来学习下如何在 Go 中发送表单请求。
+准备工作 首先我们有这样一段测试代码来接收 POST 请求，并返回其接收到的字段信息。
+package main import ( &#34;fmt&#34; &#34;log&#34; &#34;net/http&#34; ) func urlencodedHandler(w http.ResponseWriter, r *http.Request) { err := r.ParseForm() if err != nil { log.Printf(&#34;r.ParseForm(): %v&#34;, err) return } result := &#34;&#34; for k, v := range r.Form { result += fmt.Sprintf(&#34;%s:%v\n&#34;, k, v) } fmt.Fprintf(w, result) } func multipartHandler(w http.ResponseWriter, r *http.Request) { err := r.ParseMultipartForm(4 * 1024 * 1024) if err != nil { log.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-03-06</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-03-04-goling-ji-chu-bian-cheng-ru-men-jiao-cheng-11jie-kou/">[GO零基础编程入门教程-12] 接口</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        课程内容:
+ 接口定义 接口类型断言 接口作为匿名成员  Go 实战交流群： 694650181
+GitBook： https://songjiayang.gitbooks.io/go-basic-courses/content/ch5/interface.html
+查看所有视频，请点击链接。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-03-04</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go%E9%9B%B6%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B">#GO零基础编程入门教程</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/page/2/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/page/4/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

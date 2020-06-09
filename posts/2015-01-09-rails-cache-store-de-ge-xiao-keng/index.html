@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>rails cache store 的一个小坑 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="rails cache store 的一个小坑" />
+<meta property="og:description" content="曾然，标题有点哗众取宠了，其实这并不是个 Rails 的坑，只是一个我平时没注意到的问题罢了。
+想必大家对 Rails 的 ActiveSupport::Cache::Store  已经很了解了，是吗？那你觉得下面这段代码有什么问题。
+# @user is a ActiveRecord::Base instance Rails.cache.fetch([@user]) do # data decorate end 如果你已经找出问题了，那恭喜你，可以跳过下面的内容了。
+上面代码的问题就是：fetch 的参数应该是 @user 非 [@user]， 为什么？
+尽管这里使用 [@user］ 不会抛出异常，但是它并不会在 @user 变化后，自动更新上面代码中的缓存数据，这显然与我们想要的自动过期策略不符。
+为什么将 [@user] 换成 @user 就可以？
+那就要分析下 Rails 的源代码了.
+首先看 Rails 的 fetch 方法的定义：
+def fetch(name, options = nil) if block_given? options = merged_options(options) key = namespaced_key(name, options) cached_entry = find_cached_entry(key, name, options) unless options[:force] entry = handle_expired_entry(cached_entry, key, options) if entry get_entry_value(entry, name, options) else save_block_result_to_cache(name, options) { |_name| yield _name } end else read(name, options) end end 其中与 key 相关的是 namespaced_key 这个方法：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2015-01-09-rails-cache-store-de-ge-xiao-keng/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2015-01-09T22:31:00+08:00" />
+<meta property="article:modified_time" content="2015-01-09T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="rails cache store 的一个小坑"/>
+<meta name="twitter:description" content="曾然，标题有点哗众取宠了，其实这并不是个 Rails 的坑，只是一个我平时没注意到的问题罢了。
+想必大家对 Rails 的 ActiveSupport::Cache::Store  已经很了解了，是吗？那你觉得下面这段代码有什么问题。
+# @user is a ActiveRecord::Base instance Rails.cache.fetch([@user]) do # data decorate end 如果你已经找出问题了，那恭喜你，可以跳过下面的内容了。
+上面代码的问题就是：fetch 的参数应该是 @user 非 [@user]， 为什么？
+尽管这里使用 [@user］ 不会抛出异常，但是它并不会在 @user 变化后，自动更新上面代码中的缓存数据，这显然与我们想要的自动过期策略不符。
+为什么将 [@user] 换成 @user 就可以？
+那就要分析下 Rails 的源代码了.
+首先看 Rails 的 fetch 方法的定义：
+def fetch(name, options = nil) if block_given? options = merged_options(options) key = namespaced_key(name, options) cached_entry = find_cached_entry(key, name, options) unless options[:force] entry = handle_expired_entry(cached_entry, key, options) if entry get_entry_value(entry, name, options) else save_block_result_to_cache(name, options) { |_name| yield _name } end else read(name, options) end end 其中与 key 相关的是 namespaced_key 这个方法："/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">rails cache store 的一个小坑</h1>
+        </header>
+        <div class="content">
+            <p>曾然，标题有点哗众取宠了，其实这并不是个 Rails 的坑，只是一个我平时没注意到的问题罢了。</p>
+<p>想必大家对 Rails 的 <code>ActiveSupport::Cache::Store </code> 已经很了解了，是吗？那你觉得下面这段代码有什么问题。</p>
+<pre><code># @user is a ActiveRecord::Base instance
+Rails.cache.fetch([@user]) do
+  # data decorate
+end
+</code></pre><p>如果你已经找出问题了，那恭喜你，可以跳过下面的内容了。</p>
+<!-- raw HTML omitted -->
+<p>上面代码的问题就是：fetch 的参数应该是 <code>@user</code> 非 <code>[@user]</code>， 为什么？</p>
+<p>尽管这里使用 <code>[@user］</code> 不会抛出异常，但是它并不会在 @user 变化后，自动更新上面代码中的缓存数据，这显然与我们想要的自动过期策略不符。</p>
+<p>为什么将 <code>[@user]</code> 换成 <code>@user</code> 就可以？</p>
+<p>那就要分析下 Rails 的源代码了.</p>
+<p>首先看 Rails 的 fetch 方法的定义：</p>
+<pre><code>def fetch(name, options = nil)
+  if block_given?
+    options = merged_options(options)
+    key = namespaced_key(name, options)
+
+    cached_entry = find_cached_entry(key, name, options) unless options[:force]
+    entry = handle_expired_entry(cached_entry, key, options)
+
+    if entry
+      get_entry_value(entry, name, options)
+    else
+      save_block_result_to_cache(name, options) { |_name| yield _name }
+    end
+  else
+    read(name, options)
+  end
+end
+</code></pre><p>其中与 key 相关的是 namespaced_key 这个方法：</p>
+<pre><code>
+# File activesupport/lib/active_support/cache.rb, line 532
+def namespaced_key(key, options)
+  key = expanded_key(key)
+  namespace = options[:namespace] if options
+  prefix = namespace.is_a?(Proc) ? namespace.call : namespace
+  key = &quot;#{prefix}:#{key}&quot; if prefix
+  key
+end
+</code></pre><p><code>namespaced_key</code> 里面调用了 <code>expanded_key</code> 方法：</p>
+<pre><code># File activesupport/lib/active_support/cache.rb, line 513
+def expanded_key(key) # :nodoc:
+  return key.cache_key.to_s if key.respond_to?(:cache_key)
+
+  case key
+  when Array
+    if key.size &gt; 1
+      key = key.collect{|element| expanded_key(element)}
+    else
+      key = key.first
+    end
+  when Hash
+    key = key.sort_by { |k,_| k.to_s }.collect{|k,v| &quot;#{k}=#{v}&quot;}
+  end
+
+  key.to_param
+end
+</code></pre><p>OK，到这里，你该知道问题了，<code>[@user]</code> 和 <code>@user</code> 分别生成了怎样的 key，你也一定了解了吧。</p>
+<p>出现这个问题核心是，如果生成的key的相关因子只有1个，写成 [@user] 这样的形式，
+key的生成，最终调用的其实只是是 <code>to_param</code> 这个方法，而它始终 == <code>&quot;#{@user.id}&quot;</code>，所以key一直不会有变化。</p>
+<!-- raw HTML omitted -->
+<p>结语：当 cache key 的因子只有1个时，不要使用数组。</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

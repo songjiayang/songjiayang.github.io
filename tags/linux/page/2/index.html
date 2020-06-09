@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>linux - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/linux/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="linux" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/linux/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2015-08-12T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="linux"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: linux</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-19-ding-shi-ren-wu-zhi-crontab/">定时任务之 crontab</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        ####1.编辑定时任务 crontab -e
+####2. crontab 中的时间对应关系
+* * * * * m h dom mon dow ####3. 查询当前用户的定时任务 crontab -l
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-19</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-17-capistrano-deploy-with-forward-agent-by-ssh/">Capistrano Deploy With Forward Agent By SSH</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        使用Capistrano部署应用的时候，服务器往往会到一个具有访问权限的git仓库拉取代码; 如果你不想把 server 的 pub key，copy 到仓库服务器上的话，你可以尝试使用本地代理的方式。
+具体操作如下：
+####1. 配置deploy文件,手动开启代理服务.
+set :ssh_options, {:forward_agent =&gt; true} ####2. 告诉SSH Agent你的key
+$ ssh-add ~/.ssh/id_rsa 参考资料
+ http://opensoul.org/2009/06/24/capistrano-git-and-ssh-keys/  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-17</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-10-li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/">利用 httpd 做简单的 web 应用性能检测</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        网站上线之前一般都会做下抗压能力测试，比如并发和最大请求数等。其实我们可以使用 httpd（ab） 来模拟测试。
+ ubuntu上安装 Ab 使用命令 sudo apt-get install httpd 安装，有时你会得类似 &ldquo;Package httpd is a virtual package provided by: &ldquo;的错误提示；这是因为httpd是作为一个lib，会被给出的包所自动安装，所以随便选择一个提示的包就好，比如选择 apache2-mpm-worker 2.2.22-6ubuntu5.1。
+sudo apt-get install apache2-mpm-worker 2.2.22-6ubuntu5.1 Ab命令的使用 使用ab命令进行测试的时候，主要用到的参数-c 和-n ; 其中-c 表示并发量（模拟同时多少人访问），-n表示一共发送的http请求数，所谓请求数量越大，数据相对越准确。
+实战之 Ruby-China 测试语句：ab -c 20 -n 2000 http://ruby-china.org/
+执行结果:
+Server Software: nginx/1.4.2 Server Hostname: ruby-china.org Server Port: 80 Document Path: / Document Length: 33568 bytes Concurrency Level: 20 Time taken for tests: 116.274 seconds Complete requests: 2000 Failed requests: 1128 (Connect: 0, Receive: 0, Length: 1128, Exceptions: 0) Write errors: 0 Non-2xx responses: 22 Total transferred: 68131781 bytes HTML transferred: 66399247 bytes Requests per second: 17.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-10</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/tags/linux/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item disabled">
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

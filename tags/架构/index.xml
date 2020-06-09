@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>架构 on 小鱼驿站</title>
+    <link>/tags/%E6%9E%B6%E6%9E%84/</link>
+    <description>小鱼驿站 (架构)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 26 Jun 2016 22:31:00 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/%E6%9E%B6%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>前后端分离简单玩法</title>
+      <link>/posts/2016-06-26-qian-hou-duan-fen-chi-ji-ben-wan-fa/</link>
+      <pubDate>Sun, 26 Jun 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-06-26-qian-hou-duan-fen-chi-ji-ben-wan-fa/</guid>
+      <description>&lt;p&gt;前后端分离原因，这里就不展开讨论了，大家可以去了解下相关技术文章。&lt;/p&gt;
+&lt;p&gt;需求背景：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;前后端分离。&lt;/li&gt;
+&lt;li&gt;利用 cookies 记住会话。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;具体实践：&lt;/p&gt;
+&lt;h4 id=&#34;路由设计&#34;&gt;路由设计：&lt;/h4&gt;
+&lt;p&gt;用户直接访问的页面，全部由前端框架来 routing, 所有 API 请求以 &lt;code&gt;/api&lt;/code&gt; 开头, 并被 nginx 代理到后端应用里 。&lt;/p&gt;
+&lt;p&gt;为什么要这么设计？&lt;/p&gt;
+&lt;p&gt;因为我们需要利用 cookies 来记录会话，但是 cookies 有同域保护的问题（子域名也不行），
+那么用户访问地址和 API 请求必须具有相同的域名。&lt;/p&gt;
+&lt;p&gt;API 的请求全部拥有统一的前缀，只是为了方便 nginx 作代理请求。&lt;/p&gt;
+&lt;p&gt;代码如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;location /api {
+  expires -1;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header Host $http_host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Scheme $scheme;
+  proxy_redirect off;
+  proxy_pass http://localhost:9090; // Application location
+  break;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;前端处理-404-问题&#34;&gt;前端处理 404 问题：&lt;/h4&gt;
+&lt;p&gt;默认前端只有 &lt;code&gt;index.html&lt;/code&gt; 页面， 那么当用户访问 &lt;code&gt;example.com/index2.html&lt;/code&gt; 的时候，
+如果不做特殊处理，将得到一个默认的 404 页面。&lt;/p&gt;
+&lt;p&gt;但是很有可能，在经过前端 js routing 过后，发现 &lt;code&gt;index2.html&lt;/code&gt; 页面是存在的。&lt;/p&gt;
+&lt;p&gt;所以判断页面存在与否，取决于前端代码 routing 匹配过后结果，显然无论用户访问怎样的路由，
+我们都应该先返回 &lt;code&gt;index.html&lt;/code&gt;，然后执行前端代码，根据访问的路由来确定展现页面。&lt;/p&gt;
+&lt;p&gt;这里我们可以偷个懒，直接使用 nginx 的 error_page, 将其指向 index 页面即：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    error_page 404 /index.html
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;开发模式下解决同域的问题&#34;&gt;开发模式下，解决同域的问题：&lt;/h4&gt;
+&lt;p&gt;由于开发也是前后端分离的，前端人员开发不依赖 nginx, 那么可以找个能够修改域的中间件来解决这问题，
+例如我们使用了 &lt;code&gt;http-proxy-middleware&lt;/code&gt; 。&lt;/p&gt;
+&lt;p&gt;结论：&lt;/p&gt;
+&lt;p&gt;想要拥有前后端分离的好处，又想使用 cookies 记录会话，不妨采用这种方式，只需简单修改 nginx 即可，侵入极小。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

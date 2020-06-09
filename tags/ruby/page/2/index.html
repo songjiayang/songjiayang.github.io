@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>ruby - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/ruby/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="ruby" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/ruby/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2017-03-27T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="ruby"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: ruby</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-05-31-rubymotion-root-path/">RubyMotion 的 root path 另类使用姿势</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        在写 RubyMotion 代码过程中，不止一次获取项目的绝对路径的需求，解决办法都是根据当前文件，向上递推，再根据相对路径获取。
+这样做费时又费力，代码还略显难看， 比如这样：
+# app/lib/xx.rb File.expand_path(&quot;../../models&quot;, __FILE__) 出现这个问题原因就是 RubyMotion 没有存储项目的根路径。 写 Rails 项目的人都知道，要想拿到 Rails 项目的根路径是非常容易的，只需调用 APP_NAME.root 即可。
+那是否 RubyMotion 也可以这样呢？
+下面是我的一个 Hack 方式：
+打开 Rakefile 文件, 添加如下代码 :
+# Rakefile # Hack way to store app root path ENV['APP_ROOT'] = File.expand_path(&quot;../&quot;, __FILE__) 然后你在项目中就可以通过 ENV['APP_ROOT'] 得到项目根路径了。
+JUST A JOKE , HAVA A FUN.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-05-31</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-05-30-wei-shi-yao-xuan-ze-rubymotion/">我为什么选择 Ruby Motion</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        迁移代价 一开始我以为 RubyMotion 只是一个 ruby 到 object c 交叉编译器，后来发现我完全错了。
+RubyMotion 应用本质上与Objective-C, Swift 和 Java 开发的应用是一样的，因为他们基于同一套运行时技术，并都被编译成经过优化的机器代码。 你可以在 RubyMotion 项目中使用目标平台提供的 全部 API。
+这一点确是太重要了。
+ 对于 APP 开发老手而言，从已熟的平台(ios, android)上迁移到 RubyMotion 的成本仅仅只是个 ruby 语法而已， 而 ruby 语法又是非常简单和语义化的，可以参见 Ruby in Twenty Minutes。 对于本身就是 Ruby 使用者而言，在开发 APP 的时候，并不需要将各平台的开发语言全部学会，你只需要熟悉对应平台的 API 手册即可。  对于大多数应用而言，熟悉 API 手册足以应付，通常情况下是很少有人去修改开发语言类库的，只要能看懂对应语言的代码例子，将其翻译成 Ruby 风格即可 （因为 RubyMotion 还很年轻，优秀的库还不够多，你会有使用到原生语言的插件或类库）。
+其实 RubyMotion 在引入第三方库方面已足够出色，像平时大家使用的 cocoapods 在 RubyMotion 也可以照应使用，几乎一模一样， 在此感谢下 motion-cocoapods 这个 gem. 所以你大可放心，其他语言的优秀插件将是你最大的保障。
+使用文本编辑器 以前写 Java ，使用 Eclipse, 那真是太卡了，时不时 crash ， 一关一开，浪费时间不用说，关键让人很不爽，这一点对于有多年开发经验的人，自然有所体会， 后来用 xcode 也是相似感觉。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-05-30</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-05-19-font-aswsome-upgrade-script-ruby/">font-aswsome upgrade script (ruby)</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        这是一个 ruby 脚本程序，它能够将你代码中的 font-aswsome 自动从 3 升级到 4， 支持大多数文件格式。
+项目地址 ：https://github.com/songjiayang/font-aswsome-upgrade .
+欢迎大家使用，如果有任何问题或代码错误，请点击 “这里”.
+分享让世界更美好！
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-05-19</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-05-18-shi-yong-generateming-zi-dong-sheng-cheng-modelde-shi-hou-zhi-ding-bu-tong-de-orm/">rails generate 命令的 orm 参数使用</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        当一个项目中出现多种数据库，例如 Postgresql 和 MongoDB ，对应的 gem 分别是 &lsquo;pg&rsquo; 和 &lsquo;mongoid&rsquo;.
+此时使用 rails generate 命令默认生成的 model 将使用 mongoid，显然我们不想这么死板，最好有办法根据参数指定 model 所需类型。
+这里我们可以使用 --orm 参数:
+ rails g modle post --orm=active_record rails g modle post --orm=mongo_mapper 若不指定 orm 参数， 将优先使用 mongo_mapper 。
+测试代码 rails-orm .
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-05-18</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-04-18-actionmailer-na-xie-shi-4/">Actionmailer 那些事（四）</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        众所周知，通常情况 css 有三种插入方式，外链，内部和行内，详情请参考 css_howto, 但在 email 中只能使用行内（Inline Styles）的方式。 所以在日常开发中，我们的很多代码会写成这样：
+So ugly， So tired !
+难道就没有什么方式，能让我们像写外链样式那样轻松写邮件模版吗？
+当然有，这里我们需要先了解两个 gem ， premailer 和 premailer-rails。
+premailer 主要实现将页面定义的 css 样式自动转化为 Inline 的方式，官方说法是 Each of these CSS declarations will be copied to appropriate element&rsquo;s attribute.
+测试代码：
+ require 'premailer' premailer = Premailer.new('http://leemunroe.github.io/responsive-html-email-template/email.html', :warn_level =&gt; Premailer::Warnings::SAFE) # Write the HTML output File.open(&quot;output.html&quot;, &quot;w&quot;) do |fout| fout.puts premailer.to_inline_css end # Write the plain-text output File.open(&quot;output.txt&quot;, &quot;w&quot;) do |fout| fout.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-04-18</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-04-18-actionmailer-na-xie-shi-3/">Actionmailer 那些事（三）</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        早已知道 Rails4 的 ActionMailer 有一个 email preview 的功能，但由于各种原因从未真正使用，其实它是的好东西，绝非鸡肋。
+我们都知道项目中邮件发送是一件非常耗时且依赖配置的过程。在开发阶段，邮件模版需不断修改， 如果每次修改都要真正发送邮件才能确定效果，这真是一件糟糕的事情。因为你花在等待，刷新邮件客户端，排查收不到邮件原因（测试账号服务商邮件发送莫名延迟或今日邮件发送次数限制）的时间将足够你喝杯咖啡了。
+Rails4 推出的 email preview 就是为了解决这个问题，使用它，你可以在浏览器中通过 url 访问， 直接获取邮件内容（和邮件客户端收到效果一模一样）。
+时间就是生命，既然有这么好的东西，为何不用？下面小鱼将带着大家一步一步使用它。
+ActionMailer Preview 简单使用 1.使用命令 rails g mailer UserMailer new_user 创建 一个 mailer 和 action
+2.此时，系统将自动未我们创建对应的 preview controller，打开.../user_mailer_preview.rb文件，你会发现 rails 给出的提示是如此清晰：
+ # Preview all emails at http://localhost:3000/rails/mailers/user_mailer class UserMailerPreview &lt; ActionMailer::Preview # Preview this email at http://localhost:3000/rails/mailers/user_mailer/new_user def new_user UserMailer.new_user end end 3.启动 server, 在浏览器中输入 http://localhost:3000/rails/mailers/user_mailer/new_user 即可看到对应邮件内容。
+备注： 你可以按照具体业务逻辑任意修改 UserMailerPreview 中的 new_user 方法,例如一些参数装配，只要返回结果是一个 ActionMailer::MessageDelivery 即可。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-04-18</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-04-05-actionmailer-na-xie-shi-2/">ActionMailer 那些事 (二)</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        这篇博客是上一篇 ActionMailer 那些事(一) 的续。
+如你所知，上一篇博客提到邮件发送的 from 别名设置，其实，正常情况下，邮件from地址可以任意填写， 一般邮件服务器是不检查 from 值的（只要包含email格式）。
+为什么会有任意填写 from 地址的需求？
+因为有时系统会代替客户发送邮件，而期望邮件接受者可以直接通过邮件回复发送的用户，此时，邮件的 from 就该填写用户的 email 了。
+本来这并不是问题，因为你只要将 from 值修改成用户的 email 皆可，对于绝大多数邮件服务商这样是可以的，但是 gmail 不行。
+为什么不行？
+首先 gmail 处于自己的考虑，必须保证 from 的地址是配置发送邮件账号的 email 地址; 它可以通过简单的正则替换就搞定这个事情，毕竟所有邮件它都有能力修改。
+解决办法？
+不要使用 gmail 作为应用邮件发送服务器，毕竟它本来就不干这个事情，你应该选择那些邮件专业服务器提供厂商， 例如 SendGrid, Mailgun 等。
+ 友情提示一下： heroku上面邮件服务器，如果配置为 gamil，将无法发送邮件，因为 gmail 已经封了所有来自 heroku 的认证请求。
+ 推荐阅读： ActionMailer 那些事(一)
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-04-05</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-04-05-actionmailer-na-xie-shi-1/">ActionMailer 那些事(一)</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        上周遇到这样一个需求，系统邮件发送至客户，客户看到的邮件 from 地址不应该是直接的 email,而应该是email对应的一个别名。如图：
+在 Rails 如何实现？其实只需将邮件发送的 from 参数 写成 &quot;NAME &lt;EMAIL&gt;&quot; 的形式即可：
+ class NotifyMailer &lt; ActionMailer::Base def new_user() xxxxx mail(from: &quot;Matter.build &lt;no-reply@matter.build&gt;&quot;, .....) end end 如果你想统一配置 from 的格式，只需添加 ActionMailer::Base.default 默认值即可，例如：
+#config/application.rb ... ActionMailer::Base.default :from =&gt; 'Matter.build &lt;no-reply@matter.build&gt;' ... 推荐阅读： ActionMailer 那些事(二)
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-04-05</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-02-28-a-better-way-for-thinking-sphinx-deltas-and-associations/">A better way to reindex associations in thinking-sphinx</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        众所周知，thinking-sphinx 提供了 Real-Time 和 Delta 两种索引，而我在项目中经常使用后者。 使用这种方式，通常你会遇到这样一个问题：
+ If you are using associations for field or attribute data, delta indexing will not automatically happen when you make changes to those association models. You will need to add a manual delta hook to make it all update accordingly.
+ 举个例子：
+Article model 有这样索引:
+indexes comments.content, :as =&gt; :comments 当 comments 有变化（更新或删除）， article.comments 是不会自动重新索引的; 为使其重新索引, 我们不得不 Do a hack：
+# comment.rb after_save :set_article_delta_flag after_destroy :set_article_delta_flag # .
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-02-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-02-23-wei-shi-yao-bu-kuang-jia/">为什么你的 Rails 不需要 JS 框架</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        现在前端的繁荣程度前所未有，尤其是前端 MVC 框架，多之又多，有点乱花渐入迷人眼的味道。
+前端框架使用与否取决于你的应用形态，即 website 还是 web app。通常而言，网站为主的应用是不需要任何前端 mvc 框架的。 本文的意图不是为了排斥前端框架，而是为了讲述在没有使用任何前端框架的情况下，如何更好地组织项目的 js 代码。
+依赖的类库: 项目是按照 rails 4.2 官方推荐的方式，主要使用了 Turbolinks .
+ jQuery. Coffeescript. Turbolinks. HeadJS, 使用 headjs-rails gem, 用来异步加载 js 代码，从而加快项目速度.  代码组织结构:  一个页面对应了一个 js 视图类。 通用组件，全部放到 widget 目录里面。 application.js 引入所有 js 依赖和项目自启动逻辑。  视图代码 任何页面都继承于 ApplicationView ，如果没有属于自己的view,那么自动调用 ApplicationView.
+window.Views ||= {} class Views.ApplicationView render: -&gt; Widgets.FancyBox.enable() Widgets.MarkdownEditor.enable() cleanup: -&gt; Widgets.FancyBox.cleanup() Widgets.MarkdownEditor.cleanup() 因为我们要在很多个页面都使用 FancyBox 和 MarkdownEditor 这两个组建，所有直接就写在了ApplicationView里面。
+特定的 view 直接继承 ApplicationView：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-02-23</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/tags/ruby/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/tags/ruby/page/3/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>如何在 Go 中发送表单请求 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="如何在 Go 中发送表单请求" />
+<meta property="og:description" content="通常我们与第三方交互使用的是 json，但偶尔也会遇到要求使用表单方式来提交数据，故今天我们就一起来学习下如何在 Go 中发送表单请求。
+准备工作 首先我们有这样一段测试代码来接收 POST 请求，并返回其接收到的字段信息。
+package main import ( &#34;fmt&#34; &#34;log&#34; &#34;net/http&#34; ) func urlencodedHandler(w http.ResponseWriter, r *http.Request) { err := r.ParseForm() if err != nil { log.Printf(&#34;r.ParseForm(): %v&#34;, err) return } result := &#34;&#34; for k, v := range r.Form { result &#43;= fmt.Sprintf(&#34;%s:%v\n&#34;, k, v) } fmt.Fprintf(w, result) } func multipartHandler(w http.ResponseWriter, r *http.Request) { err := r.ParseMultipartForm(4 * 1024 * 1024) if err != nil { log." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2018-03-06-zai-go-zhong-fa-song-multipart-biao-dan-qing-qiu/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2018-03-06T16:51:25+08:00" />
+<meta property="article:modified_time" content="2018-03-06T16:51:25+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="如何在 Go 中发送表单请求"/>
+<meta name="twitter:description" content="通常我们与第三方交互使用的是 json，但偶尔也会遇到要求使用表单方式来提交数据，故今天我们就一起来学习下如何在 Go 中发送表单请求。
+准备工作 首先我们有这样一段测试代码来接收 POST 请求，并返回其接收到的字段信息。
+package main import ( &#34;fmt&#34; &#34;log&#34; &#34;net/http&#34; ) func urlencodedHandler(w http.ResponseWriter, r *http.Request) { err := r.ParseForm() if err != nil { log.Printf(&#34;r.ParseForm(): %v&#34;, err) return } result := &#34;&#34; for k, v := range r.Form { result &#43;= fmt.Sprintf(&#34;%s:%v\n&#34;, k, v) } fmt.Fprintf(w, result) } func multipartHandler(w http.ResponseWriter, r *http.Request) { err := r.ParseMultipartForm(4 * 1024 * 1024) if err != nil { log."/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">如何在 Go 中发送表单请求</h1>
+        </header>
+        <div class="content">
+            <p>通常我们与第三方交互使用的是 <code>json</code>，但偶尔也会遇到要求使用表单方式来提交数据，故今天我们就一起来学习下如何在 Go 中发送表单请求。</p>
+<h3 id="准备工作">准备工作</h3>
+<p>首先我们有这样一段测试代码来接收 <code>POST</code> 请求，并返回其接收到的字段信息。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;net/http&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">urlencodedHandler</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
+	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">ParseForm</span>()
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;r.ParseForm(): %v&#34;</span>, <span style="color:#a6e22e">err</span>)
+		<span style="color:#66d9ef">return</span>
+	}
+
+	<span style="color:#a6e22e">result</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;&#34;</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Form</span> {
+		<span style="color:#a6e22e">result</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s:%v\n&#34;</span>, <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span>)
+	}
+
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintf</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">result</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">multipartHandler</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
+	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">ParseMultipartForm</span>(<span style="color:#ae81ff">4</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1024</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1024</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;r.ParseForm(): %v&#34;</span>, <span style="color:#a6e22e">err</span>)
+		<span style="color:#66d9ef">return</span>
+	}
+
+	<span style="color:#a6e22e">result</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;&#34;</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">MultipartForm</span>.<span style="color:#a6e22e">Value</span> {
+		<span style="color:#a6e22e">result</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s:%v\n&#34;</span>, <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span>)
+	}
+
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">MultipartForm</span>.<span style="color:#a6e22e">File</span> {
+		<span style="color:#a6e22e">result</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s:%v\n&#34;</span>, <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span>)
+	}
+
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintf</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">result</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/urlencoded&#34;</span>, <span style="color:#a6e22e">urlencodedHandler</span>)
+	<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/multipart&#34;</span>, <span style="color:#a6e22e">multipartHandler</span>)
+
+	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;:8080&#34;</span>, <span style="color:#66d9ef">nil</span>))
+}
+
+</code></pre></div><h3 id="发送-urlencoded-请求">发送 urlencoded 请求</h3>
+<p><code>urlencoded</code> 主要用于纯文本请求，代码如下：</p>
+<pre><code>package main
+
+import (
+	&quot;fmt&quot;
+	&quot;io/ioutil&quot;
+	&quot;net/http&quot;
+	&quot;net/url&quot;
+	&quot;strings&quot;
+)
+
+func main() {
+	payload := url.Values{}
+	payload.Set(&quot;foo&quot;, &quot;a&quot;)
+	payload.Add(&quot;foo&quot;, &quot;b&quot;)
+	payload.Set(&quot;foo2&quot;, &quot;c&quot;)
+
+	req, err := http.NewRequest(http.MethodPost,
+                            &quot;http://localhost:8080/urlencoded&quot;,
+                            strings.NewReader(payload.Encode()))
+	if err != nil {
+		return
+	}
+
+	req.Header.Add(&quot;Content-Type&quot;,
+                  &quot;application/x-www-form-urlencoded; param=value&quot;)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return
+	}
+
+	defer resp.Body.Close()
+
+	data, _ := ioutil.ReadAll(resp.Body)
+
+	fmt.Println(string(data))
+}
+</code></pre><p>运行 <code>go run urlencoded.go</code> 输出结果为：</p>
+<pre><code>foo2:[c]
+foo:[a b]
+</code></pre><h3 id="发送-multipart-请求">发送 multipart 请求</h3>
+<p><code>multipart</code> 主要用于发送文件上传的请求，代码如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;bytes&#34;</span>
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;io/ioutil&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;mime/multipart&#34;</span>
+	<span style="color:#e6db74">&#34;net/http&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">buf</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Buffer</span>)
+
+	<span style="color:#a6e22e">writer</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">multipart</span>.<span style="color:#a6e22e">NewWriter</span>(<span style="color:#a6e22e">buf</span>)
+	<span style="color:#a6e22e">writer</span>.<span style="color:#a6e22e">WriteField</span>(<span style="color:#e6db74">&#34;foo&#34;</span>, <span style="color:#e6db74">&#34;a&#34;</span>)
+	<span style="color:#a6e22e">writer</span>.<span style="color:#a6e22e">WriteField</span>(<span style="color:#e6db74">&#34;foo&#34;</span>, <span style="color:#e6db74">&#34;b&#34;</span>)
+
+	<span style="color:#a6e22e">part</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">writer</span>.<span style="color:#a6e22e">CreateFormFile</span>(<span style="color:#e6db74">&#34;tmp.png&#34;</span>, <span style="color:#e6db74">&#34;tmp.png&#34;</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span>
+	}
+
+	<span style="color:#a6e22e">fileData</span> <span style="color:#f92672">:=</span> []byte(<span style="color:#e6db74">&#34;hello,world&#34;</span>)  <span style="color:#75715e">// 此处内容可以来自本地文件读取或云存储
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">part</span>.<span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">fileData</span>)
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">writer</span>.<span style="color:#a6e22e">Close</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span>
+	}
+
+	<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">MethodPost</span>,
+                              <span style="color:#e6db74">&#34;http://localhost:8080/multipart&#34;</span>,
+                              <span style="color:#a6e22e">buf</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span>
+	}
+
+	<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">Header</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#e6db74">&#34;Content-Type&#34;</span>, <span style="color:#a6e22e">writer</span>.<span style="color:#a6e22e">FormDataContentType</span>())
+
+	<span style="color:#a6e22e">resp</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">DefaultClient</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#a6e22e">req</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span>
+	}
+
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>()
+
+	<span style="color:#a6e22e">data</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ioutil</span>.<span style="color:#a6e22e">ReadAll</span>(<span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>)
+
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(string(<span style="color:#a6e22e">data</span>))
+}
+</code></pre></div><p>运行 <code>go run multipart.go</code> 输出结果为：</p>
+<pre><code>foo:[a b]
+tmp.png:[0xc420082410]
+</code></pre>
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-03-06</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

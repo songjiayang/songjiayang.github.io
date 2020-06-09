@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>ruby - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/ruby/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="ruby" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/ruby/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2017-03-27T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="ruby"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: ruby</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-02-16-ruby-yuan-ma-yue-du-ji-hua/">一起阅读 Ruby 类库的源码吧！</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        (I want you: 图片来源 500px)事情源于一天和同事讨论 Ruby 单例实现，当时为了了解 Singleton 这个 module 更多东西 ，顺手将 Ruby 代码 clone 下来，结果惊奇发现其代码注释非常详细，十分方便阅读：
+所以就有了这个阅读计划。
+开始阅读  克隆最新的ruby代码， git clone git@github.com:ruby/ruby.git 。 需要阅读的代码在 ruby_xx/lib 文件夹里面。 ok, 开始吧，先从自己最熟悉的 module 下手。  结束时间 现在我正阅读的版本是 2.2, 需要阅读的文件总计 find . -name &quot;*.rb&quot; | wc -l（626个）。 这意味着，即使每天阅读一个模块，几乎都要花费半年时间了，可见这是一件长期的计划。
+阅读源码是一种好的习惯，也是持续学习的过程，而且好的代码总能让人反复咀嚼，因为此计划暂无 deadline。
+阅读产物 阅读会根据自己理解，不定期通过博客给出有一些代码演示或旧代码重构，你期待了吗？如果你感兴趣，加入此计划吧。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-02-16</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-16-pian-bo-ke-yin-fa-de-si-kao/">一篇帖子引发的思考</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        这是一篇在 Ruby－China 上讨论的比较激烈的帖子，原帖地址 https://ruby-china.org/topics/23766。
+原帖属于楼主的经验分享帖，一个关于 sidekiq 的 worker 被全部占用，无法释放的问题。 出现这个问题的原因是，楼主 sidekiq worker 中有一段网络请求的代码，但由于网络请求服务不稳定，导致无响应或者响应很慢，所以，worker 全部都被占用了。
+解决这个问题的办法很简单，就是设置 Timeout 时间。
+ IO 请求都需要设置超时时间。
+ 楼主在原帖中还提到了 sidekiq 常见 Frozen worker 的两种情况：
+ DNS lookup - resolving a hostname might hang. This has a serious side effect in MRI of locking up everything because of the way MRI uses DNS by default. The solution is to run require &lsquo;resolv-replace&rsquo; in your initializer, which installs a pure Ruby DNS resolver that works concurrently.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-16</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-12-error-incompatible-library-version-nokogiri-dot-bundle-requires-version-11-dot-0-0-or-later/">How to fix &#39;Nokogiri Incompatible library version&#39; error in lion</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天将本地开发环境切换到 ruby 2.1.2 后，重新启动Rails的时候，遇到如下错误提示：
+ Incompatible library version: nokogiri.bundle requires version 11.0.0 or later, but libxml2.2.dylib provides version 10.0.0 如何修复：
+gem uninstall nokogiri libxml-ruby brew update brew uninstall libxml2 brew install libxml2 --with-xml2-config brew link --force libxml2 brew install libxslt brew link --force libxslt bundle config build.nokogiri -- --with-xml2-dir=/usr --with-xslt-dir=/opt/local --with-iconv-dir=/opt/local bundle install 参考链接： https://gist.github.com/vparihar01/5856524
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-10-upgrade-ruby-to-2-dot-2-with-rvm/">upgrade ruby to 2.2 with rvm</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        rvm 升级命令
+rvm get head rvm install 2.2 NOTES:
+ 执行 rvm get head 的时候，需要 pgp 添加签名， 类似代码 gpg &ndash;keyserver hkp://keys.gnupg.net &ndash;recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 执行 rvm install 2.2, 如果遇到有关 gmp lib版本冲突的问题，请先执行 brew upgrade gmp 升级 gmp.  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-10</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-09-rails-cache-store-de-ge-xiao-keng/">rails cache store 的一个小坑</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        曾然，标题有点哗众取宠了，其实这并不是个 Rails 的坑，只是一个我平时没注意到的问题罢了。
+想必大家对 Rails 的 ActiveSupport::Cache::Store  已经很了解了，是吗？那你觉得下面这段代码有什么问题。
+# @user is a ActiveRecord::Base instance Rails.cache.fetch([@user]) do # data decorate end 如果你已经找出问题了，那恭喜你，可以跳过下面的内容了。
+上面代码的问题就是：fetch 的参数应该是 @user 非 [@user]， 为什么？
+尽管这里使用 [@user］ 不会抛出异常，但是它并不会在 @user 变化后，自动更新上面代码中的缓存数据，这显然与我们想要的自动过期策略不符。
+为什么将 [@user] 换成 @user 就可以？
+那就要分析下 Rails 的源代码了.
+首先看 Rails 的 fetch 方法的定义：
+def fetch(name, options = nil) if block_given? options = merged_options(options) key = namespaced_key(name, options) cached_entry = find_cached_entry(key, name, options) unless options[:force] entry = handle_expired_entry(cached_entry, key, options) if entry get_entry_value(entry, name, options) else save_block_result_to_cache(name, options) { |_name| yield _name } end else read(name, options) end end 其中与 key 相关的是 namespaced_key 这个方法：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-25-hello-rack/">Hello Rack</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Rack 是什么？ Rack 是一个模块化的 ruby webserver 接口；它是 web server 到 web framework的中间件。
+为什么需要 Rack? 因为 Rack，项目可以从 web server 到 web framework 任意切换组合。例如同一个rails应用可以使用不同的 web server（unicorn, thin, puma ..）
+Rack定义? 提供一个叫做 app 的 object， 这个 object 具有 call 方法；call 方法可以传递 ENV 作为参数; 返回是一个数组，数组包含了3个东西：
+ http 返回状态码 Hash 形式的 header信息 返回的body信息，必须具有 each 方法。  Rack 的基本使用 ruby 代码中直接运行
+# my_rack_app.rb require 'rack' app = Proc.new do |env| ['200', {'Content-Type' =&gt; 'text/html'}, ['A barebones rack app.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-25</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-20-thinking-sphinx-can-not-search-chinese/">Thinking-sphinx can not search chinese</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天发现 Matter 在生产环境不支持中文全文搜索（英文可以），开发环境支持中文搜索。
+Matter 的全文搜索使用的是 thinking-sphinx， 底层是 sphinxsearch 。
+由于习惯性思维，我很快的查看了线上的 sphinxsearch 版本， 发现版本比较低， 所以立马升级了线上的 sphinx 版本(与开发一致)。 很不幸，不是这个原因，问题犹在，需要调整思路。
+经过对比线上和本地自动生成的 x.sphinx.conf 文件，发现本地 生成的配置文件多了 sql_query_pre = SET NAMES utf8 这句。
+也许问题就出现在这里，那为什么开发环境会多处这句配置？
+通过在 github 的 thinking-sphinx 项目里面搜索 SET NAMES utf8 和 utf8_query_pre 瞬间恍然大悟！
+原来线上的 database.yml 里面并没有设置编码方式，而默认编码并非utf8，所以不支持中文。 而开发环境支持中文搜索的原因正是在 database.yml 里面设置了 encoding: utf8。 待生产环境加上这句后，问题得以解决，可以正常搜索中文了。
+这个bug的修复并非如此顺利，因为一开始浪费了很多时间在其他方向上，最后在同事 serco-chen 的提醒下，通过对照配置文件差异后，才得以解决，在此感谢他。
+通过此次捉虫，感触最深的就是：
+  当我们调试和解决bug的时候，不妨尝试采用对照的方式，切勿先入为主，以为是必然就忽略了某些细节。
+  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-20</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-20-rails-deploy-with-capistrano3/">Rails deploy with capistrano3</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天将公司 Reset 项目的部署由 capistrano2+unicorn+sidekiq 换成了 capistrano3+puma+sidekiq 。
+以下是个人整理的几个重要地方。
+1. 修改 Gemfile 文件 #Gemfile gem 'puma' group :development do ..... # cap deploy plugins gem 'capistrano', '~&gt; 3.2.0' gem 'capistrano-rvm', '~&gt; 0.1.2' gem 'capistrano-bundler', '~&gt; 1.1.3' gem 'capistrano-rails', '~&gt; 1.1.2' gem 'capistrano-sidekiq', '~&gt; 0.4.0' gem 'capistrano3-puma', '~&gt; 0.8.3' ..... end 2. 修改 Capfile 文件 #Capfile # Load DSL and Setup Up Stages require 'capistrano/setup' # Includes default deployment tasks require 'capistrano/deploy' # Includes tasks from other gems included in your Gemfile # # For documentation on these, see for example: # # https://github.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-20</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-12-plupload-rails-error-uncaught-error-error-calling-method-on-npobject/">The Problem &#34;Uncaught Error: Error calling method on NPObject&#34; with plupload-rails</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        昨天，突然发现在 IE 上传图片的时候，报出错误 Uncaught Error: Error calling method on NPObject, google了一下，发现这个是 flash 抛出来的错误，主要是跨站的问题。
+####为什么会跨站呢？ 首先我们使用qiniu作为静态资源的镜像加速，所以用于上传的插件也来自七牛。 主要涉及的资源是 Moxie.swf（flash 使用） 和 Moxie.xap（silverlight） 这两个。
+plupload-rails 中关于资源加载代码是这样的：
+// Assigns default Plupload settings that work with the asset pipeline. (function ($) { var proxied = plupload.Uploader; plupload.Uploader = function (settings) { settings = $.extend({}, settings, { multipart: true, flash_swf_url: '&lt;%= asset_path(&quot;Moxie.swf&quot;) %&gt;', silverlight_xap_url: '&lt;%= asset_path(&quot;Moxie.xap&quot;) %&gt;' }); return proxied.call(this, settings); }; plupload.Uploader.prototype = proxied.prototype; }(jQuery)); 很显然，问题出现在 asset_path(&quot;Moxie.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-07-gemfile-bundle-ti-shi-unable-to-connect-to-github-dot-com-wen-ti/">Bundle 的时候出现 &#39;unable to connect to github.com&#39; 问题</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        最近新开了一台日本的亚马逊机器，在使用 cap2 做发布的时候， 在 bundle 那步出现报错，提示信息类似：
+Fetching git://github.com/activeadmin/activeadmin.git fatal: unable to connect to github.com: github.com[0: 192.30.252.130]: errno=Connection refused 这是因为我部分 gem 是使用 github 仓库安装，而服务器上无法通过 git 协议连接到 github 获取代码, 所有报错。出现这个原因可能是因为我亚马逊机器设置的问题，（比如某些协议不支持或者端口没打开）。
+Anyway, 既然 git 协议通不过，那么我们可以尝试换成 https 协议。遗憾的是，Gemfile里面，不能直接指定请求发送的协议， 但是我们可以尝试修改 git global config ，针对 github 将 git 协议重定向到 https上，这个有点像 dns 设置。
+具体设置:
+git config --global url.&quot;https://github.com&quot;.insteadOf git://github.com 在服务器上执行了以上代码后,重新执行 cap production deploy 就可以了。
+参考链接： http://stackoverflow.com/questions/21260689/force-bundle-install-to-use-https-instead-of-git-for-github-based-gems
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-07</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/tags/ruby/page/2/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/tags/ruby/page/4/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

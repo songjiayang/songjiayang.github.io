@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>A bug about prometheus rule incorrect configuration - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="A bug about prometheus rule incorrect configuration" />
+<meta property="og:description" content="随着对 Prometheus Alertmanager 深入了解，我们配置的告警通知已非常具有可读性。
+但是有一个问题不断困扰着我们，问题现象大致为，在逻辑上我们认为是同一条的告警内容，在告警通知里面出现多次，而且已经过时告警还在不断警告（一直报）。
+我们可以将这个问题简单总结为两点:
+ Prometheus rule 一条查询结果，在 Alertmanager 却对应了多条。 Alertmanager 里面有警报一直处于未恢复的状态（没有收到 Prometheus 发送的 resolved 请求）。  一开始怀疑，是不是 Prometheus 向 Alertmanager 发送的 resolved 通知有丢失, 导致部分历史警告一直处于未恢复状态。
+但是排查，发现 Prometheus 和 Alertmanager 在这段时间都没有被重启过。即使有类似现象也是低频的，肯定不会出现如此多的过期告警，而且这种假设仅能部分解释上述问题的第 2 点。
+看来要彻底搞清楚这个 bug，必须先弄清楚 Prometheus 中一条告警是怎么和 Alertmanager 中的告警通知关联的。
+1. 如何判断两条告警其实是同一告警 根据 Prometheus common/alert 中的代码可知，所有具有相同 Labels 的告警为同一告警。
+那如何才算具有相同 Labels 呢，它的计算逻辑为对一个 map 按照 key 排序，然后依次对 key, value 取值，做 hash，代码逻辑大致为：
+func labelSetToFastFingerprint(ls LabelSet) Fingerprint { if len(ls) == 0 { return Fingerprint(emptyLabelSignature) } var result uint64 for labelName, labelValue := range ls { sum := hashNew() sum = hashAdd(sum, string(labelName)) sum = hashAddByte(sum, SeparatorByte) sum = hashAdd(sum, string(labelValue)) result ^= sum } return Fingerprint(result) } 详情请参考 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2016-11-02-a-bug-about-prometheus-rule-incorrect-configuration/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2016-11-02T22:31:00+08:00" />
+<meta property="article:modified_time" content="2016-11-02T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="A bug about prometheus rule incorrect configuration"/>
+<meta name="twitter:description" content="随着对 Prometheus Alertmanager 深入了解，我们配置的告警通知已非常具有可读性。
+但是有一个问题不断困扰着我们，问题现象大致为，在逻辑上我们认为是同一条的告警内容，在告警通知里面出现多次，而且已经过时告警还在不断警告（一直报）。
+我们可以将这个问题简单总结为两点:
+ Prometheus rule 一条查询结果，在 Alertmanager 却对应了多条。 Alertmanager 里面有警报一直处于未恢复的状态（没有收到 Prometheus 发送的 resolved 请求）。  一开始怀疑，是不是 Prometheus 向 Alertmanager 发送的 resolved 通知有丢失, 导致部分历史警告一直处于未恢复状态。
+但是排查，发现 Prometheus 和 Alertmanager 在这段时间都没有被重启过。即使有类似现象也是低频的，肯定不会出现如此多的过期告警，而且这种假设仅能部分解释上述问题的第 2 点。
+看来要彻底搞清楚这个 bug，必须先弄清楚 Prometheus 中一条告警是怎么和 Alertmanager 中的告警通知关联的。
+1. 如何判断两条告警其实是同一告警 根据 Prometheus common/alert 中的代码可知，所有具有相同 Labels 的告警为同一告警。
+那如何才算具有相同 Labels 呢，它的计算逻辑为对一个 map 按照 key 排序，然后依次对 key, value 取值，做 hash，代码逻辑大致为：
+func labelSetToFastFingerprint(ls LabelSet) Fingerprint { if len(ls) == 0 { return Fingerprint(emptyLabelSignature) } var result uint64 for labelName, labelValue := range ls { sum := hashNew() sum = hashAdd(sum, string(labelName)) sum = hashAddByte(sum, SeparatorByte) sum = hashAdd(sum, string(labelValue)) result ^= sum } return Fingerprint(result) } 详情请参考 。"/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">A bug about prometheus rule incorrect configuration</h1>
+        </header>
+        <div class="content">
+            <p>随着对 Prometheus Alertmanager 深入了解，我们配置的告警通知已非常具有可读性。</p>
+<p>但是有一个问题不断困扰着我们，问题现象大致为，在逻辑上我们认为是同一条的告警内容，在告警通知里面出现多次，而且已经过时告警还在不断警告（一直报）。</p>
+<p>我们可以将这个问题简单总结为两点:</p>
+<ol>
+<li>Prometheus rule 一条查询结果，在 Alertmanager 却对应了多条。</li>
+<li>Alertmanager 里面有警报一直处于未恢复的状态（没有收到 Prometheus 发送的 resolved 请求）。</li>
+</ol>
+<p>一开始怀疑，是不是 Prometheus 向 Alertmanager 发送的 resolved 通知有丢失, 导致部分历史警告一直处于未恢复状态。</p>
+<p>但是排查，发现 Prometheus 和 Alertmanager 在这段时间都没有被重启过。即使有类似现象也是低频的，肯定不会出现如此多的过期告警，而且这种假设仅能部分解释上述问题的第 2 点。</p>
+<p>看来要彻底搞清楚这个 bug，必须先弄清楚 Prometheus 中一条告警是怎么和 Alertmanager 中的告警通知关联的。</p>
+<h3 id="1-如何判断两条告警其实是同一告警">1. 如何判断两条告警其实是同一告警</h3>
+<p>根据 Prometheus <code>common/alert</code> 中的代码可知，所有具有相同 Labels 的告警为同一告警。</p>
+<p>那如何才算具有相同 Labels 呢，它的计算逻辑为对一个 map 按照 key 排序，然后依次对 key, value 取值，做 hash，代码逻辑大致为：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">labelSetToFastFingerprint</span>(<span style="color:#a6e22e">ls</span> <span style="color:#a6e22e">LabelSet</span>) <span style="color:#a6e22e">Fingerprint</span> {
+	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">ls</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Fingerprint</span>(<span style="color:#a6e22e">emptyLabelSignature</span>)
+	}
+
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">result</span> <span style="color:#66d9ef">uint64</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">labelName</span>, <span style="color:#a6e22e">labelValue</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">ls</span> {
+		<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">hashNew</span>()
+		<span style="color:#a6e22e">sum</span> = <span style="color:#a6e22e">hashAdd</span>(<span style="color:#a6e22e">sum</span>, string(<span style="color:#a6e22e">labelName</span>))
+		<span style="color:#a6e22e">sum</span> = <span style="color:#a6e22e">hashAddByte</span>(<span style="color:#a6e22e">sum</span>, <span style="color:#a6e22e">SeparatorByte</span>)
+		<span style="color:#a6e22e">sum</span> = <span style="color:#a6e22e">hashAdd</span>(<span style="color:#a6e22e">sum</span>, string(<span style="color:#a6e22e">labelValue</span>))
+		<span style="color:#a6e22e">result</span> ^= <span style="color:#a6e22e">sum</span>
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Fingerprint</span>(<span style="color:#a6e22e">result</span>)
+}
+</code></pre></div><p>详情请<a href="https://github.com/prometheus/common/blob/9a94032291f2192936512bab367bc45e77990d6a/model/signature.go#L80">参考</a> 。</p>
+<h3 id="2-prometheus-产生一条-alert-的逻辑">2. Prometheus 产生一条 Alert 的逻辑</h3>
+<p>Prometheus 执行配置中的 rule 查询条件，如果查询结果不为空，那么就会产生告警，而告警条数与查询出的纪录条数一致。</p>
+<p>当 rule 查询出结果以后，Prometheus 会创建对应的的告警，而告警信息的 Labels 中除了 Prometheus 自动加入的 <code>alertname</code>，还有自己 rule 定义的 Labels。</p>
+<p>这条告警内容会被 Prometheus 缓存起来，它缓存的逻辑大致为 alertname =&gt; PormQL 查询结果的 Labels 的 hash =&gt; 根据 rule 配置产生的告警内容。</p>
+<h3 id="3-alertmanager-是如何识别是否为相同告警的呢">3. Alertmanager 是如何识别是否为相同告警的呢？</h3>
+<p>对于 Alertmanager 而言，它收到的告警是打平了的。</p>
+<p>因为每个告警的 Labels 里面包含了 rule 的 alertname，区别是否是相同的告警，对 Alertmanager 而言，只需查看是否具有相同的 Labels 即可。 Alertmanager 中的代码大致为：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#75715e">// Put adds the given alert to the set.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">a</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Alerts</span>) <span style="color:#a6e22e">Put</span>(<span style="color:#a6e22e">alerts</span> <span style="color:#f92672">...*</span><span style="color:#a6e22e">types</span>.<span style="color:#a6e22e">Alert</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">mtx</span>.<span style="color:#a6e22e">Lock</span>()
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">mtx</span>.<span style="color:#a6e22e">Unlock</span>()
+
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">alert</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">alerts</span> {
+		<span style="color:#a6e22e">fp</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">alert</span>.<span style="color:#a6e22e">Fingerprint</span>()
+
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">old</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">alerts</span>[<span style="color:#a6e22e">fp</span>]; <span style="color:#a6e22e">ok</span> {
+			<span style="color:#75715e">// Merge alerts if there is an overlap in activity range.
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">alert</span>.<span style="color:#a6e22e">EndsAt</span>.<span style="color:#a6e22e">After</span>(<span style="color:#a6e22e">old</span>.<span style="color:#a6e22e">StartsAt</span>) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">alert</span>.<span style="color:#a6e22e">EndsAt</span>.<span style="color:#a6e22e">Before</span>(<span style="color:#a6e22e">old</span>.<span style="color:#a6e22e">EndsAt</span>)) <span style="color:#f92672">||</span>
+				(<span style="color:#a6e22e">alert</span>.<span style="color:#a6e22e">StartsAt</span>.<span style="color:#a6e22e">After</span>(<span style="color:#a6e22e">old</span>.<span style="color:#a6e22e">StartsAt</span>) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">alert</span>.<span style="color:#a6e22e">StartsAt</span>.<span style="color:#a6e22e">Before</span>(<span style="color:#a6e22e">old</span>.<span style="color:#a6e22e">EndsAt</span>)) {
+				<span style="color:#a6e22e">alert</span> = <span style="color:#a6e22e">old</span>.<span style="color:#a6e22e">Merge</span>(<span style="color:#a6e22e">alert</span>)
+			}
+		}
+
+		<span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">alerts</span>[<span style="color:#a6e22e">fp</span>] = <span style="color:#a6e22e">alert</span>
+
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">ch</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">listeners</span> {
+			<span style="color:#a6e22e">ch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">alert</span>
+		}
+	}
+
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><p>现在我们已搞清楚了 Prometheus 产生告警和 Alertmanager 中判断相同告警的逻辑。</p>
+<p>是时候 review 了一下我们监控系统中 rules 配置了，果然被我发现了一些端倪。我们很多业务类监控的写法类似这样:</p>
+<pre><code>ALERT xxxx
+  IF sum(xxxx) &gt; 1
+  FOR 10s
+  LABELS {
+    value={{$value}},
+  }
+  ANNOTATIONS {
+    summary = &quot;xxxx&quot;,
+    description = &quot;xxxxx&quot;
+  }
+</code></pre><p>可以看出，这条 rule 自定义了一个 value 的 label, 它的值是创建告警的时候的查询结果（它是一个变化值），而 Alertmanager 接收到的告警 Labels 大致为:</p>
+<pre><code>｛ alertname: &quot;xxxx&quot;, value: {{$current_value}}, xxx ｝
+</code></pre><p>因为 <code>value</code> 是一个动态变化的值，所以当 Prometheus 里面缓存的告警内容丢失，就会产生新的告警内容，新的告警会具有不同的 Labels。而当 Alertmanager 接收到这条新的告警的时候，在老的告警里面，很难找到具有相同 Labels 的记录，所以也会对应创建一条新的纪录。</p>
+<p>那什么情况会导致 Prometheus 里面缓存的告警内容丢失呢？</p>
+<ol>
+<li>Prometheus 重启。</li>
+<li>Rule 配置修改。</li>
+</ol>
+<p>由于最近我们在不断调整 rule 配置文件， 看来这个问题确实因它而起。</p>
+<p>在弄清楚问题来龙去脉以后，解决起来自然简单很多：</p>
+<ol>
+<li>检查 rule 配置文件，删除 value 参数，重新加在 Prometheus 配置。</li>
+<li>删除 Alertmanager 的历史数据。</li>
+</ol>
+<p>又是一次有趣的 bug 探索，让我对 Prometheus 里面告警生成有了更深认识。</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-11-02</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

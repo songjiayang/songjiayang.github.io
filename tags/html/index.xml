@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>html on 小鱼驿站</title>
+    <link>/tags/html/</link>
+    <description>小鱼驿站 (html)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 15 Aug 2014 22:31:00 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/html/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>HTML 之语义网</title>
+      <link>/posts/2014-08-15-htmlzhi-yu-yi-wang/</link>
+      <pubDate>Fri, 15 Aug 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-08-15-htmlzhi-yu-yi-wang/</guid>
+      <description>&lt;p&gt;####什么是语义网&lt;/p&gt;
+&lt;p&gt;语义网的本质就是根据内容使用正确的元素， 什么样的元素就该对应什么样的页面内容，而不应该考虑样式的问题。&lt;/p&gt;
+&lt;p&gt;例如文章标题，不应该是这样：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;font size=&amp;quot;6&amp;quot;&amp;gt;&amp;lt;b&amp;gt;This is the page title&amp;lt;/b&amp;gt;&amp;lt;/font&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;而应该是这样：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;h1&amp;gt;This is a heading&amp;lt;/h1&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其实几乎所有HTML元素都是具有语义的， 除&lt;code&gt;&amp;lt;div&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;span&amp;gt;&lt;/code&gt;以外。它们没有具体的语义，仅仅是为了方便样式表使用而已。&lt;/p&gt;
+&lt;p&gt;####语义网的好处&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;代码更简短，从而让用户下载速度更快。&lt;/li&gt;
+&lt;li&gt;代码更易响应变化，方便样式/内容改版， 因为你的内容和样式是分离的，。&lt;/li&gt;
+&lt;li&gt;代码更易人阅读，方便他人学习和接手。&lt;/li&gt;
+&lt;li&gt;更方便爬虫程序理解，有助于搜索排名。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;更多好处，请参考&lt;a href=&#34;http://boagworld.com/dev/semantic-code-what-why-how/&#34;&gt;http://boagworld.com/dev/semantic-code-what-why-how/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;####如何保证你的网站是语义的&lt;/p&gt;
+&lt;p&gt;现在还没有工具能够自动检测网站是否满足语义。但是我们是能够随着经验和认识的提高不断优化我们的代码，实现最终的完全语义。&lt;/p&gt;
+&lt;p&gt;其实HTML5的出现，也大大促进了语义网的概念，它新增的元素都非常有用而富有语义。&lt;/p&gt;
+&lt;p&gt;一个好的实践：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://learn.shayhowe.com/assets/images/courses/html-css/getting-to-know-html/building-structure.png&#34; alt=&#34;HTML5 语义网实践&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;既然语义网如此重要，我们没有理由不用，大家以后不妨试试。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;参考资料: &lt;a href=&#34;http://learn.shayhowe.com/html-css/getting-to-know-html/&#34;&gt;http://learn.shayhowe.com/html-css/getting-to-know-html/&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Building Your First Web Page</title>
+      <link>/posts/2014-08-11-learn-to-code-html-css-part-1/</link>
+      <pubDate>Mon, 11 Aug 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-08-11-learn-to-code-html-css-part-1/</guid>
+      <description>&lt;p&gt;从今天起，我将根据逐步完成&lt;a href=&#34;http://learn.shayhowe.com/html-css/&#34;&gt;Learn to Code HTML &amp;amp; CSS&lt;/a&gt;系列课程的回顾学习，会将一些值得关注的知识点记录于此，留作笔记，以便日后查询。&lt;/p&gt;
+&lt;h3 id=&#34;html部分&#34;&gt;HTML部分&lt;/h3&gt;
+&lt;h4 id=&#34;11基本概念&#34;&gt;1.1、基本概念&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Elements&lt;/li&gt;
+&lt;li&gt;Tags&lt;/li&gt;
+&lt;li&gt;Attributes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下图清晰的表明了它们具体指的是哪个部分：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://learn.shayhowe.com/assets/images/courses/html-css/building-your-first-web-page/html-syntax-outline.png&#34; alt=&#34;Html Terms&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;12自关闭元素&#34;&gt;1.2、自关闭元素&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;1. &amp;lt;br&amp;gt;
+2. &amp;lt;embed&amp;gt;
+3. &amp;lt;hr&amp;gt;
+4. &amp;lt;img&amp;gt;
+5. &amp;lt;input&amp;gt;
+6. &amp;lt;link&amp;gt;
+7. &amp;lt;meta&amp;gt;
+8. &amp;lt;param&amp;gt;
+9. &amp;lt;source&amp;gt;
+10. &amp;lt;wbr&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;以上自关闭元素不需要使用元素结束符号 &amp;lt;/ &amp;gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;13引入样式表&#34;&gt;1.3、引入样式表&lt;/h4&gt;
+&lt;p&gt;一般项目中采用外部文件链接引入的方式：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;head&amp;gt;
+  &amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;main.css&amp;quot;&amp;gt;
+&amp;lt;/head&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;14html5简易模版&#34;&gt;1.4、HTML5简易模版&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang=&#39;zh-CN&#39;&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;meta charset=&#39;utf-8&#39;&amp;gt;
+    &amp;lt;title&amp;gt;Title is here!&amp;lt;/title&amp;gt;
+    &amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;main.css&amp;quot;&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;css部分&#34;&gt;CSS部分&lt;/h3&gt;
+&lt;h4 id=&#34;21基本概念&#34;&gt;2.1、基本概念&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;Selectors&lt;/li&gt;
+&lt;li&gt;Properties&lt;/li&gt;
+&lt;li&gt;Values&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;下图清晰的表明了三者之间的关联：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://learn.shayhowe.com/assets/images/courses/html-css/building-your-first-web-page/css-syntax-outline.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;22selectors-不同类型&#34;&gt;2.2、Selectors 不同类型&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;元素选取&lt;/li&gt;
+&lt;li&gt;Class选取&lt;/li&gt;
+&lt;li&gt;Id选取&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://learn.shayhowe.com/advanced-html-css/complex-selectors/&#34;&gt;复杂选取&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;23css-resets-来解决浏览器兼容性问题&#34;&gt;2.3、CSS Resets 来解决浏览器兼容性问题&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: &#39;&#39;;
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;除了reset css ，你还可以选择&lt;a href=&#34;http://necolas.github.io/normalize.css/&#34;&gt;normalize.css&lt;/a&gt;.&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;课程链接：&lt;a href=&#34;http://learn.shayhowe.com/html-css/building-your-first-web-page/&#34;&gt;http://learn.shayhowe.com/html-css/building-your-first-web-page/&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

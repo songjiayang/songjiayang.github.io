@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>docker - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/docker/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="docker" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/docker/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2019-04-02T18:10:29+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="docker"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: docker</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-04-02-golang-test-with-docker/">Unit Test In Go With Docker</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        本篇文章主要讲解如何在 Docker 中进行 Go 单元测试，依赖 Docker 和 Go Modules。
+为什么是 Docker 在 Docker 之前我们往往需要在 Jenkins 服务器上配置不同的 Go 版本以及针对每个项目配置 GOPATH，项目之间的隔离性差，经常出现基础库版本冲突的问题。
+有了 Docker，我们可以在不同容器中运行单元测试，该测试不局限不同项目，甚至可以是同一项目不同分支。
+所以在测试隔离性和项目测试并发度上都有很大提升，而且测试结束后，环境清理也简单许多。
+为什么是 Go Modules Go Modules 作为官方默认的包管理工具，基本解决了 Go 长期存在的包管理问题，它为我们的项目管理带来很多好处：
+ 自动解析和添加依赖 签名验证 依赖缓存 支持相对路径依赖 支持依赖一键打包，方便在离线环境下运行程序  实际例子 下面我们来看一个简单例子，来自 Gin Testing Example，项目目录结构为：
+$ tree . . ├── go.mod ├── go.sum ├── main.go └── main_test.go 0 directories, 4 files main.go 内容：
+package main func setupRouter() *gin.Engine { r := gin.Default() r.GET(&quot;/ping&quot;, func(c *gin.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-04-02</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/docker">#docker</a></li>
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                        <li><a href="tags/%E4%BA%91%E5%8E%9F%E7%94%9F">#云原生</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

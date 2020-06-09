@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta name="generator" content="Hugo 0.72.0" />
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>小鱼驿站 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="小鱼驿站" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="小鱼驿站"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <div class="homepage-content">
+        
+    </div>
+
+    
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-13-qing-gei-ta-5fen-zhong/">《请给它5分钟》读书笔记</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今晚无事，便学习起 react 来。 在阅读 《why-react》 的时候，意外发现了 《Give it five minutes 》 这篇文章。
+Give it five minutes 属于 37signals 分享的众多优秀文章中的一篇，值得大家品读。如果大家阅读英文原版有困难的话，推荐达伦同学的这篇翻译 《请给她5分钟的时间》。
+内容简单回顾: Jason 也就是原文作者，以第一人称展开自述。讲到自己以前是一个急性子，直到2007年一天，在一次 “商业创业工厂” 演讲活动中，受 “Richard Saul Wurman” 的 “give it five minutes” 观点的启发。 突然觉悟，从而悟出了 “「5 分钟」代表着「思考」，而不是作出回应， 学着先去想而不是快速去回应，是长久一生的追求” 等重要观点，此想法也改变了他接下来的人生，生活变得更好了。
+对我而言，这篇文章的出现是及时的。因为随着工作经验的积累，我发现我也患上了 “头脑发热” 的毛病，对他人的不同意见往往会迅速反馈，哪怕有时欠缺思考。我想，我也是需要这“5分钟”吧，希望以后可以越做越好。人们的想法一开始往往都是脆弱的，需要我们学会倾听，学会思考，不然再好的想法也会被我们扼杀在摇篮里。
+引用原文的一段话来结束这篇文章吧，希望你对有所帮助。
+ 这就像乔布斯热爱想法、点子，也热爱去做一些东西出来。他有着其少见并且敬重的态度对待着创新的过程。我觉得他比任何一个人都懂得，一个好的想法可以最终变得十分强大，但这些想法起初却十分脆弱。这些点子和想法很少可以成形，轻易就会错过，很容易就妥协，也很容易被压扁被否定。
+  And just as Steve loved ideas, and loved making stuff, he treated the process of creativity with a rare and a wonderful reverence. You see, I think he better than anyone understood that while ideas ultimately can be so powerful, they begin as fragile, barely formed thoughts, so easily missed, so easily compromised, so easily just squished.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-13</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E8%AF%BB%E4%B9%A6">#读书</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-12-error-incompatible-library-version-nokogiri-dot-bundle-requires-version-11-dot-0-0-or-later/">How to fix &#39;Nokogiri Incompatible library version&#39; error in lion</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天将本地开发环境切换到 ruby 2.1.2 后，重新启动Rails的时候，遇到如下错误提示：
+ Incompatible library version: nokogiri.bundle requires version 11.0.0 or later, but libxml2.2.dylib provides version 10.0.0 如何修复：
+gem uninstall nokogiri libxml-ruby brew update brew uninstall libxml2 brew install libxml2 --with-xml2-config brew link --force libxml2 brew install libxslt brew link --force libxslt bundle config build.nokogiri -- --with-xml2-dir=/usr --with-xslt-dir=/opt/local --with-iconv-dir=/opt/local bundle install 参考链接： https://gist.github.com/vparihar01/5856524
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-10-upgrade-ruby-to-2-dot-2-with-rvm/">upgrade ruby to 2.2 with rvm</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        rvm 升级命令
+rvm get head rvm install 2.2 NOTES:
+ 执行 rvm get head 的时候，需要 pgp 添加签名， 类似代码 gpg &ndash;keyserver hkp://keys.gnupg.net &ndash;recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 执行 rvm install 2.2, 如果遇到有关 gmp lib版本冲突的问题，请先执行 brew upgrade gmp 升级 gmp.  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-10</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-09-rails-cache-store-de-ge-xiao-keng/">rails cache store 的一个小坑</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        曾然，标题有点哗众取宠了，其实这并不是个 Rails 的坑，只是一个我平时没注意到的问题罢了。
+想必大家对 Rails 的 ActiveSupport::Cache::Store  已经很了解了，是吗？那你觉得下面这段代码有什么问题。
+# @user is a ActiveRecord::Base instance Rails.cache.fetch([@user]) do # data decorate end 如果你已经找出问题了，那恭喜你，可以跳过下面的内容了。
+上面代码的问题就是：fetch 的参数应该是 @user 非 [@user]， 为什么？
+尽管这里使用 [@user］ 不会抛出异常，但是它并不会在 @user 变化后，自动更新上面代码中的缓存数据，这显然与我们想要的自动过期策略不符。
+为什么将 [@user] 换成 @user 就可以？
+那就要分析下 Rails 的源代码了.
+首先看 Rails 的 fetch 方法的定义：
+def fetch(name, options = nil) if block_given? options = merged_options(options) key = namespaced_key(name, options) cached_entry = find_cached_entry(key, name, options) unless options[:force] entry = handle_expired_entry(cached_entry, key, options) if entry get_entry_value(entry, name, options) else save_block_result_to_cache(name, options) { |_name| yield _name } end else read(name, options) end end 其中与 key 相关的是 namespaced_key 这个方法：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-07-mysql-start-with-an-error-in-my-mac-os/">mysql start with an error in my mac os</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        元旦放假归来，打开电脑，启动 mysql.server 得到一如下错误提示：
+ . ERROR! The server quit without updating PID file (/usr/local/var/mysql/dev.pid).
+ 查看错误日志，发现有这么一句提示：
+2015-01-04 11:53:45 1694 [Warning] Setting lower_case_table_names=2 because file system for /usr/local/var/mysql/ is case insensitive 2015-01-04 11:53:45 1694 [Note] Plugin 'FEDERATED' is disabled. /usr/local/Cellar/mysql/5.6.21/bin/mysqld: Can't find file: './mysql/plugin.frm' (errno: 13 - Permission denied) 已经隐隐约约感觉到是权限问题了，那修改此目录的 owner 为当前用户试试：
+sudo chown -R dev /usr/local/var/mysql/ 重新启动 mysql, 错误提示不见了，问题解决。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-07</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/mysql">#mysql</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-12-23-mian-fei-de-bian-cheng-zhong-wen-shu-ji-suo-yin/">免费的编程中文书籍索引</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        本文为 github 开源项目 《免费的编程中文书籍索引》 的镜像版本，方便访问国外网络有问题的童鞋。
+============================
+免费的编程中文书籍索引，欢迎投稿。
+ 国外程序员在 stackoverflow 推荐的程序员必读书籍，中文版。 stackoverflow 上的程序员应该阅读的非编程类书籍有哪些？ 中文版 github 上的一个流行的编程书籍索引 中文版  感谢 @siberiawolf 使用 Bootstrap 开发了网页版，地址：http://siberiawolf.com/free_programming/index.html
+参与交流 欢迎大家将珍藏已久的经典免费书籍共享出来，您可以：
+ 使用 Issues 以及 Pull Request  贡献者名单: https://github.com/justjavac/free-programming-books-zh_CN/graphs/contributors
+目录   语言无关类
+ 操作系统 WEB服务器 版本控制 NoSQL MySQL 项目相关 设计模式 Web 大数据 编程艺术    语言相关类
+ AWK C/C++ CSS/HTML Dart Fortran Java JavaScript PHP iOS Android Python Prolog Ruby Shell Go Groovy LaTeX LISP Lua Haskell R Scala Swift Vimscript Scheme    读书笔记及其它
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-12-23</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-12-19-mysql-performance-filesort/">mysql performance 之 filesort</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        昨天遇到一个 Mysql 大表(单表700万）查询的问题。这个问题是在开发环境中 Rails 的终端打印日志中发现的，内容大概是这样：
+根据日志信息，你不难发现，这是个 mysql filesort 的问题，如果你还不太了解，可以参考这篇 博客。
+既然是索引不当，那么就要修改，开始排查 readings 的所有索引。
+很快我就定位到了一个叫做 index_readings_on_reading_time_and_reporting_device_id 的索引， 它是通过 rails 的 migrate 加上的：
+add_index :readings, [:reading_time, :reporting_device_id] 实际上，在 readings 上最终执行的查询语句类似这样：
+SELECT * FROM readings WHERE reporting_device_id = ? AND (reading_time BETWEEN ? AND ?) ORDER BY reading_time DESC 很明显，上述查询先执行 WHERE 再执行 ORDER BY， 可是，我们的索引建立顺序，刚好相反。
+那如何修复，很简单，动手写一个 migration：
+class ChangeIndexOnReadings &lt; ActiveRecord::Migration def up remove_index :readings, [:reading_time, :reporting_device_id] add_index :readings, [:reporting_device_id, :reading_time] end def down remove_index :readings, [:reporting_device_id, :reading_time] add_index :readings, [:reading_time, :reporting_device_id] end end 这样修改真的管用吗？db:migrate 后，再次测试，结果如下：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-12-19</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/mysql">#mysql</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-12-16-css-zhi-white-space/">css 之 white-space</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        最近的工作需要处理一个有关文本空白显示的问题－－－文本在显示和编辑保持相同的样式，及空格是空格，换行是换行。
+具体效果如：
+这里主要使用了 white-space:pre-wrap; 详情请参数 链接 。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-12-16</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/css">#css</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-12-01-upgrade-jekyll-to-2-dot-5-2/">Upgrade jekyll to 2.5.2</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天将自己博客生成器 jekyll 由 2.4.0 升级到了 2.5.2。
+升级代码：
+gem update jekyll -v 2.5.2 升级完毕后，在构建博客的时候，出现 cannot load such file -- mercenary/program (LoadError) 的错误。
+解决办法：使用 bundle exec 运行 jekyll ，或者切换到项目根目录，重新执行 bundle install。
+参考资料： https://github.com/mmistakes/skinny-bones-jekyll/issues/10
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-12-01</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-12-01-how-to-fix-the-thead-in-a-table/">how to fix the thead in a table only css</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天研究实现了一个将 table head 固定的效果。
+主要思路是在 table 外包裹一个用于滚动的 container,然后设置其滚动样式：
+.container { xxx overflow-x: scroll; overflow-y: hidden; xxx } 然后再修改 tbody的滚动样式
+.container { overflow-y: scroll; } 最后 td, th 设置最小宽度即可。
+完整代码请参考：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-12-01</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/css">#css</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/page/13/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/page/15/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>流程控制之分支循环 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="流程控制之分支循环" />
+<meta property="og:description" content="在编写 Go 程序的时候，我们不仅会用前面学到的数据结构来存储数据，还会用到 if、switch、for 来进行条件判断和流程控制，今天我们就来一起学习下它们。
+if if 主要用于条件判断，语法为：
+if 条件 { # 业务代码 } 先看一个简单例子:
+package main import &#34;fmt&#34; func main() { age := 7 if age &gt; 6 { fmt.Println(&#34;It&#39;s primary school&#34;) } } 我们可以在条件中使用 &amp; 或 || 来进行组合判断：
+package main import &#34;fmt&#34; func main() { age := 7 if age &gt; 6 &amp;&amp; age &lt;= 12 { fmt.Println(&#34;It&#39;s primary school&#34;) } } 我们还可以使用 if..else if..else 来实现多分支的条件判断:
+package main import &#34;fmt&#34; func main() { age := 13 if age &gt; 6 &amp;&amp; age &lt;= 12 { fmt." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2018-03-09-liu-cheng-kong-zhi-zhi-fen-zhi-xun-huan/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2018-03-09T18:14:10+08:00" />
+<meta property="article:modified_time" content="2018-03-09T18:14:10+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="流程控制之分支循环"/>
+<meta name="twitter:description" content="在编写 Go 程序的时候，我们不仅会用前面学到的数据结构来存储数据，还会用到 if、switch、for 来进行条件判断和流程控制，今天我们就来一起学习下它们。
+if if 主要用于条件判断，语法为：
+if 条件 { # 业务代码 } 先看一个简单例子:
+package main import &#34;fmt&#34; func main() { age := 7 if age &gt; 6 { fmt.Println(&#34;It&#39;s primary school&#34;) } } 我们可以在条件中使用 &amp; 或 || 来进行组合判断：
+package main import &#34;fmt&#34; func main() { age := 7 if age &gt; 6 &amp;&amp; age &lt;= 12 { fmt.Println(&#34;It&#39;s primary school&#34;) } } 我们还可以使用 if..else if..else 来实现多分支的条件判断:
+package main import &#34;fmt&#34; func main() { age := 13 if age &gt; 6 &amp;&amp; age &lt;= 12 { fmt."/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">流程控制之分支循环</h1>
+        </header>
+        <div class="content">
+            <p>在编写 Go 程序的时候，我们不仅会用前面学到的数据结构来存储数据，还会用到 <code>if</code>、<code>switch</code>、<code>for</code> 来进行条件判断和流程控制，今天我们就来一起学习下它们。</p>
+<h3 id="if"><code>if</code></h3>
+<p><code>if</code> 主要用于条件判断，语法为：</p>
+<pre><code>if 条件 {
+  # 业务代码
+}
+</code></pre><p>先看一个简单例子:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">age</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">7</span>
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">age</span> &gt; <span style="color:#ae81ff">6</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;It&#39;s primary school&#34;</span>)
+	}
+}
+</code></pre></div><p>我们可以在条件中使用 <code>&amp;</code> 或 <code>||</code> 来进行组合判断：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">age</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">7</span>
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">age</span> &gt; <span style="color:#ae81ff">6</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">age</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">12</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;It&#39;s primary school&#34;</span>)
+	}
+}
+</code></pre></div><p>我们还可以使用 <code>if</code>..<code>else if</code>..<code>else</code> 来实现多分支的条件判断:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">age</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">13</span>
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">age</span> &gt; <span style="color:#ae81ff">6</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">age</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">12</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;It&#39;s primary school&#34;</span>)
+	} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">age</span> &gt; <span style="color:#ae81ff">12</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">age</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">15</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;It&#39;s middle school&#34;</span>)
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;It&#39;s high school&#34;</span>)
+	}
+}
+</code></pre></div><h3 id="switch">switch</h3>
+<p>如果我们的条件分支太多，可以考虑使用 <code>switch</code> 替换 <code>if</code>, 例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">age</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">10</span>
+
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">age</span> {
+	<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">5</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;The age is 5&#34;</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">7</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;The age is 7&#34;</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">10</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;The age is 10&#34;</span>)
+	<span style="color:#66d9ef">default</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;The age is unkown&#34;</span>)
+	}
+}
+</code></pre></div><p>注意：在 Go 中 <code>switch</code> 只要匹配中了就会中止剩余的匹配项，这和 <code>Java</code> 很大不一样，它需要使用 <code>break</code> 来主动跳出。</p>
+<p><code>switch</code> 的 <code>case</code> 条件可以是多个值，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">age</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">7</span>
+
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">age</span> {
+	<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">11</span>, <span style="color:#ae81ff">12</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;It&#39;s primary school&#34;</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">13</span>, <span style="color:#ae81ff">14</span>, <span style="color:#ae81ff">15</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;It&#39;s middle school&#34;</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">18</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;It&#39;s high school&#34;</span>)
+	<span style="color:#66d9ef">default</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;The age is unkown&#34;</span>)
+	}
+}
+</code></pre></div><p>注意： 同一个 case 中的多值不能重复。</p>
+<p><code>switch</code> 还可以使用 <code>if..else</code> 作为 <code>case</code> 条件，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">age</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">7</span>
+
+	<span style="color:#66d9ef">switch</span> {
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">age</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">age</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">12</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;It&#39;s primary school&#34;</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">age</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">13</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">age</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">15</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;It&#39;s middle school&#34;</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">age</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">16</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">age</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">18</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;It&#39;s high school&#34;</span>)
+	<span style="color:#66d9ef">default</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;The age is unkown&#34;</span>)
+	}
+}
+</code></pre></div><p>小技巧： 使用 <code>switch</code> 对 <code>interface{}</code> 进行断言，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">checkType</span>(<span style="color:#a6e22e">i</span> <span style="color:#66d9ef">interface</span>{}) {
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">i</span>.(<span style="color:#66d9ef">type</span>) {
+	<span style="color:#66d9ef">case</span> <span style="color:#66d9ef">int</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%v is an in\n&#34;</span>, <span style="color:#a6e22e">v</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#66d9ef">string</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%v is a string\n&#34;</span>, <span style="color:#a6e22e">v</span>)
+	<span style="color:#66d9ef">default</span>:
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%v&#39;s type is unkown\n&#34;</span>, <span style="color:#a6e22e">v</span>)
+	}
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">checkType</span>(<span style="color:#ae81ff">8</span>)
+	<span style="color:#a6e22e">checkType</span>(<span style="color:#e6db74">&#34;hello, world&#34;</span>)
+}
+</code></pre></div><h3 id="for">for</h3>
+<p>使用 <code>for</code> 来进行循环操作，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">2</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;loop with index&#34;</span>, <span style="color:#a6e22e">i</span>)
+	}
+}
+</code></pre></div><p>使用 <code>for..range</code> 对数组、切片、map、 字符串等进行循环操作，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">numbers</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>}
+
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">numbers</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;numbers[%d] is %d\n&#34;</span>, <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">v</span>)
+	}
+}
+</code></pre></div><p>注意: 这里的 <code>i</code>、<code>v</code> 是切片元素的位置索引和值。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">cityCodes</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">int</span>{
+		<span style="color:#e6db74">&#34;北京&#34;</span>: <span style="color:#ae81ff">1</span>,
+		<span style="color:#e6db74">&#34;上海&#34;</span>: <span style="color:#ae81ff">2</span>,
+	}
+
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">cityCodes</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%s is %d\n&#34;</span>, <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">v</span>)
+	}
+}
+</code></pre></div><p>注意: 这里的 <code>i</code>、<code>v</code> 是 <code>map</code> 的 一组键值对的键和值。</p>
+<p>使用 <code>continue</code> 和 <code>break</code> 对循环进行控制，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">numbers</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>}
+
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">numbers</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">v</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">4</span> {
+			<span style="color:#66d9ef">break</span>
+		}
+
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">v</span><span style="color:#f92672">%</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+			<span style="color:#66d9ef">continue</span>
+		}
+
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;numbers[%d] is %d\n&#34;</span>, <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">v</span>)
+	}
+}
+</code></pre></div><p>注意：</p>
+<ul>
+<li><code>break</code> 会结束所有循环。</li>
+<li><code>continue</code> 会跳过当前循环直接进入下一次循环。</li>
+</ul>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-03-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go%E9%9B%B6%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B">#GO零基础编程入门教程</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

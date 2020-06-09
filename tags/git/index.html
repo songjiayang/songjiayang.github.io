@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>git - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/git/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="git" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/git/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2018-02-22T16:00:25+00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="git"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: git</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-02-23-ru-pei-zhi-zi-ding-yi-de-gitignore/">.gitignore 瘦身秘诀</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        我们在使用 git 的时候经常会遇到这样一个问题，团队成员使用的编辑器很多，比如 vscode, vim, idea ，而它们产生的临时文件又各不相同，这时我们该怎么处理？
+常见方法 将用到的编辑器产生的临时文件格式都添加到 .gitignore 文件中，所以最后它就变成这样或者更多：
+# Editor files #	################	*~	.*.swp	.*.swo	*.iml	.idea	tags	.history	.vscode 这样的问题：
+ 需要修改 .gitignore，添加新的文件格式，然后 git commit。 编辑器很多而且有新的产生，何时是个头。  改进方法 其实在项目目录下，有个叫做 .git/info/exclude 的文件，它可以用于自定义个人忽略选项，从而避免以上问题。
+以 vscode 编辑器为例，我们做以下简单调整即可：
+ 删除 .gitignore 中 Editor files 有关内容。 在 .git/info/exclude 中添加 .vscode。  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-02-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/git">#git</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-07-24-win32-xiao-bai-yong-hu-github-mai-keng-zhi-nan/">win32 小白用户 GitHub 埋坑指南</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        这周作为教练参加了上海举办的 Girl&rsquo;s Coding Day 活动，期间发现有部分学员使用的是 win 32位的操作系统，出现了按照教程无法安装 GitHub Desktop 的问题 ，故编写了本篇指导，帮助那些对 Git, GitHub 不是很了解的同学，方便其快速上手。
+本篇指导主要运行在 win32 操作系统上。
+概念 Git: 是一个分布式的代码管理系统，使用它可以很方便的做到多人协作，同步，回滚代码，而使用频率较高的命令包括：
+ git init （初始化项目） git add . （添加修改文件) git commit -m &quot;xxx&quot; （提交修改到本地仓库) git push origin xxxx （提交代码到中央仓库） git pull origin xxxx （从中央仓库下载代码）  GitHub: 是一个git 代码在线托管网站，主要实现了使用浏览器查看代码，分享和管理代码，简单理解就是代码中央仓库的可视化管理平台
+使用步骤 Step 1: 访问 https://pan.baidu.com/s/1dFfAzyL ，下载安装 win32 版本 git。
+ 安装完成后，点击开始菜单 -&gt; 输入 git -&gt; 点击 Git CMD 进入 git 终端。 在终端光标处输入 git config --global user.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-07-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/git">#git</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-22-gitchang-jian-wen-ti-hui-zong/">git 常见问题汇总</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        1. git log 常用命令： 下一条: return 下一页: space bar 前一页: w 退出: q 帮助: h 2. git tag 常用命令： git tag -a v1.4 -m 'my version 1.4' #当前提交添加 tag git tag -a v1.4 9fceb02 #给任意提交添加 tag git tag -d v1.4 # 删除一个tag git push origin :refs/tags/v1.4 # 删除远程仓库tag git show v1.4 git push origin --tags 参考： http://git-scm.com/book/en/v2/Git-Basics-Tagging
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                        <li><a href="tags/git">#git</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-06-27-ru-he-shi-yong-gitguan-li-xiang-mu-dai-ma-fa-bu-ban-ben-/">如何使用 git 管理项目代码发布版本</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        这里我们主要使用git的tag命令；tag命令的详情查看可以使用 git tag —help.
+以下是我经常用到的几条命令：
+####1、列出项目中所有的tags
+ git tag ####2、给项目添加一个tag, 一般情况下tag都是以v开头命名的，例如v1.0.1
+git tag vTAGNAME ####3、给指定某一个commit 打上tag，一般用于tag修改和遗漏的tag
+git tag vTAGNAME COMMIT-HASH ####4、根据tag名称删除tag
+git tag -d vTAGNAME ####5、推送所有的tags到远程仓库
+git push origin --tags ####6、删除tag
+git tag -d TAGNAME #本地删除 git push origin :refs/tags/TAGNAME #删除远程仓库 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-06-27</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/git">#git</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-24-dai-ma-xing-tong-ji-zhi-gitming-ling/">代码行统计之 git 命令</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        年底下，突然想看下今年项目提交代码的行数，于是在网上找到了如下命令:
+git log --author=&quot;&lt;USERNAME&gt;&quot; --pretty=tformat: --numstat | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf &quot;added lines: %s removed lines : %s total lines: %s\n&quot;,add,subs,loc }' 具体使用只需要将替换成某某一个git comment user，如：
+git log --author=&quot;songjiayang&quot; --pretty=tformat: --numstat | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf &quot;added lines: %s removed lines : %s total lines: %s\n&quot;,add,subs,loc }' added lines: 164821 removed lines : 287743 total lines: -122922 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/git">#git</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

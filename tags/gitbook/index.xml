@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>gitbook on 小鱼驿站</title>
+    <link>/tags/gitbook/</link>
+    <description>小鱼驿站 (gitbook)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 28 Feb 2018 06:19:38 +0000</lastBuildDate>
+    
+    <atom:link href="/tags/gitbook/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何在本地查看 GitBook 电子书</title>
+      <link>/posts/2018-02-28-ru-he-zai-ben-di-cha-kan-gitbook-dian-zi-shu/</link>
+      <pubDate>Wed, 28 Feb 2018 06:19:38 +0000</pubDate>
+      
+      <guid>/posts/2018-02-28-ru-he-zai-ben-di-cha-kan-gitbook-dian-zi-shu/</guid>
+      <description>&lt;h3 id=&#34;背景&#34;&gt;背景&lt;/h3&gt;
+&lt;p&gt;至从在 gocn 发布 &lt;a href=&#34;https://gocn.io/question/1615&#34;&gt;《Go 零基础编程入门教程》&lt;/a&gt;的新闻后，越来越多的小伙伴加入到了我们的 go 语言学习群(QQ:694650181)。&lt;/p&gt;
+&lt;p&gt;在学习的过程中，有不少同学都在反馈配套电子书 &lt;a href=&#34;https://songjiayang.gitbooks.io/go-basic-courses/content&#34;&gt;GitBook&lt;/a&gt;在线无法打开的问题（因为 gitbooks.io 被墙）。&lt;/p&gt;
+&lt;p&gt;所以今天我要介绍的是如何使用 gitbook 命令行工具在本地查看 GitBook 电子书，下面我就以《Go 零基础编程入门教程》为例。&lt;/p&gt;
+&lt;h3 id=&#34;安装-gitbook&#34;&gt;安装 gitbook&lt;/h3&gt;
+&lt;p&gt;使用 npm 安装：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install gitbook-cli -g
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参考 &lt;a href=&#34;https://git.io/vAXt7&#34;&gt;本地安装 gitbook 命令行&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;下载电子书源代码并在本地查看&#34;&gt;下载电子书源代码并在本地查看&lt;/h3&gt;
+&lt;p&gt;a. 下载电子数&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git clone git@github.com:songjiayang/go-basic-courses.git
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;b. 运行 gitbook 服务&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd go-basic-courses
+gitbook serve
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后打开浏览器，访问 &lt;code&gt;http://localhost:4000&lt;/code&gt; 即可。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/gitbook.png&#34; alt=&#34;gitbook.png&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

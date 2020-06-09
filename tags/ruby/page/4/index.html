@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>ruby - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/ruby/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="ruby" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/ruby/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2017-03-27T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="ruby"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: ruby</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-09-20-how-to-bootstrap-your-rails-server/">How to Bootstrap Your Rails App on a New Server</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        如何在一台全新新的主机 Rails 服务呢？ 有什么比较好的策略？ 有哪些问题需要我们注意？
+这篇文章转载于同事（小光）的经验总结，特在此分享。如果在你实践过程中，发现有部分内容过时，请告知一下，谢谢。
+0. Setup user for deployment # Install openssh-server sudo apt-get update sudo apt-get install openssh-server # This step may not required in Aliyun host # Setup deployment user sudo adduser deploy # Add a user for deployment sudo usermod -a -G sudo deploy #copy pub key to server ssh deploy@host 'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' &lt; ~/.ssh/id_rsa.pub cd /etc/ssh sudo vi sshd_config # modify sshd_config PermitRootLogin no RSAAuthentication yes PubkeyAuthentication yes AuthorizedKeysFile %h/.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-09-20</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-09-12-how-to-write-a-rails-asset-plugin/">How to Write a Simple Rails Assets Plugin</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        这里有一个 如何编写Rails Plugins 的官方教程。 但是由于 Assets 方面的gem都是简单的Css和Javascript内容，所以可以直接使用bundler 来创建。
+前不久刚写了一个关于页面滚动至顶部的Gem, scroll-up。下面我会讲解这个Gem编写的大致步骤。
+第一步： 使用 bundler 生成Gem模版 bundle gem scroll-up ```} #### 第二步：配置 .gemspec 文件 主要是添加这个gem的描述说明，以及作者信息。更多参数的意义可以参见 [http://guides.rubygems.org/specification-reference/](http://guides.rubygems.org/specification-reference/) 。 #### 第三步：继承 Rails::Engine 其实 Rails Plugins 都是继承于 ::Rails::Engine， 一般情况下 大家都会把这部分逻辑放在 engine.rb 这个文件中. 为了防止Gem之间的冲突，我们往往又会添加一个 Namespace, 例如： lib/scroll-up/engine.rb module ScrollUp class Engine &lt; ::Rails::Engine end end
+ #### 第四步：Require Engine 因为Rails 的 bundle require 会自动加载 Gem 的 lib 目录下的所有 ＊.rb 文件，所以我们只要将 require 逻辑放在 lib 根目录任意一个 rb 文件中即可。例如： lib/scroll-up.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-09-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-31-ruby-2-dot-1-xin-te-xing/">Ruby 2.1 新特性</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        原文链接 Ruby 2.1。
+昨天 Ruby 2.1 第一个预览版 发布了。 发布注意事项已经给出了所有的变化，但是它并没有详细的描述。如果想一一搞明白这些改变是什么意思的话，你可以尝试花费一些时间在 Ruby 问题跟踪列表里面。既然我已经知道了大部分的改变，我想我有必要在这里写个简要。
+ 很显然， Ruby 2.1 包含了 Ruby 2.0 所有的新特性，所以，2.0 的特性在这里就不一一赘述。
+ Refinements Refinements 其实早在 Ruby 2.0 就已经有了，但是当时由于它引发了比较大的争议，所以他们减少了功能，添加了警告，并将这个特性标记为实验性质。
+Refinements 允许你的猴子补丁只作用于单个 Ruby 文件:
+module Foo refine String do def foo self + &quot;foo&quot; end end end using Foo puts &quot;bar&quot;.foo 超出了这个文件作用范围， String 将不再有 foo 这个方法了。
+Ruby 2.1， Refinements 不再是实验性的了，并且也不会产生警告了, 另外还有几个小的调整使他变得更可用了。
+module Foo refine String do def foo self + &quot;foo&quot; end end end module Bar using Foo puts &quot;bar&quot;.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-31</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-31-rails4-dot-2zhong-hen-shao-you-ren-zhi-dao-de-te-xing/">Rails 4.2 中很少有人知道的特性</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        原文链接 The Lesser-known Features in Rails 4.2
+Rails 4.2 的第一个beta版本于上周发布了，这次引入的新的特性真的太酷了。想到马上就要在我的项目中使用 ActiveJob, Web Console, Adequate Record, 以及 Foreign Key support, 不免兴奋起来。
+但是Rails最美丽的地方是它的细节。 如果多一点的挖掘，你可能会发现一些很少有人提到但却有可能极大提升你开发效率的新特性。
+####更简单的配置文件加载
+好了，可能我有些偏见。 但是拥有一个内置的配置文件加载将会变得更好！
+config_for, 一个 Rails 4.2 的新特性，和你想的它的作用一样：
+#config/redis.yml development: host: localhost port: 6379 test: host: localhost port: 6379 production: host: redis-production port: 6379 irb(main):001:0&gt; Rails.application.config_for(:redis) =&gt; {&quot;host&quot;=&gt;&quot;localhost&quot;, &quot;port&quot;=&gt;6379} 也就是说， 如果你调用config_for(:redis), 它将自动查找Rails项目中的config/redis.yml 文件，解析，并正确返回当前RAILS_ENV下的配置信息。
+它甚至可以让你在ymal中直接写ERB
+#config/redis.yml development: host: localhost port: &lt;%= ENV['REDIS_PORT'] %&gt; test: host: localhost port: &lt;%= ENV['REDIS_PORT'] %&gt; production: host: redis-production port: &lt;%= ENV['REDIS_PORT'] %&gt; $ REDIS_PORT=6380 bin/rails c Loading development environment (Rails 4.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-31</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-25-how-to-cross-domain-post-data-in-rails/">How To Cross-Domain Post Data In Rails</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天帮同事做了一个邮件订阅的功能，订阅功能本身并不复杂；但是由于订阅页面是放在GitHub Page上的，所以涉及到浏览器中跨域提交数据的问题。
+这里我们大致可以将服务需求分为客户端和服务端。 客户端是一个Github静态页面，你可以通过 votenotes.com 访问；服务端是一个提供API调用的Rails。
+1、客户端代码, 设置Ajax请求参数crossDomain为true $.ajax({ type: 'POST', crossDomain: true, // sert crossDomain true url: 'http://localhost:3000/sub_emails', data: data , dataType: 'json', success: function(responseData) { //省略 } }); 2、修改Rails API代码，去除token验证并设置 CORS ACCESS HEADER class SubEmailsController &lt; ApplicationController skip_before_filter :verify_authenticity_token before_filter :cors_preflight_check after_filter :cors_set_access_control_headers def create SubEmail.create(email: params[:email]) render status: 200, json: { message: &quot;Sub Successful&quot; } end private def cors_set_access_control_headers headers['Access-Control-Allow-Origin'] = '*' headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS' headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token' headers['Access-Control-Max-Age'] = &quot;1728000&quot; end def cors_preflight_check if request.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-25</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-19-rails-with-jsonp/">Rails with JSONP</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天遇到一个AJAX跨站请求api的问题，出现问题的本质是浏览器出于安全原因，限制了Ajax跨域请求。那如何处理这个问题？经过搜索之后，决定采用JSONP的方式。如果你还不太了解JSONP，请点击这里。
+JSONP在Rails中的具体使用： 1、 在子站的json请求中添加callback参数,并指定请求数据类型为jsonp。
+ params = {dataType: 'jsonp'} url = &quot;http://server2.com/api/search.json?callback=?&quot; $.getJSON(url, params).success (response) =&gt; #console.log response 2、修改主站后端代码，使其支持JSONP.
+ format.json { items = [ {id: 1, name: 'hello' } ] if params[:callback] render :json =&gt; { items: items }, :callback =&gt; params[:callback] else render :json =&gt; { items: items } end } 至此，我们已经能够从主站拿到api数据了,从而解决了AJAX跨域的问题。
+ 注意：JSONP只能用于get请求，我们不能为了方便，使用JSONP来处理本该post的数据操作，这将带来很大的安全隐患。
+ 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-19</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-12-add-js-logic-to-activeadmin/">A non-invasive way adding js logic codes to activeadmin</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        我们公司系统的后台管理使用的是activeadmin这个gem,关于它的基本使用可以参考这里官方文档。
+有时侯我们需要在activeadmin中实现一些比较酷的交互功能，例如表单select 改变的事件处理：
+假如要实现以上功能，而又不想通过直接修改model中的后端逻辑代码的方式，那我们该怎么做呢？
+ 答案就是采用纯js实现的方式。  1、新建 active_admin/fields/form.coffee 文件  fields 是因为这个代码是针对field模型. form.coffee是因为此功能只用在form表单处。  2、 修改admin/field.rb模型，给form添加一个特定的seletor form :html =&gt; { :class =&gt; &quot;field_form&quot;} do |f| f.inputs do # 此处省略了部分代码 end f.actions end 通过 :html =&gt; { :class =&gt; &quot;field_form&quot;} 给表单绑定了field_form 的 class
+3、 修改active_admin/fields/form.coffee文件，添加 js 逻辑代码 # FieldFormHelper 类定义 class FieldFormHelper # 定义一组 selectors ui ui: option_list_li: '#field_option_list_input' data_type_li: '#field_data_type_input' field_data_type: &quot;#field_data_type&quot; # 构造函数 constructor: (el) -&gt; @$el = $(el) # 缓存住所有需要用到的jquery selector @$option_list_li = @$el.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-04-rails-zi-dan-fei/">Newrelic 让你的Rails子弹飞</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Newrelic是一个web应用程序性能监控工具；它功能强大，界面友好，完全免费，好处多多，谁用谁知道（无耻的打了下广告）。
+###Rails中安装Newrelic###
+####1. 注册Newrelic账户####
+Newrelic账户完全免费，请前往http://newrelic.com/ 注册吧。
+####2. 新建监控应用，并生成license key，并下载自动生成的newrelic.yml ####
+####3. 使用bundler安装New Relic代理 ####
+在gemfile文件添加：
+gem 'newrelic_rpm' 执行bundle:
+bundle install ####4. copy下载的newrelic.yml到config/newrelic.yml####
+修改newrelic.yml中app_name:xxx这一样，将其修改为自己项目名称，这个名称会用于newrelic后台监控项目查询。
+####5. 重新发布应用####
+当网站重新发布后，进入newrelic的web后台，选择刚发布的应用，将看到类似统计图表： Newrelic的监控后台是实时的， 包含了Middleware和Database的监控，其图表显示的访问速度，对于网站优化很有意义，值得一试。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-04</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-06-29-how-to-use-cancan-in-rails-model/">How to use cancan in rails model?</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        There&rsquo;s a wiki entry at github for this: http://wiki.github.com/ryanb/cancan/ability-for-other-users
+You need to change your model:
+class User &lt; ActiveRecord::Base def ability @ability ||= Ability.new(self) end delegate :can?, :cannot?, :to =&gt; :ability end Then you can check abilities like this:
+user.can?(:update,@article) 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-06-29</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-04-03-how-to-start-active-admin-with-existing-model/">How to start active_admin with existing model</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        There is a User model, and we want all admins are from users. So the big problem is How to config active_admin to support User model.
+Step 1: Migrate table # ==&gt; File: /db/migrate/xxxx_add_admin_to_users.rb def change add_column :users, :admin, :boolean, :null =&gt; false, :default =&gt; false end Step 2: Reconfiguring ActiveAdmin # ==&gt; File: config/initializers/active_admin.rb config.authentication_method = :authenticate_admin! config.current_user_method = :current_user config.logout_link_path = :destroy_user_session_path config.logout_link_method = :delete Step 3: Add Admin Authenticate Function # ==&gt; File: app/controllers/application_controller.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-04-03</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/tags/ruby/page/3/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/tags/ruby/page/5/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>mysql - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/mysql/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="mysql" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/mysql/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2015-01-07T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="mysql"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: mysql</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-07-mysql-start-with-an-error-in-my-mac-os/">mysql start with an error in my mac os</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        元旦放假归来，打开电脑，启动 mysql.server 得到一如下错误提示：
+ . ERROR! The server quit without updating PID file (/usr/local/var/mysql/dev.pid).
+ 查看错误日志，发现有这么一句提示：
+2015-01-04 11:53:45 1694 [Warning] Setting lower_case_table_names=2 because file system for /usr/local/var/mysql/ is case insensitive 2015-01-04 11:53:45 1694 [Note] Plugin 'FEDERATED' is disabled. /usr/local/Cellar/mysql/5.6.21/bin/mysqld: Can't find file: './mysql/plugin.frm' (errno: 13 - Permission denied) 已经隐隐约约感觉到是权限问题了，那修改此目录的 owner 为当前用户试试：
+sudo chown -R dev /usr/local/var/mysql/ 重新启动 mysql, 错误提示不见了，问题解决。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-07</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/mysql">#mysql</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-12-19-mysql-performance-filesort/">mysql performance 之 filesort</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        昨天遇到一个 Mysql 大表(单表700万）查询的问题。这个问题是在开发环境中 Rails 的终端打印日志中发现的，内容大概是这样：
+根据日志信息，你不难发现，这是个 mysql filesort 的问题，如果你还不太了解，可以参考这篇 博客。
+既然是索引不当，那么就要修改，开始排查 readings 的所有索引。
+很快我就定位到了一个叫做 index_readings_on_reading_time_and_reporting_device_id 的索引， 它是通过 rails 的 migrate 加上的：
+add_index :readings, [:reading_time, :reporting_device_id] 实际上，在 readings 上最终执行的查询语句类似这样：
+SELECT * FROM readings WHERE reporting_device_id = ? AND (reading_time BETWEEN ? AND ?) ORDER BY reading_time DESC 很明显，上述查询先执行 WHERE 再执行 ORDER BY， 可是，我们的索引建立顺序，刚好相反。
+那如何修复，很简单，动手写一个 migration：
+class ChangeIndexOnReadings &lt; ActiveRecord::Migration def up remove_index :readings, [:reading_time, :reporting_device_id] add_index :readings, [:reporting_device_id, :reading_time] end def down remove_index :readings, [:reporting_device_id, :reading_time] add_index :readings, [:reading_time, :reporting_device_id] end end 这样修改真的管用吗？db:migrate 后，再次测试，结果如下：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-12-19</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/mysql">#mysql</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-13-change-mysql-default-character-set-to-utf8/">How to change Mysql global character to utf8</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        最近我在做一个讨论组的应用，数据库是阿里云上自己安装的Mysql。今天突然发现有中文插入报错的情况，难道是数据库编码问题？
+带着疑惑，登上服务器，进入mysql终端检查当前的编码,果不其然：
+OK， 问题已经找到，那么开始解决。
+1、 查找本机mysql配置文件 由于服务器是linux系统，所以可以使用 whereis 命令来帮助寻找。
+whereis mysql mysql: /usr/bin/mysql /etc/mysql /usr/lib/mysql /usr/bin/X11/mysql /usr/include/mysql /usr/share/mysql /usr/share/man/man1/mysql.1.gz 最后发现我的mysql主配置文件是 /etc/mysql/my.cnf 。
+2、 修改配置文件，添加utf8相关设置 由于my.cnf文件中有这样一行代码 !includedir /etc/mysql/conf.d/, 所以我们可以将自定义配置信息放在conf.d/目录里面。这样的好处是方便配置模块化管理 , 个人比较推荐这样做。
+新建/etc/mysql/conf.d/utf8.cnf 文件，并添加如下代码：
+[client] default-character-set=utf8 [mysql] default-character-set=utf8 [mysqld] collation-server = utf8_unicode_ci init-connect='SET NAMES utf8' character-set-server = utf8 3、 重启Mysql服务 sudo service mysql restart 至此Mysql全局的编码已经设置为了utf8，中文报错的问题已不复存在。
+参考资料: http://stackoverflow.com/questions/3513773/change-mysql-default-character-set-to-utf-8-in-my-cnf
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-13</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/mysql">#mysql</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-03-14-how-to-solve-out-of-sort-memrory-problem-of-mysql/">How to solve &#34;Out Of Sort Memrory&#34; problem of mysql</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        This Morning, i meet a mysql error when did sphinx index rebuild, it is sql_fetch_row: Out of sort memory, consider increasing server sort buffer size .
+As the error message told, this problem caused by the limit of mysql sort_memory config, so we just increase the size and reload mysql.server .
+How to config mysql?
+  open mysql config named my.cnf, it&rsquo;s /usr/local/opt/mysql/my.cnf in my computer.
+  go to sort_buffer_size line and update the value to a suitable numerical.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-03-14</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/mysql">#mysql</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-21-mysql-console-command/">Mysql Wiki</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Drop a colomn form a table ALTER TABLE tb_name DROP COLUMN column_name ; Give a user all permission to a table GRANT ALL PRIVILEGES ON dbTest.* To 'user'@'hostname' IDENTIFIED BY 'password'; Change databse charset to utf-8： ALTER DATABASE databasename CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE tablename CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci; Install mysql in rails sudo apt-get install mysql-server-xx sudo apt-get install libmysqlclient-dev gem install mysql2 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/mysql">#mysql</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

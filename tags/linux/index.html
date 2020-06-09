@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>linux - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/linux/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="linux" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/linux/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2015-08-12T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="linux"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: linux</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-08-12-linux-jin-cheng-guan-li-fang-fa-zong-jie/">Linux 进程管理方法总结</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        作为一名后端工程师，难免会与服务器打交道，懂些常见基本运维技能将有助于你快速排查问题，提高工作效率；其中进程管理属于最基本的入门技能。
+写在前面： 所有例子跑在 ubuntu 14.0.4 上，其他 linux 版本也基本相同。
+top 命令 top top - 14:18:10 up 298 days, 1:59, 2 users, load average: 0.21, 0.23, 0.22 Tasks: 77 total, 1 running, 76 sleeping, 0 stopped, 0 zombie %Cpu(s): 0.3 us, 0.3 sy, 0.0 ni, 0.0 id, 99.3 wa, 0.0 hi, 0.0 si, 0.0 st KiB Mem: 1017972 total, 954880 used, 63092 free, 152 buffers KiB Swap: 1048572 total, 655128 used, 393444 free.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-08-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-05-unixxi-tong-jian-kong-zhi-m-slash-monit/">超好用的监控工具之 M/Monit</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        1. M/Monit 是什么？ 简单而言，Monit 是一款轻量级，好用的监控工具，它能够监控unix系统，网络，云服务等任务，它还能够自动重启服务。下面是一段官方的描述：
+ Easy, proactive monitoring of Unix systems, network and cloud services. Conduct automatic maintenance and recovery and execute meaningful causal actions in error situations
+ 2. 如何安装 M/Monit ? apt 类系统上安装：
+sudo apt-get install monit yum 类系统上安装:
+sudo yum install monit 3. M/Monit 主要目录 以ubuntu系统为例，monit的配置目录主要在 /etc/monit, 主要包含：
+drwxr-xr-x 2 root root 4096 Nov 5 05:33 conf.d -rw------- 1 root root 10962 Nov 5 04:30 monitrc drwxr-xr-x 2 root root 4096 Nov 4 10:24 monitrc.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-05</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-10-27-bei-yi-wang-de-logrotate/">被遗忘的 logrotate</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        随着时间的推移，Application的日志内容越来越多（对我而言，主要是nginx 和 unicorn），而日志分析第一步往往是日志分片， 因为你不可能一次去处理几十天的日志，内容太多。
+有些人可能会自己写一些定时任务来处理日志分片，其实这样做既费事，又不能保证与其他任务进程完美结合，而Linux 上自带的 logrotate 却是一个比较好解决方案， 而且 logrotate 底层是依赖了 crontab, 很容易自定义任务周期。
+logrotate 的配置文件默认都放在了 /etc/logrotate.d 里面。
+其实 nginx 本身就做好了分片，下面是一段nginx 默认的 logrotate 配置。
+# 文件位置是 /etc/logrotate.d/nginx /var/log/nginx/*.log { weekly missingok rotate 52 compress delaycompress notifempty create 0640 www-data adm sharedscripts prerotate if [ -d /etc/logrotate.d/httpd-prerotate ]; then \ run-parts /etc/logrotate.d/httpd-prerotate; \ fi \ endscript postrotate [ -s /run/nginx.pid ] &amp;&amp; kill -USR1 `cat /run/nginx.pid` endscript } 我使用的 unicorn 的配置：
+# 文件位置是 /etc/logrotate.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-10-27</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-06-29-the-difference-between-bash-profile-and-bashrc/">The difference between .bash_profile and .bashrc</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Traditionally, when you log into a Unix system, the system would start one program for you. That program is a shell, i.e., a program designed to start other programs. It&rsquo;s a command line shell: you start another program by typing its name. The default shell, a Bourne shell, reads commands from ~/.profile when it is invoked as the login shell.
+Bash is a Bourne-like shell. It reads commands from ~/.bash_profile when it is invoked as the login shell, and if that file doesn&rsquo;t exist¹, it tries reading ~/.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-06-29</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-06-29-a-good-way-to-manage-aliases-in-unix-like-using-bash/">A good way to manage aliases in Unix-like using BASH</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        To introduce how it works, a example [bundle exec rake ] alias will be given.
+Now, let&rsquo;s start.
+1.1 open your ~/.bashrc file
+vim ~/.bashrc 1.2 add alias commands trigger commands to ~/.bashrc
+# Alias definitions. # You may want to put all your additions into a separate file like # ~/.bash_aliases, instead of adding them here directly. # See /usr/share/doc/bash-doc/examples in the bash-doc package. if [ -f ~/.bash_aliases ]; then .
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-06-29</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-28-linuxxia-ci-pan-xing-neng-jian-dan-jian-ce/">Linux 下磁盘性能简单检测</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        1.使用dd命令简单测试磁盘I/O
+dd if=/dev/zero of=testfile bs=1M count=512 conv=fdatasync 2.使用hdparm命令
+sudo hdparm -t /dev/sda 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-28-linuxxiang-qing-de-fang-fa/">Linux 下查看 CPU 详情的方法</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        1.通过查看/proc/cupinfo文件信息
+cat /proc/cpuinfo 2.通过ls命令查看
+lscup 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-22-xing-neng-ce-shi-gong-ju-zhi-httperf/">性能测试工具之 httperf</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        下载httperf
+  配置环境 ./config
+  编译 make
+  安装 make install
+  httperf的基本使用
+  ==&gt; httperf --hog --server=www.ruby-china.org --wsess=100,100,0.1 --burst-length=10 --rate=5 --timeout=5 httperf --hog --timeout=5 --client=0/1 --server=www.ruby-china.org --port=80 --uri=/ --rate=5 --send-buffer=4096 --recv-buffer=16384 --wsess=100,100,0.100 --burst-length=10 httperf: warning: open file limit &gt; FD_SETSIZE; limiting max. # of open files to FD_SETSIZE Maximum connect burst length: 1 Total: connections 100 requests 10000 replies 10000 test-duration 23.630 s Connection rate: 4.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-21-liang-ge-cha-kan-linuxduan-kou-zhan-yong-qing-kuang-de-ming-ling/">两个查看 Linux 端口占用情况的命令</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        netstat 和 lsof是两个很好的查看服务器上端口占用情况的命令，简单使用如下： =&gt; netstat -tupln (Not all processes could be identified, non-owned process info will not be shown, you would have to be root to see it all.) Active Internet connections (only servers) Proto Recv-Q Send-Q Local Address Foreign Address State PID/Program name tcp 0 0 127.0.0.1:27017 0.0.0.0:* LISTEN - tcp 0 0 127.0.0.1:3306 0.0.0.0:* LISTEN - tcp 0 0 127.0.0.1:11211 0.0.0.0:* LISTEN - tcp 0 0 127.0.0.1:6379 0.0.0.0:* LISTEN - tcp 0 0 127.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-21-linuxci-pan-jian-kong/">linux磁盘监控</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        大家可能都知道Linux上的top命令，使用它可以实时显示系统的运行状况，如图:
+top命令很好，唯独无法清楚的监控系统磁盘I/O的读写情况，iotop这个软件就可以很好的弥补top不足，能对服务器的磁盘进行实时监控。
+iotop安装  sudo apt-get install iotop 运行iotop sudo iotop 运行效果 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item disabled">
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/tags/linux/page/2/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

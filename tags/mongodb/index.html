@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>MongoDB - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/mongodb/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="MongoDB" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/mongodb/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2019-01-07T14:38:44+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="MongoDB"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: MongoDB</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-01-07-mongo-connect-with-tls-in-go/">如何在 Go 中使用 TLS 连接 MongoDB</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        通常我们的数据库都配置为内网访问，但由于业务部署架构的不同，有时也需要通过公网访问 MongoDB 数据库，此时为了防止被端口扫描和脱库，MongoDB 需要配置为 TLS 访问，那在 Go 中应该如何实现呢？
+依赖  配置了 TLS 公网访问的 MongoDB 实例 Go 的 MongoDB 驱动 globalsign/mgo  Go 实现代码： package model import ( &#34;crypto/tls&#34; &#34;crypto/x509&#34; &#34;errors&#34; &#34;github.com/globalsign/mgo&#34; &#34;io/ioutil&#34; &#34;log&#34; &#34;net&#34; ) func main() { dsn := &#34;mongodb://user:password@host/database&#34; dialInfo, err := mgo.ParseURL(dsn) if err != nil { log.Panic(err) } // read pemfile data 	pemData, err := ioutil.ReadFile(&#34;./pemfile&#34;) if err != nil { log.Panic(err) } roots := x509.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-01-07</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                        <li><a href="tags/mongodb">#MongoDB</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

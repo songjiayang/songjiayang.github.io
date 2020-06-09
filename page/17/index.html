@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta name="generator" content="Hugo 0.72.0" />
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>小鱼驿站 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="小鱼驿站" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="小鱼驿站"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <div class="homepage-content">
+        
+    </div>
+
+    
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-24-xin-yun/">心云</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        天上的云是我的心 风吹过飘流不定 谁能用真情 谁能用真心 让我的心 不再像浮萍
+清晨露珠是我的心 转眼消失无踪影
+谁能用真情 谁能用真心
+留住我的心 网住我的真情
+我要告诉天上的风
+轻轻吹散我心口的云
+我要抓住露珠的心
+陪我从黑夜到天明
+一片云代表着一片情
+一颗露珠代表一颗心
+风吹云散你我俩分明
+露珠化成我的心情
+天上的云是我的心
+风吹过飘流不定
+谁能用真情 谁能用真心
+让我的心 不再像浮萍
+清晨露珠是我的心
+转眼消失无踪影
+谁能用真情 谁能用真心
+留住我的心 网住我的真情
+我要告诉天上的风
+轻轻吹散我心口的云
+我要抓住露珠的心
+陪我从黑夜到天明
+一片云代表着一片情
+一颗露珠代表一颗心
+风吹云散你我俩分明
+露珠化成我的心情
+一片云代表着一片情
+一颗露珠代表一颗心
+风吹云散你我俩分明
+露珠化成我的心情
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-19-rails-with-jsonp/">Rails with JSONP</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天遇到一个AJAX跨站请求api的问题，出现问题的本质是浏览器出于安全原因，限制了Ajax跨域请求。那如何处理这个问题？经过搜索之后，决定采用JSONP的方式。如果你还不太了解JSONP，请点击这里。
+JSONP在Rails中的具体使用： 1、 在子站的json请求中添加callback参数,并指定请求数据类型为jsonp。
+ params = {dataType: 'jsonp'} url = &quot;http://server2.com/api/search.json?callback=?&quot; $.getJSON(url, params).success (response) =&gt; #console.log response 2、修改主站后端代码，使其支持JSONP.
+ format.json { items = [ {id: 1, name: 'hello' } ] if params[:callback] render :json =&gt; { items: items }, :callback =&gt; params[:callback] else render :json =&gt; { items: items } end } 至此，我们已经能够从主站拿到api数据了,从而解决了AJAX跨域的问题。
+ 注意：JSONP只能用于get请求，我们不能为了方便，使用JSONP来处理本该post的数据操作，这将带来很大的安全隐患。
+ 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-19</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-15-htmlzhi-yu-yi-wang/">HTML 之语义网</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        ####什么是语义网
+语义网的本质就是根据内容使用正确的元素， 什么样的元素就该对应什么样的页面内容，而不应该考虑样式的问题。
+例如文章标题，不应该是这样：
+&lt;font size=&quot;6&quot;&gt;&lt;b&gt;This is the page title&lt;/b&gt;&lt;/font&gt; 而应该是这样：
+&lt;h1&gt;This is a heading&lt;/h1&gt; 其实几乎所有HTML元素都是具有语义的， 除&lt;div&gt;, &lt;span&gt;以外。它们没有具体的语义，仅仅是为了方便样式表使用而已。
+####语义网的好处
+ 代码更简短，从而让用户下载速度更快。 代码更易响应变化，方便样式/内容改版， 因为你的内容和样式是分离的，。 代码更易人阅读，方便他人学习和接手。 更方便爬虫程序理解，有助于搜索排名。  更多好处，请参考http://boagworld.com/dev/semantic-code-what-why-how/
+####如何保证你的网站是语义的
+现在还没有工具能够自动检测网站是否满足语义。但是我们是能够随着经验和认识的提高不断优化我们的代码，实现最终的完全语义。
+其实HTML5的出现，也大大促进了语义网的概念，它新增的元素都非常有用而富有语义。
+一个好的实践：
+ 既然语义网如此重要，我们没有理由不用，大家以后不妨试试。
+ 参考资料: http://learn.shayhowe.com/html-css/getting-to-know-html/
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-15</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/html">#html</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-13-change-mysql-default-character-set-to-utf8/">How to change Mysql global character to utf8</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        最近我在做一个讨论组的应用，数据库是阿里云上自己安装的Mysql。今天突然发现有中文插入报错的情况，难道是数据库编码问题？
+带着疑惑，登上服务器，进入mysql终端检查当前的编码,果不其然：
+OK， 问题已经找到，那么开始解决。
+1、 查找本机mysql配置文件 由于服务器是linux系统，所以可以使用 whereis 命令来帮助寻找。
+whereis mysql mysql: /usr/bin/mysql /etc/mysql /usr/lib/mysql /usr/bin/X11/mysql /usr/include/mysql /usr/share/mysql /usr/share/man/man1/mysql.1.gz 最后发现我的mysql主配置文件是 /etc/mysql/my.cnf 。
+2、 修改配置文件，添加utf8相关设置 由于my.cnf文件中有这样一行代码 !includedir /etc/mysql/conf.d/, 所以我们可以将自定义配置信息放在conf.d/目录里面。这样的好处是方便配置模块化管理 , 个人比较推荐这样做。
+新建/etc/mysql/conf.d/utf8.cnf 文件，并添加如下代码：
+[client] default-character-set=utf8 [mysql] default-character-set=utf8 [mysqld] collation-server = utf8_unicode_ci init-connect='SET NAMES utf8' character-set-server = utf8 3、 重启Mysql服务 sudo service mysql restart 至此Mysql全局的编码已经设置为了utf8，中文报错的问题已不复存在。
+参考资料: http://stackoverflow.com/questions/3513773/change-mysql-default-character-set-to-utf-8-in-my-cnf
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-13</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/mysql">#mysql</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-12-full-page-background-image/">Perfect Full Page Background Image</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天有一人来我们公司面试&quot;web前端开发工程&quot;一职。
+面试过程中，同事给他出了一道有关网页页面背景图片全屏拉伸的问题。
+效果大概事这样：
+图片来源网站
+面试者在google的帮助下，最后总算搞定了这个问题。其实对于一个有1～2年经验的前端工程师而言，这个问题应该不算难吧。
+无论如何在此分享一下有关代码，希望对大家有所帮助
+参考资料: http://css-tricks.com/perfect-full-page-background-image/
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/css">#css</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-12-add-js-logic-to-activeadmin/">A non-invasive way adding js logic codes to activeadmin</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        我们公司系统的后台管理使用的是activeadmin这个gem,关于它的基本使用可以参考这里官方文档。
+有时侯我们需要在activeadmin中实现一些比较酷的交互功能，例如表单select 改变的事件处理：
+假如要实现以上功能，而又不想通过直接修改model中的后端逻辑代码的方式，那我们该怎么做呢？
+ 答案就是采用纯js实现的方式。  1、新建 active_admin/fields/form.coffee 文件  fields 是因为这个代码是针对field模型. form.coffee是因为此功能只用在form表单处。  2、 修改admin/field.rb模型，给form添加一个特定的seletor form :html =&gt; { :class =&gt; &quot;field_form&quot;} do |f| f.inputs do # 此处省略了部分代码 end f.actions end 通过 :html =&gt; { :class =&gt; &quot;field_form&quot;} 给表单绑定了field_form 的 class
+3、 修改active_admin/fields/form.coffee文件，添加 js 逻辑代码 # FieldFormHelper 类定义 class FieldFormHelper # 定义一组 selectors ui ui: option_list_li: '#field_option_list_input' data_type_li: '#field_data_type_input' field_data_type: &quot;#field_data_type&quot; # 构造函数 constructor: (el) -&gt; @$el = $(el) # 缓存住所有需要用到的jquery selector @$option_list_li = @$el.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-11-learn-to-code-html-css-part-1/">Building Your First Web Page</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        从今天起，我将根据逐步完成Learn to Code HTML &amp; CSS系列课程的回顾学习，会将一些值得关注的知识点记录于此，留作笔记，以便日后查询。
+HTML部分 1.1、基本概念  Elements Tags Attributes  下图清晰的表明了它们具体指的是哪个部分：
+1.2、自关闭元素 1. &lt;br&gt; 2. &lt;embed&gt; 3. &lt;hr&gt; 4. &lt;img&gt; 5. &lt;input&gt; 6. &lt;link&gt; 7. &lt;meta&gt; 8. &lt;param&gt; 9. &lt;source&gt; 10. &lt;wbr&gt;  以上自关闭元素不需要使用元素结束符号 &lt;/ &gt;
+ 1.3、引入样式表 一般项目中采用外部文件链接引入的方式：
+&lt;head&gt; &lt;link rel=&quot;stylesheet&quot; href=&quot;main.css&quot;&gt; &lt;/head&gt; 1.4、HTML5简易模版 &lt;!DOCTYPE html&gt; &lt;html lang='zh-CN'&gt; &lt;head&gt; &lt;meta charset='utf-8'&gt; &lt;title&gt;Title is here!&lt;/title&gt; &lt;link rel=&quot;stylesheet&quot; href=&quot;main.css&quot;&gt; &lt;/head&gt; &lt;body&gt; &lt;/body&gt; &lt;/html&gt; CSS部分 2.1、基本概念  Selectors Properties Values  下图清晰的表明了三者之间的关联：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-11</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/html">#html</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-04-rails-zi-dan-fei/">Newrelic 让你的Rails子弹飞</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Newrelic是一个web应用程序性能监控工具；它功能强大，界面友好，完全免费，好处多多，谁用谁知道（无耻的打了下广告）。
+###Rails中安装Newrelic###
+####1. 注册Newrelic账户####
+Newrelic账户完全免费，请前往http://newrelic.com/ 注册吧。
+####2. 新建监控应用，并生成license key，并下载自动生成的newrelic.yml ####
+####3. 使用bundler安装New Relic代理 ####
+在gemfile文件添加：
+gem 'newrelic_rpm' 执行bundle:
+bundle install ####4. copy下载的newrelic.yml到config/newrelic.yml####
+修改newrelic.yml中app_name:xxx这一样，将其修改为自己项目名称，这个名称会用于newrelic后台监控项目查询。
+####5. 重新发布应用####
+当网站重新发布后，进入newrelic的web后台，选择刚发布的应用，将看到类似统计图表： Newrelic的监控后台是实时的， 包含了Middleware和Database的监控，其图表显示的访问速度，对于网站优化很有意义，值得一试。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-04</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-03-qi-zhou-qi-yu-yan-zhi-elixir-an-zhuang-pian/">七周七语言之 elixir 初级篇</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天听闻ElixirConf 2014 slide出来了，关于报道请移步 RubyChina讨论帖子。
+看到这个消息心中不免有些小激动，因为它的语法终于快稳定下来了，版本1.0的发布也是紧接的事情，于是决定尝尝鲜。
+Elixir初级篇###   测试环境： Mac OS 10.9.4
+  ####1.1 安装Erlang####
+由于Elixir是一门运行在erlng虚拟机上的函数式、面向并行的编程语言，自然需要erlang运行环境。
+最新的elixir(v0.14.0)需要erlang17.0或者更新。
+使用Precompiled packages 安装Erlang很容易，只是国内下载网络太慢。 如果你觉得以上链接下载太慢的话，可以尝试此链接。
+我下载的软件包是otp_src_17.1.tar.gz。
+进入otp_src_17.1.tar.gz下载根目录，解压erlang软件包，编译，安装 。
+ tar -vxzf otp_src_17.1.tar.gz cd otp_src_17.1 ./configure make make install 你可以在Terminal中运行 erl来检查Erlang的版本,你将看到类似信息：
+Erlang/OTP 17 [erts-6.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false] ####1.2 elixir安装####
+由于我的系统是OS，为了不折腾所以采用homebrew安装。
+brew update brew intall elixir 当安装结束后，你可以在Terminal中运行 iex进入elixir的交互模式，将看到以下信息：
+Erlang/OTP 17 [erts-6.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false] Interactive Elixir (0.15.0) - press Ctrl+C to exit (type h() ENTER for help) 其他系统使用源的安装方式以及预编译安装方式，请参考官网
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-03</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/elixir">#elixir</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-06-29-the-difference-between-bash-profile-and-bashrc/">The difference between .bash_profile and .bashrc</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Traditionally, when you log into a Unix system, the system would start one program for you. That program is a shell, i.e., a program designed to start other programs. It&rsquo;s a command line shell: you start another program by typing its name. The default shell, a Bourne shell, reads commands from ~/.profile when it is invoked as the login shell.
+Bash is a Bourne-like shell. It reads commands from ~/.bash_profile when it is invoked as the login shell, and if that file doesn&rsquo;t exist¹, it tries reading ~/.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-06-29</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/page/16/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/page/18/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

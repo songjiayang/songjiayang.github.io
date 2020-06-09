@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>prometheus - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/prometheus/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="prometheus" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/prometheus/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2018-06-26T22:06:37+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="prometheus"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: prometheus</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-11-08-use-textfile-collector-to-make-your-node-exporter-more-powerful/">Use Textfile Collector to make your node exporter more Powerful</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        有时 node_exporter 不能完全满足机器信息的收集，相较于 fork 代码，使用官方推荐的 Textfile Collector 是一种更简便的方式。
+Textfile Collector 使用逻辑大致如下：  使用 -collector.textfile.directory 参数启动 node_exporter。 将我们自己收集的数据，按照 prometheus 的 文本格式 存储到 textfile collector 目录下的 *.prom 文件中。 每当 Prometheus server 到 node_exporter 拉数据的时候，node_exporter 会自动解析所有 *.prom 文件，将数据全部返回。  Prometheus 文本格式的规则  使用 # 开头表示注视，将被忽略。 如果以 # HELP 开头，将视为 Metric 帮助信息。 如果以 # TYPE 开头，将视为 Metric 类型定义，如果没有定义类型，Metric 默认为 Gauge, 例如：  # Minimalistic line: metric_without_timestamp_and_labels 12.47 # HELP http_requests_total The total number of HTTP requests.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-11-08</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-11-02-a-bug-about-prometheus-rule-incorrect-configuration/">A bug about prometheus rule incorrect configuration</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        随着对 Prometheus Alertmanager 深入了解，我们配置的告警通知已非常具有可读性。
+但是有一个问题不断困扰着我们，问题现象大致为，在逻辑上我们认为是同一条的告警内容，在告警通知里面出现多次，而且已经过时告警还在不断警告（一直报）。
+我们可以将这个问题简单总结为两点:
+ Prometheus rule 一条查询结果，在 Alertmanager 却对应了多条。 Alertmanager 里面有警报一直处于未恢复的状态（没有收到 Prometheus 发送的 resolved 请求）。  一开始怀疑，是不是 Prometheus 向 Alertmanager 发送的 resolved 通知有丢失, 导致部分历史警告一直处于未恢复状态。
+但是排查，发现 Prometheus 和 Alertmanager 在这段时间都没有被重启过。即使有类似现象也是低频的，肯定不会出现如此多的过期告警，而且这种假设仅能部分解释上述问题的第 2 点。
+看来要彻底搞清楚这个 bug，必须先弄清楚 Prometheus 中一条告警是怎么和 Alertmanager 中的告警通知关联的。
+1. 如何判断两条告警其实是同一告警 根据 Prometheus common/alert 中的代码可知，所有具有相同 Labels 的告警为同一告警。
+那如何才算具有相同 Labels 呢，它的计算逻辑为对一个 map 按照 key 排序，然后依次对 key, value 取值，做 hash，代码逻辑大致为：
+func labelSetToFastFingerprint(ls LabelSet) Fingerprint { if len(ls) == 0 { return Fingerprint(emptyLabelSignature) } var result uint64 for labelName, labelValue := range ls { sum := hashNew() sum = hashAdd(sum, string(labelName)) sum = hashAddByte(sum, SeparatorByte) sum = hashAdd(sum, string(labelValue)) result ^= sum } return Fingerprint(result) } 详情请参考 。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-11-02</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-10-31-why-my-delta-isa-negative-number/">Why my delta is a negative number</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        首先，让我们从一个 bug 说起，上周五, 有用户反馈，说我们的 API 每日请求统计为负数。
+先简单解释下我们的每日统计是怎么实现的：
+ 我们有个日志分析程序持续分析最新的日志（5分钟粒度），它会将分析结果推送到 pushgateway, 然后 prometheus 定时从 pushgateway 拉取数据。 我们定义了一个 metric 来表示收集到的数据，它是一个 counter 类型（不断递增）。 我们使用 PromQL 的 delta 语法, 选择从 00:00 ～ 23:59 的区间作为每日访问量。  这个计算逻辑初看上去很合理，但是它存在一个前提，那就是确保 Prometheus 存储的 metric 数值一定是递增。
+那用户提的这个 bug 是不是就是这个原因导致呢？
+我查看了过去几日的数据，它几乎就是一直递增的，只是中间出现了一次置零，看来我们已经找到点蛛丝马迹，那为啥 counter 会出现置零情况？
+要搞懂这个问题，必须先弄清楚这条 metric 的 counter 存在哪里。
+ 首先排除日志分析程序，因为它只管分析和推送，不负责计算。 查看 pushgateway 的启动参数，发现 persistence.file 和 persistence.interval 这两个参数与这个问题相关，他们分别表示 pushgateway 存储 metrics 文件路径和同步周期，如果没有设置 persistence.file 参数，那么默认存在内存中。  我马上检查了下给用户服务的 pushgateway 启动方式，发现果然缺少 persistence.file 参数，再看看进程重启时间，恰好发生在置零之前一点，瞬间恍然大悟。
+好了，问题终于水露石出，简单总结就是：
+我们选用了 counter 的 delta 来算每日统计量，然后因为 pushgateway 启动方式不对，没有开启持久化选项，导致在 pushgateway 重启过后， metric 丢失。当新数据推送来的时候，pushgateway 会重新生成一个 counter， 故从零开始。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-10-31</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-10-22-prometheus-alert-slack-receiver/">Prometheus Alertmanager with slack receiver</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        在过去一篇文章 Prometheus With Alertmanager 中， 已介绍了 prometheus 的告警模块，Alertmanager 用法；今天我们将一起学习，使用 slack 接收告警通知，让咱们的运维看上去高大上，我们想做：
+ 使用 slack 接受消息。 消息能够带有 url， 自动跳转到 prometheus 对应 graph 查询页面。 能自定义颜色。 能够 @ 某人   假设你已注册了 slack 账号，并创建了一个 #test 频道。
+一. 为 #test 频道创建一个 incomming webhooks 应用
+ 点击频道标题，选择 Add an app or integration  2. 然后在 app store 中搜索 incomming webhooks，选择第一个
+创建成功以后，拷贝 app webhook 地址，以被后面使用。
+二. 修改 prometheus rules，添加一些字段
+ALERT InstanceStatus IF up {job=&quot;node&quot;}== 0 FOR 10s LABELS { instance = &quot;{{$labels.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-10-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-10-21-prometheus-with-mysqld-exporter/">Prometheus with mysqld_exporter</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        一. 创建一个 MySQL 用户，并拥有适当的权限
+CREATE USER 'mysqld_exporter'@'localhost' IDENTIFIED BY 'password'; GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'mysqld_exporter'@'localhost' WITH MAX_USER_CONNECTIONS 3; 二. 下载和启动 mysqld_exporter
+wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.9.0/mysqld_exporter-0.9.0.linux-amd64.tar.gz tar -xzf mysqld_exporter-0.9.0.linux-amd64.tar.gz export DATA_SOURCE_NAME='mysqld_exporter:password@unix(/var/run/mysqld/mysqld.sock)/' ./mysqld_exporter 如果安装成功，访问 http://localhost:9104/metrics，您将看到 mysqld_exporter 所有 metrics
+三. 修改 prometheus 配置
+# 修改 prometheus.yml, 添加如下配置 scrape_configs: - job_name: 'mysqld' static_configs: - targets: - localhost:9104 重启 Prometheus，访问 http://localhost:9090/graph，然后查询 mysql_up, 你将看到 mysqld 的运行状态。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-10-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-10-20-prometheus-with-alertmanager/">Prometheus with Alertmanager</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        在文章 How to monitor your system with prometheus 中介绍过 Prometheus 的安装教程，相信看过的小伙伴都已经开始使用了。但这样就够了吗，是否还缺少点什么？
+对，没错，我们缺少告警 ！
+图表再好看，也不会时时刻刻盯着啊，个人认为一个好的监控系统是能够自发告警，只有在有告警的时候，我们才登上去多喵几眼。
+其实，Prometheus 官方提供了告警模块，那就是 Alertmanager, 不过因为代码解耦关系，它被单独剥离成一个独立项目了。
+我是分割线
+下面我们将完成安装和配置 Alertmanager, 并结合 Onealert 实现报警需求
+环境准备
+ 已安装 Prometheus Server (参考 How to monitor your system with prometheus)  Step 1 — 安装 Alertmanager 使用 wget 下载 Alertmanager 安装包
+cd ~/Download wget https://github.com/prometheus/alertmanager/releases/download/v0.4.2/alertmanager-0.4.2.linux-amd64.tar.gz cd Prometheus 使用 tar 解压缩 alertmanager-0.4.2.linux-amd64.tar.gz
+tar -xvzf ~/Download/alertmanager-0.4.2.linux-amd64.tar.gz cd alertmanager-0.4.2.linux-amd64 当解压缩成功后，可以运行 version 检查运行环境是否正常
+./alertmanager -version 如果你看到类似输出，表示你已安装成功:
+alertmanager, version xxx (branch: master, revision: 9a5ab2fa63dd7951f4f202b0846d4f4d8e9615b0) build user: root@2811d2f42616 build date: 20160902-15:34:07 go version: go1.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-10-20</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-09-19-prometheuswith-hot-reload/">Prometheus with hot reload</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        当 Prometheus 有配置文件修改，我们想加载新的配置信息而不停掉服务的时候，可以采用 Prometheus 提供的热更新的方法。
+热更新的加载方法有两种：
+ kill -HUP pid curl -X POST http://localhost:9090/-/reload  当你采用以上任一方式执行 reload 成功的时候，将在 promtheus log 中看到如下信息：
+如果有配置信息填写错误，将导致 reload 失败，你将看到类型如下信息：
+ERRO[0161] Error reloading config: couldn't load configuration (-config.file=prometheus.yml): unknown fields in scrape_config: job_nae source=main.go:146 提示： 我个人更倾向于采用 curl -X POST 的方式，因为每次 reload 过后， pid 会改变，使用 kill 方式需要找到当前进程号。
+再分别说下这两种方式 Prometheus 内部实现：
+第一种：通过 kill 命令的 HUP (hang up) 参数实现
+首先 Prometheus 在 cmd/promethteus/main.go 中实现了对进程系统调用监听， 如果发现是 syscall.SIGHUP 的信号，那么就会执行 reloadConfig 函数。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-09-19</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-09-14-how-to-monitor-your-system-with-prometheus/">How to monitor your system with prometheus</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Prometheus 是什么？ Prometheus 是一个 golang 写的监控告警系统，完全开源，它提供完善的统计模型和友好的查询语句，可以很方便地实现系统机器运行状况监控。
+环境准备
+ linux amd64 (ubuntu server) golang 运行环境 (安装文档 https://golang.org/doc/install)  Step 1 — 安装 Prometheus Server 创建下载目录,以便安装过后清理掉
+mkdir ~/Download cd ~/Download 使用 wget 下载 Prometheus 服务（自带数据库）的安装包
+wget https://github.com/prometheus/prometheus/releases/download/v1.1.2/prometheus-1.1.2.linux-amd64.tar.gz 创建 Prometheus 目录，用于存放所有 Prometheus 相关的运行服务
+mkdir ~/Prometheus cd ~/Prometheus 使用 tar 解压缩 prometheus-1.1.2.linux-amd64.tar.gz
+tar -xvzf ~/Download/prometheus-1.1.2.linux-amd64.tar.gz cd prometheus-1.1.2.linux-amd64 当解压缩成功后，可以运行 version 检查运行环境是否正常
+./prometheus version 如果你看到类似输出，表示你已安装成功:
+prometheus, version xxx (branch: master, revision: xxxx) build user: xxx build date: xxx go version: xxx Step 2 — 安装 Node Exporter Node Exporter 是官方提供的最基本的 Exporter, 提供机器运行相关的信息收集，比如 CPU, Memory, Disk 等等， 它会在 Prometheus Server 定时来拉取数据的时候，提供当前的数据。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-09-14</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-08-27-promcon2016bao-dao/">PromCon2016 记实报道</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        PromCon2016 已落下帷幕，是时候写一篇相关的记实报道了。
+起初我对本次 Conf 还是有些担忧的，毕竟这是第一届，但随着时间推移，才发现我的担忧是多余的。
+本届 Conf 无论是从举办场地（Google Berlin）, 赞助商（基本一线大公司），演讲 Topic (实战性强)， 还是参与人数，现场氛围来看，都算得上是一次成功的 Conf，来句套路满满的话：
+ PromCon2016 was awesome. Great hosting.
+ 好了，废话这么多，下面为大家带来一些现场照片和 Topic Slide.
+分享照片：
+照片看上去，逼格满满，好想吃那个点心有没有 (强烈推荐 @RubyConf 也来一打)。
+Share Slide：  Alerting Heartbeats How to best write an exporter Hadoop/Fluentd monitoring with prometheus An Exploration of the Formal Properties of PromQL Project Frankenstein: A multitenant, horizontally scalable Prometheus as a service Life of a Label Breaking Prometheus  More slide are comming soon &hellip;.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-08-27</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/tags/prometheus/page/2/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item disabled">
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

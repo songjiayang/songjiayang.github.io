@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta name="generator" content="Hugo 0.72.0" />
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>小鱼驿站 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="小鱼驿站" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="小鱼驿站"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <div class="homepage-content">
+        
+    </div>
+
+    
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2020-06-04-containerd-qi-dong-bao-cuo-jie-jue-ban-fa/">containerd 启动报 `undefined symbol: seccomp_version` 错误的解决办法</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        最近开始研究 containerd, 按照官网教程 在 Centos7.2 上下载了 containerd-1.3.4.linux-amd64.tar.gz ，解压缩运行程序的时候遇到如下报错信息：
+./containerd: symbol lookup error: ./containerd: undefined symbol: seccomp_version 网上查了下，这个错误意思是说系统缺少对应版本的 libseccomp， 有两个可能：
+ 系统没有安装 libseccomp 系统安装的 libseccomp 版本不匹配（较低），建议使用 2.4.2  libseccomp 是什么？  library provides an easy to use, platform independent, interface to the Linux Kernel&rsquo;s syscall filtering mechanism.
+ 它是一个 C 语言开发的 Linux 内核系统调用过滤帮助库，很多容器项目都使用到它，比如 containerd、docker、runc ，其源代码地址为 https://github.com/seccomp/libseccomp。
+libseccomp 安装 因为 containerd 需要依赖的 libseccomp 较新，经过测试，v2.4.2 可以在 Centos7.2 成功运行，所以我们直接通过源代码来安装。
+ 下载源代码  curl -LO https://github.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-06-04</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/containerd">#containerd</a></li>
+                    
+                        <li><a href="tags/%E4%BA%91%E5%8E%9F%E7%94%9F">#云原生</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2020-05-06-wo-suo-li-jie-de-bian-yuan-ji-suan/">国内各云厂商边缘计算布局现状（1）</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        背景 随着物联网、5G 等概念的提出，边缘计算变得越来越火热，它主要是利用边缘就近的算力、网络、存储等资源，在产生数据的边缘侧实现就近计算，从而降低延迟，提升性能，满足物联网、5G 时代对大连接、大带宽、低延迟的需求。
+边缘计算主要分为云、边、端三个层级：
+ 图片来源：https://help.aliyun.com/document_detail/63839.html?spm=a2c4g.11186623.6.545.4e14545e8O8TXg
+ 边缘计算主要解决云边端协同的问题，协同问题的整体内容如下：
+ 图片来源： 边缘计算与云计算协同白皮书(2018年) | 06
+ 对此国内各家云厂商纷纷发力，针对云边端协同相继推出不少产品。这些产品主要分为两类：
+ 第一类是侧重于资源出售的边缘计算。 第二类是侧重于物联网（端）的边缘计算。  本篇文章主要讨论侧重于资源的边缘计算的现状，后面会再写一篇偏向侧重于物联网（端）的边缘计算的介绍。
+侧重于资源的边缘计算特点 侧重于资源的边缘计算的服务主要由云厂商提供边缘计算的资源，资源以云主机或边缘容器为主要的载体，一站式提供融合、开放、联动、弹性的分布式算力资源。
+用户无需采购和自建节点，按需付费，扩容非常方便，这种边缘计算的资源主要集中分布在各地级市，其网络包括各运营商，能够做到全网覆盖。
+典型应用场景：  实时音视频（互动直播 、在线教育） 客户端虚拟化（远程桌面、云游戏、VR） IOT 算力增强（边缘AI） 视频监控（就近观看，存储，大连接） 探针业务（节点地域覆盖广，网络类型丰富）  国内厂商现状：    厂商 服务名称 算力类型 上线时间 主打应用场景      阿里云 ENS 虚拟机 2018年 互动直播、在线教育、视频监控、内容分发、业务监测    腾讯云 ECM 虚拟机 2020年 实时音视频、云游戏 、边缘 AI    京东智联云 JEES 容器 2019年 探针业务、视频监控、云游戏    华为云 暂无 - - -    百度云 暂无 - - -    金山云 KENC 容器 2019 年 客户端虚拟化、直播优化、IoT算力增强    UCloud UEDN 虚拟机 2020 年 视频直播、监控平台、网络爬虫、AI-Service     总结 通过上述表格可以看到，伴随腾讯云和 UCloud 相关服务的推出，各云厂商基本完成了侧重于资源的边缘计算的布局，说明针对边缘计算的资源托管和出售的业务的需求是真实存在的。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-05-06</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97">#边缘计算</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2020-04-28-wo-li-jie-de-yun-yuan-sheng/">我所理解的云原生</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        云原生对应的英文是做 Cloud Native, 属于最近几年比较火的技术，那到底什么是云原生，它和 CNCF、Kubernetes、Docker 又是什么关系？
+今天我们就从云原生的定义，解决的核心问题，以及主要的开源产品等维度出发，一起来探究云原生的本质，希望能够对它有个宏观的认识。
+什么是云原生？  Cloud native technologies are used to develop applications built with services packaged in containers, deployed as microservices and managed on elastic infrastructure through agile DevOps processes and continuous delivery workflows.
+ — Writes Janakiram MSV, principal analyst at Janakiram &amp; Associates and an adjunct faculty member at the International Institute of Information Technology.
+根据这段话我们可以大概知道，云原生并不是一种具体的技术，而是一类思想的集合，它包含了微服务（MicroServices）、DevOps、持续交付，以及容器等一系列技术。
+为什么需要云原生？ 长期以来，我们一直在追求三个目标：
+ Availability (可用性) Scale （可伸缩性） Performance （性能）  但现在时代变了，仅有这三个目标是不够的(或传统方式在当今很难满足这三个指标），究其原因，主要是速度，我们在不断的追求速度。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-04-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E4%BA%91%E5%8E%9F%E7%94%9F">#云原生</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-11-26-ru-he-shi-yong-jing-dong-yun-kuai-su-da-jian-gao-ke-kao-de-rust-jing-xiang-fu-wu/">如何使用京东云快速搭建高可靠的 Rust 镜像服务</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        背景 目前国内使用 Rust 的越来越多，而在使用的时候有时我们经常会遇到依赖包无法下载或下载很慢的情况，所以我们非常需要一个高可靠的国内 Rust 的镜像服务来提高 Rust 包的安装速度。
+先来分析下 Rust 依赖安装慢的原因，我们都知道 Rust 依赖安装主要分为两个步骤：
+ 依赖包索引更新， Rust 依赖包索引托管在 GitHub，仓库地址为 https://github.com/rust-lang/crates.io-index。 依赖包下载， Rust 的依赖包资源统一下载地址为 https://crates.io/api/v1/crates， 通过 dig crates.io 可以发现其服务器全部托管在国外。  以上两点原因，大大影响了 Rust 依赖安装的速度，故在搭建 Rust 镜像的时候就要把这两个服务放到国内来。
+搭建思路 解决索引托管的问题 使用京东云的云主机自己搭建 crates.io-index 的 git 服务器。这里说下为什么不使用国内已有的 git 托管服务商，原因如下：
+ 国内的 git 托管服务都不支持 GitHub 仓库的镜像服务，无法做到项目自动更新，所以还是需要额外的服务器来完成同步工作。 无法自定义 git 项目地址和域名，比如 git://rust-mirror.jdcloud.com。  解决依赖包下载的问题 这里使用京东云对象存储的镜像回源功能很容易解决这个问题：
+ 对象存储提供永久性存储，防止内容丢失，还提供 https 安全访问。 对象存储的镜像回源功能可以很简单的实现资源包从 https://crates.io/api/v1/crates 的抓取，抓取的内容还能自动进行签名校验，保证数据的准确性。  动手搭建 第一步： 创建并配置对象存储空间 因为需要在 crates.io-index 的 config.json 中配置新的 dl 地址（对象存储 Bucket 公网访问地址），所以我们先来申请和配置对象存储。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-11-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/rust">#rust</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-10-10-go-he-andji-shi-li/">Go 和 Android 集成实战</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        看到这个标题，你可能会问，为什么要在 Android 中运行 Go，直接使用 Java 不挺好吗？
+是的，如果你有现成很强大的 Java 团队，这没有问题，但并不是所有团队都是如此。而且我在这里想强调的是 Android 与 Go 的集合，即在 Android 程序中使用 Go 而不是完全用 Go 来写 Android 程序。
+我能想到在 Android 中用 Go 的一些原因：
+ 团队熟悉 Go, 对 Java/Android 了解不多。 已经有现成的 Go 核心代码，比如开源类库: libp2p，turn/stun 类库等。 自己服务的 SDK 其核心逻辑复杂，繁琐，涉及大量网络或并发的操作。  能够在 Android 上使用 Go 代码，得益于 Go 强大的交叉编译能力，那该如何在 Android 上使用我们的 Go 库呢，接下来我将通过一个简单的示例来讲解。
+实例教程 本例是在 Android 程序中使用 Go 编译的一个简单动态库来实现对网站测速的简单例子。
+思路：
+ Go 交叉编译为 Android 平台支持的 so 文件。 在 Android 中使用 JNA 调用该 so 文件。  依赖：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-10-10</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-09-26-ru-he-kua-ping-tai-bian-yi-armde-cgocheng-xu/">如何在 Ubuntu 上交叉编译 ARM 架构的 CGO 程序</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        我们都知道在不涉及 CGO 的时候，Go 的交叉编译非常简单，只需要设置对应的 GOOS 和 GOARCH 即可，但当涉及到 CGO 时，问题就变得有点复杂了，因为你需要指定特定的 GCC。
+例如，想在 Ubuntu 上交叉编译一个带有 CGO 的动态库，目标 CPU 架构为 arm，我们该如何操作呢？
+示例代码 # shared.go package main import &quot;C&quot; //export Sum func Sum(a, b int) int { return a + b } func main(){} 这个代码使用到了 CGO，然后暴露一个 Sum 方法，实现两个整数相加。
+编译 32 位的 arm 因为通过设置 CGO_ENABLED=1 开启 CGO 编译，执行命令如下：
+CGO_ENABLED=1 GOOS=linux GOARCH=arm go build -buildmode=c-shared -o share.so 但不幸，命令报错： gcc: error: unrecognized command line option '-marm'。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-09-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-05-31-go-zhong-you-ya-guan-bi-zi-jin-cheng/">如何在 Go 中优雅关闭子进程</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        如何在 Go 中运行一个外部命令 有时我们会遇到这样的需求，在一个主进程中启动另外一个进程，而在 Go 中可以使用 exec 包的 Cmd 来轻松实现这类需求，例如代码：
+package main import ( &#34;fmt&#34; &#34;log&#34; &#34;os&#34; &#34;os/exec&#34; &#34;os/signal&#34; ) func main() { cmd := exec.Cmd{ Path: &#34;nc&#34;, Args: []string{&#34;-u&#34;, &#34;-l&#34;, &#34;8888&#34;}, Dir: &#34;/usr/bin&#34;, } if err := cmd.Start(); err != nil { log.Panic(err) } fmt.Println(&#34;Start child process with pid&#34;, cmd.Process.Pid) c := make(chan os.Signal, 1) signal.Notify(c, os.Interrupt) s := &lt;-c fmt.Println(&#34;Got signal:&#34;, s) } 这段代码的含义是： 使用 nc -u -l 8888 来模拟一个常驻进程，然后通过 Go 的 exec.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-05-31</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-05-23-shi-yong-cgroup-shi-xian-nei-cun-kong-zhi/">如何在 Go 中使用 CGroup 实现进程内存控制</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        背景 从 Linux 内核 2.6.25 开始，CGroup 支持对进程内存的隔离和限制，这也是 Docker 等容器技术的底层支撑。
+使用 CGroup 有如下好处：
+ 在共享的机器上，进程相互隔离，互不影响，对其它进程是种保护。 对于存在内存泄漏的进程，可以设置内存限制，通过系统 OOM 触发的 Kill 信号量来实现重启。  CGroup 快速入门 默认挂载分组 Linux 系统默认支持 CGroup, 而且默认挂载所有选项，可以使用 mount -t cgroup 来查看：
+$ mount -t cgroup cgroup on /sys/fs/cgroup/systemd type cgroup (rw,nosuid,nodev,noexec,relatime,xattr,release_agent=/usr/lib/systemd/systemd-cgroups-agent,name=systemd) cgroup on /sys/fs/cgroup/net_cls type cgroup (rw,nosuid,nodev,noexec,relatime,net_cls) cgroup on /sys/fs/cgroup/cpuset type cgroup (rw,nosuid,nodev,noexec,relatime,cpuset) cgroup on /sys/fs/cgroup/perf_event type cgroup (rw,nosuid,nodev,noexec,relatime,perf_event) cgroup on /sys/fs/cgroup/freezer type cgroup (rw,nosuid,nodev,noexec,relatime,freezer) cgroup on /sys/fs/cgroup/memory type cgroup (rw,nosuid,nodev,noexec,relatime,memory) cgroup on /sys/fs/cgroup/cpu,cpuacct type cgroup (rw,nosuid,nodev,noexec,relatime,cpuacct,cpu) cgroup on /sys/fs/cgroup/hugetlb type cgroup (rw,nosuid,nodev,noexec,relatime,hugetlb) cgroup on /sys/fs/cgroup/devices type cgroup (rw,nosuid,nodev,noexec,relatime,devices) cgroup on /sys/fs/cgroup/blkio type cgroup (rw,nosuid,nodev,noexec,relatime,blkio) CGroup 相关的资源包括 cpu,memory,blkio等，而我们今天主要关心的是内存，即 /sys/fs/cgroup/memory。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-05-23</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-04-02-golang-test-with-docker/">Unit Test In Go With Docker</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        本篇文章主要讲解如何在 Docker 中进行 Go 单元测试，依赖 Docker 和 Go Modules。
+为什么是 Docker 在 Docker 之前我们往往需要在 Jenkins 服务器上配置不同的 Go 版本以及针对每个项目配置 GOPATH，项目之间的隔离性差，经常出现基础库版本冲突的问题。
+有了 Docker，我们可以在不同容器中运行单元测试，该测试不局限不同项目，甚至可以是同一项目不同分支。
+所以在测试隔离性和项目测试并发度上都有很大提升，而且测试结束后，环境清理也简单许多。
+为什么是 Go Modules Go Modules 作为官方默认的包管理工具，基本解决了 Go 长期存在的包管理问题，它为我们的项目管理带来很多好处：
+ 自动解析和添加依赖 签名验证 依赖缓存 支持相对路径依赖 支持依赖一键打包，方便在离线环境下运行程序  实际例子 下面我们来看一个简单例子，来自 Gin Testing Example，项目目录结构为：
+$ tree . . ├── go.mod ├── go.sum ├── main.go └── main_test.go 0 directories, 4 files main.go 内容：
+package main func setupRouter() *gin.Engine { r := gin.Default() r.GET(&quot;/ping&quot;, func(c *gin.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-04-02</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/docker">#docker</a></li>
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                        <li><a href="tags/%E4%BA%91%E5%8E%9F%E7%94%9F">#云原生</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-03-21-go-http-zhong-flusher-zai-shi-ji-kai-fa-zhong-de-ying-yong/">Go http.Flusher 在实际项目中的应用</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        最近在使用 Docker Go SDK 做开发的时候，参考了官方的示例代码:
+package main import ( &#34;io&#34; &#34;os&#34; &#34;github.com/docker/docker/api/types&#34; &#34;github.com/docker/docker/api/types/container&#34; &#34;github.com/docker/docker/client&#34; &#34;golang.org/x/net/context&#34; ) func main() { ctx := context.Background() cli, err := client.NewEnvClient() if err != nil { panic(err) } reader, err := cli.ImagePull(ctx, &#34;docker.io/library/alpine&#34;, types.ImagePullOptions{}) if err != nil { panic(err) } io.Copy(os.Stdout, reader) resp, err := cli.ContainerCreate(ctx, &amp;container.Config{ Image: &#34;alpine&#34;, Cmd: []string{&#34;echo&#34;, &#34;hello world&#34;}, Tty: true, }, nil, nil, &#34;&#34;) if err != nil { panic(err) } if err := cli.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-03-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item disabled">
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/page/2/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>A better way to reindex associations in thinking-sphinx - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="A better way to reindex associations in thinking-sphinx" />
+<meta property="og:description" content="众所周知，thinking-sphinx 提供了 Real-Time 和 Delta 两种索引，而我在项目中经常使用后者。 使用这种方式，通常你会遇到这样一个问题：
+ If you are using associations for field or attribute data, delta indexing will not automatically happen when you make changes to those association models. You will need to add a manual delta hook to make it all update accordingly.
+ 举个例子：
+Article model 有这样索引:
+indexes comments.content, :as =&gt; :comments 当 comments 有变化（更新或删除）， article.comments 是不会自动重新索引的; 为使其重新索引, 我们不得不 Do a hack：
+# comment.rb after_save :set_article_delta_flag after_destroy :set_article_delta_flag # ." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2015-02-28-a-better-way-for-thinking-sphinx-deltas-and-associations/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2015-02-28T22:31:00+08:00" />
+<meta property="article:modified_time" content="2015-02-28T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="A better way to reindex associations in thinking-sphinx"/>
+<meta name="twitter:description" content="众所周知，thinking-sphinx 提供了 Real-Time 和 Delta 两种索引，而我在项目中经常使用后者。 使用这种方式，通常你会遇到这样一个问题：
+ If you are using associations for field or attribute data, delta indexing will not automatically happen when you make changes to those association models. You will need to add a manual delta hook to make it all update accordingly.
+ 举个例子：
+Article model 有这样索引:
+indexes comments.content, :as =&gt; :comments 当 comments 有变化（更新或删除）， article.comments 是不会自动重新索引的; 为使其重新索引, 我们不得不 Do a hack：
+# comment.rb after_save :set_article_delta_flag after_destroy :set_article_delta_flag # ."/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">A better way to reindex associations in thinking-sphinx</h1>
+        </header>
+        <div class="content">
+            <p>众所周知，thinking-sphinx 提供了 Real-Time 和 Delta 两种索引，而我在项目中经常使用后者。
+使用这种方式，通常你会遇到这样一个问题：</p>
+<blockquote>
+<p>If you are using associations for field or attribute data, delta indexing will not automatically happen when you make changes to those association models. You will need to add a manual delta hook to make it all update accordingly.</p>
+</blockquote>
+<p>举个例子：</p>
+<p>Article model 有这样索引:</p>
+<pre><code>indexes comments.content, :as =&gt; :comments
+</code></pre><p>当 comments 有变化（更新或删除）， article.comments 是不会自动重新索引的; 为使其重新索引, 我们不得不 Do a hack：</p>
+<pre><code># comment.rb
+after_save :set_article_delta_flag
+after_destroy :set_article_delta_flag
+
+# ...
+
+private
+
+def set_article_delta_flag
+  article.delta = true
+  article.save
+end
+</code></pre><p>代码很简单，满足需求，是否意味这个 fearch 就可以结束？ 当深入一想，这样的代码并不通用，因为一个项目会有很多类似模型，我们总不能将这样的代码到处 copy 吧。</p>
+<!-- raw HTML omitted -->
+<p>我们的解决方案：</p>
+<p>1.新建一个共用模块：</p>
+<pre><code># app/models/concerns/auto_touch_delta_flag.rb
+module AutoTouchDeltaFlag
+
+  def auto_touch_associations(*associations)
+    set_delta_flag = proc do
+      associations.each do |association|
+        association_model = self.send(association)
+        association_model.delta = true
+        association_model.save
+      end
+    end
+
+    after_save set_delta_flag
+    after_destroy set_delta_flag
+  end
+end
+</code></pre><p>2.在 ActiveRecord::Base 注入此模块</p>
+<pre><code># config/initializers/active_record_concerns.rb
+ActiveRecord::Base.extend SphinxAssociationDeltaCallback
+
+</code></pre><p>3.在需要的模型里通过 auto_touch_associations 方法，注入需要观察的关联对象：</p>
+<pre><code># comment.rb
+auto_touch_associations :article
+</code></pre><blockquote>
+<p>总结：完成代码功能并非难事，但我们需要多一些思考，消除可见重复，让代码变的更好。</p>
+</blockquote>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-02-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

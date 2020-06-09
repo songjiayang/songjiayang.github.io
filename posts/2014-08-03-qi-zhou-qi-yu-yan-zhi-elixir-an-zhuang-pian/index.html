@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>七周七语言之 elixir 初级篇 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="七周七语言之 elixir 初级篇" />
+<meta property="og:description" content="今天听闻ElixirConf 2014 slide出来了，关于报道请移步 RubyChina讨论帖子。
+看到这个消息心中不免有些小激动，因为它的语法终于快稳定下来了，版本1.0的发布也是紧接的事情，于是决定尝尝鲜。
+Elixir初级篇###   测试环境： Mac OS 10.9.4
+  ####1.1 安装Erlang####
+由于Elixir是一门运行在erlng虚拟机上的函数式、面向并行的编程语言，自然需要erlang运行环境。
+最新的elixir(v0.14.0)需要erlang17.0或者更新。
+使用Precompiled packages 安装Erlang很容易，只是国内下载网络太慢。 如果你觉得以上链接下载太慢的话，可以尝试此链接。
+我下载的软件包是otp_src_17.1.tar.gz。
+进入otp_src_17.1.tar.gz下载根目录，解压erlang软件包，编译，安装 。
+ tar -vxzf otp_src_17.1.tar.gz cd otp_src_17.1 ./configure make make install 你可以在Terminal中运行 erl来检查Erlang的版本,你将看到类似信息：
+Erlang/OTP 17 [erts-6.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false] ####1.2 elixir安装####
+由于我的系统是OS，为了不折腾所以采用homebrew安装。
+brew update brew intall elixir 当安装结束后，你可以在Terminal中运行 iex进入elixir的交互模式，将看到以下信息：
+Erlang/OTP 17 [erts-6.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false] Interactive Elixir (0.15.0) - press Ctrl&#43;C to exit (type h() ENTER for help) 其他系统使用源的安装方式以及预编译安装方式，请参考官网" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2014-08-03-qi-zhou-qi-yu-yan-zhi-elixir-an-zhuang-pian/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2014-08-03T20:19:04+08:00" />
+<meta property="article:modified_time" content="2014-08-03T20:19:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="七周七语言之 elixir 初级篇"/>
+<meta name="twitter:description" content="今天听闻ElixirConf 2014 slide出来了，关于报道请移步 RubyChina讨论帖子。
+看到这个消息心中不免有些小激动，因为它的语法终于快稳定下来了，版本1.0的发布也是紧接的事情，于是决定尝尝鲜。
+Elixir初级篇###   测试环境： Mac OS 10.9.4
+  ####1.1 安装Erlang####
+由于Elixir是一门运行在erlng虚拟机上的函数式、面向并行的编程语言，自然需要erlang运行环境。
+最新的elixir(v0.14.0)需要erlang17.0或者更新。
+使用Precompiled packages 安装Erlang很容易，只是国内下载网络太慢。 如果你觉得以上链接下载太慢的话，可以尝试此链接。
+我下载的软件包是otp_src_17.1.tar.gz。
+进入otp_src_17.1.tar.gz下载根目录，解压erlang软件包，编译，安装 。
+ tar -vxzf otp_src_17.1.tar.gz cd otp_src_17.1 ./configure make make install 你可以在Terminal中运行 erl来检查Erlang的版本,你将看到类似信息：
+Erlang/OTP 17 [erts-6.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false] ####1.2 elixir安装####
+由于我的系统是OS，为了不折腾所以采用homebrew安装。
+brew update brew intall elixir 当安装结束后，你可以在Terminal中运行 iex进入elixir的交互模式，将看到以下信息：
+Erlang/OTP 17 [erts-6.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false] Interactive Elixir (0.15.0) - press Ctrl&#43;C to exit (type h() ENTER for help) 其他系统使用源的安装方式以及预编译安装方式，请参考官网"/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">七周七语言之 elixir 初级篇</h1>
+        </header>
+        <div class="content">
+            <p>今天听闻ElixirConf 2014 slide出来了，关于报道请移步 <a href="https://ruby-china.org/topics/20809">RubyChina讨论帖子</a>。</p>
+<p>看到这个消息心中不免有些小激动，因为它的语法终于快稳定下来了，版本1.0的发布也是紧接的事情，于是决定尝尝鲜。</p>
+<h3 id="elixir初级篇">Elixir初级篇###</h3>
+<blockquote>
+<blockquote>
+<p>测试环境： Mac OS 10.9.4</p>
+</blockquote>
+</blockquote>
+<p>####1.1 安装Erlang####</p>
+<p>由于Elixir是一门运行在erlng虚拟机上的函数式、面向并行的编程语言，自然需要erlang运行环境。</p>
+<p>最新的elixir(v0.14.0)需要erlang17.0或者更新。</p>
+<p>使用<a href="https://www.erlang-solutions.com/downloads/download-erlang-otp">Precompiled packages</a> 安装Erlang很容易，<em>只是国内下载网络太慢</em>。
+如果你觉得以上链接下载太慢的话，可以尝试<a href="http://pan.baidu.com/s/1o6qgdN8">此链接</a>。</p>
+<p>我下载的软件包是otp_src_17.1.tar.gz。</p>
+<p>进入otp_src_17.1.tar.gz下载根目录，解压erlang软件包，编译，安装 。</p>
+<pre><code> tar -vxzf otp_src_17.1.tar.gz
+ cd otp_src_17.1
+ ./configure
+ make
+ make install
+</code></pre><p>你可以在Terminal中运行 <code>erl</code>来检查Erlang的版本,你将看到类似信息：</p>
+<pre><code>Erlang/OTP 17 [erts-6.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false]
+</code></pre><p>####1.2 elixir安装####</p>
+<p>由于我的系统是OS，为了不折腾所以采用homebrew安装。</p>
+<pre><code>brew update
+brew intall elixir
+</code></pre><p>当安装结束后，你可以在Terminal中运行 <code>iex</code>进入elixir的交互模式，将看到以下信息：</p>
+<pre><code>Erlang/OTP 17 [erts-6.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:false]
+Interactive Elixir (0.15.0) - press Ctrl+C to exit (type h() ENTER for help)
+</code></pre><p>其他系统使用源的安装方式以及预编译安装方式，请参考<a href="http://elixir-lang.org/getting_started/1.html#1.2-distributions">官网</a></p>
+<p>####1.3 elixir初体验####</p>
+<p>进入<code>iex</code></p>
+<pre><code>Interactive Elixir (0.15.0) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)&gt; 40+2
+42
+iex(2)&gt; 40+1.3
+41.3
+iex(3)&gt; IO.puts &quot;hello world&quot;
+hello world
+:ok
+iex(4)&gt; &quot;hello&quot; &lt;&gt; &quot; world&quot;
+&quot;hello world&quot;
+iex(5)&gt; defmodule Hello do
+...(5)&gt;   def world do
+...(5)&gt;     IO.puts &quot;Hello World&quot;
+...(5)&gt;   end
+...(5)&gt; end
+{:module, Hello,
+ &lt;&lt;70, 79, 82, 49, 0, 0, 4, 208, 66, 69, 65, 77, 69, 120, 68, 99, 0, 0, 0, 94, 131, 104, 2, 100, 0, 14, 101, 108, 105, 120, 105, 114, 95, 100, 111, 99, 115, 95, 118, 49, 108, 0, 0, 0, 2, 104, 2, ...&gt;&gt;,
+ {:world, 0}}
+iex(6)&gt; Hello.world
+Hello World
+:ok
+</code></pre><p>以上测试包含了整数相加，整数和浮点数相加，打印输出，字符串拼接，模块定义和方法的定义/调用。<br>
+值得注意的是：</p>
+<ol>
+<li>在elixir中的字符串拼接使用的是 <code>&lt;&gt;</code> 而不是<code>+</code>。</li>
+<li>方法的定义必须在<code>module</code>中。</li>
+</ol>
+<p>总结:</p>
+<ol>
+<li>Elixir安装容易，它的语法也和ruby有几分相识之处（毕竟就是搞ruby那帮人写的嘛）。</li>
+<li>它的出现感觉就是在语言高性能和语法优雅中寻找平衡。只是目前语言还在逐步完善中，1.0版本发布，将是一个里程碑。</li>
+<li>社区也还不够强大，不过对于才出现1年多点elixir而言，它有足够的时间去成长。</li>
+</ol>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-03</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/elixir">#elixir</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

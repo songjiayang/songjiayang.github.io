@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>边缘计算 on 小鱼驿站</title>
+    <link>/tags/%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97/</link>
+    <description>小鱼驿站 (边缘计算)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 06 May 2020 16:31:56 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>国内各云厂商边缘计算布局现状（1）</title>
+      <link>/posts/2020-05-06-wo-suo-li-jie-de-bian-yuan-ji-suan/</link>
+      <pubDate>Wed, 06 May 2020 16:31:56 +0800</pubDate>
+      
+      <guid>/posts/2020-05-06-wo-suo-li-jie-de-bian-yuan-ji-suan/</guid>
+      <description>&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;随着物联网、5G 等概念的提出，边缘计算变得越来越火热，它主要是利用边缘就近的算力、网络、存储等资源，在产生数据的边缘侧实现就近计算，从而降低延迟，提升性能，满足物联网、5G 时代对大连接、大带宽、低延迟的需求。&lt;/p&gt;
+&lt;p&gt;边缘计算主要分为云、边、端三个层级：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/edge-compute/edge-computing-01.png&#34; alt=&#34;edge-computing-01.png&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;图片来源：https://help.aliyun.com/document_detail/63839.html?spm=a2c4g.11186623.6.545.4e14545e8O8TXg&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;边缘计算主要解决云边端协同的问题，协同问题的整体内容如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/edge-compute/edge-computing-02.png&#34; alt=&#34;edge-computing-02.png&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;图片来源： 边缘计算与云计算协同白皮书(2018年) | 06&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;对此国内各家云厂商纷纷发力，针对云边端协同相继推出不少产品。这些产品主要分为两类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;第一类是侧重于资源出售的边缘计算。&lt;/li&gt;
+&lt;li&gt;第二类是侧重于物联网（端）的边缘计算。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本篇文章主要讨论侧重于资源的边缘计算的现状，后面会再写一篇偏向侧重于物联网（端）的边缘计算的介绍。&lt;/p&gt;
+&lt;h2 id=&#34;侧重于资源的边缘计算特点&#34;&gt;侧重于资源的边缘计算特点&lt;/h2&gt;
+&lt;p&gt;侧重于资源的边缘计算的服务主要由云厂商提供边缘计算的资源，资源以云主机或边缘容器为主要的载体，一站式提供融合、开放、联动、弹性的分布式算力资源。&lt;/p&gt;
+&lt;p&gt;用户无需采购和自建节点，按需付费，扩容非常方便，这种边缘计算的资源主要集中分布在各地级市，其网络包括各运营商，能够做到全网覆盖。&lt;/p&gt;
+&lt;h2 id=&#34;典型应用场景&#34;&gt;典型应用场景：&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;实时音视频（互动直播 、在线教育）&lt;/li&gt;
+&lt;li&gt;客户端虚拟化（远程桌面、云游戏、VR）&lt;/li&gt;
+&lt;li&gt;IOT 算力增强（边缘AI）&lt;/li&gt;
+&lt;li&gt;视频监控（就近观看，存储，大连接）&lt;/li&gt;
+&lt;li&gt;探针业务（节点地域覆盖广，网络类型丰富）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;国内厂商现状&#34;&gt;国内厂商现状：&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;厂商&lt;/th&gt;
+&lt;th&gt;服务名称&lt;/th&gt;
+&lt;th&gt;算力类型&lt;/th&gt;
+&lt;th&gt;上线时间&lt;/th&gt;
+&lt;th&gt;主打应用场景&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;阿里云&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.aliyun.com/product/ens&#34;&gt;ENS&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;虚拟机&lt;/td&gt;
+&lt;td&gt;2018年&lt;/td&gt;
+&lt;td&gt;互动直播、在线教育、视频监控、内容分发、业务监测&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;腾讯云&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://cloud.tencent.com/product/ecm&#34;&gt;ECM&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;虚拟机&lt;/td&gt;
+&lt;td&gt;2020年&lt;/td&gt;
+&lt;td&gt;实时音视频、云游戏 、边缘 AI&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;京东智联云&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.jdcloud.com/cn/products/jd-cloud-equal-edge-service&#34;&gt;JEES&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;容器&lt;/td&gt;
+&lt;td&gt;2019年&lt;/td&gt;
+&lt;td&gt;探针业务、视频监控、云游戏&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;华为云&lt;/td&gt;
+&lt;td&gt;暂无&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;百度云&lt;/td&gt;
+&lt;td&gt;暂无&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;金山云&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.ksyun.com/post/product/KENC.html&#34;&gt;KENC&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;容器&lt;/td&gt;
+&lt;td&gt;2019 年&lt;/td&gt;
+&lt;td&gt;客户端虚拟化、直播优化、IoT算力增强&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;UCloud&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.ucloud.cn/site/product/uodn.html&#34;&gt;UEDN&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;虚拟机&lt;/td&gt;
+&lt;td&gt;2020 年&lt;/td&gt;
+&lt;td&gt;视频直播、监控平台、网络爬虫、AI-Service&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+&lt;p&gt;通过上述表格可以看到，伴随腾讯云和 UCloud 相关服务的推出，各云厂商基本完成了侧重于资源的边缘计算的布局，说明针对边缘计算的资源托管和出售的业务的需求是真实存在的。&lt;/p&gt;
+&lt;p&gt;各厂商服务的功能基本相似，主推的应用场景也大体相似，但算力类型却有不同，京东智联云和金山云所推的是容器服务，而其它厂商都为虚拟机。&lt;/p&gt;
+&lt;p&gt;现在很难说明虚拟机和容器孰优孰劣， 虚拟机有更好的隔离性，更传统的使用体验，容器有更好的性能，更强的弹性伸缩能力。目前边缘计算主要的业务场景为无状态的业务，两种方式都能够很好的满足，但未来会如何演变，让我们一起保持关注。&lt;/p&gt;
+&lt;p&gt;下一讲，我们将主要介绍国内云厂商在侧重于物联网（端）的边缘计算的布局情况，敬请期待。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;参考资料：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.aliyun.com/product/ens&#34;&gt;https://www.aliyun.com/product/ens&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cloud.tencent.com/product/ecm&#34;&gt;https://cloud.tencent.com/product/ecm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.jdcloud.com/cn/products/jd-cloud-equal-edge-service&#34;&gt;https://www.jdcloud.com/cn/products/jd-cloud-equal-edge-service&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.ksyun.com/post/product/KENC.html&#34;&gt;https://www.ksyun.com/post/product/KENC.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.ucloud.cn/site/product/uodn.html&#34;&gt;https://www.ucloud.cn/site/product/uodn.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

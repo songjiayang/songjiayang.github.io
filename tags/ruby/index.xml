@@ -1,0 +1,3084 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ruby on 小鱼驿站</title>
+    <link>/tags/ruby/</link>
+    <description>小鱼驿站 (ruby)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 27 Mar 2017 22:31:00 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/ruby/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>对照 Ruby 学 Crystal - Part 0</title>
+      <link>/posts/2017-03-27-dui-zhao-ruby-lai-xue-crystal/</link>
+      <pubDate>Mon, 27 Mar 2017 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2017-03-27-dui-zhao-ruby-lai-xue-crystal/</guid>
+      <description>&lt;p&gt;Crystal 是一门神奇的语言，它号称 &lt;strong&gt;Fast as C, slick as Ruby&lt;/strong&gt;，
+至于速度方面有待考证，不过它的语法和 Ruby 非常相似，可见其胶水能力。&lt;/p&gt;
+&lt;p&gt;本篇文章是&lt;em&gt;对照 Ruby 学 Crystal&lt;/em&gt; 系列基础篇，主要介绍 Crystal 社区中与 Ruby 对应的工具链。&lt;/p&gt;
+&lt;h3 id=&#34;version-manager&#34;&gt;Version Manager&lt;/h3&gt;
+&lt;p&gt;使用 &lt;a href=&#34;https://github.com/pine/crenv&#34;&gt;crenv&lt;/a&gt; 来管理多个不同版本的 Crystal， Ruby 中与之对应的是 rbenv 或者 rvm 。&lt;/p&gt;
+&lt;h3 id=&#34;dependency-manager&#34;&gt;Dependency Manager&lt;/h3&gt;
+&lt;p&gt;使用 &lt;a href=&#34;https://github.com/crystal-lang/shards&#34;&gt;shards&lt;/a&gt; 来管理项目依赖，Ruby 中对应的是 bundler 。&lt;/p&gt;
+&lt;h3 id=&#34;testing&#34;&gt;Testing&lt;/h3&gt;
+&lt;p&gt;测试框比较多，这里选取较常用的来做个比较，&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/ysbaddaden/minitest.cr&#34;&gt;minitest.cr&lt;/a&gt; 对应 Ruby 中的 minitest 。
+&lt;a href=&#34;https://github.com/waterlink/spec2.cr&#34;&gt;spec2.cr&lt;/a&gt; 对应 Ruby 中的 rspec 。&lt;/p&gt;
+&lt;h3 id=&#34;database-drivers&#34;&gt;Database Drivers&lt;/h3&gt;
+&lt;p&gt;这个话题对应的就比较多了，应该主流的数据库都有对应的 driver 吧，例如，
+&lt;a href=&#34;https://github.com/waterlink/crystal-mysql&#34;&gt;crystal-mysql&lt;/a&gt; 对应 Ruby 的 mysql2 。
+&lt;a href=&#34;https://github.com/datanoise/mongo.cr&#34;&gt;mongo.cr&lt;/a&gt; 对应 Ruby 的 mongoid 。&lt;/p&gt;
+&lt;h3 id=&#34;web-framework&#34;&gt;Web Framework&lt;/h3&gt;
+&lt;p&gt;目前我的工作以 API 居多，所以这里选取了 &lt;a href=&#34;https://github.com/kemalcr/kemal&#34;&gt;kemal&lt;/a&gt;, 它类似 Ruby 中的 sinatra 。&lt;/p&gt;
+&lt;p&gt;关于 Crystal 更多工具，可以参考 &lt;a href=&#34;https://github.com/veelenga/awesome-crystal&#34;&gt;awesome-crystal&lt;/a&gt;, 这一个系列我会尝试一一展开介绍 Crystal 的具体使用，敬请期待。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>where is my tempfile?</title>
+      <link>/posts/2016-03-09-where-is-my-tempfile/</link>
+      <pubDate>Wed, 09 Mar 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-03-09-where-is-my-tempfile/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/tempfile.png&#34; alt=&#34;tempfile.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The benefits of &lt;code&gt;Tempfile&lt;/code&gt; are:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Automatically deleted.&lt;/li&gt;
+&lt;li&gt;Unique file name.&lt;/li&gt;
+&lt;li&gt;Nice place (&lt;code&gt;/var&lt;/code&gt;) stored at disk.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;What&amp;rsquo;s my problem? Let me show you my code:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def qr_file(url)
+    temp = Tempfile.new([&#39;qr&#39;, &#39;.png&#39;])
+    path = temp.path
+    qrcode = RQRCode::QRCode.new(url)
+    qrcode.as_png(
+      resize_gte_to: false,
+      resize_exactly_to: false,
+      fill: &#39;white&#39;,
+      color: &#39;black&#39;,
+      size: 200,
+      border_modules: 0,
+      module_px_size: 0
+      file: path
+    )
+    path
+end
+
+def build_qr_cell(url, opts={})
+  @excel.add_image(image_src: qr_file(url), noSelect: false, noMove: false) do |image|
+    image.width = 200
+    image.height = 200
+    image.start_at opts[:column_index], opts[:row_index]+1
+  end
+end
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;There are two methods &lt;code&gt;qr_file&lt;/code&gt; and &lt;code&gt;build_qr_cell&lt;/code&gt; . The first one use to create a tempfile and return file path, the other one will use the path.&lt;/p&gt;
+&lt;p&gt;When I execute my code, I get &lt;strong&gt;file not exist?&lt;/strong&gt; error sometimes. Yes, it is sometimes rather than always.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Code is logic, not accident&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s so strange that I want to figure out the reason.&lt;/p&gt;
+&lt;p&gt;I review &lt;a href=&#34;http://ruby-doc.org/stdlib-2.3.0/libdoc/tempfile/rdoc/Tempfile.html&#34;&gt;Tempfile&lt;/a&gt; doc, stop eyes at this line.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When a Tempfile object is garbage collected, or when the Ruby interpreter exits, its associated temporary file is automatically deleted.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Oh, Maybe I get it. I guess the reason is Ruby GC.&lt;/p&gt;
+&lt;p&gt;When after &lt;code&gt;qr_file&lt;/code&gt; method call, the local variable &lt;code&gt;temp&lt;/code&gt; lost its context, it should be garbage collected.&lt;/p&gt;
+&lt;p&gt;As you known, Ruby execute GC has time limit. Sometimes you use the file, GC doesn&amp;rsquo;t excute, but sometimes had. when GC executed before you use it, the file should be deleted and raise &lt;strong&gt;not exist&lt;/strong&gt; error.&lt;/p&gt;
+&lt;p&gt;How to prove my guess? I think execute GC by hand is one way. to see:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#in irb, with ruby 2.3
+require &#39;tempfile&#39;
+def generate_tempfile
+  temp = Tempfile.new(&#39;&#39;)
+  temp.path
+end
+file = generate_tempfile
+File.exist? file # most time is true
+GC.start # execute gc by hand
+File.exist? file # should be false
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I test my code in &lt;code&gt;irb&lt;/code&gt;, I get file deleted every time after execute GC by hand. Cool, this is answer as my expect.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;When I test the code, I find it doesn&amp;rsquo;t work at lower than the 2.3 version ruby. I guess in ruby 2.3, the GC has improved for this case. so I think 2.3 is the most fast ruby version so far.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;How to fix my code ?&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Use tempfile in one function or return the temp object.&lt;/li&gt;
+&lt;li&gt;Use &lt;code&gt;File&lt;/code&gt; and &lt;code&gt;tmpdir&lt;/code&gt; std lib to replace &lt;code&gt;Tempfile&lt;/code&gt;, and use system cron job for delete stuff.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Conclusion:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Don&amp;rsquo;t use tempfile cross method.&lt;/li&gt;
+&lt;li&gt;Ruby 2.3 is the best version so far, please use it relaxed。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This is a wonderful experience， I&amp;rsquo;m really interested in  Ruby &lt;code&gt;2.3&lt;/code&gt; and &lt;code&gt;GC&lt;/code&gt; now, Maybe I will write some articles about them  later.&lt;/p&gt;
+&lt;p&gt;Await please!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ruby Proc 迷思</title>
+      <link>/posts/2016-03-07-ruby-proc-mi-si/</link>
+      <pubDate>Mon, 07 Mar 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-03-07-ruby-proc-mi-si/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/proc/proc_lambda.png&#34; alt=&#34;proc_lambda.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;一谈到闭包 (&lt;code&gt;Proc&lt;/code&gt;)， Rubyist 的脑袋里往往会浮现出 blocks, Proc, lambda 之类概念。&lt;/p&gt;
+&lt;p&gt;此时，你心中可能开始嘀咕： why ? 这概念是不是太多了， Ruby 的闭包怎么这么复杂啊。&lt;/p&gt;
+&lt;p&gt;其实不然，Ruby 的闭包并没想象的那么复杂，我们需要通过现象看本质，揭开它的神秘面纱。&lt;/p&gt;
+&lt;h3 id=&#34;一了解-ruby-闭包创建方式&#34;&gt;一、了解 ruby 闭包创建方式&lt;/h3&gt;
+&lt;h4 id=&#34;1-blocks&#34;&gt;1. &lt;code&gt;blocks&lt;/code&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;/images/proc/proc_1.png&#34; alt=&#34;proc_1.png&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;2-proc&#34;&gt;2. &lt;code&gt;proc&lt;/code&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;/images/proc/proc_6.png&#34; alt=&#34;proc_6.png&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;3-procnew&#34;&gt;3. &lt;code&gt;Proc.new&lt;/code&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;/images/proc/proc_2.png&#34; alt=&#34;proc_2.png&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;4-lambda&#34;&gt;4. &lt;code&gt;lambda&lt;/code&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;/images/proc/proc_3.png&#34; alt=&#34;proc_3.png&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;5--&#34;&gt;5. &lt;code&gt;-&amp;gt;&lt;/code&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;/images/proc/proc_4.png&#34; alt=&#34;proc_4.png&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;6-method-to-to_proc&#34;&gt;6. method to &lt;code&gt;to_proc&lt;/code&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;/images/proc/proc_5.png&#34; alt=&#34;proc_5.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;好了，以上就是在 Ruby 中创建闭包的不同方式，通过运行结果你不难发现：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;所有方式返回结果都是 Proc 的对象（实例）。&lt;/li&gt;
+&lt;li&gt;Proc 对象有两种： lambda 和非 lambda。 我们可以通过  &lt;code&gt;lambda?&lt;/code&gt; 方法来检查。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;二不同方法特别说明&#34;&gt;二、不同方法特别说明&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;blocks&lt;/code&gt; 是我们平时写的最多的，主要配合 &lt;code&gt;yield&lt;/code&gt; 使用，这种方式有个问题是没法共用 block 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Proc.new&lt;/code&gt; 就是对象实例方法。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;proc&lt;/code&gt; 和 &lt;code&gt;lambda&lt;/code&gt; 是 Ruby &lt;code&gt;Kernel&lt;/code&gt; 模块提供的方法，用于生成一般 proc 和 lambda proc 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-&amp;gt;&lt;/code&gt; 是 Ruby 操作符，用于生成 lambda proc 。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;to_proc&lt;/code&gt; 是 Ruby &lt;code&gt;Method&lt;/code&gt;对象的实例方法， 用于将已有 method 转变成 lambda proc 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;三-一般-proc-和-lambda-proc-区别&#34;&gt;三、 一般 proc 和 lambda proc 区别&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;lambda 会对参数个数验证，proc 不会验证。&lt;/li&gt;
+&lt;li&gt;lambda 会执行 return, proc 遇到 return 会中断。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;总结： 无论 proc 还是 lambda，其实本质都是一个东西，因为我们最终用到的都是 Proc 的对象，所以闭包就是 Proc 对象。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PDF 打印大杀器之 PhantomJS</title>
+      <link>/posts/2015-10-26-pdf-da-yin-da-sha-qi-zhi-phantomjs/</link>
+      <pubDate>Mon, 26 Oct 2015 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-10-26-pdf-da-yin-da-sha-qi-zhi-phantomjs/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/phantomjs.png&#34; alt=&#34;phantomjs.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;PDF 打印是件麻烦事 ！！！&lt;/p&gt;
+&lt;h4 id=&#34;开发调试问题&#34;&gt;开发调试问题：&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;大量代码与样式，输出内容排版组织有关，单元测试难写 。&lt;/li&gt;
+&lt;li&gt;没有简单的预览功能，无法逐步调整样式 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;定制样式问题&#34;&gt;定制样式问题：&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;PDF 本身支持的内容样式十分多，所以通过程序 DSL 构件 PDF 的代码冗余高 。&lt;/li&gt;
+&lt;li&gt;图片排版始终是个问题 。&lt;/li&gt;
+&lt;li&gt;国际化的问题（有些库对 I18n支持不够友好）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;为什么选择-phantomjs-&#34;&gt;为什么选择 PhantomJS ？&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;PhantomJS 的屏幕抓取功能十分好用，PDF 打印支持好，抓取打印代码简单 。&lt;/li&gt;
+&lt;li&gt;内容模版使用 html+css，代码简单而且方便预览调试，开发更容易 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;phantomjs-打印的例子&#34;&gt;PhantomJS 打印的例子&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;// Simple Javascript example
+
+console.log(&#39;Loading a web page&#39;);
+var page = require(&#39;webpage&#39;).create();
+var url = &#39;http://phantomjs.org/&#39;;
+page.open(url, function (status) {
+  //Page is loaded!
+  page.render(&#39;example.pdf&#39;)
+  phantom.exit();
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;应该各语言都有它的 wrapper , Ruby 语言我推荐 &lt;a href=&#34;https://github.com/mcspring/phantompdf&#34;&gt;phantompdf&lt;/a&gt;,
+因为公司开源项目，而且我们项目中一直在用 :smile: 。&lt;/p&gt;
+&lt;p&gt;总结： 如果你还在为项目中 PDF 打印而烦恼，不妨尝试使用 PhantomJS 的方案，就个人经验而言，它是我见过 PDF 打印最简单的方式了。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>改变很难，但我们别无选择</title>
+      <link>/posts/2015-09-24-gai-bian-hen-nan-dan-wo-men-bie-wu-xuan-ze/</link>
+      <pubDate>Thu, 24 Sep 2015 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-09-24-gai-bian-hen-nan-dan-wo-men-bie-wu-xuan-ze/</guid>
+      <description>&lt;p&gt;MATTER (公司项目) 从严格意义上讲，应该是 SPA 的应用， 前端是 B/M(backbone + marionette) ＋ React,
+后端是 Rails, 项目正全面往 React 迁移，不久将完全抛弃 B/M，目前属于中间状态，所有两种技术代码都有 。&lt;/p&gt;
+&lt;p&gt;该项目并未真正前后端分离，使用的还是 Rails 那套最标准的网站开发和部署流程，前端 JS 代码和应用一起打包发布。&lt;/p&gt;
+&lt;p&gt;很长一段时间里，Rails 自带的 &lt;a href=&#34;http://guides.rubyonrails.org/asset_pipeline.html&#34;&gt;Asset Pipeline&lt;/a&gt; 工作的很好。
+但随着开发进行，前端 JS 代码越来越多，每次代码修改，刷新浏览器，需要等待的时间太长。我想最主要原因还是 Rails 的 Asset Pipeline 慢，
+而且大量代码是 coffeescript ，此情况更甚之。&lt;/p&gt;
+&lt;p&gt;终于有一天，我们再也无法忍受了， 决定来次大改变！&lt;/p&gt;
+&lt;p&gt;我们做了哪些改变：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用 webpack 取代 Asset Pipeline 来处理 JS 编译。&lt;/li&gt;
+&lt;li&gt;使用 npm 安装 JS 插件，尤其是 React 相关。&lt;/li&gt;
+&lt;li&gt;将所有 React 相关代码迁移到单独的目录，留给 webpack 使用。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;改变过后的目录结构：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/giga_folder.png&#34; alt=&#34;giga_folder.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;这样的改变，给我们带来了很多好处：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;JS 编译速度提升，页面还可以做到部分跟新，避免全页面刷新，从而保证开发速度。&lt;/li&gt;
+&lt;li&gt;前端代码模块化问题自然解决。&lt;/li&gt;
+&lt;li&gt;终于可以使用 npm 包发布的插件。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;总结：&lt;br&gt;
+使用 webpack 取代 Asset Pipeline 是一个正确的选择，前端代码日趋复杂，编译速度，模块化的支持越来越重要，所以我们才下定决定替换了它。
+其实 Rails 就单单作为 api 接口也挺好，前端代码组织管理就交给 JS 吧。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Strong parameters: allow hashes with unknown keys to be permitted</title>
+      <link>/posts/2015-08-25-strong-parameters-allow-hashes-with-unknown-keys-to-be-permitted/</link>
+      <pubDate>Tue, 25 Aug 2015 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-08-25-strong-parameters-allow-hashes-with-unknown-keys-to-be-permitted/</guid>
+      <description>&lt;p&gt;Rails 4 使用 StrongParameter 来处理用户数据白名单, 日常开发中有时会遇到这样一个问题，即嵌套的参数是一个 hash, 并且这个 hash 的 keys 是不确定的（用户可以任意输入）。&lt;/p&gt;
+&lt;p&gt;举例说明：&lt;/p&gt;
+&lt;p&gt;Contact 包含了 company 信息， company 是个 store， 其 attributes 可以自定义的，
+用户提交的数据类似这样：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; {contact: {name: &#39;User Name&#39;, company: {c_k1: c_v1, c_k2: c_v2} }}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个 case 的 permit 该怎么写？&lt;/p&gt;
+&lt;p&gt;其实很简单，我们可以使用 tap 方法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def contact_params
+  params.require(:contact).permit(:name).tap do |whitelisted|
+    whitelisted[:company] = params[:contact][:company]
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参考资料： &lt;a href=&#34;https://github.com/rails/rails/issues/9454#issuecomment-14167664&#34;&gt;https://github.com/rails/rails/issues/9454#issuecomment-14167664&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Rail日历小插件</title>
+      <link>/posts/2015-08-17-railri-li-xiao-cha-jian/</link>
+      <pubDate>Mon, 17 Aug 2015 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-08-17-railri-li-xiao-cha-jian/</guid>
+      <description>&lt;p&gt;昨天参加完上海 RailsGril,遇到一个日历打印的问题，及输入任何一个日期，打印出当月的日历。&lt;/p&gt;
+&lt;p&gt;写了一段 Rails 小代码:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class  Calendar
+   attr_reader :time
+
+   def initialize(time=Time.now)
+      @time = time
+      unless time.is_a? Time
+        @time = Time.parse time
+      end
+   end
+
+   def render
+    all_days = render_days
+    puts &#39;日|一|二|三|四|五|六&#39;
+    all_days.each_slice(7).to_a.each do |days_in_week|
+      days_in_week.map!{|day| day.length == 1? &amp;quot;#{day} &amp;quot; : day}
+      puts days_in_week.join(&#39;|&#39;)
+    end
+    nil
+   end
+
+   def render_days
+     Array.new(time.at_beginning_of_month.wday, &#39;  &#39;) + (1..Time.days_in_month(time.month)).map(&amp;amp;:to_s)
+   end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;执行代码输出结果如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+Calendar.new.render
+
+日|一|二|三|四|五|六
+  |  |  |  |  |  |1
+2 |3 |4 |5 |6 |7 |8
+9 |10|11|12|13|14|15
+16|17|18|19|20|21|22
+23|24|25|26|27|28|29
+30|31
+
+calendar = Calendar.new(&#39;2015/07/01&#39;)
+calendar.render
+
+日|一|二|三|四|五|六
+  |  |  |1 |2 |3 |4
+5 |6 |7 |8 |9 |10|11
+12|13|14|15|16|17|18
+19|20|21|22|23|24|25
+26|27|28|29|30|31
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;总结： 有几个关于 Time 的 helper 方法， 比如 time.at_beginning_of_month， Time.days_in_month 的使用。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>repo_url changes but not work in capistrano3</title>
+      <link>/posts/2015-07-29-repo-url-change-not-work-in-capistrano3/</link>
+      <pubDate>Wed, 29 Jul 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-07-29-repo-url-change-not-work-in-capistrano3/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;背景： 项目使用了 capistrano（3.4.0）的  git 部署方式； 但对于已有部署项目，当修改配置 repo_url 后，重新执行部署任务,
+服务器依然从旧仓库地址拉取代码。&lt;/p&gt;
+&lt;p&gt;登录服务器，查看 git 配置文件（PROJECT/repo/config），依然是旧版本信息。因为每次执行 deploy 的时候，git 仓库信息都是从这个文件读取出来的，解决办法就是修改这个文件。&lt;/p&gt;
+&lt;p&gt;这里提供 3 种解决方案：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;删除 PROJECT/repo 文件夹，当执行部署任务，如果此目录不存在， capistrano 会自动创建，当然使用最新配置。&lt;/li&gt;
+&lt;li&gt;手动修改 PROJECT/repo/config 文件内容，主要针对 &lt;code&gt;url = git@git xx&lt;/code&gt; 这行。&lt;/li&gt;
+&lt;li&gt;在项目中新建一个 rake task，代码大概如下：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;
+#lib/capistrano/tasks/git.rake
+namespace :git do
+  desc &#39;change the cached repo_url if repo_url changes in config&#39;
+  task :update_repo_url do
+    on release_roles :all do
+      with fetch(:git_environmental_variables) do
+        within repo_path do
+          current_repo_url = execute :git, :config, :&#39;--get&#39;, :&#39;remote.origin.url&#39;
+          unless repo_url == current_repo_url
+            execute :git, :remote, :&#39;set-url&#39;, &#39;origin&#39;, repo_url
+            execute :git, :remote, :update
+
+            execute :git, :config, :&#39;--get&#39;, :&#39;remote.origin.url&#39;
+          end
+        end
+      end
+    end
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当修改了 repo_url，在本地执行 &lt;code&gt;cap production git:update_repo_url&lt;/code&gt; 即可。&lt;/p&gt;
+&lt;p&gt;以上 3 种方法没有优劣之分，毕竟修改 repo_url 是一个非常低频的操作。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>周总结 《一》 </title>
+      <link>/posts/2015-07-24-zhou-zong-jie-1/</link>
+      <pubDate>Fri, 24 Jul 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-07-24-zhou-zong-jie-1/</guid>
+      <description>&lt;h3 id=&#34;一-使用-rm-命令删除大文件问题&#34;&gt;一. 使用 &lt;code&gt;rm&lt;/code&gt; 命令删除大文件问题&lt;/h3&gt;
+&lt;p&gt;背景： 测试机硬盘空间不足，需要删除部分大文件。使用 rm 命令 &lt;strong&gt;成功&lt;/strong&gt; 删除这些文件后，
+再通过 &lt;code&gt;df&lt;/code&gt; 查看，磁盘空间依然不足。&lt;/p&gt;
+&lt;p&gt;原因： 这些删除的文件，被某些进程标记使用着，所以即使文件删除，这段释放的硬盘依然被标记不可用，磁盘空间并未真正释放。&lt;/p&gt;
+&lt;p&gt;解决办法： 1. 使用 &lt;code&gt;echo &amp;quot;&amp;quot; &amp;gt;&lt;/code&gt; 命令取代 rm 。 2. 删除文件后，kill 掉对应进程 。&lt;/p&gt;
+&lt;h3 id=&#34;二-thinking-sphinx-关联表索引建立问题&#34;&gt;二. thinking-sphinx 关联表索引建立问题&lt;/h3&gt;
+&lt;p&gt;比如有如下索引：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#project_material_index.rb
+ThinkingSphinx::Index.define :project_material, :with =&amp;gt; :active_record, :delta =&amp;gt; ThinkingSphinx::Deltas::SidekiqDelta do
+.....
+indexes :name, :sortable =&amp;gt; true
+indexes &amp;quot;name IS NULL&amp;quot;, :as =&amp;gt; :name_nil, :sortable =&amp;gt; true
+indexes tags.name, :as =&amp;gt; :tag_names, :sortable =&amp;gt; true
+.....
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;重建索引，得到 &lt;code&gt; Column &#39;name&#39; in field list is ambiguous&lt;/code&gt; 错误信息。&lt;/p&gt;
+&lt;p&gt;原因： 多张表关联索引，出现同名字段，sphinx 在生成索引 sql 语句时，不知道该使用哪个表中的字段。&lt;/p&gt;
+&lt;p&gt;解决办法： 显示添加表名限定即可，&lt;/p&gt;
+&lt;p&gt;修改后的代码如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ThinkingSphinx::Index.define :project_material, :with =&amp;gt; :active_record, :delta =&amp;gt; ThinkingSphinx::Deltas::SidekiqDelta do
+.....
+indexes :name, :sortable =&amp;gt; true
+indexes &amp;quot;project_materials.name IS NULL&amp;quot;, :as =&amp;gt; :name_nil, :sortable =&amp;gt; true
+indexes tags.name, :as =&amp;gt; :tag_names, :sortable =&amp;gt; true
+.....
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;请注意代码中 &lt;code&gt;project_materials.name IS NULL&lt;/code&gt; 的变化。&lt;/p&gt;
+&lt;h3 id=&#34;三-godaddy-ssl-证书续费问题&#34;&gt;三. godaddy ssl 证书续费问题&lt;/h3&gt;
+&lt;p&gt;续费 godaddy ssl 证书，到网站上下载最新的 key ，压缩后得到两个文件:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/godaddy.png&#34; alt=&#34;godaddy&#34;&gt;&lt;/p&gt;
+&lt;p&gt;使用： 将较小文件的内容完整 copy 到大文件的头部，然后用合并过后的文件替换服务器上的 xx.bundle.crt 文件即可。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>瑞士军刀之 MotionModel 初体验</title>
+      <link>/posts/2015-05-31-rui-shi-jun-dao-zhi-motionmodel/</link>
+      <pubDate>Sun, 31 May 2015 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-05-31-rui-shi-jun-dao-zhi-motionmodel/</guid>
+      <description>&lt;h2 id=&#34;写在前面&#34;&gt;写在前面&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/sxross/MotionModel&#34;&gt;MotionModel&lt;/a&gt; 是一个 RubyMotion 平台的 ORM 类库，有点类似于 Rails 中的 ActiveRecord。
+它将业务模型与数据存储高度抽象，采用统一的调用方式，目前支持内存和数据库两种主要使用方式。&lt;/p&gt;
+&lt;p&gt;严格意义上来讲它能支持多种数据库，因为只需实现对应适配器即可。当然它已将我们常用的 Sqlite3 适配器写好了，所以可以直接使用。&lt;/p&gt;
+&lt;p&gt;我们项目数据存储使用的是 Sqlite3 + FMDB 的方案，所以将以此作为例子。&lt;/p&gt;
+&lt;h2 id=&#34;安装步骤&#34;&gt;安装步骤&lt;/h2&gt;
+&lt;h3 id=&#34;1-修改-gemfile-文件添加-以下代码&#34;&gt;1. 修改 Gemfile 文件，添加 以下代码：&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;#Gemfile
+gem &#39;motion_model&#39;, git:&#39;https://github.com/sxross/MotionModel.git&#39;, branch:&#39;sql&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;说明： 之所以使用 &lt;code&gt;sql&lt;/code&gt; 分支是因为目前项目已将数据库使用方式的代码剥离出来，还没打包合并到 master 分支，
+所以如果你项目中使用了数据库，那就不能使用 master 分支， 详情请点击 &lt;a href=&#34;https://github.com/sxross/MotionModel/wiki/RoadMap#how-to-jump-on-board&#34;&gt;wiki&lt;/a&gt; 。&lt;/p&gt;
+&lt;h3 id=&#34;2-执行-bundle-install&#34;&gt;2. 执行 &lt;code&gt;bundle install&lt;/code&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;3-使用-cocoapods-引入-fmdb&#34;&gt;3. 使用 cocoapods 引入 FMDB&lt;/h3&gt;
+&lt;p&gt;修改 Rakefile 文件，添加 FMDB&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#Rakefile
+.....
+app.pods do
+  pod &#39;FMDB&#39;
+end
+.....
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;修改文件后，执行 &lt;code&gt;rake pod:install&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;4-修改-rakefile-文件-require-motion_model-相关代码&#34;&gt;4. 修改 Rakefile 文件， require motion_model 相关代码。&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;#Rakefile
+
+require &#39;motion_model&#39;
+require &#39;motion_model/array&#39; ＃ 如果不需内存存储方式，那么此句代码可以删除
+require &#39;motion_model/sql&#39;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;具体使用&#34;&gt;具体使用&lt;/h2&gt;
+&lt;p&gt;前提假设： 1. 所有 model 都使用 FMDB。 2. 目录结构是这样：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/motionmodel.png&#34; alt=&#34;motionmodel&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;1-在-lib-文件下新建-一个-databaserb-文件用于初始化数据库链接并根据-model-自动创建表代码如下&#34;&gt;1. 在 lib 文件下新建 一个 database.rb 文件用于初始化数据库链接并根据 model 自动创建表。代码如下：&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+# app/lib/database.rb
+
+class Database
+  def self.init
+    MotionModel::Store.config(MotionModel::FMDBAdapter.new(&#39;app.db&#39;))
+    models = Dir.entries(File.expand_path(&amp;quot;../../models&amp;quot;, __FILE__)).select{ |file| file =~ /\.rb/ }.map{ |file| file.sub(&#39;.rb&#39;, &#39;&#39;).capitalize.constantize }
+    models.each { |clzss| clzss.create_table unless clzss.table_exists? }
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;看到这段代码，有没有觉得 Ruby 文件操作和对象反射吊炸，处理初始化数据库真是再合适不过了， 好奇，不知 OC 方案是怎样。&lt;/p&gt;
+&lt;h3 id=&#34;2-修改-app_delegaterb-在项目启动的时候附带启动数据库&#34;&gt;2. 修改 app_delegate.rb， 在项目启动的时候附带启动数据库：&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;# app_delegate.rb
+class AppDelegate
+  def application(application, didFinishLaunchingWithOptions:launchOptions)
+    Database.init
+    true
+  end
+end
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;3-在-appmodels-目录下创建任意-model-例如-userrb&#34;&gt;3. 在 app/models 目录下创建任意 model, 例如 user.rb&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;#user.rb
+
+class User
+  include MotionModel::Model
+  include MotionModel::FMDBModelAdapter
+
+  columns :name =&amp;gt; :string,
+          :email =&amp;gt; :string,
+          :created_at =&amp;gt; :date,
+          :updated_at =&amp;gt; :date
+end
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当启动项目的时候，会先执行 Database.init, 此时会自动检查所有 model, 如果对应表没有创建，将自动创建。当然表的字段和配置的 columns 一致。&lt;/p&gt;
+&lt;h2 id=&#34;motionmodel-的好处&#34;&gt;MotionModel 的好处&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;避免直接操作 sql， 例如我要查询所有学生，我可以写成 &lt;code&gt;User.all&lt;/code&gt;;  查询名字是小明的学生 &lt;code&gt;User.where(:name =&amp;gt; &#39;小明&#39;)&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;更面向对象，支持模型之间的 RelationShip 。&lt;/li&gt;
+&lt;li&gt;提供一些 validates, 例如 要求用户名不能为空,那么我们可以这样 &lt;code&gt;validates :name, :presence =&amp;gt; true&lt;/code&gt; 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;更多使用请参见官网。&lt;/p&gt;
+&lt;h2 id=&#34;写在最后&#34;&gt;写在最后：&lt;/h2&gt;
+&lt;p&gt;其实我也是今天才开始使用 MotionModel 的，它给我的第一感觉就是太像 ActiveRecord , 在大概看了源码的基础上，决定先试试。
+虽然不知道其 owner 会不会哪天弃坑，管它，到目前为止用的还顺心。欢迎有使用经验者以及有其他方案者多多交流经验。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>RubyMotion 的 root path 另类使用姿势</title>
+      <link>/posts/2015-05-31-rubymotion-root-path/</link>
+      <pubDate>Sun, 31 May 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-05-31-rubymotion-root-path/</guid>
+      <description>&lt;p&gt;在写 RubyMotion 代码过程中，不止一次获取项目的绝对路径的需求，解决办法都是根据当前文件，向上递推，再根据相对路径获取。&lt;/p&gt;
+&lt;p&gt;这样做费时又费力，代码还略显难看， 比如这样：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# app/lib/xx.rb
+File.expand_path(&amp;quot;../../models&amp;quot;, __FILE__)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;出现这个问题原因就是 RubyMotion 没有存储项目的根路径。 写 Rails 项目的人都知道，要想拿到 Rails 项目的根路径是非常容易的，只需调用 APP_NAME.root 即可。&lt;/p&gt;
+&lt;p&gt;那是否 RubyMotion 也可以这样呢？&lt;/p&gt;
+&lt;p&gt;下面是我的一个 Hack 方式：&lt;/p&gt;
+&lt;p&gt;打开 Rakefile 文件, 添加如下代码 :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Rakefile
+
+# Hack way to store app root path
+ENV[&#39;APP_ROOT&#39;] = File.expand_path(&amp;quot;../&amp;quot;, __FILE__)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后你在项目中就可以通过 &lt;code&gt;ENV[&#39;APP_ROOT&#39;]&lt;/code&gt; 得到项目根路径了。&lt;/p&gt;
+&lt;p&gt;JUST A JOKE , HAVA A FUN.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>我为什么选择 Ruby Motion</title>
+      <link>/posts/2015-05-30-wei-shi-yao-xuan-ze-rubymotion/</link>
+      <pubDate>Sat, 30 May 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-05-30-wei-shi-yao-xuan-ze-rubymotion/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/rubymotion.png&#34; alt=&#34;rubymotion.png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;迁移代价&#34;&gt;迁移代价&lt;/h2&gt;
+&lt;p&gt;一开始我以为 RubyMotion 只是一个 ruby 到 object c 交叉编译器，后来发现我完全错了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;RubyMotion 应用本质上与Objective-C, Swift 和 Java 开发的应用是一样的，因为他们基于同一套运行时技术，并都被编译成经过优化的机器代码。
+你可以在 RubyMotion 项目中使用目标平台提供的 &lt;code&gt;全部&lt;/code&gt; API。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这一点确是太重要了。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;对于 APP 开发老手而言，从已熟的平台(ios, android)上迁移到 RubyMotion 的成本仅仅只是个 ruby 语法而已，
+而 ruby 语法又是非常简单和语义化的，可以参见 &lt;a href=&#34;https://www.ruby-lang.org/en/documentation/quickstart/&#34;&gt;Ruby in Twenty Minutes&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;对于本身就是 Ruby 使用者而言，在开发 APP 的时候，并不需要将各平台的开发语言全部学会，你只需要熟悉对应平台的 API 手册即可。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;对于大多数应用而言，熟悉 API 手册足以应付，通常情况下是很少有人去修改开发语言类库的，只要能看懂对应语言的代码例子，将其翻译成 Ruby 风格即可
+（因为 RubyMotion 还很年轻，优秀的库还不够多，你会有使用到原生语言的插件或类库）。&lt;/p&gt;
+&lt;p&gt;其实 RubyMotion 在引入第三方库方面已足够出色，像平时大家使用的 &lt;code&gt;cocoapods&lt;/code&gt; 在 RubyMotion 也可以照应使用，几乎一模一样， 在此感谢下 &lt;a href=&#34;https://github.com/HipByte/motion-cocoapods&#34;&gt;motion-cocoapods&lt;/a&gt; 这个 gem.
+所以你大可放心，其他语言的优秀插件将是你最大的保障。&lt;/p&gt;
+&lt;h2 id=&#34;使用文本编辑器&#34;&gt;使用文本编辑器&lt;/h2&gt;
+&lt;p&gt;以前写 Java ，使用 Eclipse, 那真是太卡了，时不时 crash ， 一关一开，浪费时间不用说，关键让人很不爽，这一点对于有多年开发经验的人，自然有所体会，
+后来用 xcode 也是相似感觉。&lt;/p&gt;
+&lt;p&gt;现在所有 IDE 都感觉是一路货色，没有文本编辑器来的清爽和自由，目前我主要使用的是 Sublime, 个人感觉文本编辑器加上一些插件，
+开发速度真心不比 IDE慢，毕竟我们大量时间花费不是 typing 而是设计和思考 。&lt;/p&gt;
+&lt;p&gt;感觉很少有人用 文本编辑器 写 oc 或 java 吧，但是写 ruby 就不一样， 基本都是使用文本编辑器的，所以这一点很好达成共识，一个团队都能很快统一开发工具。&lt;/p&gt;
+&lt;p&gt;可能有人会说，使用文本编辑器 怎么使用 storyboard 啊？&lt;/p&gt;
+&lt;p&gt;Storyboard 确实不好使用，但并不是不能，随便 google 即可找到方案。 但是我想说，我们并不需要 storyboard， 因为我们全部手写。对，没错，就是手写。&lt;/p&gt;
+&lt;p&gt;手写 UI 至少有2个好处： 1. 团队协作避免冲突 2. 能胜任复杂布局。&lt;/p&gt;
+&lt;p&gt;既然如此为啥不一开始就学着手写 UI 呢？ 感觉大牛都喜欢手写的样子 :smile:。&lt;/p&gt;
+&lt;h2 id=&#34;开发效率&#34;&gt;开发效率&lt;/h2&gt;
+&lt;p&gt;RubyMotion 可以允许你使用 ruby 中常见的基础库，而且调用方式一样，像处理 Array, Hash, String, 迭代器, 那真的不要太爽。
+具体可以参见 ruby 语法，想想写 OC 和 Java，对于初学者 各种变量声明，类型转换，方法调用，那真是泪流满面。&lt;/p&gt;
+&lt;h2 id=&#34;关于费用&#34;&gt;关于费用&lt;/h2&gt;
+&lt;p&gt;RubyMotion 目前并不免费，而且价格还不便宜，详情请点击 &lt;a href=&#34;http://www.rubymotion.com/cn/buy/&#34;&gt;价目表&lt;/a&gt; 。&lt;/p&gt;
+&lt;p&gt;很多人看到这个价目表的时候，傻眼和犹豫了，心里总想着，一年这么多钱，值不值得，什么时候可以收回成本之类？&lt;/p&gt;
+&lt;p&gt;我和同事都觉得 &lt;code&gt;收回成本&lt;/code&gt;  这个想法本身就不对，就像你购买了好用软件，使用起来舒服就是了，难道你还期望它，让你舒服了，又让你赚钱？
+赚钱与否只于你写的代码好坏，idea 有关，与使用 OC和 RubyMotion 无关, 如果真正它让开发你提高了效率，让你写着舒服，那就是它的最大价值所在，
+如果真是这样，请多使用它，实在无爱，一个月之内退款即可。&lt;/p&gt;
+&lt;p&gt;我看到太多的人，买了，却一年都没怎么使用，最后还来句这个东西有多么坑，又贵，又没用， 想想是有多么悲剧。&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+&lt;p&gt;RubyMotion 还很年轻，我们需要多一些热情和耐心，我相信它是一个不错的产品，是智慧的结晶，绝对不是一帮人骗钱，玩票性质。所以即使你不使用，请不要轻易蔑视它。其实&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;我们需要做的不是过度偏激地评价，而是选择一种最适合自己的编程语言罢了.&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>font-aswsome upgrade script (ruby)</title>
+      <link>/posts/2015-05-19-font-aswsome-upgrade-script-ruby/</link>
+      <pubDate>Tue, 19 May 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-05-19-font-aswsome-upgrade-script-ruby/</guid>
+      <description>&lt;p&gt;这是一个 ruby 脚本程序，它能够将你代码中的 font-aswsome 自动从 3 升级到 4， 支持大多数文件格式。&lt;/p&gt;
+&lt;p&gt;项目地址 ：&lt;a href=&#34;https://github.com/songjiayang/font-aswsome-upgrade&#34;&gt;https://github.com/songjiayang/font-aswsome-upgrade&lt;/a&gt; .&lt;/p&gt;
+&lt;p&gt;欢迎大家使用，如果有任何问题或代码错误，请点击 “&lt;a href=&#34;https://github.com/songjiayang/font-aswsome-upgrade/issues&#34;&gt;这里&lt;/a&gt;”.&lt;/p&gt;
+&lt;p&gt;分享让世界更美好！&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>rails generate 命令的 orm 参数使用</title>
+      <link>/posts/2015-05-18-shi-yong-generateming-zi-dong-sheng-cheng-modelde-shi-hou-zhi-ding-bu-tong-de-orm/</link>
+      <pubDate>Mon, 18 May 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-05-18-shi-yong-generateming-zi-dong-sheng-cheng-modelde-shi-hou-zhi-ding-bu-tong-de-orm/</guid>
+      <description>&lt;p&gt;当一个项目中出现多种数据库，例如 Postgresql 和 MongoDB ，对应的 gem 分别是 &amp;lsquo;pg&amp;rsquo; 和 &amp;lsquo;mongoid&amp;rsquo;.&lt;/p&gt;
+&lt;p&gt;此时使用 rails generate 命令默认生成的 model 将使用 &lt;code&gt;mongoid&lt;/code&gt;，显然我们不想这么死板，最好有办法根据参数指定 model 所需类型。&lt;/p&gt;
+&lt;p&gt;这里我们可以使用 &lt;code&gt;--orm&lt;/code&gt;  参数:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+rails g modle post --orm=active_record
+rails g modle post --orm=mongo_mapper
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;若不指定 orm 参数， 将优先使用 mongo_mapper 。&lt;/p&gt;
+&lt;p&gt;测试代码 &lt;a href=&#34;https://github.com/songjiayang/rails-example/tree/rails-orm&#34;&gt;rails-orm&lt;/a&gt; .&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Actionmailer 那些事（四）</title>
+      <link>/posts/2015-04-18-actionmailer-na-xie-shi-4/</link>
+      <pubDate>Sat, 18 Apr 2015 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-04-18-actionmailer-na-xie-shi-4/</guid>
+      <description>&lt;p&gt;众所周知，通常情况 css 有三种插入方式，外链，内部和行内，详情请参考 &lt;a href=&#34;http://www.w3schools.com/css/css_howto.asp&#34;&gt;css_howto&lt;/a&gt;,
+但在 email 中只能使用行内（Inline Styles）的方式。 所以在日常开发中，我们的很多代码会写成这样：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/email-with-style-1.png&#34; alt=&#34;email-with-style-1.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;So ugly， So tired !&lt;/p&gt;
+&lt;p&gt;难道就没有什么方式，能让我们像写外链样式那样轻松写邮件模版吗？&lt;/p&gt;
+&lt;p&gt;当然有，这里我们需要先了解两个 gem ， &lt;a href=&#34;https://github.com/premailer/premailer&#34;&gt;premailer&lt;/a&gt; 和 &lt;a href=&#34;https://github.com/fphilipe/premailer-rails&#34;&gt;premailer-rails&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;premailer 主要实现将页面定义的 css 样式自动转化为 Inline 的方式，官方说法是 &lt;em&gt;Each of these CSS declarations will be copied to appropriate element&amp;rsquo;s attribute.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;测试代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+require &#39;premailer&#39;
+
+premailer = Premailer.new(&#39;http://leemunroe.github.io/responsive-html-email-template/email.html&#39;, :warn_level =&amp;gt; Premailer::Warnings::SAFE)
+
+# Write the HTML output
+File.open(&amp;quot;output.html&amp;quot;, &amp;quot;w&amp;quot;) do |fout|
+  fout.puts premailer.to_inline_css
+end
+
+# Write the plain-text output
+File.open(&amp;quot;output.txt&amp;quot;, &amp;quot;w&amp;quot;) do |fout|
+  fout.puts premailer.to_plain_text
+end
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;测试结果：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/email-with-style-2.png&#34; alt=&#34;email-with-style-2.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;通过测试结果可以看出，使用 premailer 可以轻松将定义的 css 样式拷贝到 dom 元素上。&lt;/p&gt;
+&lt;p&gt;premailer-rails 是 premailer 的 rails 插件，已集成到了 ActionMailer, 非常方便使用。&lt;/p&gt;
+&lt;h4 id=&#34;1-安装-gem&#34;&gt;1. 安装 gem&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;gem &#39;nokogiri&#39;
+gem &#39;premailer-rails&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;2-邮件模版中引入-css-文件&#34;&gt;2. 邮件模版中引入 css 文件&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;%= stylesheet_link_tag &#39;email&#39;%&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;开发模式下 &lt;code&gt;config.action_controller.asset_host&lt;/code&gt; 一般会设置成 &lt;code&gt;http://localhost:3000&lt;/code&gt;.
+由于 premailer-rails 的一个小 bug, 具体请参见 &lt;a href=&#34;https://github.com/fphilipe/premailer-rails/issues/138&#34;&gt;issues-138&lt;/a&gt;。
+所以这里需要一段 hack 代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;%if Rails.env.development?%&amp;gt;
+&amp;lt;link href=&amp;quot;/assets/email.css&amp;quot; media=&amp;quot;screen&amp;quot; rel=&amp;quot;stylesheet&amp;quot;/&amp;gt;
+&amp;lt;%else%&amp;gt;
+&amp;lt;%= stylesheet_link_tag :email%&amp;gt;
+&amp;lt;%end%&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;3-preview-中查看结果&#34;&gt;3. preview 中查看结果&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;/images/email-with-style-3.png&#34; alt=&#34;email-with-style-3.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Bingo,所有样式自动添加到了邮件 Dom 上，以后再也不用在邮件里面直接写 css 了。
+更多用法请参考 &lt;a href=&#34;https://github.com/fphilipe/premailer-rails#usage&#34;&gt;usage&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;代码示例: &lt;a href=&#34;https://github.com/songjiayang/rails-example/pull/2&#34;&gt;https://github.com/songjiayang/rails-example/pull/2&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Actionmailer 那些事（三）</title>
+      <link>/posts/2015-04-18-actionmailer-na-xie-shi-3/</link>
+      <pubDate>Sat, 18 Apr 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-04-18-actionmailer-na-xie-shi-3/</guid>
+      <description>&lt;p&gt;早已知道 Rails4 的 ActionMailer 有一个 email preview 的功能，但由于各种原因从未真正使用，其实它是的好东西，绝非鸡肋。&lt;/p&gt;
+&lt;p&gt;我们都知道项目中邮件发送是一件非常耗时且依赖配置的过程。在开发阶段，邮件模版需不断修改，
+如果每次修改都要真正发送邮件才能确定效果，这真是一件糟糕的事情。因为你花在等待，刷新邮件客户端，排查收不到邮件原因（测试账号服务商邮件发送莫名延迟或今日邮件发送次数限制）的时间将足够你喝杯咖啡了。&lt;/p&gt;
+&lt;p&gt;Rails4 推出的 email preview 就是为了解决这个问题，使用它，你可以在浏览器中通过 url 访问， 直接获取邮件内容（和邮件客户端收到效果一模一样）。&lt;/p&gt;
+&lt;p&gt;时间就是生命，既然有这么好的东西，为何不用？下面小鱼将带着大家一步一步使用它。&lt;/p&gt;
+&lt;h3 id=&#34;actionmailer-preview-简单使用&#34;&gt;ActionMailer Preview 简单使用&lt;/h3&gt;
+&lt;p&gt;1.使用命令 &lt;code&gt;rails g mailer UserMailer new_user&lt;/code&gt; 创建 一个 mailer 和 action&lt;/p&gt;
+&lt;p&gt;2.此时，系统将自动未我们创建对应的 preview controller，打开&lt;code&gt;.../user_mailer_preview.rb&lt;/code&gt;文件，你会发现 rails 给出的提示是如此清晰：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+# Preview all emails at http://localhost:3000/rails/mailers/user_mailer
+class UserMailerPreview &amp;lt; ActionMailer::Preview
+
+  # Preview this email at http://localhost:3000/rails/mailers/user_mailer/new_user
+  def new_user
+    UserMailer.new_user
+  end
+
+end
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;3.启动 server, 在浏览器中输入 &lt;code&gt;http://localhost:3000/rails/mailers/user_mailer/new_user&lt;/code&gt; 即可看到对应邮件内容。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/email_preview.png&#34; alt=&#34;email_preview&#34;&gt;&lt;/p&gt;
+&lt;p&gt;备注： 你可以按照具体业务逻辑任意修改 UserMailerPreview 中的 new_user 方法,例如一些参数装配，只要返回结果是一个 ActionMailer::MessageDelivery 即可。&lt;/p&gt;
+&lt;p&gt;其实，在日常邮件开发过程中，除了使用 preview 加快开发速度，还应配合测试先行的策略，大量排错，减少必须肉眼发现错误的可能性。
+而常规的邮件测试至少应关心 邮件的 title, to, from 是否正确, body内容是否正确渲染（如果没有异常），模版大概是这样：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+require &#39;test_helper&#39;
+
++class UserMailerTest &amp;lt; ActionMailer::TestCase
+  test &amp;quot;new_user&amp;quot; do
+    mail = UserMailer.new_user
+    assert_equal &amp;quot;New user&amp;quot;, mail.subject
+    assert_equal [&amp;quot;to@example.org&amp;quot;], mail.to
+    assert_equal [&amp;quot;from@example.com&amp;quot;], mail.from
+    assert_match &amp;quot;Welcome to my website!&amp;quot;, mail.body.encoded
+  end
+end
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;需运行的测试命令是 &lt;code&gt;rake test&lt;/code&gt; or &lt;code&gt;rake test %{FILE_NAME}&lt;/code&gt; 。&lt;/p&gt;
+&lt;p&gt;参考: &lt;a href=&#34;http://api.rubyonrails.org/v4.2.1/classes/ActionMailer/Base.html#class-ActionMailer::Base-label-Previewing+emails&#34;&gt;http://api.rubyonrails.org/v4.2.1/classes/ActionMailer/Base.html#class-ActionMailer::Base-label-Previewing+emails&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;温馨提示： 我在github上新开了一个 rails-example 项目，用于平时博客代码演示，例如这篇博客代码，在&lt;a href=&#34;https://github.com/songjiayang/rails-example/pull/1/files&#34;&gt;这里&lt;/a&gt; 。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ActionMailer 那些事 (二)</title>
+      <link>/posts/2015-04-05-actionmailer-na-xie-shi-2/</link>
+      <pubDate>Sun, 05 Apr 2015 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-04-05-actionmailer-na-xie-shi-2/</guid>
+      <description>&lt;p&gt;这篇博客是上一篇 &lt;a href=&#34;/technical/actionmailer-na-xie-shi&#34;&gt;ActionMailer 那些事(一)&lt;/a&gt; 的续。&lt;/p&gt;
+&lt;p&gt;如你所知，上一篇博客提到邮件发送的 from 别名设置，其实，正常情况下，邮件from地址可以任意填写，
+&lt;em&gt;一般邮件服务器&lt;/em&gt;是不检查 from 值的（只要包含email格式）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;为什么会有任意填写 from 地址的需求？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;因为有时系统会代替客户发送邮件，而期望邮件接受者可以直接通过邮件回复发送的用户，此时，邮件的 from 就该填写用户的 email 了。&lt;/p&gt;
+&lt;p&gt;本来这并不是问题，因为你只要将 from 值修改成用户的 email 皆可，对于绝大多数邮件服务商这样是可以的，&lt;code&gt;但是 gmail 不行&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;为什么不行？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;首先 gmail 处于自己的考虑，必须保证 from 的地址是配置发送邮件账号的 email 地址;
+它可以通过简单的正则替换就搞定这个事情，毕竟所有邮件它都有能力修改。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;解决办法？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;不要使用 gmail 作为应用邮件发送服务器，毕竟它本来就不干这个事情，你应该选择那些邮件专业服务器提供厂商，
+例如 SendGrid, Mailgun 等。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;友情提示一下： heroku上面邮件服务器，如果配置为 gamil，将无法发送邮件，因为 gmail 已经封了所有来自 heroku 的认证请求。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;推荐阅读： &lt;a href=&#34;/technical/actionmailer-na-xie-shi&#34;&gt;ActionMailer 那些事(一)&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ActionMailer 那些事(一)</title>
+      <link>/posts/2015-04-05-actionmailer-na-xie-shi-1/</link>
+      <pubDate>Sun, 05 Apr 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-04-05-actionmailer-na-xie-shi-1/</guid>
+      <description>&lt;p&gt;上周遇到这样一个需求，系统邮件发送至客户，客户看到的邮件 from 地址不应该是直接的 email,而应该是email对应的一个别名。如图：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;在 Rails 如何实现？其实只需将邮件发送的 from 参数 写成 &lt;code&gt;&amp;quot;NAME &amp;lt;EMAIL&amp;gt;&amp;quot;&lt;/code&gt; 的形式即可：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+class NotifyMailer &amp;lt; ActionMailer::Base
+
+  def new_user()
+    xxxxx
+    mail(from: &amp;quot;Matter.build &amp;lt;no-reply@matter.build&amp;gt;&amp;quot;, .....)
+  end
+
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果你想统一配置 from 的格式，只需添加 &lt;code&gt;ActionMailer::Base.default&lt;/code&gt; 默认值即可，例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#config/application.rb
+...
+ActionMailer::Base.default :from =&amp;gt; &#39;Matter.build &amp;lt;no-reply@matter.build&amp;gt;&#39;
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;推荐阅读： &lt;a href=&#34;/technical/actionmailer-na-xie-shi-2&#34;&gt;ActionMailer 那些事(二)&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>A better way to reindex associations in thinking-sphinx</title>
+      <link>/posts/2015-02-28-a-better-way-for-thinking-sphinx-deltas-and-associations/</link>
+      <pubDate>Sat, 28 Feb 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-02-28-a-better-way-for-thinking-sphinx-deltas-and-associations/</guid>
+      <description>&lt;p&gt;众所周知，thinking-sphinx 提供了 Real-Time 和 Delta 两种索引，而我在项目中经常使用后者。
+使用这种方式，通常你会遇到这样一个问题：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If you are using associations for field or attribute data, delta indexing will not automatically happen when you make changes to those association models. You will need to add a manual delta hook to make it all update accordingly.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;举个例子：&lt;/p&gt;
+&lt;p&gt;Article model 有这样索引:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;indexes comments.content, :as =&amp;gt; :comments
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当 comments 有变化（更新或删除）， article.comments 是不会自动重新索引的; 为使其重新索引, 我们不得不 Do a hack：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# comment.rb
+after_save :set_article_delta_flag
+after_destroy :set_article_delta_flag
+
+# ...
+
+private
+
+def set_article_delta_flag
+  article.delta = true
+  article.save
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;代码很简单，满足需求，是否意味这个 fearch 就可以结束？ 当深入一想，这样的代码并不通用，因为一个项目会有很多类似模型，我们总不能将这样的代码到处 copy 吧。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;我们的解决方案：&lt;/p&gt;
+&lt;p&gt;1.新建一个共用模块：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# app/models/concerns/auto_touch_delta_flag.rb
+module AutoTouchDeltaFlag
+
+  def auto_touch_associations(*associations)
+    set_delta_flag = proc do
+      associations.each do |association|
+        association_model = self.send(association)
+        association_model.delta = true
+        association_model.save
+      end
+    end
+
+    after_save set_delta_flag
+    after_destroy set_delta_flag
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2.在 ActiveRecord::Base 注入此模块&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# config/initializers/active_record_concerns.rb
+ActiveRecord::Base.extend SphinxAssociationDeltaCallback
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;3.在需要的模型里通过 auto_touch_associations 方法，注入需要观察的关联对象：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# comment.rb
+auto_touch_associations :article
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;总结：完成代码功能并非难事，但我们需要多一些思考，消除可见重复，让代码变的更好。&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>为什么你的 Rails 不需要 JS 框架</title>
+      <link>/posts/2015-02-23-wei-shi-yao-bu-kuang-jia/</link>
+      <pubDate>Mon, 23 Feb 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-02-23-wei-shi-yao-bu-kuang-jia/</guid>
+      <description>&lt;p&gt;现在前端的繁荣程度前所未有，尤其是前端 MVC 框架，多之又多，有点乱花渐入迷人眼的味道。&lt;/p&gt;
+&lt;p&gt;前端框架使用与否取决于你的应用形态，即 website 还是 web app。通常而言，网站为主的应用是不需要任何前端 mvc 框架的。
+本文的意图不是为了排斥前端框架，而是为了讲述在没有使用任何前端框架的情况下，如何更好地组织项目的 js 代码。&lt;/p&gt;
+&lt;h4 id=&#34;依赖的类库&#34;&gt;依赖的类库:&lt;/h4&gt;
+&lt;p&gt;项目是按照 rails 4.2 官方推荐的方式，主要使用了 Turbolinks .&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;jQuery.&lt;/li&gt;
+&lt;li&gt;Coffeescript.&lt;/li&gt;
+&lt;li&gt;Turbolinks.&lt;/li&gt;
+&lt;li&gt;HeadJS, 使用 headjs-rails gem, 用来异步加载 js 代码，从而加快项目速度.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;代码组织结构&#34;&gt;代码组织结构:&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;http://songjiayang.qiniudn.com/code_folder.png&#34; alt=&#34;http://songjiayang.qiniudn.com/code_folder.png&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个页面对应了一个 js 视图类。&lt;/li&gt;
+&lt;li&gt;通用组件，全部放到 widget 目录里面。&lt;/li&gt;
+&lt;li&gt;application.js 引入所有 js 依赖和项目自启动逻辑。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;视图代码&#34;&gt;视图代码&lt;/h4&gt;
+&lt;p&gt;任何页面都继承于 ApplicationView ，如果没有属于自己的view,那么自动调用 ApplicationView.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;window.Views ||= {}
+class Views.ApplicationView
+ render: -&amp;gt;
+   Widgets.FancyBox.enable()
+   Widgets.MarkdownEditor.enable()
+ cleanup: -&amp;gt;
+   Widgets.FancyBox.cleanup()
+   Widgets.MarkdownEditor.cleanup()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;因为我们要在很多个页面都使用 FancyBox 和 MarkdownEditor 这两个组建，所有直接就写在了ApplicationView里面。&lt;/p&gt;
+&lt;p&gt;特定的 view 直接继承 ApplicationView：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;window.Views.Newsletters ||= {}
+class Views.Newsletters.EditView extends Views.ApplicationView
+ render: -&amp;gt;
+   super()
+   $(&#39;a.preview&#39;).click (e) -&amp;gt;
+     e.preventDefault()
+     url = $(e.target).attr(&#39;href&#39;)
+     window.open(url, &#39;_blank&#39;, &#39;width=800,height=800&#39;)
+ cleanup: -&amp;gt;
+   super()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;够简单吧？ 为什么需要 clearup ?&lt;/p&gt;
+&lt;p&gt;因为我们使用了 &lt;code&gt;Turbolinks&lt;/code&gt;，当有使用Turbolinks的时候，需要特别小心，因为当页面切换的时候 js 的环境不会被重置。
+举个栗子： 如果在一个页面定义了一个 timer，切换到另外一个页面它也会被触发，所以，请记得在页面切换前，清空这个 timer, 而放在 clearup 只是为了统一管理。&lt;/p&gt;
+&lt;h4 id=&#34;功能组件&#34;&gt;功能组件&lt;/h4&gt;
+&lt;p&gt;这个没什么可讲的，和一般的视图类差不多。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;window.Widgets ||= {}
+class Widgets.FancyBox
+  @enable:  -&amp;gt; $(&amp;quot;.fancybox&amp;quot;).fancybox()
+  @cleanup: -&amp;gt; $(&amp;quot;.fancybox&amp;quot;).off()
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;启动代码&#34;&gt;启动代码&lt;/h4&gt;
+&lt;p&gt;application.js 只需要监听 Turbolinks 的事件，保证渲染当前页面对应的 view 并清空前一个页面的 view 即可。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#= require everything you need
+
+pageLoad = -&amp;gt;
+  className = $(&#39;body&#39;).attr(&#39;data-class-name&#39;)
+  window.applicationView = try
+    eval(&amp;quot;new #{className}()&amp;quot;)
+  catch error
+    new Views.ApplicationView()
+  window.applicationView.render()
+
+head -&amp;gt;
+  $ -&amp;gt;
+    pageLoad()
+    $(document).on &#39;page:load&#39;, pageLoad
+    $(document).on &#39;page:before-change&#39;, -&amp;gt;
+      window.applicationView.cleanup()
+      true
+    $(document).on &#39;page:restore&#39;, -&amp;gt;
+      window.applicationView.cleanup()
+      pageLoad()
+      true
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;显然这里需要一个特定的 data attribute 来表明当前页面对应的是哪个 view 。&lt;/p&gt;
+&lt;p&gt;我们在 &lt;code&gt;application_controller.rb&lt;/code&gt; 中添加一个 &lt;code&gt;js_class_name&lt;/code&gt; 方法:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; def js_class_name
+   action = case action_name
+     when ‘create’ then ‘New’
+     when ‘update’ then ‘Edit’
+    else action_name
+   end.camelize
+   &amp;quot;Views.#{self.class.name.gsub(&#39;::&#39;, &#39;.&#39;).gsub(/Controller$/, &#39;&#39;)}.#{action}View&amp;quot;
+ end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在 layout 里面调用它：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;%html
+  %head
+    = javascript_include_tag &#39;head.min&#39;
+    = headjs_include_tag &#39;application&#39;
+  %body{&#39;data-class-name&#39; =&amp;gt; js_class_name}
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;总结&#34;&gt;总结：&lt;/h4&gt;
+&lt;p&gt;就像你所看到的，越来越多的 Rails 项目开始使用前端框架，例如 Angular, Ember 以及 Backbone。
+诚然，它们确实是不错的选择，但是我希望你通过阅读此文后发现不使用任何前端框架也是一个不错的选择！&lt;/p&gt;
+&lt;p&gt;参考： &lt;a href=&#34;https://medium.com/@cblavier/rails-with-no-js-framework-26d2d1646cd&#34;&gt;https://medium.com/@cblavier/rails-with-no-js-framework-26d2d1646cd&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>一起阅读 Ruby 类库的源码吧！</title>
+      <link>/posts/2015-02-16-ruby-yuan-ma-yue-du-ji-hua/</link>
+      <pubDate>Mon, 16 Feb 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-02-16-ruby-yuan-ma-yue-du-ji-hua/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://drscdn.500px.org/photo/23171313/m=1170/c150b74f80ce6008772339fb30b2c9c8&#34; alt=&#34;I want you&#34;&gt;
+&lt;!-- raw HTML omitted --&gt;(I want you: 图片来源 500px)&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;事情源于一天和同事讨论 Ruby 单例实现，当时为了了解 &lt;code&gt;Singleton&lt;/code&gt; 这个 module 更多东西 ，顺手将 Ruby
+代码 clone 下来，结果惊奇发现其代码注释非常详细，十分方便阅读：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://songjiayang.qiniudn.com/singleton-code.png&#34; alt=&#34;singleton-code&#34;&gt;&lt;/p&gt;
+&lt;p&gt;所以就有了这个阅读计划。&lt;/p&gt;
+&lt;h4 id=&#34;开始阅读&#34;&gt;开始阅读&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;克隆最新的ruby代码， git clone &lt;a href=&#34;mailto:git@github.com&#34;&gt;git@github.com&lt;/a&gt;:ruby/ruby.git 。&lt;/li&gt;
+&lt;li&gt;需要阅读的代码在 ruby_xx/lib 文件夹里面。&lt;/li&gt;
+&lt;li&gt;ok, 开始吧，先从自己最熟悉的 module 下手。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;结束时间&#34;&gt;结束时间&lt;/h4&gt;
+&lt;p&gt;现在我正阅读的版本是 2.2, 需要阅读的文件总计 &lt;code&gt;find . -name &amp;quot;*.rb&amp;quot; | wc -l&lt;/code&gt;（626个）。
+这意味着，即使每天阅读一个模块，几乎都要花费半年时间了，可见这是一件长期的计划。&lt;/p&gt;
+&lt;p&gt;阅读源码是一种好的习惯，也是持续学习的过程，而且好的代码总能让人反复咀嚼，因为此计划暂无 deadline。&lt;/p&gt;
+&lt;h4 id=&#34;阅读产物&#34;&gt;阅读产物&lt;/h4&gt;
+&lt;p&gt;阅读会根据自己理解，不定期通过博客给出有一些代码演示或旧代码重构，你期待了吗？如果你感兴趣，加入此计划吧。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>一篇帖子引发的思考</title>
+      <link>/posts/2015-01-16-pian-bo-ke-yin-fa-de-si-kao/</link>
+      <pubDate>Fri, 16 Jan 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-01-16-pian-bo-ke-yin-fa-de-si-kao/</guid>
+      <description>&lt;p&gt;这是一篇在 Ruby－China 上讨论的比较激烈的帖子，原帖地址 &lt;a href=&#34;https://ruby-china.org/topics/23766&#34;&gt;https://ruby-china.org/topics/23766&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;原帖属于楼主的经验分享帖，一个关于 sidekiq 的 worker 被全部占用，无法释放的问题。
+出现这个问题的原因是，楼主 sidekiq worker 中有一段网络请求的代码，但由于网络请求服务不稳定，导致无响应或者响应很慢，所以，worker 全部都被占用了。&lt;/p&gt;
+&lt;p&gt;解决这个问题的办法很简单，就是设置 Timeout 时间。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;IO 请求都需要设置超时时间。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;楼主在原帖中还提到了 sidekiq 常见 Frozen worker 的两种情况：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;DNS lookup - resolving a hostname might hang. This has a serious side effect in MRI of locking up everything because of the way MRI uses DNS by default. The solution is to run require &amp;lsquo;resolv-replace&amp;rsquo; in your initializer, which installs a pure Ruby DNS resolver that works concurrently.&lt;/li&gt;
+&lt;li&gt;Net::HTTP - unresponsive remote servers can cause a Net::HTTP call to hang and lock up your workers. Set open_timeout to ensure your code raises an exception rather than hanging forever.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;楼主的问题属于第2点，但是第1点却更引起我的兴趣，因为它提到了 MRI 的 &lt;a href=&#34;http://www.jstorimer.com/blogs/workingwithcode/8085491-nobody-understands-the-gil&#34;&gt;GIL&lt;/a&gt; 。&lt;/p&gt;
+&lt;p&gt;假设有线程a,b，其中a 调用了一个会被 block的 C 扩展，那么 b 线程也会被 block 吗 ？&lt;/p&gt;
+&lt;p&gt;第一步： a 线程未调用 C 扩展，执行如下代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# test.rb
+
+a = Thread.new do
+  while true do
+    puts &amp;quot;aaa&amp;quot;
+  end
+end
+
+b = Thread.new do
+  while true do
+    puts &amp;quot;bbb&amp;quot;
+  end
+end
+
+sleep
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;输出结果：&lt;code&gt;bbb aaa&lt;/code&gt; ,  可见， a,b 线程都执行了。&lt;/p&gt;
+&lt;p&gt;第二步：编写一个会被block的 C 扩展（死循环）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 一个会被 block的 C 扩展程序
+
+#include &amp;quot;ruby.h&amp;quot;
+
+VALUE BlockExt = Qnil;
+VALUE perform(VALUE self);
+
+void Init_block_ext() {
+  BlockExt = rb_define_class(&amp;quot;BlockExt&amp;quot;, 0);
+  rb_define_singleton_method(BlockExt, &amp;quot;run&amp;quot;, perform, 0);
+}
+
+VALUE perform(VALUE self) {
+  while(Qtrue){  }
+  return Qnil;
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;第三步： a 线程调用 C 扩展：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# test.rb
+require_relative &#39;ext/block_ext&#39;
+a = Thread.new { BlockExt.run }
+b = Thread.new do
+  while true do
+    puts &amp;quot;bbb&amp;quot;
+  end
+end
+
+sleep
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;运行 &lt;code&gt;ruby test.rb&lt;/code&gt;， 你会发现 b 线程也会 block。&lt;/p&gt;
+&lt;p&gt;出现这个问题的原因是因为 a 线程调用了外部扩展程序，由于 Ruby GIL 的缘故，
+同一时间只能有一个线程(a) active, 而由于外部程序 block住了，导致无返回，
+从而a程序一直处于active状态，所以b线程一直处于 unactive状态，也就被block住了。&lt;/p&gt;
+&lt;p&gt;结论：Ruby 多线程都需要注意一些 C Extensions 的 GIL block 住整个进程的问题，自己编写的 C 扩展，一定要确保返回和结束。&lt;/p&gt;
+&lt;p&gt;代码地址： &lt;a href=&#34;https://github.com/songjiayang/rc-ext-gil&#34;&gt;https://github.com/songjiayang/rc-ext-gil&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to fix &#39;Nokogiri Incompatible library version&#39; error in lion</title>
+      <link>/posts/2015-01-12-error-incompatible-library-version-nokogiri-dot-bundle-requires-version-11-dot-0-0-or-later/</link>
+      <pubDate>Mon, 12 Jan 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-01-12-error-incompatible-library-version-nokogiri-dot-bundle-requires-version-11-dot-0-0-or-later/</guid>
+      <description>&lt;p&gt;今天将本地开发环境切换到 ruby 2.1.2 后，重新启动Rails的时候，遇到如下错误提示：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+Incompatible library version: nokogiri.bundle requires version 11.0.0 or later,
+but libxml2.2.dylib provides version 10.0.0
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如何修复：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gem uninstall nokogiri libxml-ruby
+
+brew update
+brew uninstall libxml2
+brew install libxml2 --with-xml2-config
+brew link --force libxml2
+
+brew install libxslt
+brew link --force libxslt
+
+bundle config build.nokogiri -- --with-xml2-dir=/usr --with-xslt-dir=/opt/local --with-iconv-dir=/opt/local
+bundle install
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参考链接： &lt;a href=&#34;https://gist.github.com/vparihar01/5856524&#34;&gt;https://gist.github.com/vparihar01/5856524&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>upgrade ruby to 2.2 with rvm</title>
+      <link>/posts/2015-01-10-upgrade-ruby-to-2-dot-2-with-rvm/</link>
+      <pubDate>Sat, 10 Jan 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-01-10-upgrade-ruby-to-2-dot-2-with-rvm/</guid>
+      <description>&lt;p&gt;rvm 升级命令&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;rvm get head
+rvm install 2.2
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;NOTES:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;执行 rvm get head 的时候，需要 pgp 添加签名， 类似代码 gpg &amp;ndash;keyserver hkp://keys.gnupg.net &amp;ndash;recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3&lt;/li&gt;
+&lt;li&gt;执行 rvm install 2.2, 如果遇到有关 gmp lib版本冲突的问题，请先执行 brew upgrade gmp 升级 gmp.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>rails cache store 的一个小坑</title>
+      <link>/posts/2015-01-09-rails-cache-store-de-ge-xiao-keng/</link>
+      <pubDate>Fri, 09 Jan 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-01-09-rails-cache-store-de-ge-xiao-keng/</guid>
+      <description>&lt;p&gt;曾然，标题有点哗众取宠了，其实这并不是个 Rails 的坑，只是一个我平时没注意到的问题罢了。&lt;/p&gt;
+&lt;p&gt;想必大家对 Rails 的 &lt;code&gt;ActiveSupport::Cache::Store &lt;/code&gt; 已经很了解了，是吗？那你觉得下面这段代码有什么问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# @user is a ActiveRecord::Base instance
+Rails.cache.fetch([@user]) do
+  # data decorate
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果你已经找出问题了，那恭喜你，可以跳过下面的内容了。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;上面代码的问题就是：fetch 的参数应该是 &lt;code&gt;@user&lt;/code&gt; 非 &lt;code&gt;[@user]&lt;/code&gt;， 为什么？&lt;/p&gt;
+&lt;p&gt;尽管这里使用 &lt;code&gt;[@user］&lt;/code&gt; 不会抛出异常，但是它并不会在 @user 变化后，自动更新上面代码中的缓存数据，这显然与我们想要的自动过期策略不符。&lt;/p&gt;
+&lt;p&gt;为什么将 &lt;code&gt;[@user]&lt;/code&gt; 换成 &lt;code&gt;@user&lt;/code&gt; 就可以？&lt;/p&gt;
+&lt;p&gt;那就要分析下 Rails 的源代码了.&lt;/p&gt;
+&lt;p&gt;首先看 Rails 的 fetch 方法的定义：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def fetch(name, options = nil)
+  if block_given?
+    options = merged_options(options)
+    key = namespaced_key(name, options)
+
+    cached_entry = find_cached_entry(key, name, options) unless options[:force]
+    entry = handle_expired_entry(cached_entry, key, options)
+
+    if entry
+      get_entry_value(entry, name, options)
+    else
+      save_block_result_to_cache(name, options) { |_name| yield _name }
+    end
+  else
+    read(name, options)
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其中与 key 相关的是 namespaced_key 这个方法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+# File activesupport/lib/active_support/cache.rb, line 532
+def namespaced_key(key, options)
+  key = expanded_key(key)
+  namespace = options[:namespace] if options
+  prefix = namespace.is_a?(Proc) ? namespace.call : namespace
+  key = &amp;quot;#{prefix}:#{key}&amp;quot; if prefix
+  key
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;namespaced_key&lt;/code&gt; 里面调用了 &lt;code&gt;expanded_key&lt;/code&gt; 方法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# File activesupport/lib/active_support/cache.rb, line 513
+def expanded_key(key) # :nodoc:
+  return key.cache_key.to_s if key.respond_to?(:cache_key)
+
+  case key
+  when Array
+    if key.size &amp;gt; 1
+      key = key.collect{|element| expanded_key(element)}
+    else
+      key = key.first
+    end
+  when Hash
+    key = key.sort_by { |k,_| k.to_s }.collect{|k,v| &amp;quot;#{k}=#{v}&amp;quot;}
+  end
+
+  key.to_param
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;OK，到这里，你该知道问题了，&lt;code&gt;[@user]&lt;/code&gt; 和 &lt;code&gt;@user&lt;/code&gt; 分别生成了怎样的 key，你也一定了解了吧。&lt;/p&gt;
+&lt;p&gt;出现这个问题核心是，如果生成的key的相关因子只有1个，写成 [@user] 这样的形式，
+key的生成，最终调用的其实只是是 &lt;code&gt;to_param&lt;/code&gt; 这个方法，而它始终 == &lt;code&gt;&amp;quot;#{@user.id}&amp;quot;&lt;/code&gt;，所以key一直不会有变化。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;结语：当 cache key 的因子只有1个时，不要使用数组。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hello Rack</title>
+      <link>/posts/2014-11-25-hello-rack/</link>
+      <pubDate>Tue, 25 Nov 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-11-25-hello-rack/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://rack.github.io/rack-logo.png&#34; alt=&#34;http://rack.github.io/rack-logo.png&#34;&gt;&lt;/p&gt;
+&lt;h5 id=&#34;rack-是什么&#34;&gt;Rack 是什么？&lt;/h5&gt;
+&lt;p&gt;Rack 是一个模块化的 ruby webserver 接口；它是 web server 到 web framework的中间件。&lt;/p&gt;
+&lt;h5 id=&#34;为什么需要-rack&#34;&gt;为什么需要 Rack?&lt;/h5&gt;
+&lt;p&gt;因为 Rack，项目可以从 web server 到 web framework 任意切换组合。例如同一个rails应用可以使用不同的
+web server（unicorn, thin, puma ..）&lt;/p&gt;
+&lt;h5 id=&#34;rack定义&#34;&gt;Rack定义?&lt;/h5&gt;
+&lt;p&gt;提供一个叫做 &lt;code&gt;app&lt;/code&gt; 的 object， 这个 object 具有 &lt;code&gt;call&lt;/code&gt; 方法；call 方法可以传递 ENV
+作为参数; 返回是一个数组，数组包含了3个东西：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;http 返回状态码&lt;/li&gt;
+&lt;li&gt;Hash 形式的 header信息&lt;/li&gt;
+&lt;li&gt;返回的body信息，必须具有 &lt;code&gt;each&lt;/code&gt; 方法。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;rack-的基本使用&#34;&gt;Rack 的基本使用&lt;/h5&gt;
+&lt;p&gt;ruby 代码中直接运行&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# my_rack_app.rb
+
+require &#39;rack&#39;
+
+app = Proc.new do |env|
+    [&#39;200&#39;, {&#39;Content-Type&#39; =&amp;gt; &#39;text/html&#39;}, [&#39;A barebones rack app.&#39;]]
+end
+
+Rack::Handler::WEBrick.run app
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用rackup 命令行&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# my.ru
+
+run Proc.new { |env| [&#39;200&#39;, {&#39;Content-Type&#39; =&amp;gt; &#39;text/html&#39;}, [&#39;A barebones rack app.&#39;]] }
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参考资料： &lt;a href=&#34;http://rack.github.io/&#34;&gt;http://rack.github.io/&lt;/a&gt; ， &lt;a href=&#34;https://github.com/rack/rack&#34;&gt;https://github.com/rack/rack&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Thinking-sphinx can not search chinese</title>
+      <link>/posts/2014-11-20-thinking-sphinx-can-not-search-chinese/</link>
+      <pubDate>Thu, 20 Nov 2014 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-11-20-thinking-sphinx-can-not-search-chinese/</guid>
+      <description>&lt;p&gt;今天发现 &lt;a href=&#34;www.matter.build&#34;&gt;Matter&lt;/a&gt; 在生产环境不支持中文全文搜索（英文可以），开发环境支持中文搜索。&lt;/p&gt;
+&lt;p&gt;Matter 的全文搜索使用的是 &lt;a href=&#34;https://github.com/pat/thinking-sphinx&#34;&gt;thinking-sphinx&lt;/a&gt;，
+底层是 sphinxsearch 。&lt;/p&gt;
+&lt;p&gt;由于习惯性思维，我很快的查看了线上的 sphinxsearch 版本，
+发现版本比较低， 所以立马升级了线上的 sphinx 版本(与开发一致)。
+很不幸，不是这个原因，问题犹在，需要调整思路。&lt;/p&gt;
+&lt;p&gt;经过对比线上和本地自动生成的 x.sphinx.conf 文件，发现本地
+生成的配置文件多了 &lt;code&gt;sql_query_pre = SET NAMES utf8&lt;/code&gt; 这句。&lt;/p&gt;
+&lt;p&gt;也许问题就出现在这里，那为什么开发环境会多处这句配置？&lt;/p&gt;
+&lt;p&gt;通过在 github 的 thinking-sphinx 项目里面搜索 &lt;a href=&#34;https://github.com/pat/thinking-sphinx/search?utf8=%E2%9C%93&amp;amp;q=utf8_query_pre&amp;amp;type=Code&#34;&gt;SET NAMES utf8&lt;/a&gt;
+和 &lt;a href=&#34;https://github.com/pat/thinking-sphinx/search?utf8=%E2%9C%93&amp;amp;q=utf8_query_pre&amp;amp;type=Code&#34;&gt;utf8_query_pre&lt;/a&gt;
+瞬间恍然大悟！&lt;/p&gt;
+&lt;p&gt;原来线上的 database.yml 里面并没有设置编码方式，而默认编码并非utf8，所以不支持中文。
+而开发环境支持中文搜索的原因正是在 database.yml 里面设置了 &lt;code&gt;encoding: utf8&lt;/code&gt;。
+待生产环境加上这句后，问题得以解决，可以正常搜索中文了。&lt;/p&gt;
+&lt;p&gt;这个bug的修复并非如此顺利，因为一开始浪费了很多时间在其他方向上，最后在同事
+&lt;a href=&#34;https://github.com/serco-chen&#34;&gt;serco-chen&lt;/a&gt; 的提醒下，通过对照配置文件差异后，才得以解决，在此感谢他。&lt;/p&gt;
+&lt;p&gt;通过此次捉虫，感触最深的就是：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;当我们调试和解决bug的时候，不妨尝试采用对照的方式，切勿先入为主，以为是必然就忽略了某些细节。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Rails deploy with capistrano3</title>
+      <link>/posts/2014-11-20-rails-deploy-with-capistrano3/</link>
+      <pubDate>Thu, 20 Nov 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-11-20-rails-deploy-with-capistrano3/</guid>
+      <description>&lt;p&gt;今天将公司 &lt;a href=&#34;http://gigareset.org/locations/33&#34;&gt;Reset&lt;/a&gt; 项目的部署由
+capistrano2+unicorn+sidekiq 换成了 capistrano3+puma+sidekiq 。&lt;/p&gt;
+&lt;p&gt;以下是个人整理的几个重要地方。&lt;/p&gt;
+&lt;h5 id=&#34;1-修改-gemfile-文件&#34;&gt;1. 修改 Gemfile 文件&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;#Gemfile
+gem &#39;puma&#39;
+group :development do
+  .....
+  # cap deploy plugins
+  gem &#39;capistrano&#39;, &#39;~&amp;gt; 3.2.0&#39;
+  gem &#39;capistrano-rvm&#39;, &#39;~&amp;gt; 0.1.2&#39;
+  gem &#39;capistrano-bundler&#39;, &#39;~&amp;gt; 1.1.3&#39;
+  gem &#39;capistrano-rails&#39;, &#39;~&amp;gt; 1.1.2&#39;
+  gem &#39;capistrano-sidekiq&#39;, &#39;~&amp;gt; 0.4.0&#39;
+  gem &#39;capistrano3-puma&#39;, &#39;~&amp;gt; 0.8.3&#39;
+  .....
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;2-修改-capfile-文件&#34;&gt;2. 修改 Capfile 文件&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;#Capfile
+
+# Load DSL and Setup Up Stages
+require &#39;capistrano/setup&#39;
+
+# Includes default deployment tasks
+require &#39;capistrano/deploy&#39;
+
+# Includes tasks from other gems included in your Gemfile
+#
+# For documentation on these, see for example:
+#
+#   https://github.com/capistrano/rvm
+#   https://github.com/capistrano/bundler
+#   https://github.com/capistrano/rails
+#   https://github.com/seuros/capistrano-sidekiq
+#   https://github.com/seuros/capistrano-puma
+
+require &#39;capistrano/rvm&#39;
+require &#39;capistrano/bundler&#39;
+require &#39;capistrano/rails&#39;
+require &#39;capistrano/sidekiq&#39;
+require &#39;capistrano/puma&#39;
+
+# Loads custom tasks from `lib/capistrano/tasks&#39; if you have any defined.
+Dir.glob(&#39;lib/capistrano/tasks/*.rake&#39;).each { |r| import r }
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;3-修改-deployrb-文件&#34;&gt;3. 修改 deploy.rb 文件&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;#config/deploy.rb
+
+# Ensure that bundle is used for rake tasks
+
+lock &#39;3.2.1&#39;
+
+set :application, &#39;gigareset&#39;
+set :repo_url, &#39;git@github.com:rdd-giga/reset.git&#39;
+
+set :scm, :git
+set :user, :deploy
+set :use_sudo, false
+set :git_enable_submodules, true
+
+set :deploy_to, &#39;/var/www/gigareset&#39;
+
+set :linked_files, %w{config/database.yml}
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+
+set :ssh_options, {
+  forward_agent: true,
+  port: 22,
+  keys: [File.join(ENV[&amp;quot;HOME&amp;quot;], &amp;quot;.ssh&amp;quot;, &amp;quot;id_rsa&amp;quot;)]
+}
+
+set :keep_releases, 5
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;4-修改-deployproductionrb-文件&#34;&gt;4. 修改 deploy/production.rb 文件&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;#config/deploy/production.rb
+
+set :stage, :production
+set :branch, &amp;quot;master&amp;quot;
+
+server &#39;gigareset.org&#39;, user: &#39;deploy&#39;, roles: %w{web app db}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;最后在服务器上创建好需要shared的文件，执行 &lt;code&gt;cap production deploy&lt;/code&gt; 皆可。
+以上配置属于官方默认配置，如果需要更多配置，请参考对应 gem 官方文档或查看源码。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The Problem &#34;Uncaught Error: Error calling method on NPObject&#34; with plupload-rails</title>
+      <link>/posts/2014-11-12-plupload-rails-error-uncaught-error-error-calling-method-on-npobject/</link>
+      <pubDate>Wed, 12 Nov 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-11-12-plupload-rails-error-uncaught-error-error-calling-method-on-npobject/</guid>
+      <description>&lt;p&gt;昨天，突然发现在 IE 上传图片的时候，报出错误 &lt;code&gt;Uncaught Error: Error calling method on NPObject&lt;/code&gt;,
+google了一下，发现这个是 flash 抛出来的错误，主要是跨站的问题。&lt;/p&gt;
+&lt;p&gt;####为什么会跨站呢？
+首先我们使用qiniu作为静态资源的镜像加速，所以用于上传的插件也来自七牛。
+主要涉及的资源是 Moxie.swf（flash 使用） 和 Moxie.xap（silverlight） 这两个。&lt;/p&gt;
+&lt;p&gt;plupload-rails 中关于资源加载代码是这样的：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Assigns default Plupload settings that work with the asset pipeline.
+(function ($) {
+  var proxied = plupload.Uploader;
+
+  plupload.Uploader = function (settings) {
+    settings = $.extend({}, settings, {
+      multipart: true,
+      flash_swf_url: &#39;&amp;lt;%= asset_path(&amp;quot;Moxie.swf&amp;quot;) %&amp;gt;&#39;,
+      silverlight_xap_url: &#39;&amp;lt;%= asset_path(&amp;quot;Moxie.xap&amp;quot;) %&amp;gt;&#39;
+    });
+
+    return proxied.call(this, settings);
+  };
+
+  plupload.Uploader.prototype = proxied.prototype;
+}(jQuery));
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;很显然，问题出现在 &lt;code&gt;asset_path(&amp;quot;Moxie.swf&amp;quot;)&lt;/code&gt; 这句，
+其实，Moxie.swf 和 Moxie.xap 并不需要镜像加速,
+所以我们将这两个文件放在 项目public，直接使用即可。&lt;/p&gt;
+&lt;p&gt;所有直接修改上面代码即可：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;flash_swf_url: &#39;/misc/Moxie.swf&#39;,
+silverlight_xap_url: &#39;/misc/Moxie.xap&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;备注：Moxie.swf 和 Moxie.xap 放在了项目下的 public/misc 文件夹中。&lt;/p&gt;
+&lt;p&gt;最后在 application.js 中将 plupload.settings 替换成修改后的文件即可.
+我习惯将修改后的文件加个 override， 所以需要将
+&lt;code&gt;//= require plupload.settings&lt;/code&gt; 替换成 &lt;code&gt;//= require plupload.settings.override&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;最后 plupload.settings.override 代码是这样：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Assigns default Plupload settings that work with the asset pipeline.
+(function ($) {
+  var proxied = plupload.Uploader;
+
+  plupload.Uploader = function (settings) {
+    settings = $.extend({}, settings, {
+      multipart: true,
+      flash_swf_url: &#39;/misc/Moxie.swf&#39;,
+      silverlight_xap_url: &#39;/misc/Moxie.xap&#39;
+    });
+
+    return proxied.call(this, settings);
+  };
+
+  plupload.Uploader.prototype = proxied.prototype;
+}(jQuery));
+
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Bundle 的时候出现 &#39;unable to connect to github.com&#39; 问题</title>
+      <link>/posts/2014-11-07-gemfile-bundle-ti-shi-unable-to-connect-to-github-dot-com-wen-ti/</link>
+      <pubDate>Fri, 07 Nov 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-11-07-gemfile-bundle-ti-shi-unable-to-connect-to-github-dot-com-wen-ti/</guid>
+      <description>&lt;p&gt;最近新开了一台日本的亚马逊机器，在使用 cap2 做发布的时候， 在 bundle 那步出现报错，提示信息类似：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Fetching git://github.com/activeadmin/activeadmin.git
+fatal: unable to connect to github.com:
+github.com[0: 192.30.252.130]: errno=Connection refused
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这是因为我部分 gem 是使用 github 仓库安装，而服务器上无法通过 git 协议连接到 github 获取代码, 所有报错。出现这个原因可能是因为我亚马逊机器设置的问题，（比如某些协议不支持或者端口没打开）。&lt;/p&gt;
+&lt;p&gt;Anyway, 既然 git 协议通不过，那么我们可以尝试换成 https 协议。遗憾的是，Gemfile里面，不能直接指定请求发送的协议， 但是我们可以尝试修改 git global config ，针对 github 将 git 协议重定向到 https上，这个有点像 dns 设置。&lt;/p&gt;
+&lt;p&gt;具体设置:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git config --global url.&amp;quot;https://github.com&amp;quot;.insteadOf git://github.com
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在服务器上执行了以上代码后,重新执行 &lt;code&gt;cap production deploy&lt;/code&gt; 就可以了。&lt;/p&gt;
+&lt;p&gt;参考链接：
+&lt;a href=&#34;http://stackoverflow.com/questions/21260689/force-bundle-install-to-use-https-instead-of-git-for-github-based-gems&#34;&gt;http://stackoverflow.com/questions/21260689/force-bundle-install-to-use-https-instead-of-git-for-github-based-gems&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to Bootstrap Your Rails App on a New Server</title>
+      <link>/posts/2014-09-20-how-to-bootstrap-your-rails-server/</link>
+      <pubDate>Sat, 20 Sep 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-09-20-how-to-bootstrap-your-rails-server/</guid>
+      <description>&lt;p&gt;如何在一台全新新的主机 Rails 服务呢？ 有什么比较好的策略？ 有哪些问题需要我们注意？&lt;/p&gt;
+&lt;p&gt;这篇文章转载于同事（&lt;a href=&#34;https://github.com/serco-chen&#34;&gt;小光&lt;/a&gt;）的经验总结，特在此分享。如果在你实践过程中，发现有部分内容过时，请告知一下，谢谢。&lt;/p&gt;
+&lt;h4 id=&#34;0-setup-user-for-deployment&#34;&gt;0. Setup user for deployment&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# Install openssh-server
+sudo apt-get update
+sudo apt-get install openssh-server  # This step may not required in Aliyun host
+# Setup deployment user
+sudo adduser deploy  # Add a user for deployment
+sudo usermod -a -G sudo deploy
+#copy pub key to server
+ssh deploy@host &#39;mkdir -p .ssh &amp;amp;&amp;amp; cat &amp;gt;&amp;gt; .ssh/authorized_keys&#39; &amp;lt; ~/.ssh/id_rsa.pub
+cd /etc/ssh
+sudo vi sshd_config
+# modify sshd_config
+PermitRootLogin no
+RSAAuthentication yes
+PubkeyAuthentication yes
+AuthorizedKeysFile %h/.ssh/authorized_keys
+# restart ssh server
+sudo service ssh restart
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;1-install-packages&#34;&gt;1. Install packages&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get update
+sudo apt-get install -y build-essential openssl curl libcurl3-dev libreadline6 libreadline6-dev git zlib1g zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev autoconf automake libtool imagemagick libmagickwand-dev libpcre3-dev libsqlite3-dev libmysql-ruby libmysqlclient-dev
+sudo apt-get install git
+# 添加ssh_key到github账号上
+git config --global user.name &amp;quot;lohaswork&amp;quot;
+git config --global user.email &amp;quot;support@lohaswork.com&amp;quot;
+ssh-keygen -t rsa -C &amp;quot;support@lohaswork.com&amp;quot;
+cat ~/.ssh/id_rsa.pub   //复制pub-key至github账号设定的ssh keys中
+ssh -T git@github.com   //测试ssh至github是否成功
+# Make deployment directory
+sudo mkdir /www
+sudo mkdir /www/teamind_deploy
+sudo chown -R deploy /www/teamind_deploy
+cd home/deploy
+git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
+git clone git://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+git clone git://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+echo &#39;export PATH=&amp;quot;$HOME/.rbenv/bin:$PATH&amp;quot;&#39; &amp;gt;&amp;gt; .profile
+echo &#39;export PATH=&amp;quot;$HOME/.rbenv/shims:$PATH&amp;quot;&#39; &amp;gt;&amp;gt; .profile
+echo &#39;eval &amp;quot;$(rbenv init -)&amp;quot;&#39; &amp;gt;&amp;gt; .profile
+source ~/.bash_profile
+# Reboot
+sudo reboot
+# Upload ruby_build binary package to server using sftp and then
+mkdir ~/.rbenv/cache
+cp ruby-1.9.3-p448.tar.gz ~/.rbenv/cache
+cp yaml-0.1.4.tar.gz ~/.rbenv/cache
+rbenv install 1.9.3-p448
+rbenv global 1.9.3-p448
+gem source -r https://rubygems.org/
+gem source -a http://ruby.taobao.org/
+# 在 ~/.gemrc 中配置不生成 ri 和 rdoc 文档
+$ vi ~/.gemrc
+# add following 2 lines to .gemrc
+install: --no-rdoc --no-ri
+update: --no-rdoc --no-ri
+gem install bundler
+sudo apt-get install python-software-properties
+sudo apt-add-repository ppa:chris-lea/node.js
+sudo apt-get update
+sudo apt-get install nodejs
+sudo add-apt-repository ppa:nginx/stable
+sudo apt-get update
+sudo apt-get install nginx
+sudo service nginx start
+cd /etc/nginx/sites-enabled/
+sudo rm default
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;2-problems-with-locale&#34;&gt;2. Problems with locale&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# ls 初始化月份字符串出错
+sudo vi /var/lib/locales/supported.d/local
+# 改成如下内容
+en_US.UTF-8 UTF-8
+zh_CN.UTF-8 UTF-8
+zh_CN.GBK GBK
+zh_CN GB2312
+# 执行
+sudo locale-gen
+sudo vi /etc/default/locale
+# 改成如下内容
+LANG=&amp;quot;zh_CN.UTF-8&amp;quot;
+LANGUAGE=&amp;quot;zh_CN.UTF-8&amp;quot;
+LC_ALL=&amp;quot;zh_CN.UTF-8&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;3-install-database&#34;&gt;3. Install database&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# PostgreSQL
+sudo apt-get install postgresql-9.1
+sudo apt-get install postgresql-client-9.1 postgresql-contrib-9.1 postgresql-server-dev-9.1
+# 配置postgres部署时的用户
+sudo passwd postgres
+sudo su postgres
+postgres=# psql
+postgres=# ALTER USER postgres PASSWORD &#39;postgres&#39;; // 修改密码
+postgres=# CREATE USER deploy WITH PASSWORD &#39;lohaswork&#39; CREATEDB; // 创建deploy用户
+postgres=# \q // 退出
+exit //go back from user postgres to deploy
+sudo service postgresql start
+# MySQL
+sudo apt-get install mysql-server-5.5 mysql-client-5.5
+mysql -uroot -p
+mysql&amp;gt; CREATE USER &#39;deploy&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;lohaswork&#39;;
+mysql&amp;gt; GRANT ALL PRIVILEGES ON *.* TO &#39;deploy&#39;@&#39;localhost&#39; WITH GRANT OPTION;
+mysql&amp;gt; \q
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;4-autoload-services&#34;&gt;4. Autoload services&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# unicorn
+cd /etc/init.d
+sudo touch nicorn.teamind_deploy
+sudo vi unicorn.teamind_deploy
+# add following lines to unicorn.teamind_deploy
+
+#!/bin/sh
+set -e
+# Example init script, this can be used with nginx, too,
+# since nginx and unicorn accept the same signals
+
+# Feel free to change any of the following variables for your app:
+TIMEOUT=${TIMEOUT-60}
+APP_ROOT=/www/teamin_deploy/current
+PID=$APP_ROOT/tmp/pids/unicorn.pid
+CMD=&amp;quot;/usr/bin/unicorn -D -c $APP_ROOT/config/unicorn.rb&amp;quot;
+action=&amp;quot;$1&amp;quot;
+set -u
+
+old_pid=&amp;quot;$PID.oldbin&amp;quot;
+
+cd $APP_ROOT || exit 1
+
+sig () {
+  test -s &amp;quot;$PID&amp;quot; &amp;amp;&amp;amp; kill -$1 `cat $PID`
+}
+
+oldsig () {
+  test -s $old_pid &amp;amp;&amp;amp; kill -$1 `cat $old_pid`
+}
+
+case $action in
+start)
+  sig 0 &amp;amp;&amp;amp; echo &amp;gt;&amp;amp;2 &amp;quot;Already running&amp;quot; &amp;amp;&amp;amp; exit 0
+  $CMD
+  ;;
+stop)
+  sig QUIT &amp;amp;&amp;amp; exit 0
+  echo &amp;gt;&amp;amp;2 &amp;quot;Not running&amp;quot;
+  ;;
+force-stop)
+  sig TERM &amp;amp;&amp;amp; exit 0
+  echo &amp;gt;&amp;amp;2 &amp;quot;Not running&amp;quot;
+  ;;
+restart|reload)
+  sig HUP &amp;amp;&amp;amp; echo reloaded OK &amp;amp;&amp;amp; exit 0
+  echo &amp;gt;&amp;amp;2 &amp;quot;Couldn&#39;t reload, starting &#39;$CMD&#39; instead&amp;quot;
+  $CMD
+  ;;
+upgrade)
+  if sig USR2 &amp;amp;&amp;amp; sleep 2 &amp;amp;&amp;amp; sig 0 &amp;amp;&amp;amp; oldsig QUIT
+  then
+    n=$TIMEOUT
+    while test -s $old_pid &amp;amp;&amp;amp; test $n -ge 0
+    do
+      printf &#39;.&#39; &amp;amp;&amp;amp; sleep 1 &amp;amp;&amp;amp; n=$(( $n - 1 ))
+    done
+    echo
+
+    if test $n -lt 0 &amp;amp;&amp;amp; test -s $old_pid
+    then
+      echo &amp;gt;&amp;amp;2 &amp;quot;$old_pid still exists after $TIMEOUT seconds&amp;quot;
+      exit 1
+    fi
+    exit 0
+  fi
+  echo &amp;gt;&amp;amp;2 &amp;quot;Couldn&#39;t upgrade, starting &#39;$CMD&#39; instead&amp;quot;
+  $CMD
+  ;;
+reopen-logs)
+  sig USR1
+  ;;
+*)
+  echo &amp;gt;&amp;amp;2 &amp;quot;Usage: $0 &amp;lt;start|stop|restart|upgrade|force-stop|reopen-logs&amp;gt;&amp;quot;
+  exit 1
+  ;;
+esac
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;5-deployrb-nginxconf-unicornrb-capistrano-db-rollbackrb-capistrano_database_ymlrb-configru&#34;&gt;5. deploy.rb nginx.conf unicorn.rb capistrano-db-rollback.rb capistrano_database_yml.rb config.ru&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;#### deploy.rb
+require &#39;bundler/capistrano&#39;
+$:.unshift(&#39;./config&#39;)
+require &#39;capistrano-db-rollback&#39;
+require &#39;capistrano_database_yml&#39;
+
+# Five steps to run the first deployment
+# 0. Create unicorn related files at local development ENV
+# 1. Create deploy_user in linux and install packages
+# 2. Manually create deploy_user in postgres and create www/#{appname} directory
+# 3. Modify server info in deploy.rb &amp;amp; nginx.conf &amp;amp; capistrano_database_yml.rb
+# 4. Run deploy:setup and config database following the leading message
+# 5. !Important: Run cap deploy:cold for the very first deployment
+# 6. Upload the video manually
+
+# Need change before deployment
+set :server_name, &amp;quot;192.168.1.114&amp;quot;
+set :user, &amp;quot;deploy&amp;quot;
+set :sudo_user, &amp;quot;deploy&amp;quot;
+set :deploy_to, &amp;quot;/www/teamind_deploy&amp;quot;
+
+# Repository
+set :application, &amp;quot;LohasWork.com&amp;quot;
+set :scm, :git
+set :repository,  &amp;quot;git@github.com:lohaswork/LohasWork.com&amp;quot;
+set :branch, &amp;quot;serco/for-deploy&amp;quot;  # Need changge to master
+
+# Configurations
+set :rails_env, &amp;quot;production&amp;quot;
+set :deploy_via, :remote_cache
+set :use_sudo, false
+set :normalize_asset_timestamps, false
+default_run_options[:pty] = true
+set :rbenv_version, ENV[&#39;RBENV_VERSION&#39;] || &amp;quot;1.9.3-p327&amp;quot;
+set :default_environment, {
+  &#39;PATH&#39; =&amp;gt; &amp;quot;/home/#{user}/.rbenv/shims:/home/#{user}/.rbenv/bin:$PATH&amp;quot;,
+  &#39;RBENV_VERSION&#39; =&amp;gt; &amp;quot;#{rbenv_version}&amp;quot;,
+}
+
+# Roles
+role :web, &amp;quot;192.168.1.114&amp;quot;                          # Your HTTP server, Apache/etc
+role :app, &amp;quot;192.168.1.114&amp;quot;                          # This may be the same as your `Web` server
+role :db,  &amp;quot;192.168.1.114&amp;quot;, :primary =&amp;gt; true        # This is where Rails migrations will run
+
+# For Unicorn service
+set :unicorn_config, &amp;quot;#{current_path}/config/unicorn.rb&amp;quot;
+set :unicorn_pid, &amp;quot;#{current_path}/tmp/pids/unicorn.pid&amp;quot;
+
+namespace :deploy do
+
+  task :cold do       # Overriding the default deploy:cold
+    update
+    setup_db       # My own step, replacing migrations.
+    start
+  end
+
+  task :add_shared do
+    run &amp;quot;mkdir -p #{shared_path}/public&amp;quot;
+    run &amp;quot;chmod g+rx,u+rwx #{shared_path}/public&amp;quot;
+    run &amp;quot;mkdir -p #{shared_path}/public/videos&amp;quot;
+    run &amp;quot;chmod g+rx,u+rwx #{shared_path}/public/videos&amp;quot;
+    run &amp;quot;mkdir -p #{shared_path}/&amp;quot;
+    run &amp;quot;chmod g+rx,u+rwx #{shared_path}/tmp&amp;quot;
+    run &amp;quot;mkdir -p #{shared_path}/unicorn&amp;quot;
+    run &amp;quot;chmod g+rx,u+rwx #{shared_path}/unicorn&amp;quot;
+    run &amp;quot;cd #{shared_path}&amp;quot;
+    run &amp;quot;touch err.log out.log&amp;quot;
+    run &amp;quot;mkdir -p #{shared_path}/sockets&amp;quot;
+    run &amp;quot;chmod g+rx,u+rwx #{shared_path}/sockets&amp;quot;
+    run &amp;quot;mkdir -p #{shared_path}/tmp/sessions&amp;quot;
+    run &amp;quot;chmod g+rx,u+rwx #{shared_path}/tmp/sessions&amp;quot;
+    run &amp;quot;mkdir -p #{shared_path}/tmp/cache&amp;quot;
+    run &amp;quot;chmod g+rx,u+rwx #{shared_path}/tmp/cache&amp;quot;
+  end
+
+  task :start, :roles =&amp;gt; :app, :except =&amp;gt; { :no_release =&amp;gt; true } do
+    run &amp;quot;cd #{current_path} &amp;amp;&amp;amp; RAILS_ENV=production bundle exec unicorn_rails -c #{unicorn_config} -D&amp;quot;
+  end
+
+  task :stop, :roles =&amp;gt; :app, :except =&amp;gt; { :no_release =&amp;gt; true } do
+    run &amp;quot;if [ -f #{unicorn_pid} ]; then kill -QUIT `cat #{unicorn_pid}`; fi&amp;quot;
+  end
+
+  task :restart, :roles =&amp;gt; :app, :except =&amp;gt; { :no_release =&amp;gt; true } do
+    # 用USR2信号来实现无缝部署重启
+    run &amp;quot;if [ -f #{unicorn_pid} ]; then kill -s USR2 `cat #{unicorn_pid}`; fi&amp;quot;
+  end
+
+  desc &#39;clean old files, link shared files&#39;
+  task :housekeeping, :roles =&amp;gt; :app do
+    run &amp;quot;rm -rf #{current_path}/public/videos&amp;quot;  ###
+    run &amp;quot;ln -s #{shared_path}/public/videos #{current_path}/public/videos&amp;quot;
+    run &amp;quot;#{sudo} ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/nginx.conf&amp;quot;
+    run &amp;quot;rm -rf #{current_path}/unicorn&amp;quot;
+    run &amp;quot;ln -s #{shared_path}/unicorn/ #{current_path}/unicorn&amp;quot;
+    run &amp;quot;rm -rf #{current_path}/tmp/sockets&amp;quot;
+    run &amp;quot;ln -s #{shared_path}/sockets #{current_path}/tmp/sockets&amp;quot;
+    run &amp;quot;rm -rf #{current_path}/tmp/sessions&amp;quot;
+    run &amp;quot;ln -s #{shared_path}/tmp/sessions #{current_path}/tmp/sessions&amp;quot;
+    run &amp;quot;rm -rf #{current_path}/tmp/cache&amp;quot;
+    run &amp;quot;ln -s #{shared_path}/tmp/cache #{current_path}/tmp/cache&amp;quot;
+
+  end
+
+  # utilize that capistrano has already done this!
+  #
+  # If you put your shared file or folder here:
+  #   /path/to/app/shared/sockets
+  # Then it will be symlinked here:
+  #   /path/to/app/releases/20120517191233/tmp/sockets
+  #
+  shared_children.push &amp;quot;tmp/sockets&amp;quot;
+  shared_children.push &amp;quot;unicorn&amp;quot;
+
+  task :nginx_restart, :roles =&amp;gt; :app do
+    run &amp;quot;#{sudo} service nginx restart&amp;quot;
+  end
+
+  task :setup_db, :roles =&amp;gt; :app do
+    raise RuntimeError.new(&#39;db:setup aborted!&#39;) unless Capistrano::CLI.ui.ask(&amp;quot;About to `rake db:setup`. Are you sure to wipe the entire database (anything other than &#39;yes&#39; aborts):&amp;quot;) == &#39;yes&#39;
+    run &amp;quot;cd #{current_path}; bundle exec rake db:setup RAILS_ENV=#{rails_env}&amp;quot;
+  end
+
+end
+
+after &#39;deploy:setup&#39;, &#39;deploy:add_shared&#39;
+after &#39;deploy:create_symlink&#39;, &#39;deploy:housekeeping&#39;
+after &#39;deploy:restart&#39;, &#39;deploy:cleanup&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;#### nginx.conf
+
+#每台机器都运行nginx+unicorn，本机用domain socket，方便切换
+upstream ruby_backend {
+    server unix:/tmp/unicorn.sock fail_timeout=0;
+}
+
+#用try_files方式和proxy执行rails动态请求
+server {
+    listen       80;
+    server_name  192.168.0.105;
+    root         /www/teamind_deploy/current/public;
+
+    try_files $uri/index.html $uri.html $uri @httpapp;
+
+    location @httpapp {
+      proxy_redirect     off;
+      proxy_set_header   Host $host;
+      proxy_set_header   X-Forwarded-Host $host;
+      proxy_set_header   X-Forwarded-Server $host;
+      proxy_set_header   X-Real-IP        $remote_addr;
+      proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+      proxy_buffering    on;
+      proxy_pass         http://ruby_backend;
+   }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;unicornrb&#34;&gt;unicorn.rb&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;worker_processes 6 #依据需要的内存数量设定
+
+app_root = File.expand_path(&amp;quot;../..&amp;quot;, __FILE__)
+working_directory app_root
+
+# Listen on fs socket for better performance
+listen &amp;quot;/tmp/unicorn.sock&amp;quot;, :backlog =&amp;gt; 64
+listen 4096, :tcp_nopush =&amp;gt; false
+
+# Nuke workers after 30 seconds instead of 60 seconds (the default)
+timeout 30
+
+# App PID
+pid &amp;quot;#{app_root}/tmp/pids/unicorn.pid&amp;quot;
+
+# By default, the Unicorn logger will write to stderr.
+# Additionally, some applications/frameworks log to stderr or stdout,
+# so prevent them from going to /dev/null when daemonized here:
+stderr_path &amp;quot;#{app_root}/log/unicorn.stderr.log&amp;quot;
+stdout_path &amp;quot;#{app_root}/log/unicorn.stdout.log&amp;quot;
+
+# To save some memory and improve performance
+preload_app true
+GC.respond_to?(:copy_on_write_friendly=) and
+  GC.copy_on_write_friendly = true
+
+# Force the bundler gemfile environment variable to
+# reference the Сapistrano &amp;quot;current&amp;quot; symlink
+before_exec do |_|
+  ENV[&amp;quot;BUNDLE_GEMFILE&amp;quot;] = File.join(app_root, &#39;Gemfile&#39;)
+end
+
+before_fork do |server, worker|
+  # 参考 http://unicorn.bogomips.org/SIGNALS.html
+  # 使用USR2信号，以及在进程完成后用QUIT信号来实现无缝重启
+  old_pid = app_root + &#39;/tmp/pids/unicorn.pid.oldbin&#39;
+  if File.exists?(old_pid) &amp;amp;&amp;amp; server.pid != old_pid
+    begin
+      Process.kill(&amp;quot;QUIT&amp;quot;, File.read(old_pid).to_i)
+    rescue Errno::ENOENT, Errno::ESRCH
+      # someone else did our job for us
+    end
+  end
+
+  # the following is highly recomended for Rails + &amp;quot;preload_app true&amp;quot;
+  # as there&#39;s no need for the master process to hold a connection
+  defined?(ActiveRecord::Base) and
+    ActiveRecord::Base.connection.disconnect!
+end
+
+after_fork do |server, worker|
+  # 禁止GC，配合后续的OOB，来减少请求的执行时间
+  GC.disable
+  # the following is *required* for Rails + &amp;quot;preload_app true&amp;quot;,
+  defined?(ActiveRecord::Base) and
+    ActiveRecord::Base.establish_connection
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;capistrano-db-rollbackrb&#34;&gt;capistrano-db-rollback.rb&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;configuration = Capistrano::Configuration.respond_to?(:instance) ?
+  Capistrano::Configuration.instance(:must_exist) :
+  Capistrano.configuration(:must_exist)
+
+configuration.load do
+  namespace :deploy do
+    namespace :rollback do
+      desc &amp;lt;&amp;lt;-DESC
+      Rolls back the migration to the version found in schema.rb file of the previous release path.\
+      Uses sed command to read the version from schema.rb file.
+      DESC
+      task :migrations do
+        run &amp;quot;cd #{current_release};  rake db:migrate RAILS_ENV=#{rails_env} VERSION=`grep \&amp;quot;:version =&amp;gt;\&amp;quot; #{previous_release}/db/schema.rb | sed -e &#39;s/[a-z A-Z = \&amp;gt; \: \. \( \)]//g&#39;`&amp;quot;
+      end
+      after &amp;quot;deploy:rollback&amp;quot;,&amp;quot;deploy:rollback:migrations&amp;quot;
+    end
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;capistrano_database_ymlrb&#34;&gt;capistrano_database_yml.rb&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;#
+# = Capistrano database.yml task
+#
+# Provides a couple of tasks for creating the database.yml
+# configuration file dynamically when deploy:setup is run.
+#
+# Category::    Capistrano
+# Package::     Database
+# Author::      Simone Carletti &amp;lt;weppos@weppos.net&amp;gt;
+# Copyright::   2007-2010 The Authors
+# License::     MIT License
+# Link::        http://www.simonecarletti.com/
+# Source::      http://gist.github.com/2769
+#
+#
+# == Requirements
+#
+# This extension requires the original &amp;lt;tt&amp;gt;config/database.yml&amp;lt;/tt&amp;gt; to be excluded
+# from source code checkout. You can easily accomplish this by renaming
+# the file (for example to database.example.yml) and appending &amp;lt;tt&amp;gt;database.yml&amp;lt;/tt&amp;gt;
+# value to your SCM ignore list.
+#
+#   # Example for Subversion
+#
+#   $ svn mv config/database.yml config/database.example.yml
+#   $ svn propset svn:ignore &#39;database.yml&#39; config
+#
+#   # Example for Git
+#
+#   $ git mv config/database.yml config/database.example.yml
+#   $ echo &#39;config/database.yml&#39; &amp;gt;&amp;gt; .gitignore
+#
+#
+# == Usage
+#
+# Include this file in your &amp;lt;tt&amp;gt;deploy.rb&amp;lt;/tt&amp;gt; configuration file.
+# Assuming you saved this recipe as capistrano_database_yml.rb:
+#
+#   require &amp;quot;capistrano_database_yml&amp;quot;
+#
+# Now, when &amp;lt;tt&amp;gt;deploy:setup&amp;lt;/tt&amp;gt; is called, this script will automatically
+# create the &amp;lt;tt&amp;gt;database.yml&amp;lt;/tt&amp;gt; file in the shared folder.
+# Each time you run a deploy, this script will also create a symlink
+# from your application &amp;lt;tt&amp;gt;config/database.yml&amp;lt;/tt&amp;gt; pointing to the shared configuration file.
+#
+# === Password prompt
+#
+# For security reasons, in the example below the password is not
+# hard coded (or stored in a variable) but asked on setup.
+# I don&#39;t like to store passwords in files under version control
+# because they will live forever in your history.
+# This is why I use the Capistrano::CLI utility.
+#
+
+unless Capistrano::Configuration.respond_to?(:instance)
+  abort &amp;quot;This extension requires Capistrano 2&amp;quot;
+end
+
+Capistrano::Configuration.instance.load do
+
+  namespace :deploy do
+
+    namespace :db do
+
+      desc &amp;lt;&amp;lt;-DESC
+        Creates the database.yml configuration file in shared path.
+
+        When this recipe is loaded, db:setup is automatically configured \
+        to be invoked after deploy:setup. You can skip this task setting \
+        the variable :skip_db_setup to true. This is especially useful \
+        if you are using this recipe in combination with \
+        capistrano-ext/multistaging to avoid multiple db:setup calls \
+        when running deploy:setup for all stages one by one.
+      DESC
+      task :setup, :except =&amp;gt; { :no_release =&amp;gt; true } do
+
+#        default_template = &amp;lt;&amp;lt;-EOF
+#          base: &amp;amp;base
+#            adapter: postgresql
+#            username: #{Capistrano::CLI.ui.ask(&amp;quot;Enter database username: &amp;quot;)}
+#            password: #{Capistrano::CLI.password_prompt(&amp;quot;Enter database password: &amp;quot;)}
+#            pool: 5
+#          development:
+#            database: lahaswork_development
+#            &amp;lt;&amp;lt;: *base
+#          test:
+#            database: lohaswork_test
+#            &amp;lt;&amp;lt;: *base
+#          production:
+#            database: lohaswork_production
+#            &amp;lt;&amp;lt;: *base
+#        EOF
+
+        default_template = &amp;lt;&amp;lt;-EOF
+          base: &amp;amp;base
+            adapter: mysql2
+            encoding: utf8
+            hostname: localhost
+            username: #{Capistrano::CLI.ui.ask(&amp;quot;Enter database username: &amp;quot;)}
+            password: #{Capistrano::CLI.password_prompt(&amp;quot;Enter database password: &amp;quot;)}
+            pool: 5
+          development:
+            database: lahaswork_development
+            &amp;lt;&amp;lt;: *base
+          test:
+            database: lohaswork_test
+            &amp;lt;&amp;lt;: *base
+          production:
+            database: lohaswork_production
+            &amp;lt;&amp;lt;: *base
+        EOF
+
+        location = fetch(:template_dir, &amp;quot;config/deploy&amp;quot;) + &#39;/database.yml.erb&#39;
+        template = File.file?(location) ? File.read(location) : default_template
+
+        config = ERB.new(template)
+
+        run &amp;quot;mkdir -p #{shared_path}/db&amp;quot;
+        run &amp;quot;mkdir -p #{shared_path}/config&amp;quot;
+        run &amp;quot;chmod g+rx,u+rwx #{shared_path}/config&amp;quot;
+        put config.result(binding), &amp;quot;#{shared_path}/config/database.yml&amp;quot;
+      end
+
+      desc &amp;lt;&amp;lt;-DESC
+        [internal] Updates the symlink for database.yml file to the just deployed release.
+      DESC
+      task :symlink, :except =&amp;gt; { :no_release =&amp;gt; true } do
+        run &amp;quot;ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml&amp;quot;
+      end
+
+    end
+
+    after &amp;quot;deploy:setup&amp;quot;,           &amp;quot;deploy:db:setup&amp;quot;   unless fetch(:skip_db_setup, false)
+    after &amp;quot;deploy:finalize_update&amp;quot;, &amp;quot;deploy:db:symlink&amp;quot;
+
+  end
+
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;configru&#34;&gt;config.ru&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# This file is used by Rack-based servers to start the application.
+
+require &#39;unicorn/oob_gc&#39;
+require &#39;unicorn/worker_killer&#39;
+
+#每10次请求，才执行一次GC
+use Unicorn::OobGC, 10
+
+#设定最大请求次数后自杀，避免禁止GC带来的内存泄漏（3072～4096之间随机，避免同时多个进程同时自杀，可以和下面的设定任选）
+use Unicorn::WorkerKiller::MaxRequests, 3072, 4096
+
+#设定达到最大内存后自杀，避免禁止GC带来的内存泄漏（192～256MB之间随机，避免同时多个进程同时自杀）
+use Unicorn::WorkerKiller::Oom, (192*(1024**2)), (256*(1024**2))
+
+require ::File.expand_path(&#39;../config/environment&#39;,  __FILE__)
+run LohasWorkCom::Application
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>How to Write a Simple Rails Assets Plugin</title>
+      <link>/posts/2014-09-12-how-to-write-a-rails-asset-plugin/</link>
+      <pubDate>Fri, 12 Sep 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-09-12-how-to-write-a-rails-asset-plugin/</guid>
+      <description>&lt;p&gt;这里有一个 &lt;a href=&#34;http://guides.rubyonrails.org/plugins.html&#34;&gt;如何编写Rails Plugins&lt;/a&gt; 的官方教程。 但是由于 Assets 方面的gem都是简单的Css和Javascript内容，所以可以直接使用bundler 来创建。&lt;/p&gt;
+&lt;p&gt;前不久刚写了一个关于页面滚动至顶部的Gem, &lt;a href=&#34;http://rubygems.org/gems/scroll-up&#34;&gt;scroll-up&lt;/a&gt;。下面我会讲解这个Gem编写的大致步骤。&lt;/p&gt;
+&lt;h4 id=&#34;第一步-使用-bundler-生成gem模版&#34;&gt;第一步： 使用 bundler 生成Gem模版&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;bundle gem scroll-up
+```}
+
+#### 第二步：配置 .gemspec 文件
+
+主要是添加这个gem的描述说明，以及作者信息。更多参数的意义可以参见 [http://guides.rubygems.org/specification-reference/](http://guides.rubygems.org/specification-reference/) 。
+
+#### 第三步：继承 Rails::Engine
+
+其实 Rails Plugins 都是继承于 ::Rails::Engine， 一般情况下 大家都会把这部分逻辑放在 engine.rb 这个文件中. 为了防止Gem之间的冲突，我们往往又会添加一个 Namespace, 例如：
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;libscroll-upenginerb&#34;&gt;lib/scroll-up/engine.rb&lt;/h1&gt;
+&lt;p&gt;module ScrollUp
+class Engine &amp;lt; ::Rails::Engine
+end
+end&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+#### 第四步：Require Engine
+
+因为Rails 的 bundle require 会自动加载 Gem 的 lib 目录下的所有 ＊.rb 文件，所以我们只要将 require 逻辑放在 lib 根目录任意一个 rb 文件中即可。例如：
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;libscroll-uprb&#34;&gt;lib/scroll-up.rb&lt;/h1&gt;
+&lt;p&gt;require &amp;lsquo;scroll-up/engine&amp;rsquo;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+#### 第五步：添加 Aseets 内容
+
+Aseets 内容一般按照Rails默认的目录结构即可，scroll-up 是放在 app/assets 里面的：
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;// app/assets/javascripts/scroll-up.js&lt;/p&gt;
+&lt;p&gt;$(document).ready(function(){&lt;/p&gt;
+&lt;p&gt;var scrollUp = function() {&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Get link
+var link = $(&#39;#scrollUp&#39;);
+
+$(window).scroll(function() {
+  // If the user scrolled a bit (150 pixels) show the link
+  if ($(this).scrollTop() &amp;gt; 150) {
+    link.fadeIn(100);
+  } else {
+    link.fadeOut(100);
+  }
+});
+
+// On click get to top
+link.click(function() {
+  $(&#39;html, body&#39;).animate({scrollTop: 0}, 200);
+  return false;
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;};&lt;/p&gt;
+&lt;p&gt;scrollUp();
+}); // end document ready wrap&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;// app/assets/stylesheets/scroll-up.css
+#scrollUp {
+position: fixed;
+display: none;
+background-color: #777;
+color: #eee;
+font-size: 40px;
+line-height: 1;
+text-align: center;
+text-decoration: none;
+bottom: 20px;
+right: 20px;
+overflow: hidden;
+width: 46px;
+height: 46px;
+border: none;
+opacity: .8;
+}&lt;/p&gt;
+&lt;p&gt;#scrollUp:hover{
+color: #eee;
+background-color: #222;
+}&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+#### 第六步：Build Gem
+
+在 Gem 根目录执行:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;gem build scroll-up.gemspec&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+#### 第七步：Publish Gem
+
+在 Gem 根目录执行:
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;gem push scroll-up-xxx.gem&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;待 push 成功后，你就可以上 rubygems.org 这个网站去搜索自己的 Gem 了。
+
+
+&amp;gt; 小提示：
+使用 gem yank 命令可以删除已发布了的特定 gem 版本。例如：
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;gem yank scroll-up -v 0.0.3&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Ruby 2.1 新特性</title>
+      <link>/posts/2014-08-31-ruby-2-dot-1-xin-te-xing/</link>
+      <pubDate>Sun, 31 Aug 2014 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-08-31-ruby-2-dot-1-xin-te-xing/</guid>
+      <description>&lt;p&gt;原文链接 &lt;a href=&#34;http://rkh.im/ruby-2.1&#34;&gt;Ruby 2.1&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;昨天 Ruby 2.1 第一个预览版 &lt;a href=&#34;https://www.ruby-lang.org/en/news/2013/09/23/ruby-2-1-0-preview1-is-released/&#34;&gt;发布了&lt;/a&gt;。 发布注意事项已经给出了所有的变化，但是它并没有详细的描述。如果想一一搞明白这些改变是什么意思的话，你可以尝试花费一些时间在 Ruby 问题跟踪列表里面。既然我已经知道了大部分的改变，我想我有必要在这里写个简要。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;很显然， Ruby 2.1 包含了 Ruby 2.0 所有的新特性，所以，2.0 的特性在这里就不一一赘述。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;refinements&#34;&gt;Refinements&lt;/h4&gt;
+&lt;p&gt;Refinements 其实早在 Ruby 2.0 就已经有了，但是当时由于它引发了比较大的争议，所以他们减少了功能，添加了警告，并将这个特性标记为实验性质。&lt;/p&gt;
+&lt;p&gt;Refinements 允许你的猴子补丁只作用于单个 Ruby 文件:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;module Foo
+  refine String do
+    def foo
+      self + &amp;quot;foo&amp;quot;
+    end
+  end
+end
+
+using Foo
+puts &amp;quot;bar&amp;quot;.foo
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;超出了这个文件作用范围， &lt;code&gt;String&lt;/code&gt; 将不再有 &lt;code&gt;foo&lt;/code&gt; 这个方法了。&lt;/p&gt;
+&lt;p&gt;Ruby 2.1， Refinements 不再是实验性的了，并且也不会产生警告了, 另外还有几个小的调整使他变得更可用了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;module Foo
+  refine String do
+    def foo
+      self + &amp;quot;foo&amp;quot;
+    end
+  end
+end
+
+module Bar
+  using Foo
+  puts &amp;quot;bar&amp;quot;.foo
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;请注意, 过度使用 refinements 会导致代码混乱，Ruby 的开发者们都明确说过他们也没有办法解决这个问题，所以切忌滥用。&lt;/p&gt;
+&lt;h4 id=&#34;十进制精度计算&#34;&gt;十进制精度计算&lt;/h4&gt;
+&lt;p&gt;你可能已经知道，到目前为止，完全保证十进制小数计算结果的精度还是一种梦想。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;irb(main):001:0&amp;gt; 0.1 * 3
+=&amp;gt; 0.30000000000000004
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;许多 Ruby 开发者们使用整数来解决上述问题，但是你不要忘了，这种方法只适用于小数位数固定的情况，假如小数精度无法固定的话， 你将不得不使用有理数来处理了。有理数并不糟糕，只是他们没有一个漂亮的语法罢了（简短的改变在返回Integer进行#/的数值的时候）&lt;/p&gt;
+&lt;p&gt;Ruby 2.1 提供了 &lt;code&gt;r&lt;/code&gt; 这个后缀来解决十进制有理数精度固定计算的问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;irb(main):001:0&amp;gt; 0.1r
+=&amp;gt; (1/10)
+irb(main):002:0&amp;gt; 0.1r * 3
+=&amp;gt; (3/10)
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;字符串freeze优化&#34;&gt;字符串#freeze优化&lt;/h4&gt;
+&lt;p&gt;当你的代码中有一个字符串，程序每次运行到这一行的时候， Ruby 都将创建一个新的字符串。 这很可能发生， 因为字符串在 Ruby 中是可变的。 这就是为什么 &lt;code&gt;symbols&lt;/code&gt; 在很多情况下更高效的缘故。然而， &lt;code&gt;symbols&lt;/code&gt; 并不是字符串。 例如，如果你想对用户的输入和一个 &lt;code&gt;symbol&lt;/code&gt; 进行比较 ， 你要么必须将 &lt;code&gt;symbol&lt;/code&gt; 转化为字符串，或者将字符串转化为 &lt;code&gt;symbol&lt;/code&gt;。这意味着你要么开打了自己的拒绝服务攻击，而且 &lt;code&gt;symbol&lt;/code&gt; 是不被系统垃圾回收的，要么你又添加了一个额外的字符串。&lt;/p&gt;
+&lt;p&gt;使用 &lt;code&gt;symbols&lt;/code&gt; 的字符串的插值问题还是会创建一个新的字符串，同样如此，往socket里面写一个 &lt;code&gt;symbol&lt;/code&gt; 也是一样的结果，这样的例子数不胜数。&lt;/p&gt;
+&lt;p&gt;解决这个问题的办法就是将字符串存储在一个常量里面，并且以后都使用常量来代替。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Foo
+  BAR = &amp;quot;bar&amp;quot;
+
+  def bar?(input)
+    input == BAR
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;现在，为了解决字符串可变的问题，很多时候，你不得不冻结这个字符串(虽然这个可以防止改变，但是它并没有带来多少性能上的提升)。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; class Foo
+  BAR = &amp;quot;bar&amp;quot;.freeze
+
+  def bar?(input)
+    input == BAR
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个变得有点乏味了。 幸运的是，Ruby 2.1 提供了一个语法来处理这种事情：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Foo
+  def bar?(input)
+    input == &amp;quot;bar&amp;quot;f
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;它将创建一个冻结的字符串，并且会重复使用，无论代码执行多少次。&lt;/p&gt;
+&lt;p&gt;如果你的代码品味和我差不多的话，你可能会觉得这个语法看起来太奇怪，太像上面提到的十进制数的语法了。 我发现这里有一个绝招，可以让它看起来更舒服：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Foo
+  def bar?(input)
+    input == %q{bar}f
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这里有一个 &lt;a href=&#34;https://bugs.ruby-lang.org/issues/8909&#34;&gt;issue&lt;/a&gt; 建议将这个语法扩展到数组和 Hash 里面去。我更加喜欢 &lt;a href=&#34;https://charlie.bz/&#34;&gt;Charlie Somerville&lt;/a&gt; 提交的补丁和建议的语法。&lt;/p&gt;
+&lt;h4 id=&#34;必须的关键字参数&#34;&gt;必须的关键字参数&lt;/h4&gt;
+&lt;p&gt;由于某种原因，它并没有在发布公告里面被提到。&lt;/p&gt;
+&lt;p&gt;Ruby 2.0 是这样介绍关键字参数：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def foo(a: 10)
+  puts a
+end
+
+foo(a: 20) # 20
+foo        # 10
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然而， 这种方式的关键字参数需要一个默认值。 在 Ruby 2.1 中，你现在可以这样使用关键字参数：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def foo(a:)
+  puts a
+end
+
+foo(a: 20) # 20
+foo        # ArgumentError: missing keyword: a
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;方法定义将返回方法的名字&#34;&gt;方法定义将返回方法的名字&lt;/h4&gt;
+&lt;p&gt;在以前的 Ruby 版本中， 通过 &lt;code&gt;def&lt;/code&gt; 定义方法将返回 &lt;code&gt;nil&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def foo ; end # =&amp;gt; nil
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在 Ruby 2.1 中， 它将以 &lt;code&gt;symbol&lt;/code&gt; 的形式返回方法名字：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def foo ; end # =&amp;gt; :foo
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个在元编程或者写其他整洁代码中非常有用。例如， 你是否知道 &lt;code&gt;private&lt;/code&gt; 方法也可以传入参数呢？&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 只有foo这个方法是私有的
+class Foo
+  def foo
+  end
+
+  private :foo
+
+  # bar 这个方法并不受影响
+  def bar
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我在 &lt;a href=&#34;https://github.com/rkh/mustermann&#34;&gt;mustermann&lt;/a&gt; 中大量使用了这种方式。&lt;/p&gt;
+&lt;p&gt;现在， &lt;code&gt;def&lt;/code&gt; 返回方法的名字，这就意味着我们可以使一个实例方法私有:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 只有 foo 和 bar 这两个方法是私有
+class Foo
+  private def foo
+  end
+
+  private \
+  def bar
+  end
+
+  def baz
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我已经创建了一个&lt;a href=&#34;https://bugs.ruby-lang.org/issues/8947&#34;&gt;问题&lt;/a&gt;，扩大这一行为到其他地方。&lt;/p&gt;
+&lt;h4 id=&#34;从字符串中删除垃圾字符&#34;&gt;从字符串中删除垃圾字符&lt;/h4&gt;
+&lt;p&gt;Ruby 现在提供了非常方便从字符串中删除垃圾字符的方法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;some_string.scrub(&amp;quot;&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这完全有必要让 Ruby 自己处理这个问题，我曾经为了解决这个问题，还专门写了一个&lt;a href=&#34;https://github.com/rkh/coder&#34;&gt;库&lt;/a&gt;.&lt;/p&gt;
+&lt;h4 id=&#34;字符扫描支持命名捕获&#34;&gt;字符扫描支持命名捕获&lt;/h4&gt;
+&lt;p&gt;标准库中的字符扫描真好用。事实上， Rails 用它来解析路由的参数， Sinatra 2.0 也是如此。可以参考 Aaron&amp;rsquo;s tutorial 的教程 &lt;a href=&#34;https://practicingruby.com/articles/parsing-json-the-hard-way?u=90296723ac&#34;&gt;practicingruby.com&lt;/a&gt; 。&lt;/p&gt;
+&lt;p&gt;Ruby 1.9 中介绍了在正则表达式中进行命名捕获，但是字符扫描还不支持：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;require &#39;strscan&#39;
+s = StringScanner.new(&amp;quot;foo&amp;quot;)
+s.scan(/(?&amp;lt;bar&amp;gt;.*)/)
+puts s[:bar]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在 Ruby 2.0 上执行结果是：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;TypeError: no implicit conversion of Symbol into Integer
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Ruby 2.1 是：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;foo
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;实际上这个补丁是我提交的,（我以前用的 &lt;code&gt;goto&lt;/code&gt;, 我的天啊）&lt;/p&gt;
+&lt;h4 id=&#34;访问网络接口&#34;&gt;访问网络接口&lt;/h4&gt;
+&lt;p&gt;现在你可以通过 &lt;code&gt;Socket.getifaddrs:&lt;/code&gt; 访问网络接口了:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;require &#39;socket&#39;
+
+Socket.getifaddrs.each do |i|
+  puts &amp;quot;#{i.name}: #{i.addr.ip_address}&amp;quot; if i.addr.ip?
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;运行以上代码，在我的电脑上打印结果：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;lo0: fe80::1%lo0
+lo0: 127.0.0.1
+lo0: ::1
+en0: fe80::1240:f3ff:fe7e:594e%en0
+en0: 192.168.178.30
+en2: fe80::3e07:54ff:fe6f:147a%en2
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;更快数字运算&#34;&gt;更快数字运算&lt;/h4&gt;
+&lt;p&gt;Ruby 2.1 现在在大数字计算的方面，速度更快了，因为它的大整数扩展到了128位，而且还使用GNU的多进度运算库得到额外的性能提升。&lt;/p&gt;
+&lt;h4 id=&#34;虚拟机调整&#34;&gt;虚拟机调整&lt;/h4&gt;
+&lt;p&gt;底层虚拟机不再使用全局方法缓存, 取而代之的是细粒度方法缓存 , 如果你对这个感兴趣，可以看看我曾经的&lt;a href=&#34;https://speakerdeck.com/rkh/aloha-ruby-conf-2012-message-in-a-bottle&#34;&gt;一个演讲&lt;/a&gt;。&lt;/p&gt;
+&lt;h4 id=&#34;rgengc&#34;&gt;RGenGC&lt;/h4&gt;
+&lt;p&gt;Ruby 2.1添加了一个“受限的”分代收集器, 标记时间更短，大大减少了垃圾回收的耗时。&lt;/p&gt;
+&lt;p&gt;如果还是像以前那样， 这是很难更改的，因为Ruby的内部/外部C API的缘故。然而， 在 Ruby 2.1 中，将对像分为受写屏障保护的对象和非保护的对象，只有受保护对象能够被提升为老生代，（这一点在RGenGC中是严格限定的）。Koichi Sasada 在 &lt;a href=&#34;http://rubykaigi.org/2013/talk/S73&#34;&gt;RubyKaigi&lt;/a&gt; 和 &lt;a href=&#34;http://www.ustream.tv/recorded/35107339/highlight/377033&#34;&gt;Euruko&lt;/a&gt; 有一个关于这个的讨论.&lt;/p&gt;
+&lt;h4 id=&#34;升级rubygems&#34;&gt;升级RubyGems&lt;/h4&gt;
+&lt;p&gt;RubyGems 已经升级到 2.2.0， 它带来了 &lt;a href=&#34;https://github.com/rubygems/rubygems/blob/master/History.txt&#34;&gt;一些小的改变&lt;/a&gt; 。&lt;/p&gt;
+&lt;h4 id=&#34;仅仅是个预览&#34;&gt;仅仅是个预览&lt;/h4&gt;
+&lt;p&gt;请记住，昨天发布的版本只是个预览版，以上提到的只是一些改变。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;参考资料：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.oschina.net/translate/ruby-2-1-in-detail&#34;&gt;http://www.oschina.net/translate/ruby-2-1-in-detail&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.oschina.net/translate/ruby21-rgengc&#34;&gt;http://www.oschina.net/translate/ruby21-rgengc&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Rails 4.2 中很少有人知道的特性</title>
+      <link>/posts/2014-08-31-rails4-dot-2zhong-hen-shao-you-ren-zhi-dao-de-te-xing/</link>
+      <pubDate>Sun, 31 Aug 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-08-31-rails4-dot-2zhong-hen-shao-you-ren-zhi-dao-de-te-xing/</guid>
+      <description>&lt;p&gt;原文链接 &lt;a href=&#34;http://www.justinweiss.com/blog/2014/08/25/the-lesser-known-features-in-rails-4-dot-2/&#34;&gt;The Lesser-known Features in Rails 4.2&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://weblog.rubyonrails.org/2014/8/20/Rails-4-2-beta1/&#34;&gt;Rails 4.2 的第一个beta版本&lt;/a&gt;于上周发布了，这次引入的新的特性真的太酷了。想到马上就要在我的项目中使用 ActiveJob, Web Console, Adequate Record, 以及 Foreign Key support, 不免兴奋起来。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;但是Rails最美丽的地方是它的细节。&lt;/strong&gt; 如果多一点的挖掘，你可能会发现一些很少有人提到但却有可能极大提升你开发效率的新特性。&lt;/p&gt;
+&lt;p&gt;####更简单的配置文件加载&lt;/p&gt;
+&lt;p&gt;好了，可能我&lt;a href=&#34;http://www.justinweiss.com/blog/2014/05/27/using-a-little-bit-of-convenience-to-save-your-programming-flow/&#34;&gt;有些偏见&lt;/a&gt;。 但是拥有一个内置的配置文件加载将会变得更好！&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;config_for&lt;/code&gt;, 一个 Rails 4.2 的新特性，和你想的它的作用一样：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#config/redis.yml
+development:
+  host: localhost
+  port: 6379
+test:
+  host: localhost
+  port: 6379
+production:
+  host: redis-production
+  port: 6379
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;irb(main):001:0&amp;gt; Rails.application.config_for(:redis)
+=&amp;gt; {&amp;quot;host&amp;quot;=&amp;gt;&amp;quot;localhost&amp;quot;, &amp;quot;port&amp;quot;=&amp;gt;6379}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;也就是说， 如果你调用&lt;code&gt;config_for(:redis)&lt;/code&gt;, 它将自动查找Rails项目中的&lt;code&gt;config/redis.yml&lt;/code&gt; 文件，解析，并正确返回当前&lt;code&gt;RAILS_ENV&lt;/code&gt;下的配置信息。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;它甚至可以让你在ymal中直接写ERB&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#config/redis.yml
+development:
+  host: localhost
+  port: &amp;lt;%= ENV[&#39;REDIS_PORT&#39;] %&amp;gt;
+test:
+  host: localhost
+  port: &amp;lt;%= ENV[&#39;REDIS_PORT&#39;] %&amp;gt;
+production:
+  host: redis-production
+  port: &amp;lt;%= ENV[&#39;REDIS_PORT&#39;] %&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;$ REDIS_PORT=6380 bin/rails c
+Loading development environment (Rails 4.2.0.beta1)
+irb(main):001:0&amp;gt;  Rails.application.config_for(:redis)
+=&amp;gt; {&amp;quot;host&amp;quot;=&amp;gt;&amp;quot;localhost&amp;quot;, &amp;quot;port&amp;quot;=&amp;gt;6380}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果你的项目有很多服务的配置信息，这有助于提高你的初始化配置信息的可读性。&lt;/p&gt;
+&lt;h4 id=&#34;项目启动&#34;&gt;项目启动&lt;/h4&gt;
+&lt;p&gt;大多数 Rails 项目在你启动他们之前，都需要你&lt;a href=&#34;https://github.com/justinweiss/dgs_push_server/blob/master/setup.sh&#34;&gt;执行一些命令&lt;/a&gt;， 即使那些空的Rails项目至少也会让你设置数据库。&lt;/p&gt;
+&lt;p&gt;所以，Rails， 再次遵从了&lt;em&gt;约定大于配置&lt;/em&gt;的理念，创建了一个专门用于放置启动项目脚本的地方： &lt;code&gt;bin/setup&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/rails/rails/blob/master/railties/lib/rails/generators/rails/app/templates/bin/setup&#34;&gt;默认的启动脚本已经不错了&lt;/a&gt;。但是 &lt;code&gt;bin/setup&lt;/code&gt; 也是一个放置启动的代码的一个好地方。&lt;/p&gt;
+&lt;p&gt;所以，现在这已然成为了约定，&lt;strong&gt;如果你的项目已经有一个启动脚本，那么请将它改名为 &lt;code&gt;bin/setup&lt;/code&gt;&lt;/strong&gt; ； 如此，人们在使用你的项目的时候将变得更加简单。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;bin/setup&lt;/code&gt; 能够使我们达成共识，少一些无聊的猜测。当你养成了 &lt;code&gt;git pull&lt;/code&gt; 一个新项目后立马执行 &lt;code&gt;bin/setup&lt;/code&gt;的习惯, 你就可以直接抛弃 &lt;code&gt;rake db:setup&lt;/code&gt;
+等设置命令了， :smile: 。&lt;/p&gt;
+&lt;h4 id=&#34;变换-hash-的值&#34;&gt;变换 Hash 的值&lt;/h4&gt;
+&lt;p&gt;这是另外一个我非常希望Ruby能够自带的功能。&lt;strong&gt;当你在 Hash上调用 &lt;code&gt;transform_values&lt;/code&gt; , 它就像在 Hash 的 values 上调用了 &lt;code&gt;map&lt;/code&gt; 方法一样,返回一个新的 Hash ,这个 Hash 拥有和原来一样的 keys ,但是 values 却已经被替换了。&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;h = {a: 1, b: 2, c: 3}
+
+h.transform_values { |v| v * 2 } # =&amp;gt; {a: 2, b: 4, c: 6}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;够简单了吧, 但是你会惊讶为什么Rails会有这么多小的方便。&lt;/p&gt;
+&lt;h4 id=&#34;额外更多配置&#34;&gt;额外：更多配置&lt;/h4&gt;
+&lt;p&gt;Rails 4.2 提供了一种简单的方式来设置全局配置。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Rails.application.config.x.some_configuration_key = &amp;quot;Some Value&amp;quot;
+
+Rails.application.config.x.some_configuration_key # =&amp;gt; &amp;quot;Some Value&amp;quot;
+Rails.configuration.x.some_configuration_key # =&amp;gt; &amp;quot;Some Value&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果你结合&lt;code&gt;config_for&lt;/code&gt;， 它将工作的更好：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;app_config = Rails.application.config_for(:app)
+Rails.application.config.x.block_phone_calls = app_config[&amp;quot;block_phone_calls&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;更多&#34;&gt;更多&lt;/h4&gt;
+&lt;p&gt;Rails 4.2 将是一个令人兴奋的发布版本。但是那些小的改进确保了 Rails 每天都变得更好。所以如果你还不太了解，那请快速浏览一下 [4.2 发布注意](http://edgeguides. rubyonrails.org/4_2_release_notes.html), 你将发现更多非常有用的改变。&lt;/p&gt;
+&lt;p&gt;(如果你发现其他很酷的功能，请不要保密，在此分享，如此，我们将会学习到更多新的东西)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;P.S. 我正在写一本关于毫无压力学习 Rails的书籍，更多详情，请点击 &lt;a href=&#34;http://www.justinweiss.com/book/&#34;&gt;这里&lt;/a&gt; 。&lt;/strong&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How To Cross-Domain Post Data In Rails</title>
+      <link>/posts/2014-08-25-how-to-cross-domain-post-data-in-rails/</link>
+      <pubDate>Mon, 25 Aug 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-08-25-how-to-cross-domain-post-data-in-rails/</guid>
+      <description>&lt;p&gt;今天帮同事做了一个邮件订阅的功能，订阅功能本身并不复杂；但是由于订阅页面是放在GitHub Page上的，所以涉及到浏览器中跨域提交数据的问题。&lt;/p&gt;
+&lt;p&gt;这里我们大致可以将服务需求分为客户端和服务端。 客户端是一个Github静态页面，你可以通过 &lt;a href=&#34;http://votenotes.com/&#34;&gt;votenotes.com&lt;/a&gt; 访问；服务端是一个提供API调用的Rails。&lt;/p&gt;
+&lt;h5 id=&#34;1客户端代码-设置ajax请求参数crossdomain为true&#34;&gt;1、客户端代码, 设置Ajax请求参数crossDomain为true&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;$.ajax({
+  type: &#39;POST&#39;,
+  crossDomain: true, // sert crossDomain true
+  url: &#39;http://localhost:3000/sub_emails&#39;,
+  data: data ,
+  dataType: &#39;json&#39;,
+  success: function(responseData) {
+    //省略
+  }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;2修改rails-api代码去除token验证并设置-cors-access-header&#34;&gt;2、修改Rails API代码，去除token验证并设置 CORS ACCESS HEADER&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;class SubEmailsController &amp;lt; ApplicationController
+
+  skip_before_filter :verify_authenticity_token
+
+  before_filter :cors_preflight_check
+  after_filter :cors_set_access_control_headers
+
+  def create
+    SubEmail.create(email: params[:email])
+    render status: 200, json: { message: &amp;quot;Sub Successful&amp;quot; }
+  end
+
+  private
+
+  def cors_set_access_control_headers
+    headers[&#39;Access-Control-Allow-Origin&#39;] = &#39;*&#39;
+    headers[&#39;Access-Control-Allow-Methods&#39;] = &#39;POST, GET, PUT, DELETE, OPTIONS&#39;
+    headers[&#39;Access-Control-Allow-Headers&#39;] = &#39;Origin, Content-Type, Accept, Authorization, Token&#39;
+    headers[&#39;Access-Control-Max-Age&#39;] = &amp;quot;1728000&amp;quot;
+  end
+
+  def cors_preflight_check
+    if request.method == &#39;OPTIONS&#39;
+      headers[&#39;Access-Control-Allow-Origin&#39;] = &#39;*&#39;
+      headers[&#39;Access-Control-Allow-Methods&#39;] = &#39;POST, GET, PUT, DELETE, OPTIONS&#39;
+      headers[&#39;Access-Control-Allow-Headers&#39;] = &#39;X-Requested-With, X-Prototype-Version, Token&#39;
+      headers[&#39;Access-Control-Max-Age&#39;] = &#39;1728000&#39;
+
+      render :text =&amp;gt; &#39;&#39;, :content_type =&amp;gt; &#39;text/plain&#39;
+    end
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;至此，数据已经可以从http://votenotes.com/ 提交到 http://localhost:3000/sub_emails了，实现了跨站数据提交的功能。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;特别注意：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;以上代码中Api接口关闭了CSRF Token验证，所以很容易被人CSRF攻击。解决办法可以尝试采用约定协议通信，并对通信凭证签名加密的方式。不过由于本应用本身对数据要求不是很敏感，所以暂时不考虑了。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;延伸思考：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;以上实现方式，假如在完全解决了安全问题的情况下， 是否可以做到前后端分离呢？从而开发网站也就像做App一样，后端统一为一套Api接口了。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Rails with JSONP</title>
+      <link>/posts/2014-08-19-rails-with-jsonp/</link>
+      <pubDate>Tue, 19 Aug 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-08-19-rails-with-jsonp/</guid>
+      <description>&lt;p&gt;今天遇到一个AJAX跨站请求api的问题，出现问题的本质是浏览器出于安全原因，限制了Ajax跨域请求。那如何处理这个问题？经过搜索之后，决定采用JSONP的方式。如果你还不太了解JSONP，请&lt;a href=&#34;http://zh.wikipedia.org/wiki/JSONP&#34;&gt;点击这里&lt;/a&gt;。&lt;/p&gt;
+&lt;h4 id=&#34;jsonp在rails中的具体使用&#34;&gt;JSONP在Rails中的具体使用：&lt;/h4&gt;
+&lt;p&gt;1、 在子站的json请求中添加callback参数,并指定请求数据类型为jsonp。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  params = {dataType: &#39;jsonp&#39;}
+  url = &amp;quot;http://server2.com/api/search.json?callback=?&amp;quot;
+  $.getJSON(url, params).success (response) =&amp;gt;
+    #console.log response
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2、修改主站后端代码，使其支持JSONP.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  format.json {
+    items = [ {id: 1, name: &#39;hello&#39; } ]
+    if params[:callback]
+      render :json =&amp;gt; { items: items }, :callback =&amp;gt; params[:callback]
+    else
+      render :json =&amp;gt; { items: items }
+    end
+  }
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;至此，我们已经能够从主站拿到api数据了,从而解决了AJAX跨域的问题。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意：JSONP只能用于get请求，我们不能为了方便，使用JSONP来处理本该post的数据操作，这将带来很大的安全隐患。&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>A non-invasive way adding js logic codes to activeadmin</title>
+      <link>/posts/2014-08-12-add-js-logic-to-activeadmin/</link>
+      <pubDate>Tue, 12 Aug 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-08-12-add-js-logic-to-activeadmin/</guid>
+      <description>&lt;p&gt;我们公司系统的后台管理使用的是&lt;a href=&#34;http://www.activeadmin.info/&#34;&gt;activeadmin&lt;/a&gt;这个gem,关于它的基本使用可以参考这里&lt;a href=&#34;http://www.activeadmin.info/documentation.html&#34;&gt;官方文档&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;有时侯我们需要在activeadmin中实现一些比较酷的交互功能，例如表单select 改变的事件处理：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://i.picasion.com/pic78/e137e46d88e92bec17b9f643511d1412.gif&#34; alt=&#34;select 联动动图&#34;&gt;&lt;/p&gt;
+&lt;p&gt;假如要实现以上功能，而又不想通过直接修改model中的后端逻辑代码的方式，那我们该怎么做呢？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;答案就是采用纯js实现的方式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;1新建-active_adminfieldsformcoffee-文件&#34;&gt;1、新建 active_admin/fields/form.coffee 文件&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;fields 是因为这个代码是针对&lt;code&gt;field&lt;/code&gt;模型.&lt;/li&gt;
+&lt;li&gt;form.coffee是因为此功能只用在form表单处。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;2-修改adminfieldrb模型给form添加一个特定的seletor&#34;&gt;2、 修改admin/field.rb模型，给form添加一个特定的seletor&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;form :html =&amp;gt; { :class =&amp;gt; &amp;quot;field_form&amp;quot;} do |f|
+  f.inputs do
+    # 此处省略了部分代码
+  end
+  f.actions
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;通过 &lt;code&gt;:html =&amp;gt; { :class =&amp;gt; &amp;quot;field_form&amp;quot;}&lt;/code&gt; 给表单绑定了&lt;code&gt;field_form&lt;/code&gt; 的 class&lt;/p&gt;
+&lt;h4 id=&#34;3-修改active_adminfieldsformcoffee文件添加-js-逻辑代码&#34;&gt;3、 修改active_admin/fields/form.coffee文件，添加 js 逻辑代码&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# FieldFormHelper 类定义
+class FieldFormHelper
+
+  # 定义一组 selectors ui
+  ui:
+    option_list_li: &#39;#field_option_list_input&#39;
+    data_type_li: &#39;#field_data_type_input&#39;
+    field_data_type: &amp;quot;#field_data_type&amp;quot;
+
+  # 构造函数
+  constructor: (el) -&amp;gt;
+    @$el = $(el)
+
+    # 缓存住所有需要用到的jquery selector
+    @$option_list_li = @$el.find(@ui.option_list_li)
+    @$data_type_li = @$el.find(@ui.data_type_li)
+    @$field_data_type = @$el.find(@ui.field_data_type)
+
+    #Show or Hide the  option_list
+    @hideOrShowOptionList()
+
+    # select 改变事件绑定
+    @bindEvents()
+
+  bindEvents: -&amp;gt;
+    @$field_data_type.bind &#39;change&#39;,  =&amp;gt;
+      @hideOrShowOptionList()
+
+  hideOrShowOptionList: -&amp;gt;
+    # 根据select的数值去判断到底是显示还是隐藏
+    if @$field_data_type.find(&amp;quot;option:selected&amp;quot;).text() == &#39;Select&#39;
+      @$option_list_li.show()
+    else
+      @$option_list_li.hide()
+
+# 给每一个field_form 添加属于自己的helper对象
+$ -&amp;gt;
+  $(&#39;.field_form&#39;).each (_ , el) -&amp;gt;
+    new FieldFormHelper(el)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;4-在active_admincoffee-中加载刚写好的active_adminfieldsformcoffee文件&#34;&gt;4、 在active_admin.coffee 中加载刚写好的active_admin/fields/form.coffee文件&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;#= require active_admin/base
+#= require_tree ./active_admin/fields  #直接加载了整个fields文件夹
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;至此，通过js的方式，我们已经完成了上述功能的实现。&lt;/p&gt;
+&lt;p&gt;通过此方式，避免了直接修改后端代码。我认为这种方式处理简单，代码也更好维护，您不妨一试！&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Newrelic 让你的Rails子弹飞</title>
+      <link>/posts/2014-08-04-rails-zi-dan-fei/</link>
+      <pubDate>Mon, 04 Aug 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-08-04-rails-zi-dan-fei/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/zidanfei.png&#34; alt=&#34;子弹飞&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://newrelic.com&#34;&gt;Newrelic&lt;/a&gt;是一个web应用程序性能监控工具；它功能强大，界面友好，完全免费，好处多多，谁用谁知道（无耻的打了下广告）。&lt;/p&gt;
+&lt;p&gt;###Rails中安装Newrelic###&lt;/p&gt;
+&lt;p&gt;####1. 注册Newrelic账户####&lt;/p&gt;
+&lt;p&gt;Newrelic账户完全免费，请前往http://newrelic.com/ 注册吧。&lt;/p&gt;
+&lt;p&gt;####2. 新建监控应用，并生成license key，并下载自动生成的newrelic.yml ####&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/newrelic-setup-app.png&#34; alt=&#34;生成监控应用&#34;&gt;&lt;/p&gt;
+&lt;p&gt;####3. 使用bundler安装New Relic代理 ####&lt;/p&gt;
+&lt;p&gt;在gemfile文件添加：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gem &#39;newrelic_rpm&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;执行bundle:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;bundle install
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####4. copy下载的newrelic.yml到config/newrelic.yml####&lt;/p&gt;
+&lt;p&gt;修改newrelic.yml中&lt;code&gt;app_name:xxx&lt;/code&gt;这一样，将其修改为自己项目名称，这个名称会用于newrelic后台监控项目查询。&lt;/p&gt;
+&lt;p&gt;####5. 重新发布应用####&lt;/p&gt;
+&lt;p&gt;当网站重新发布后，进入newrelic的web后台，选择刚发布的应用，将看到类似统计图表：
+&lt;img src=&#34;/images/newrelic-chat.png&#34; alt=&#34;生成监控应用&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Newrelic的监控后台是实时的， 包含了Middleware和Database的监控，其图表显示的访问速度，对于网站优化很有意义，值得一试。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to use cancan in rails model?</title>
+      <link>/posts/2014-06-29-how-to-use-cancan-in-rails-model/</link>
+      <pubDate>Sun, 29 Jun 2014 14:38:38 +0800</pubDate>
+      
+      <guid>/posts/2014-06-29-how-to-use-cancan-in-rails-model/</guid>
+      <description>&lt;p&gt;There&amp;rsquo;s a wiki entry at github for this: &lt;a href=&#34;http://wiki.github.com/ryanb/cancan/ability-for-other-users&#34;&gt;http://wiki.github.com/ryanb/cancan/ability-for-other-users&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;You need to change your model:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class User &amp;lt; ActiveRecord::Base  
+  def ability
+    @ability ||= Ability.new(self)  
+  end  
+
+  delegate :can?, :cannot?, :to =&amp;gt; :ability
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Then you can check abilities like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;user.can?(:update,@article)
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>How to start active_admin with existing model</title>
+      <link>/posts/2014-04-03-how-to-start-active-admin-with-existing-model/</link>
+      <pubDate>Thu, 03 Apr 2014 11:20:20 +0800</pubDate>
+      
+      <guid>/posts/2014-04-03-how-to-start-active-admin-with-existing-model/</guid>
+      <description>&lt;p&gt;There is a User model, and we want all admins are from users. So the big problem is How to config active_admin to support User model.&lt;/p&gt;
+&lt;h4 id=&#34;step-1-migrate-table&#34;&gt;Step 1: Migrate table&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# ==&amp;gt; File: /db/migrate/xxxx_add_admin_to_users.rb
+
+def change
+  add_column :users, :admin, :boolean, :null =&amp;gt; false, :default =&amp;gt; false
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;step-2-reconfiguring-activeadmin&#34;&gt;Step 2: Reconfiguring ActiveAdmin&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# ==&amp;gt; File: config/initializers/active_admin.rb
+
+config.authentication_method = :authenticate_admin!
+config.current_user_method   = :current_user
+config.logout_link_path      = :destroy_user_session_path
+config.logout_link_method    = :delete
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;step-3-add-admin-authenticate-function&#34;&gt;Step 3: Add Admin Authenticate Function&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# ==&amp;gt; File: app/controllers/application_controller.rb
+
+def authenticate_admin!
+  unless current_user.admin
+    redirect_to root_path, :alert =&amp;gt; &amp;quot;Unauthorized Access!&amp;quot;
+  end
+end
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;step-4-reconfiguring-routes&#34;&gt;Step 4: Reconfiguring Routes&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;
+# ==&amp;gt; File: config/routes.rb
+
+ActiveAdmin.routes(self)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;step-5-routes-with-admin-namespace&#34;&gt;Step 5: Routes With Admin Namespace&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;
+# ==&amp;gt; File: config/routes.rb
+
+namespace :admin do
+  constraints AdminConstraint do
+    # mount Sidekiq::Web =&amp;gt; &#39;/sidekiq&#39;
+  end
+end
+
+
+# ===&amp;gt; config/initializers/admin_constraint.rb
+
+class AdminConstraint
+  def self.matches?(request)
+    current_user = request.env[&#39;warden&#39;].user
+    current_user &amp;amp;&amp;amp; current_user.admin?
+  end
+end
+
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Ordering null values last in thinking-sphinx</title>
+      <link>/posts/2014-04-02-ordering-null-values-last-in-thinking-sphinx/</link>
+      <pubDate>Wed, 02 Apr 2014 15:12:38 +0800</pubDate>
+      
+      <guid>/posts/2014-04-02-ordering-null-values-last-in-thinking-sphinx/</guid>
+      <description>&lt;p&gt;Sometimes , you want to order the records by some columns that should not be nil. that is if the ordered columns values is nil the record should list the last .&lt;/p&gt;
+&lt;p&gt;###How to deal with it by think-sphinx? ###&lt;/p&gt;
+&lt;h4 id=&#34;step-1-add-column-nil-index&#34;&gt;Step 1: Add column nil index&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;has &amp;quot;example IS NULL&amp;quot;, :as =&amp;gt; :example_nil, :type =&amp;gt; :boolean
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;step-2-order-by-example_nil&#34;&gt;Step 2: Order by &lt;em&gt;example_nil&lt;/em&gt;&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;sphinx_options[:order] = &amp;quot;example_nil  ASC, xxx&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;References:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/pat/thinking-sphinx/issues/737&#34;&gt;https://github.com/pat/thinking-sphinx/issues/737&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to solve the &#39;ERB unknown command psetex&#39; problem</title>
+      <link>/posts/2014-02-26-how-to-solve-the-err-unknown-command-psetex-problem/</link>
+      <pubDate>Wed, 26 Feb 2014 10:19:47 +0800</pubDate>
+      
+      <guid>/posts/2014-02-26-how-to-solve-the-err-unknown-command-psetex-problem/</guid>
+      <description>&lt;p&gt;After we upgraded sidekiq to the lastest version(v2.17.6) , we receive some error message.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;A Redis::CommandError occurred in background at 2014-02-25 09:17:55 UTC :
+ERR unknown command &#39;psetex&#39;
+.........
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;As you see the key word is &lt;strong&gt;psetex&lt;/strong&gt;. What is &lt;em&gt;psetex&lt;/em&gt;?&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;psetex&lt;/em&gt; is redis command, there is the &lt;a href=&#34;http://redis.io/commands/*psetex*&#34;&gt;official introduction&lt;/a&gt;. It point out &lt;em&gt;psetex&lt;/em&gt; is available since redis v2.6.0 。&lt;/p&gt;
+&lt;p&gt;I guess there is a redis version mistake in our server, i do a quickly check with command &lt;code&gt;redis-server -v&lt;/code&gt;.  As expected the redis version is 2.2.12, it is too low. we must upgrade it .&lt;/p&gt;
+&lt;p&gt;How to upgrade redis to the lattest stable verison?&lt;/p&gt;
+&lt;p&gt;A example with v2.8.6&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;wget http://download.redis.io/releases/redis-2.8.6.tar.gz
+tar vxzf redis-2.8.6.tar.gz
+cd redis-2.8.6
+make
+sudo make install
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;After upgraded redis to a version above 2.6, the problem had been solved.&lt;/p&gt;
+&lt;p&gt;Happy, Cheers!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to start postgresql with rails</title>
+      <link>/posts/2014-02-22-how-to-start-postgresql-with-rails/</link>
+      <pubDate>Sat, 22 Feb 2014 00:24:32 +0800</pubDate>
+      
+      <guid>/posts/2014-02-22-how-to-start-postgresql-with-rails/</guid>
+      <description>&lt;h4 id=&#34;step-1-install-postgresql-server-with-homebrew&#34;&gt;Step 1: Install postgresql server with homebrew&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;brew install postgresql
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;After installed, Typing &lt;code&gt;brew info postgresql&lt;/code&gt; in Terminal ,you will get some important infomation:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;postgresql: stable 9.3.2 (bottled)
+http://www.postgresql.org/
+Conflicts with: postgres-xc
+/usr/local/Cellar/postgresql/9.3.2 (2924 files, 39M) *
+  Poured from bottle
+From: https://github.com/Homebrew/homebrew/commits/master/Library/Formula/postgresql.rb
+==&amp;gt; Dependencies
+Required: readline ✔
+Recommended: ossp-uuid ✔
+==&amp;gt; Options
+--32-bit
+	Build 32-bit only
+--enable-dtrace
+	Build with DTrace support
+--no-perl
+	Build without Perl support
+--no-tcl
+	Build without Tcl support
+--without-ossp-uuid
+	Build without ossp-uuid support
+--without-python
+	Build without python support
+==&amp;gt; Caveats
+If builds of PostgreSQL 9 are failing and you have version 8.x installed,
+you may need to remove the previous version first. See:
+  https://github.com/Homebrew/homebrew/issues/issue/2510
+
+To migrate existing data from a previous major version (pre-9.3) of PostgreSQL, see:
+  http://www.postgresql.org/docs/9.3/static/upgrading.html
+
+When installing the postgres gem, including ARCHFLAGS is recommended:
+  ARCHFLAGS=&amp;quot;-arch x86_64&amp;quot; gem install pg
+
+To install gems without sudo, see the Homebrew wiki.
+
+To reload postgresql after an upgrade:
+    launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+    launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;step-2-install-pg-gem&#34;&gt;Step 2: Install pg gem&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;ARCHFLAGS=&amp;quot;-arch x86_64&amp;quot; gem install pg
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;if errors, just try:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ whitch pg_config
+  /usr/local/bin/pg_config
+$ gem install pg -- --with-pg-config=/usr/local/bin/pg_config
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>常用 gems 清单</title>
+      <link>/posts/2014-02-20-chang-yong-gemsqing-dan/</link>
+      <pubDate>Thu, 20 Feb 2014 13:38:46 +0800</pubDate>
+      
+      <guid>/posts/2014-02-20-chang-yong-gemsqing-dan/</guid>
+      <description>&lt;h4 id=&#34;what-are-awesome-gems&#34;&gt;What are awesome gems?&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/markets/awesome-ruby&#34;&gt;awesome-ruby&lt;/a&gt;: awesome rubygems list&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;what-are-used-in-my-work&#34;&gt;What are used in my work?&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/teambox/immortal&#34;&gt;immortal&lt;/a&gt;: 使用deleted来标识数据的删除。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Rails中 counter_cache 的使用</title>
+      <link>/posts/2014-01-22-railszhong-counter-cachede-yong/</link>
+      <pubDate>Wed, 22 Jan 2014 17:27:30 +0800</pubDate>
+      
+      <guid>/posts/2014-01-22-railszhong-counter-cachede-yong/</guid>
+      <description>&lt;p&gt;假设我们现在已经有了post和comment两个model:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#app/models/post.rb
+class Post &amp;lt; ActiveRecord::Base
+  has_many :comments,  dependent: :destroy
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;#app/models/comment.rb
+class Comment &amp;lt; ActiveRecord::Base
+  belongs_to :post
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;有这样一个需求：统计每个文章评论数。这里我们采用rails的&lt;code&gt;counter_cache&lt;/code&gt;来处理。&lt;/p&gt;
+&lt;p&gt;我们在以上基础一步一步地添加 rails 的 counter_cache 的使用。&lt;/p&gt;
+&lt;p&gt;1.在Post中添加一个&lt;strong&gt;comment_count&lt;/strong&gt;的字段来存储comments的数量,可以直接使用migration来处理:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;rails g migration add_comment_count_to_post comment_count:integer
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2.修改comment.rb文件，添加counter_cache的支持:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#app/models/comment.rb
+class Comment &amp;lt; ActiveRecord::Base
+  belongs_to :post, counter_cache: :comment_count
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;3.修改rspec测试用例:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#spec/models/post.rb
+context &amp;quot;comment_count&amp;quot; do
+  let(:post){create :post}
+  let(:comment1){ create :comment, :post =&amp;gt; post}
+
+  it &amp;quot;comment_count should +1&amp;quot; do
+    expect {
+        create :comment, :post =&amp;gt; post
+    }.to change{post.reload.comment_count}.by(1)
+  end
+
+  it &amp;quot;comment_count should -1&amp;quot; do
+    expect {
+       comment1.destroy
+    }.to change{post.reload.comment_count}.by(-1)
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;4.使用rake来处理历史数据:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#lib/tasks/set_post_comment_count.rake
+namespace :post do
+  desc &amp;quot;set post&#39;s comment count&amp;quot;
+  task :set_comment_count =&amp;gt; :environment do
+    Post.update_all :comment_count =&amp;gt; 0 #先清零
+    Post.find_each(batch_size: 5000) do |post|
+      Post.update_counters post.id, :comment_count =&amp;gt; post.comments.count
+    end
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;最后在在项目根目录执行&lt;code&gt;rake post:set_commnet_count&lt;/code&gt; .&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ubuntu &#43; Rails4 &#43; Postgresql9.3 初体验</title>
+      <link>/posts/2014-01-12-ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/</link>
+      <pubDate>Sun, 12 Jan 2014 15:40:03 +0800</pubDate>
+      
+      <guid>/posts/2014-01-12-ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;Postgresql9安装方法和步骤：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;####1. 在  /etc/apt/sources.list.d/pgdg.list 文件中添加源&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####2. 跟新软件源&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get update
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####3. 安装postgresql 9.3&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install postgresql-9.3
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####4. 添加用户&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo -u postgres psql postgres
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####5. 设置密码&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;\password postgres
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;Rails 相关配置&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;gem &#39;pg&#39;  #在gemfile中添加
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;修改database.yml&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# common config
+ common: &amp;amp;common
+   adapter: postgresql
+   encoding: utf8
+   pool: 10
+   username: postgres
+   password: password
+   host: localhost
+
+# development config
+ development:
+   database: kindergarten_development
+   &amp;lt;&amp;lt;: *common
+
+# test config
+ test:
+   database: kindergarten_test
+   &amp;lt;&amp;lt;: *common
+
+#production config
+ production:
+   &amp;lt;&amp;lt;: *common
+   database: kindergarten
+
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Rails4 &#43; Heroku 部署初体验 </title>
+      <link>/posts/2014-01-12-rails4-herokubu-shu-chu-ti-yan/</link>
+      <pubDate>Sun, 12 Jan 2014 15:22:23 +0800</pubDate>
+      
+      <guid>/posts/2014-01-12-rails4-herokubu-shu-chu-ti-yan/</guid>
+      <description>&lt;p&gt;想必做Rails 开发的很少有人不知道&lt;a href=&#34;heroku.com&#34;&gt;heroku&lt;/a&gt;的吧,它其实是一个pass平台。操作简单，文档齐全，唯一不好的就是国内访问速度比较慢（不过，人家是免费的哦）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Q&lt;/strong&gt; ： 到底使用heroku部署一个Rails 项目有多容易？&lt;br&gt;
+&lt;strong&gt;A&lt;/strong&gt; ： 真的太容易了.&lt;/p&gt;
+&lt;h3 id=&#34;1-注册heroku帐号&#34;&gt;1. 注册heroku帐号&lt;/h3&gt;
+&lt;h3 id=&#34;2-安装heroku-gem&#34;&gt;2. 安装heroku gem&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;gem install heroku
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;3-配置gemfile&#34;&gt;3. 配置Gemfile&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;group :production do
+	gem &#39;rails_12factor&#39;
+	gem &#39;pg&#39;
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;4-发布到heroku&#34;&gt;4. 发布到heroku&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;heroku login
+heroku create
+git add .
+git commit  -m  &amp;quot;for heroku&amp;quot;
+git push heroku master
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####5. heroku 一些常用命令&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;heroku run rake db:migrate
+heroku run rake db:seed
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;每个项目都会自动生成一个免费的亚马逊的postgresql数据库用户，可以到heroku 控制台查询。需要特别指出这里不需要执行db:create等命令，因为数据库已经存在，不然会报出权限相关的错误。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ubuntu&#43;Passager&#43;Nginx Rails 部署搭建</title>
+      <link>/posts/2014-01-12-ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/</link>
+      <pubDate>Sun, 12 Jan 2014 15:18:38 +0800</pubDate>
+      
+      <guid>/posts/2014-01-12-ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/</guid>
+      <description>&lt;p&gt;跟新软件源&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get update  .
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果升级报错，那么请执行sudo rm -rf /var/lib/apt/lists/* -vf 试试
+安装git&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install git-core
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安装curl&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install curl
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安装rvm&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;curl -L https://get.rvm.io | bash -s
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;获得最新稳定版rvm和安装ruby的依赖&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;rvm get stable
+rvm requirements
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安装所有rvm requirements依赖&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安装ruby&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;rvm install 2.0.0
+rvm use 2.0.0 default
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;升级gem并设置gem的配置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gem update
+echo -e &amp;quot;install: --no-rdoc --no-ri \ninstall: --no-rdoc --no-ri&amp;quot;&amp;gt;&amp;gt; ~/.gemrc
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安装Rials&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gem install rails --version 3.2.13
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安装Rails一些常见依赖&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install mysql-server mysql-client nodejs
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安装passager/nginx&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gem install passenger
+rvmsudo passenger-install-nginx-module
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;所有选项选择默认即可.
+nginx安装目录也选择默认 /opt/nginx/
+passenger 会自动修改config, 添加passenger所在的rvm的ruby和gem环境地址&lt;/p&gt;
+&lt;p&gt;安装nginx脚本&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;wget https://raw.github.com/gist/1548664/53f6d7ccb9dfc82a50c95e9f6e2e60dc59e4c2fb/nginx
+sudo cp nginx /etc/init.d/
+sudo chmod +x /etc/init.d/nginx
+sudo update-rc.d nginx defaults
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;配置nginx,文件在 /opt/nginx/config/nginx.conf&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;server {
+   listen 80;
+   server_name www.yourhost.com;
+   root /home/railsu/project/public;   # &amp;lt;--- 这里是你项目的public目录
+   passenger_enabled on;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;启动nginx&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo ./opt/nginx/sbin/nginx
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;重启项目&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd yourapp
+touch tmp/restart.txt
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Transform Hash Key Type In Rails</title>
+      <link>/posts/2014-01-12-transform-hash-key-type-in-rails/</link>
+      <pubDate>Sun, 12 Jan 2014 15:11:08 +0800</pubDate>
+      
+      <guid>/posts/2014-01-12-transform-hash-key-type-in-rails/</guid>
+      <description>&lt;p&gt;Symbol To String&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;foo &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+    &lt;span style=&#34;color:#e6db74&#34;&gt;:a&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;:b&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+}
+
+foo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;with_indifferent_access
+&lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt;
+{
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;a&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;b&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;String To Symbol&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-ruby&#34; data-lang=&#34;ruby&#34;&gt;foo &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;a&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;b&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+}
+
+foo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;symbolize_keys
+&lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt;
+{
+    &lt;span style=&#34;color:#e6db74&#34;&gt;:a&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;:b&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 Plupload 创建 TempImage</title>
+      <link>/posts/2014-01-11-shi-yong-pluploadchuang-jian-tempimage/</link>
+      <pubDate>Sat, 11 Jan 2014 19:57:14 +0800</pubDate>
+      
+      <guid>/posts/2014-01-11-shi-yong-pluploadchuang-jian-tempimage/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.plupload.com/&#34;&gt;Plupload&lt;/a&gt;是一款比较流行的文件上传插件，能够轻易实现多文本上传,拖拽上传等效果，而且兼容性比较好。&lt;/p&gt;
+&lt;p&gt;什么是TempImage?&lt;/p&gt;
+&lt;p&gt;通常我们会将Image作为一个多态的资源,然后有一些特定的图片继承于它, 比如 &lt;code&gt;MaterialImage&lt;/code&gt; (belongs_to Material).&lt;/p&gt;
+&lt;p&gt;假如Material在创建的时候需要上传一张图片，通常的做法是图片和表单数据一起上传。这样的做法有一个问题就是图片表单的提交会因为图片上传而耗费大量时间。&lt;/p&gt;
+&lt;p&gt;有什么办法可以解决这个问题呢？那就是采用TempImage的方式。具体而言就是先使用Plupload插件，异步将图片上传到后台，然后在表单中绑定新创建的图片的id即可。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; initialize_uploader: (options) -&amp;gt;
+
+    ## CSRF Tokens Into Hash
+    # Initialize a params hash
+    @params = {}
+    # Load csrf tokens from page
+    csrf_name = $(&amp;quot;meta[name=&#39;csrf-param&#39;]&amp;quot;)?.attr(&#39;content&#39;)
+    csrf_value = $(&amp;quot;meta[name=&#39;csrf-token&#39;]&amp;quot;)?.attr(&#39;content&#39;)
+    # Load csrf tokens into params hash
+    @params[csrf_name] = csrf_value
+
+    ## Default options for the uploader
+    options = $.extend(options, {
+      url: &amp;quot;/images.json?temp=true&amp;quot;
+      multipart_params: @params
+      label: &#39;&#39;
+      prompt: &#39;&#39;
+      chunk_size : &#39;1mb&#39;
+      browse_button: &#39;browser&#39;
+      unique_names : true
+      multi_selection : false  ＃single or multi select
+      max_file_size: &#39;10mb&#39;
+      filters: [{ title: __(&amp;quot;Image files&amp;quot;), extensions: &amp;quot;gif,png,jpg,jpeg,tiff&amp;quot;}]
+    })
+
+    ## Initialize a new uploader
+    @uploader = new plupload.Uploader(options)
+    @uploader.init()
+
+    # This is a simple uploader; bind file upload directly after choice
+    @uploader.bind &#39;FilesAdded&#39;, (uploader, files) -&amp;gt;
+      uploader.start()
+
+    # Once a file is uploaded, add the tempimage id to input
+    @uploader.bind &#39;FileUploaded&#39;, (uploader, file, response) =&amp;gt;
+      data = JSON.parse(response.response)?.image
+      @browser || = @$el.find(&amp;quot;#browser&amp;quot;)
+      @browser.attr(&#39;src&#39;,data.file_url)
+      @temp_image_input ||= @$el.find(&#39;#temp_image_id&#39;)
+      @temp_image_input.val(data.id)
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Rails 中的国际化解决方案</title>
+      <link>/posts/2014-01-11-railszhong-de-guo-ji-hua-jie-jue-fang-an/</link>
+      <pubDate>Sat, 11 Jan 2014 01:41:39 +0800</pubDate>
+      
+      <guid>/posts/2014-01-11-railszhong-de-guo-ji-hua-jie-jue-fang-an/</guid>
+      <description>&lt;p&gt;工作经常会在rails中遇到I18n的相关问题，目前为止，我所使用过的方案有两种，各自有各自的好处。&lt;/p&gt;
+&lt;p&gt;方案1: 使用rails官方自带的I18n，文档链接&lt;a href=&#34;http://guides.rubyonrails.org/i18n.html&#34;&gt;http://guides.rubyonrails.org/i18n.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;此方法主要使用了I18n这个Module,而I18n最为重要的两个方法是 &lt;strong&gt;translate&lt;/strong&gt;，&lt;strong&gt;localize&lt;/strong&gt;
+他们的使用十分简单，如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;I18n.t &#39;hello&#39;  =&amp;gt; &amp;quot;translation missing: xxx&amp;quot;
+I18n.l Time.now   =&amp;gt; &amp;quot;Tue, 12 Nov 2013 05:56:47 pm CST&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;日常国际化做翻译的时候，需要用到&lt;strong&gt;t&lt;/strong&gt;这个方法，如上。这个方法可以在直接使用，而不需要I18n来call.如果你的I18n.locale 没有对应的翻译，那么系统将显示 “translating missing: xxx”的字样。既然这样，你需要做的就是，将对应的翻译的字表（yml文件）事先写好，这样rails就会根据这个字表来做翻译。&lt;/p&gt;
+&lt;p&gt;具体操作：&lt;/p&gt;
+&lt;p&gt;配置翻译文件的路径&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# in config/initializers/locale.rb
+
+# tell the I18n library where to find your translations
+I18n.load_path += Dir[Rails.root.join(&#39;lib&#39;, &#39;locale&#39;, &#39;*.{rb,yml}&#39;)]
+
+# set default locale to something other than :en
+I18n.default_locale = :pt
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在对应配置路径下面补充对应的yml文件&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# config/locales/zh.yml
+zh-CN:
+  hello: 你好
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;通过以上设置，然后通过I18n.locale=&amp;quot;zh-CN&amp;rdquo; 将本地语言环境切换到中文环境，然后再调用t(&amp;lsquo;hello&amp;rsquo;),将显示“你好”。&lt;/p&gt;
+&lt;p&gt;采用官方自带的I18n，无需依赖其他gem, 从而代码维护成本低，版本依赖小，上手更容易，代码容易维护。不过这种方式的缺点也很明显，需要书写大量的yml,这样对于yml文件中的key的命名就很头痛，既要满足hash key的命名语法，又要解决翻译过多带来的命名冲突，所以无奈会引入命名空间，导致yml中key的结构层数太多，会出现很多冗余的翻译。&lt;/p&gt;
+&lt;p&gt;####方案2: 使用gettext来做翻译&lt;/p&gt;
+&lt;p&gt;1） 添加gem依赖&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#I18n support
+gem &#39;i18n&#39;
+gem &#39;rails-i18n&#39;
+gem &#39;gettext&#39;,  :require =&amp;gt; false, :group =&amp;gt; :development
+gem &amp;quot;gettext_i18n_rails&amp;quot;
+gem &#39;gettext_i18n_rails_js&#39;, github: &#39;songjiayang/gettext_i18n_rails_js&#39;
+gem &#39;ruby_parser&#39;, :require =&amp;gt; false, :group =&amp;gt; :development
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2）执行bundle install&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;在项目下建立一个locale/zh_CN的文件夹，其中zh_CN可以叫任意名字，它表示你要翻译的目标语言。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;执行 &lt;code&gt;rake -T &lt;/code&gt; 查看相关命令，命令包括&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;rake gettext:add_language LANGUAGE=xx
+rake gettext:find                    # Update pot/po files
+rake gettext:pack                    # Create mo-files for L10n
+rake gettext:po_to_json              # Convert PO files to js files in app/assets/locales
+rake gettext:store_model_attributes
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;新建config/initializers/fast_gettext.rb 文件，并配置如下&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;I18n.default_locale = :en
+FastGettext.add_text_domain &#39;app&#39;, :path =&amp;gt; &#39;locale&#39;, :type =&amp;gt; :po,
+                               :ignore_fuzzy =&amp;gt; true, :report_warning =&amp;gt; false
+FastGettext.default_available_locales = [&#39;en_US&#39;,&#39;zh_CN&#39;]  #all you want to allow
+FastGettext.default_text_domain = &#39;app&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;执行 &lt;code&gt;rake gettext:po_to_json&lt;/code&gt;，此命令会新建app/assets/javascripts/locale/&lt;!-- raw HTML omitted --&gt;/app.js文件。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;7）在application.js中引入gettext&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;//= require_tree ./locale
+//= require gettext/all
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;8&#34;&gt;
+&lt;li&gt;项目中添加I18n切换的操作,例如&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;class ApplicationController &amp;lt; ActionController::Base
+
+  protect_from_forgery with: :exception
+  before_filter :set_gettext_locale
+
+  protected
+    def set_gettext_locale
+      requested_locale = params[:locale] || session[:locale] || request.env[&#39;HTTP_ACCEPT_LANGUAGE&#39;] || I18n.default_locale
+      requested_locale = &#39;zh_CN&#39; if %w(zh zh-tw zh_tw).include?(requested_locale.downcase)
+      requested_locale = &#39;en_US&#39; if %w(en en-gb en_gb).include?(requested_locale.downcase)
+      locale = FastGettext.set_locale(requested_locale)
+      I18n.locale = locale
+      puts I18n.locale
+      session[:locale] = I18n.locale.to_s
+    end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;9&#34;&gt;
+&lt;li&gt;在页面中添加locale，例如在application.html.erb中添加&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;html lang = &amp;lt;%= &amp;quot;#{I18n.locale}&amp;quot;%&amp;gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;10&#34;&gt;
+&lt;li&gt;添加需要翻译的语句，并执行翻译&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;%=_(&#39;hello&#39;)%&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;console.log(__(&amp;quot;hello&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;执行 &lt;code&gt;rake gettext:find&lt;/code&gt; 分析需要翻译的语句，然后到locale/xxx/app.po文件中去执行翻译即可，翻译完毕后，需要执行&lt;code&gt;rake gettext:po_to_json&lt;/code&gt; 将翻译也复制一份到js当中去。&lt;/p&gt;
+&lt;p&gt;总结：至此大工告成，可以浏览器中访问 &lt;code&gt;http://localhost:3000/?locale=zh&lt;/code&gt; 测试了，这里有一个我写的例子&lt;a href=&#34;https://github.com/songjiayang/rails_i18n_example&#34;&gt;rails_i18n_example&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;参考资料：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/grosser/gettext_i18n_rails&#34;&gt;https://github.com/grosser/gettext_i18n_rails&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/nubis/gettext_i18n_rails_js&#34;&gt;https://github.com/nubis/gettext_i18n_rails_js&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

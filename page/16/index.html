@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta name="generator" content="Hugo 0.72.0" />
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>小鱼驿站 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="小鱼驿站" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="小鱼驿站"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <div class="homepage-content">
+        
+    </div>
+
+    
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-10-12-ru-he-pan-duan-ge-shu-zu-de-suo-you-yuan-su-shi-fou-du-zai-ling-wai-ge-shu-zu-zhong/">如何判断一个数组的所有元素是否都在另一个数组中</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        在昨天的工作中，遇到这样一个需求：
+ 如何判断一个数组是否完全被另外一个数组包含（一个数组的所有元素都出现在另外一个数组中）
+ 查看了Ruby基础库，没有发现可以用的方法。 （ 注： Array 的 include? 方法只能作用于单个元素）
+OK， 既然如此，我们可以自己实现类似的方法。
+第一种方式： 采用集合交集的思路，只需判断两个数组的交集是否等于待比较的数组。
+a1 = [1,2,3,4] a2 = [1,2,3] a1 &amp; a2 == a2 =&gt; true 以上代码，结果为true，表示 a1 包含 a2 ； 如果为 false，表示不包含。
+第二种方式： 使用数组之差来判断，需要使用待比较数组减去另外数组，判断结果是否为空。
+a1 = [1,2,3,4] a2 = [1,2,3] (a2-a1).empty? =&gt; true 以上代码，结果为true，表示 a1 包含 a2 ； 如果为 false，表示不包含。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-10-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/leetcode">#leetcode</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-10-09-zhuan-zai-zheng-ze-biao-da-shi-jian-ming-can-kao/">正则表达式简明参考</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        本文章转载于 http://www.xiaoleilu.com/regex-guide/ ,感谢作者的干货，以备日后查询检索之用，以下属于转载内容，版权归原作者。
+前言 我想在网上最出名的正则相关的一篇文章就是《正则表达式30分钟入门教程》了，说实话这篇文章确实是我的正则入门，但是随着使用熟练，冗长的文章已经不能满足我了，在此做个归纳总结，用于快速查阅。
+以下语法在Java中有效，大部分应该是通用的。
+元字符 元字符，又叫字符集，就是用一些特殊符号表示特定种类的字符或位置。
+匹配字符
+ . 匹配除换行符以外的任意字符 \w 匹配字母或数字或下划线或汉字 \s 匹配任意的空白符 \d 匹配数字  匹配位置
+ \b 匹配单词的开始或结束 ^ 匹配字符串的开始 $ 匹配字符串的结束 \G 上一个匹配的结尾（本次匹配开始） \A 字符串开头(类似^，但不受处理多行选项的影响) \Z 字符串结尾或行尾(不受处理多行选项的影响) \z 字符串结尾(类似$，但不受处理多行选项的影响)  重复
+ * 重复零次或更多次 + 重复一次或更多次 ? 重复零次或一次 {n} 重复n次 {n,} 重复n次或更多次 {n,m} 重复n到m次  字符转义 如果想匹配元字符本身或者正则中的一些特殊字符，使用\转义。例如匹配*这个字符则使用\*，匹配\这个字符，使用\\。
+需要转义的字符：$, (, ), *, +, ., [, ], ?, \, ^, {, }, |
+字符类 当需要匹配明确的字符或字符集合时候，就用到字符类。
+特殊字符
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-10-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%AD%A3%E5%88%99">#正则</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-10-04-how-to-disable-nginx-ip-visit/">How to disable nginx&#39;s ip visit</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        有时我们需要用户必须使用域名访问主机(及禁止IP访问)，只需简单修改下nginx配置即可：
+server { listen 80 default; return 404; # or 500 } 上面代码意思是nginx监听ip访问的80端口，然后直接返回404/500; 其中404和500会对应默认的html页面。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-10-04</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/nginx">#nginx</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-09-20-how-to-bootstrap-your-rails-server/">How to Bootstrap Your Rails App on a New Server</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        如何在一台全新新的主机 Rails 服务呢？ 有什么比较好的策略？ 有哪些问题需要我们注意？
+这篇文章转载于同事（小光）的经验总结，特在此分享。如果在你实践过程中，发现有部分内容过时，请告知一下，谢谢。
+0. Setup user for deployment # Install openssh-server sudo apt-get update sudo apt-get install openssh-server # This step may not required in Aliyun host # Setup deployment user sudo adduser deploy # Add a user for deployment sudo usermod -a -G sudo deploy #copy pub key to server ssh deploy@host 'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' &lt; ~/.ssh/id_rsa.pub cd /etc/ssh sudo vi sshd_config # modify sshd_config PermitRootLogin no RSAAuthentication yes PubkeyAuthentication yes AuthorizedKeysFile %h/.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-09-20</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-09-15-javascriptzhong-ru-he-hu-lue-da-xiao-zheng-ze-pi-pei-dong-tai-zi-fu-chuan/">JS 中如何忽略大小正则匹配动态字符串</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        大家应该都知道在 Javascript 中正则匹配可以使用 match 方法。
+一个最简单的正则匹配例子 ：
+ &quot;Foo&quot;.match(/foo/i); 输出结果：
+['Foo'] Ok, 要解决标题中所说问题，我有必要先说明下在这里动态字符串指的是个什么？
+动态字符串是指： 正则表达式是个变量，具体内容无法提前知道，例如需要对用户输入的结果进行正则匹配。那该如何处理这种情况？
+我们可以通过实例化一个带有字符串参数的 RegExp 对象来处理这个问题，例如：
+var input = &quot;foo&quot; ; var re = new RegExp(input, &quot;i&quot;) ; &quot;Foo&quot;.match(re) ; 输出结果：
+['Foo'] 代码中 input 变量表示用户输入的值（可以根据具体情况获取）， re 就是根据输入内容生成的 RegExp 实例，其中 i 这个参数表示忽略大小写。
+参考资料：
+ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match http://www.w3schools.com/jsref/jsref_obj_regexp.asp  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-09-15</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%AD%A3%E5%88%99">#正则</a></li>
+                    
+                        <li><a href="tags/js">#js</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-09-12-how-to-write-a-rails-asset-plugin/">How to Write a Simple Rails Assets Plugin</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        这里有一个 如何编写Rails Plugins 的官方教程。 但是由于 Assets 方面的gem都是简单的Css和Javascript内容，所以可以直接使用bundler 来创建。
+前不久刚写了一个关于页面滚动至顶部的Gem, scroll-up。下面我会讲解这个Gem编写的大致步骤。
+第一步： 使用 bundler 生成Gem模版 bundle gem scroll-up ```} #### 第二步：配置 .gemspec 文件 主要是添加这个gem的描述说明，以及作者信息。更多参数的意义可以参见 [http://guides.rubygems.org/specification-reference/](http://guides.rubygems.org/specification-reference/) 。 #### 第三步：继承 Rails::Engine 其实 Rails Plugins 都是继承于 ::Rails::Engine， 一般情况下 大家都会把这部分逻辑放在 engine.rb 这个文件中. 为了防止Gem之间的冲突，我们往往又会添加一个 Namespace, 例如： lib/scroll-up/engine.rb module ScrollUp class Engine &lt; ::Rails::Engine end end
+ #### 第四步：Require Engine 因为Rails 的 bundle require 会自动加载 Gem 的 lib 目录下的所有 ＊.rb 文件，所以我们只要将 require 逻辑放在 lib 根目录任意一个 rb 文件中即可。例如： lib/scroll-up.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-09-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-31-ruby-2-dot-1-xin-te-xing/">Ruby 2.1 新特性</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        原文链接 Ruby 2.1。
+昨天 Ruby 2.1 第一个预览版 发布了。 发布注意事项已经给出了所有的变化，但是它并没有详细的描述。如果想一一搞明白这些改变是什么意思的话，你可以尝试花费一些时间在 Ruby 问题跟踪列表里面。既然我已经知道了大部分的改变，我想我有必要在这里写个简要。
+ 很显然， Ruby 2.1 包含了 Ruby 2.0 所有的新特性，所以，2.0 的特性在这里就不一一赘述。
+ Refinements Refinements 其实早在 Ruby 2.0 就已经有了，但是当时由于它引发了比较大的争议，所以他们减少了功能，添加了警告，并将这个特性标记为实验性质。
+Refinements 允许你的猴子补丁只作用于单个 Ruby 文件:
+module Foo refine String do def foo self + &quot;foo&quot; end end end using Foo puts &quot;bar&quot;.foo 超出了这个文件作用范围， String 将不再有 foo 这个方法了。
+Ruby 2.1， Refinements 不再是实验性的了，并且也不会产生警告了, 另外还有几个小的调整使他变得更可用了。
+module Foo refine String do def foo self + &quot;foo&quot; end end end module Bar using Foo puts &quot;bar&quot;.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-31</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-31-rails4-dot-2zhong-hen-shao-you-ren-zhi-dao-de-te-xing/">Rails 4.2 中很少有人知道的特性</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        原文链接 The Lesser-known Features in Rails 4.2
+Rails 4.2 的第一个beta版本于上周发布了，这次引入的新的特性真的太酷了。想到马上就要在我的项目中使用 ActiveJob, Web Console, Adequate Record, 以及 Foreign Key support, 不免兴奋起来。
+但是Rails最美丽的地方是它的细节。 如果多一点的挖掘，你可能会发现一些很少有人提到但却有可能极大提升你开发效率的新特性。
+####更简单的配置文件加载
+好了，可能我有些偏见。 但是拥有一个内置的配置文件加载将会变得更好！
+config_for, 一个 Rails 4.2 的新特性，和你想的它的作用一样：
+#config/redis.yml development: host: localhost port: 6379 test: host: localhost port: 6379 production: host: redis-production port: 6379 irb(main):001:0&gt; Rails.application.config_for(:redis) =&gt; {&quot;host&quot;=&gt;&quot;localhost&quot;, &quot;port&quot;=&gt;6379} 也就是说， 如果你调用config_for(:redis), 它将自动查找Rails项目中的config/redis.yml 文件，解析，并正确返回当前RAILS_ENV下的配置信息。
+它甚至可以让你在ymal中直接写ERB
+#config/redis.yml development: host: localhost port: &lt;%= ENV['REDIS_PORT'] %&gt; test: host: localhost port: &lt;%= ENV['REDIS_PORT'] %&gt; production: host: redis-production port: &lt;%= ENV['REDIS_PORT'] %&gt; $ REDIS_PORT=6380 bin/rails c Loading development environment (Rails 4.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-31</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-26-chang-yin-xiang-shen-ke-de-mian-shi/">一场印象深刻的面试</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        这是A同学对B同学之间的一场技术面试，整个过程大概2个半小时，期间基本是一问一答的形式；面试涉及内容之广，故记录于此，以备他日面试他人之用。
+####基本技能篇
+ 最早接触的Ruby版本，使用过的最新Ruby版本； Ruby2.x有哪些新特性，平时使用了这些新特性？ Ruby中一般使用的是进程还是线程，具体是什么技术，这种技术的好处和坏处？ 使用过最早的Rails版本，最新4.x版本有无使用，与3.x有哪些大的改变？ Rails中有哪些可以作为单独的Gem使用的模块？ Rails Model中哪些属于ActiveModel,哪些属于ActiveRecord ? 模型中共享的代码代码一般放在哪里？ models和lib哪些是autoloaded？ 项目中css是怎么组织的？ 假如有一段css只有一个页面用到，而不想全局引入，该如何处理？ 响应式设计的原理，大概写法？ 数据库表中有个字段叫attribute,如何在不修改表结构的情况下，正常使用ActiveRecord？ Rails中Base Transactions 和 Instance Transactions的区别？ 队列用的什么？ 缓存用的什么？ Rails默认缓存是什么，工作原理，和其他缓存的优劣？ Delay Jobs用的什么技术，定时任务怎么处理？ Application Server用的是什么，为什么选择，平时有无当机情况，怎么处理？ 平时写测试不？用的什么技术，什么时候改写测试，什么时候可以不写？ 部署工具用的什么？ 数据库用过哪些？PostgreSQL有哪些特性，是否在项目中使用？ 是否做过Api对接，选用的什么技术？ 想对iphone和android返回不同的结果，该怎么处理，直接在代码中写if/else之类的判断是否可取？ 开发过程中遇到bug，你的一般解决问题流程是？  ####基础安全篇
+对称加密和非对称加密有什么不同？ 平时我们说的64位加密和128位加密，那个位指的是什么？ 假如用户在网页上分享一个链接给特定的人，并且只有该特定人才能访问，该如何处理？ 如何设计一个找回密码的功能？ 如何避免用户靠多次／频繁修改token，从而测试出正确的token? Api设计中如何保证请求是合法的，数据是可靠的？ Rails开发中常见的安全问题有哪些？ 腾讯邮箱会在用户不知道的情况下，将用户邮件内容中的链接全部点击一遍（网络机器人），那么区分出是腾讯机器人的请求，如何block? OAuth 2.0的基本原理，如何自己设计一个OAuth 2.0认证系统？ 使用过哪些第三方的OAuth 2.0认证服务？  ####基础网络篇
+UDP和TCP有什么区别？ TCP的会话过程？ 打开一个https的页面，除了第一步域名解析，那下一步是什么？ TCP发包和接受包，哪个是顺序的？ 假如你网站特别慢，你该如何排查原因？过程是怎样？ 无线wifi分为哪些类？ 路由器和集线器有什么区别？ 192.168.0.20中的20什么意思，那16呢？  ####基础Linux篇 41. 当输入free命令后,出现的buffers指的是什么？Swap又指什么，Swap有什么作用，一般在哪个目录？ 42. 假如我有部分命令需要开机启动，但是需要sudo,如何针对部分命令，配置sudo不需要密码？ 43. ssh如何无密码登录？ 44. 一个项目有多个子项目组成，如何使用git来管理？
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E9%9D%A2%E8%AF%95">#面试</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-08-25-how-to-cross-domain-post-data-in-rails/">How To Cross-Domain Post Data In Rails</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天帮同事做了一个邮件订阅的功能，订阅功能本身并不复杂；但是由于订阅页面是放在GitHub Page上的，所以涉及到浏览器中跨域提交数据的问题。
+这里我们大致可以将服务需求分为客户端和服务端。 客户端是一个Github静态页面，你可以通过 votenotes.com 访问；服务端是一个提供API调用的Rails。
+1、客户端代码, 设置Ajax请求参数crossDomain为true $.ajax({ type: 'POST', crossDomain: true, // sert crossDomain true url: 'http://localhost:3000/sub_emails', data: data , dataType: 'json', success: function(responseData) { //省略 } }); 2、修改Rails API代码，去除token验证并设置 CORS ACCESS HEADER class SubEmailsController &lt; ApplicationController skip_before_filter :verify_authenticity_token before_filter :cors_preflight_check after_filter :cors_set_access_control_headers def create SubEmail.create(email: params[:email]) render status: 200, json: { message: &quot;Sub Successful&quot; } end private def cors_set_access_control_headers headers['Access-Control-Allow-Origin'] = '*' headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS' headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token' headers['Access-Control-Max-Age'] = &quot;1728000&quot; end def cors_preflight_check if request.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-25</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/page/15/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/page/17/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

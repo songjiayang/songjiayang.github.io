@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>ipfs - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/ipfs/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="ipfs" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/ipfs/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2019-02-28T17:29:43+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="ipfs"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: ipfs</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-02-28-ipfs-pubsub-quan-wei-zhi-nan/">IPFS PubSub 从入门到精通</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        IPFS 有个叫 PubSub 的功能模块，能够实现 IPFS 网络中任意消息的订阅和发布，我们先来看个简单的例子。
+PubSub 示例 Step 1: 开启 pubsub 功能
+因为 pubsub 属于实验功能，所以我们需要以 --enable-pubsub-experiment 参数来运行，我们在本地启动三个IPFS节点，并相互连接：
+$ cd ~/ipfstest/node1 $ ipfs daemon --enable-pubsub-experiment Initializing daemon... $ cd ~/ipfstest/node2 $ ipfs daemon --enable-pubsub-experiment Initializing daemon... $ cd ~/ipfstest/node3 $ ipfs daemon --enable-pubsub-experiment Initializing daemon... 三个节点的 ID 分别为：
+ node1: QmaEhAQ3DHC9NyEFTQfd9q4V3FVp9hUt5NCbnFq6bWX4Dk node2: QmRYgkFHhMLhDXKd33n178MNuPHSr8DbBE4UPDHjyoz3BZ node3: QmXsSe9HsTGrmotAwZ3YHPotPgFFpRHwjwfGLpzCcxsEPx  此时通过任意一个节点可以看到另外两个节点，例如 node1：
+$ ipfs swarm peers /ip4/10.12.220.142/tcp/4002/ipfs/QmXsSe9HsTGrmotAwZ3YHPotPgFFpRHwjwfGLpzCcxsEPx /ip4/10.12.220.142/tcp/4011/ipfs/QmRYgkFHhMLhDXKd33n178MNuPHSr8DbBE4UPDHjyoz3BZ Step 2: 订阅主题：
+分别让 node1 和 node2 订阅主题 my-topic
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-02-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ipfs">#ipfs</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-02-20-ipfsming-ming-xi-tong-shen-ru-jie-xi/">IPNS从入门到精通</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        IPNS 是构建在 IPFS 之上的一套依赖 PKI的命名空间系统(namespace sytem， KV 存储空间)，其中 Key 是公钥，值是经过私钥签名的新值，所以网络中的其它节点可以根据公钥就能进行内容验证（防伪造）。
+为什么需要 IPNS 众所周知，我们可以通过 /ipfs/QmS4ust... 方式来访问一个对象，但由于 IPFS Hash 与内容一一对应（如果内容发生改变，Hash 值也会随之改变），所以我们访问新内容的时候需要知道新的 Hash， 这显然不够友好，那么我们是否可以通过一个固定的 Hash 来访问不同版本的内容呢？
+要实现上述功能，我们可以使用 IPNS，下面我们就来看看实际的例子。
+IPNS 示例  添加内容  $ echo &#34;hello, this IPNS example&#34; &gt; ipns.txt $ ipfs add ipns.txt added QmeVuuv7disk9Ri6n3QtTUCEW462UPZe3iWYFVNWNQwYxr ipns.txt  发布到 IPNS 中  $ ipfs name publish /ipfs/QmeVuuv7disk9Ri6n3QtTUCEW462UPZe3iWYFVNWNQwYxr Published to QmbhgXW9LBpTcpEUerXTuoNZNd4AeHuEkb6iKx67KwSd9p: /ipfs/QmeVuuv7disk9Ri6n3QtTUCEW462UPZe3iWYFVNWNQwYxr  通过 IPNS 查询访问内容  $ ipfs cat /ipns/QmbhgXW9LBpTcpEUerXTuoNZNd4AeHuEkb6iKx67KwSd9p hello, this IPNS example  修改内容，重复上述步骤  # 在 ipns.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-02-20</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ipfs">#ipfs</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-02-15-filecoin-za-nian/">Filecoin 是什么，看完这篇文章你就懂了</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        昨天是 2019 年的情人节（2/14），没想到 Filecoin 在 Twitter 放出一条重磅消息，宣布已将 Filecoin 项目开源，提供测试网络，详细报道可以参考官方博文。
+什么是 Filecoin? Filecoin 是一个去中心化的存储网络，能将海量用户的闲散存储资源充分利用起来，从而构建一套超低成本的可靠存储系统。
+因为它没有中心，所以会用到区块链技术，只不过一般区块链使用的是算力挖矿的工作量证明（Proof-of-Work mining），而 Filecoin 使用的是存储工作量证明(Proof-of-Storage)。
+与 IPFS 的关系 在谈 Filecoin 之前想必大家对 IPFS 已经有过了解，那二者有什么关系呢？
+简单来说，IPFS 主要负责 P2P 网络中的内容寻值和内容传输，而 Filecoin 是内容永久存储的激励层，它们之间是相互补充的关系。
+ IPFS addresses and moves content; Filecoin is the missing incentive layer。
+ Filecoin 架构 我们可以把 Filecoin 简化为两层，一个是区块链，主要是记录全网状态（一个去中心化的状态机），包括所有钱包账户和余额，市场订单匹配记录。另外一个是存储的解决方案，主要包括副本策略（纠删码，多副本），端到端加密，存储时间和续费策略，存储市场匹配等。
+它主要包括 4 种角色：
+ 存储矿工（Storage miners）： 将自己的磁盘抵押出来，提供存储服务，类似云厂商的对象存储 检索矿工（Retrieval miners）：可以帮助用户快速的检索到内容，类似于传统意义的 CDN 存储客户端（Storage clients）：能够上传内容到 Filecoin，类似对象存储上传客户端 检索客户端（Retrieval clients）：能够从 Filecin 检索到内容，类似对象存储下载客户端  如何挖矿？ 挖矿就是在 Filecoin 网络中获取虚拟货币（FIL），主要可以通过以下途径：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-02-15</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ipfs">#ipfs</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2019-01-18-ipfs-nei-rong-yong-sheng-de-li-jie/">IPFS 内容永生的理解？</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        前言 IPFS 白皮书中提到， IPFS 甚至是一个 Permanent 的网络，那是否存储在 IPFS 网络中的内容也可以永生，永远不丢失呢？
+显然不是，因为内容最终都需要存储在物理磁盘上，如果全网中能够提供该文件下载的节点都下线或者磁盘损坏（冷门数据，内容提供节点较少），那在整个网络中就再也无法下载完该文件的完整内容了。
+今天我就遇到这样的问题，下面我会来具体讲讲整个过程，以及我对 IPFS 内容“永生”新的理解。
+背景 我们边缘存储 产品本周新上了一个功能，在进行任务迁移的时候可以显示进度百分比。
+我在IPFS 看片指南：几部IPFS网络中的电影中找了一个叫做勇往直前的文件，它的 CID 是 QmZRJevYhADpXmCGGF6eCcP1afNEYFahDW5jxje3iyyCJS，大小为 1582221058 个字节（约 1.48GB）。
+在迁移到京东对象存储的过程中，发现其进度一直停留在20%，重试多次依然如此，如下图：
+这到底是怎么回事呢？我决定弄个明白。
+定位问题 Step1: 确定已迁移字节数 因为数据库记录了已迁移的字节数，根据任务 ID 很容易拿到结果是 322699264 字节。
+Step2: 确定拉取失败的 CID 众所周知 IPFS 对象是一棵树状结构，它具有以下特点：
+ 每个节点下面最多包含174个节点。 文件的数据都存在叶子节点上，每个叶子节点默认存储 256KB 字节。  所以勇往直前这个电影 IPFS 的组成是一棵三层的树，结构如下图：
+其中根节点的 CID 是 QmZRJe...CJS；第二层除最后一个节点都存储了43.5MB内容、包含174个存储256KB内容的叶子节点。
+因为 IPFS 内容的读取是顺序的，所以根据已经迁移的字节数很容易计算出失败的块在第二层和第三层的索引位置：
+第二层节点位置： (322699264 / 45613056) + 1 = 8 第三层节点位置：(322699264 % 45613056) / 262144 + 1 = 14 备注： 数组下标 = 位置-1
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-01-18</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ipfs">#ipfs</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-08-09-ipfs-zhong-er-wei-ma-de-wen-ti/">IPFS 二维码添加的问题</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        前段时间在知乎上看到「飞向未来」大大早期文章 什么是IPFS?(三) 中有这样一段描述：
+但是真的是这样吗？难道我们真的没有办法在一个网站中插入对应二维码？
+ 结论当然是可以，因为我们有 IPNS。
+ 下面我将介绍具体的实现步骤：
+Step 1: 占坑 创建一个目录，添加到 IPFS 网络，先做好 IPNS 映射，这个过程就相当于在逻辑上先定义一个网站。
+$ mkdir demo $ ipfs add -r demo added QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn demo 0 B / 68 B [---------------------------------------------------------------------------] 0.00% $ ipfs name public QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn Published to QmR94EL86DjAuRQDdYeShG84ahqH4M39VFD8PbToiVobRe: /ipfs/QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn 此时我们已经可以通过 ipns/QmR94EL86DjAuRQDdYeShG84ahqH4M39VFD8PbToiVobRe 来访问网站了。
+Step 2: 添加网页 在 demo 目录下创建 a.html 文件，并且在 a.html 中添加如下内容：
+&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;meta charset=&#34;UTF-8&#34;&gt; &lt;title&gt;qrcode demo&lt;/title&gt; &lt;/head&gt; &lt;body style=&#34;text-align:center;&#34;&gt; &lt;h1&gt;this is a ipfs page with qrcode&lt;/h1&gt;&lt;br/&gt; &lt;img src=&#34;a.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-08-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ipfs">#ipfs</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-08-08-shi-yong-ipfs-da-jian-ge-ren-bo-ke/">使用 IPFS 搭建个人博客</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        本文主要讲解如何使用 IPFS 搭建个人博客，从而实现个人博客在网络中的“永生”。
+主要内容：
+ IPFS 简介 IPFS 安装和基本使用 IPFS 的内容发布 IPNS 的内容发布  IPFS 简介 IPFS 是 InterPlanetary File System 的简称，中文名叫星际文件系统，是一个旨在创建持久且分布式存储和共享文件的网络传输协议。
+它是一种内容可寻址的对等超媒体分发协议，在 IPFS 网络中的所有节点将构成一个分布式文件系统，使用点对点的超媒体协议，从而让网络更快、更安全、更开放。
+IPFS 安装 访问页面 https://github.com/ipfs/go-ipfs/releases 下载对应版本，解压，运行安装文件即可。
+$ wget https://github.com/ipfs/go-ipfs/releases/download/v0.4.17/go-ipfs_v0.4.17_darwin-amd64.tar.gz $ tar xvf go-ipfs_v0.4.17_darwin-amd64.tar.gz $ cd go-ipfs &amp;&amp; ./install.sh 安装成功后，执行 ipfs version 你将看到类似内容：
+$ ipfs version ipfs version 0.4.17 注意：
+ 命令 ipfs -h 来查看更多命令 命令 cat ~/.ipfs/config 可以查看所有默认配置项  新建 IPFS 节点  运行 ipfs init 初始化节点  $ ipfs init initializing IPFS node at /Users/sjy/.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-08-08</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ipfs">#ipfs</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

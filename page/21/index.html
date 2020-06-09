@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta name="generator" content="Hugo 0.72.0" />
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>欢迎来到小鱼客栈 - 欢迎来到小鱼客栈</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="欢迎来到小鱼客栈" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591682886" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591682886">
+
+<meta property="og:title" content="欢迎来到小鱼客栈" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="欢迎来到小鱼客栈"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">欢迎来到小鱼客栈</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/about" title="About">About</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <div class="homepage-content">
+        
+    </div>
+
+    
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-11-shi-yong-pluploadchuang-jian-tempimage/">使用 Plupload 创建 TempImage</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Plupload是一款比较流行的文件上传插件，能够轻易实现多文本上传,拖拽上传等效果，而且兼容性比较好。
+什么是TempImage?
+通常我们会将Image作为一个多态的资源,然后有一些特定的图片继承于它, 比如 MaterialImage (belongs_to Material).
+假如Material在创建的时候需要上传一张图片，通常的做法是图片和表单数据一起上传。这样的做法有一个问题就是图片表单的提交会因为图片上传而耗费大量时间。
+有什么办法可以解决这个问题呢？那就是采用TempImage的方式。具体而言就是先使用Plupload插件，异步将图片上传到后台，然后在表单中绑定新创建的图片的id即可。
+ initialize_uploader: (options) -&gt; ## CSRF Tokens Into Hash # Initialize a params hash @params = {} # Load csrf tokens from page csrf_name = $(&quot;meta[name='csrf-param']&quot;)?.attr('content') csrf_value = $(&quot;meta[name='csrf-token']&quot;)?.attr('content') # Load csrf tokens into params hash @params[csrf_name] = csrf_value ## Default options for the uploader options = $.extend(options, { url: &quot;/images.json?temp=true&quot; multipart_params: @params label: '' prompt: '' chunk_size : '1mb' browse_button: 'browser' unique_names : true multi_selection : false ＃single or multi select max_file_size: '10mb' filters: [{ title: __(&quot;Image files&quot;), extensions: &quot;gif,png,jpg,jpeg,tiff&quot;}] }) ## Initialize a new uploader @uploader = new plupload.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-11</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-11-railszhong-de-guo-ji-hua-jie-jue-fang-an/">Rails 中的国际化解决方案</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        工作经常会在rails中遇到I18n的相关问题，目前为止，我所使用过的方案有两种，各自有各自的好处。
+方案1: 使用rails官方自带的I18n，文档链接http://guides.rubyonrails.org/i18n.html
+此方法主要使用了I18n这个Module,而I18n最为重要的两个方法是 translate，localize 他们的使用十分简单，如下：
+I18n.t 'hello' =&gt; &quot;translation missing: xxx&quot; I18n.l Time.now =&gt; &quot;Tue, 12 Nov 2013 05:56:47 pm CST&quot; 日常国际化做翻译的时候，需要用到t这个方法，如上。这个方法可以在直接使用，而不需要I18n来call.如果你的I18n.locale 没有对应的翻译，那么系统将显示 “translating missing: xxx”的字样。既然这样，你需要做的就是，将对应的翻译的字表（yml文件）事先写好，这样rails就会根据这个字表来做翻译。
+具体操作：
+配置翻译文件的路径
+# in config/initializers/locale.rb # tell the I18n library where to find your translations I18n.load_path += Dir[Rails.root.join('lib', 'locale', '*.{rb,yml}')] # set default locale to something other than :en I18n.default_locale = :pt 在对应配置路径下面补充对应的yml文件
+# config/locales/zh.yml zh-CN: hello: 你好 通过以上设置，然后通过I18n.locale=&quot;zh-CN&rdquo; 将本地语言环境切换到中文环境，然后再调用t(&lsquo;hello&rsquo;),将显示“你好”。
+采用官方自带的I18n，无需依赖其他gem, 从而代码维护成本低，版本依赖小，上手更容易，代码容易维护。不过这种方式的缺点也很明显，需要书写大量的yml,这样对于yml文件中的key的命名就很头痛，既要满足hash key的命名语法，又要解决翻译过多带来的命名冲突，所以无奈会引入命名空间，导致yml中key的结构层数太多，会出现很多冗余的翻译。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-11</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-10-li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/">利用 httpd 做简单的 web 应用性能检测</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        网站上线之前一般都会做下抗压能力测试，比如并发和最大请求数等。其实我们可以使用 httpd（ab） 来模拟测试。
+ ubuntu上安装 Ab 使用命令 sudo apt-get install httpd 安装，有时你会得类似 &ldquo;Package httpd is a virtual package provided by: &ldquo;的错误提示；这是因为httpd是作为一个lib，会被给出的包所自动安装，所以随便选择一个提示的包就好，比如选择 apache2-mpm-worker 2.2.22-6ubuntu5.1。
+sudo apt-get install apache2-mpm-worker 2.2.22-6ubuntu5.1 Ab命令的使用 使用ab命令进行测试的时候，主要用到的参数-c 和-n ; 其中-c 表示并发量（模拟同时多少人访问），-n表示一共发送的http请求数，所谓请求数量越大，数据相对越准确。
+实战之 Ruby-China 测试语句：ab -c 20 -n 2000 http://ruby-china.org/
+执行结果:
+Server Software: nginx/1.4.2 Server Hostname: ruby-china.org Server Port: 80 Document Path: / Document Length: 33568 bytes Concurrency Level: 20 Time taken for tests: 116.274 seconds Complete requests: 2000 Failed requests: 1128 (Connect: 0, Receive: 0, Length: 1128, Exceptions: 0) Write errors: 0 Non-2xx responses: 22 Total transferred: 68131781 bytes HTML transferred: 66399247 bytes Requests per second: 17.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-10</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/page/20/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item disabled">
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

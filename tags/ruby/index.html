@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>ruby - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/ruby/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="ruby" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/ruby/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2017-03-27T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="ruby"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: ruby</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-03-27-dui-zhao-ruby-lai-xue-crystal/">对照 Ruby 学 Crystal - Part 0</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Crystal 是一门神奇的语言，它号称 Fast as C, slick as Ruby， 至于速度方面有待考证，不过它的语法和 Ruby 非常相似，可见其胶水能力。
+本篇文章是对照 Ruby 学 Crystal 系列基础篇，主要介绍 Crystal 社区中与 Ruby 对应的工具链。
+Version Manager 使用 crenv 来管理多个不同版本的 Crystal， Ruby 中与之对应的是 rbenv 或者 rvm 。
+Dependency Manager 使用 shards 来管理项目依赖，Ruby 中对应的是 bundler 。
+Testing 测试框比较多，这里选取较常用的来做个比较，
+minitest.cr 对应 Ruby 中的 minitest 。 spec2.cr 对应 Ruby 中的 rspec 。
+Database Drivers 这个话题对应的就比较多了，应该主流的数据库都有对应的 driver 吧，例如， crystal-mysql 对应 Ruby 的 mysql2 。 mongo.cr 对应 Ruby 的 mongoid 。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-03-27</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-03-09-where-is-my-tempfile/">where is my tempfile?</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        The benefits of Tempfile are:
+ Automatically deleted. Unique file name. Nice place (/var) stored at disk.  What&rsquo;s my problem? Let me show you my code:
+def qr_file(url) temp = Tempfile.new(['qr', '.png']) path = temp.path qrcode = RQRCode::QRCode.new(url) qrcode.as_png( resize_gte_to: false, resize_exactly_to: false, fill: 'white', color: 'black', size: 200, border_modules: 0, module_px_size: 0 file: path ) path end def build_qr_cell(url, opts={}) @excel.add_image(image_src: qr_file(url), noSelect: false, noMove: false) do |image| image.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-03-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-03-07-ruby-proc-mi-si/">Ruby Proc 迷思</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        一谈到闭包 (Proc)， Rubyist 的脑袋里往往会浮现出 blocks, Proc, lambda 之类概念。
+此时，你心中可能开始嘀咕： why ? 这概念是不是太多了， Ruby 的闭包怎么这么复杂啊。
+其实不然，Ruby 的闭包并没想象的那么复杂，我们需要通过现象看本质，揭开它的神秘面纱。
+一、了解 ruby 闭包创建方式 1. blocks 2. proc 3. Proc.new 4. lambda 5. -&gt; 6. method to to_proc 好了，以上就是在 Ruby 中创建闭包的不同方式，通过运行结果你不难发现：
+ 所有方式返回结果都是 Proc 的对象（实例）。 Proc 对象有两种： lambda 和非 lambda。 我们可以通过 lambda? 方法来检查。  二、不同方法特别说明  blocks 是我们平时写的最多的，主要配合 yield 使用，这种方式有个问题是没法共用 block 。 Proc.new 就是对象实例方法。 proc 和 lambda 是 Ruby Kernel 模块提供的方法，用于生成一般 proc 和 lambda proc 。 -&gt; 是 Ruby 操作符，用于生成 lambda proc 。 to_proc 是 Ruby Method对象的实例方法， 用于将已有 method 转变成 lambda proc 。  三、 一般 proc 和 lambda proc 区别  lambda 会对参数个数验证，proc 不会验证。 lambda 会执行 return, proc 遇到 return 会中断。  总结： 无论 proc 还是 lambda，其实本质都是一个东西，因为我们最终用到的都是 Proc 的对象，所以闭包就是 Proc 对象。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-03-07</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-10-26-pdf-da-yin-da-sha-qi-zhi-phantomjs/">PDF 打印大杀器之 PhantomJS</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        PDF 打印是件麻烦事 ！！！
+开发调试问题：  大量代码与样式，输出内容排版组织有关，单元测试难写 。 没有简单的预览功能，无法逐步调整样式 。  定制样式问题：  PDF 本身支持的内容样式十分多，所以通过程序 DSL 构件 PDF 的代码冗余高 。 图片排版始终是个问题 。 国际化的问题（有些库对 I18n支持不够友好）。  为什么选择 PhantomJS ？  PhantomJS 的屏幕抓取功能十分好用，PDF 打印支持好，抓取打印代码简单 。 内容模版使用 html+css，代码简单而且方便预览调试，开发更容易 。  PhantomJS 打印的例子 // Simple Javascript example console.log('Loading a web page'); var page = require('webpage').create(); var url = 'http://phantomjs.org/'; page.open(url, function (status) { //Page is loaded! page.render('example.pdf') phantom.exit(); }); 应该各语言都有它的 wrapper , Ruby 语言我推荐 phantompdf, 因为公司开源项目，而且我们项目中一直在用 :smile: 。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-10-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-09-24-gai-bian-hen-nan-dan-wo-men-bie-wu-xuan-ze/">改变很难，但我们别无选择</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        MATTER (公司项目) 从严格意义上讲，应该是 SPA 的应用， 前端是 B/M(backbone + marionette) ＋ React, 后端是 Rails, 项目正全面往 React 迁移，不久将完全抛弃 B/M，目前属于中间状态，所有两种技术代码都有 。
+该项目并未真正前后端分离，使用的还是 Rails 那套最标准的网站开发和部署流程，前端 JS 代码和应用一起打包发布。
+很长一段时间里，Rails 自带的 Asset Pipeline 工作的很好。 但随着开发进行，前端 JS 代码越来越多，每次代码修改，刷新浏览器，需要等待的时间太长。我想最主要原因还是 Rails 的 Asset Pipeline 慢， 而且大量代码是 coffeescript ，此情况更甚之。
+终于有一天，我们再也无法忍受了， 决定来次大改变！
+我们做了哪些改变：
+ 使用 webpack 取代 Asset Pipeline 来处理 JS 编译。 使用 npm 安装 JS 插件，尤其是 React 相关。 将所有 React 相关代码迁移到单独的目录，留给 webpack 使用。  改变过后的目录结构：
+这样的改变，给我们带来了很多好处：
+ JS 编译速度提升，页面还可以做到部分跟新，避免全页面刷新，从而保证开发速度。 前端代码模块化问题自然解决。 终于可以使用 npm 包发布的插件。  总结：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-09-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-08-25-strong-parameters-allow-hashes-with-unknown-keys-to-be-permitted/">Strong parameters: allow hashes with unknown keys to be permitted</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Rails 4 使用 StrongParameter 来处理用户数据白名单, 日常开发中有时会遇到这样一个问题，即嵌套的参数是一个 hash, 并且这个 hash 的 keys 是不确定的（用户可以任意输入）。
+举例说明：
+Contact 包含了 company 信息， company 是个 store， 其 attributes 可以自定义的， 用户提交的数据类似这样：
+ {contact: {name: 'User Name', company: {c_k1: c_v1, c_k2: c_v2} }} 这个 case 的 permit 该怎么写？
+其实很简单，我们可以使用 tap 方法：
+def contact_params params.require(:contact).permit(:name).tap do |whitelisted| whitelisted[:company] = params[:contact][:company] end end 参考资料： https://github.com/rails/rails/issues/9454#issuecomment-14167664
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-08-25</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-08-17-railri-li-xiao-cha-jian/">Rail日历小插件</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        昨天参加完上海 RailsGril,遇到一个日历打印的问题，及输入任何一个日期，打印出当月的日历。
+写了一段 Rails 小代码:
+class Calendar attr_reader :time def initialize(time=Time.now) @time = time unless time.is_a? Time @time = Time.parse time end end def render all_days = render_days puts '日|一|二|三|四|五|六' all_days.each_slice(7).to_a.each do |days_in_week| days_in_week.map!{|day| day.length == 1? &quot;#{day} &quot; : day} puts days_in_week.join('|') end nil end def render_days Array.new(time.at_beginning_of_month.wday, ' ') + (1..Time.days_in_month(time.month)).map(&amp;:to_s) end end 执行代码输出结果如下：
+ Calendar.new.render 日|一|二|三|四|五|六 | | | | | |1 2 |3 |4 |5 |6 |7 |8 9 |10|11|12|13|14|15 16|17|18|19|20|21|22 23|24|25|26|27|28|29 30|31 calendar = Calendar.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-08-17</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-07-29-repo-url-change-not-work-in-capistrano3/">repo_url changes but not work in capistrano3</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        背景： 项目使用了 capistrano（3.4.0）的 git 部署方式； 但对于已有部署项目，当修改配置 repo_url 后，重新执行部署任务, 服务器依然从旧仓库地址拉取代码。
+登录服务器，查看 git 配置文件（PROJECT/repo/config），依然是旧版本信息。因为每次执行 deploy 的时候，git 仓库信息都是从这个文件读取出来的，解决办法就是修改这个文件。
+这里提供 3 种解决方案：
+ 删除 PROJECT/repo 文件夹，当执行部署任务，如果此目录不存在， capistrano 会自动创建，当然使用最新配置。 手动修改 PROJECT/repo/config 文件内容，主要针对 url = git@git xx 这行。 在项目中新建一个 rake task，代码大概如下：   #lib/capistrano/tasks/git.rake namespace :git do desc 'change the cached repo_url if repo_url changes in config' task :update_repo_url do on release_roles :all do with fetch(:git_environmental_variables) do within repo_path do current_repo_url = execute :git, :config, :'--get', :'remote.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-07-29</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-07-24-zhou-zong-jie-1/">周总结 《一》</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        一. 使用 rm 命令删除大文件问题 背景： 测试机硬盘空间不足，需要删除部分大文件。使用 rm 命令 成功 删除这些文件后， 再通过 df 查看，磁盘空间依然不足。
+原因： 这些删除的文件，被某些进程标记使用着，所以即使文件删除，这段释放的硬盘依然被标记不可用，磁盘空间并未真正释放。
+解决办法： 1. 使用 echo &quot;&quot; &gt; 命令取代 rm 。 2. 删除文件后，kill 掉对应进程 。
+二. thinking-sphinx 关联表索引建立问题 比如有如下索引：
+#project_material_index.rb ThinkingSphinx::Index.define :project_material, :with =&gt; :active_record, :delta =&gt; ThinkingSphinx::Deltas::SidekiqDelta do ..... indexes :name, :sortable =&gt; true indexes &quot;name IS NULL&quot;, :as =&gt; :name_nil, :sortable =&gt; true indexes tags.name, :as =&gt; :tag_names, :sortable =&gt; true ..... end 重建索引，得到  Column 'name' in field list is ambiguous 错误信息。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-07-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-05-31-rui-shi-jun-dao-zhi-motionmodel/">瑞士军刀之 MotionModel 初体验</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        写在前面 MotionModel 是一个 RubyMotion 平台的 ORM 类库，有点类似于 Rails 中的 ActiveRecord。 它将业务模型与数据存储高度抽象，采用统一的调用方式，目前支持内存和数据库两种主要使用方式。
+严格意义上来讲它能支持多种数据库，因为只需实现对应适配器即可。当然它已将我们常用的 Sqlite3 适配器写好了，所以可以直接使用。
+我们项目数据存储使用的是 Sqlite3 + FMDB 的方案，所以将以此作为例子。
+安装步骤 1. 修改 Gemfile 文件，添加 以下代码： #Gemfile gem 'motion_model', git:'https://github.com/sxross/MotionModel.git', branch:'sql' 说明： 之所以使用 sql 分支是因为目前项目已将数据库使用方式的代码剥离出来，还没打包合并到 master 分支， 所以如果你项目中使用了数据库，那就不能使用 master 分支， 详情请点击 wiki 。
+2. 执行 bundle install 3. 使用 cocoapods 引入 FMDB 修改 Rakefile 文件，添加 FMDB
+#Rakefile ..... app.pods do pod 'FMDB' end ..... 修改文件后，执行 rake pod:install
+4. 修改 Rakefile 文件， require motion_model 相关代码。 #Rakefile require 'motion_model' require 'motion_model/array' ＃ 如果不需内存存储方式，那么此句代码可以删除 require 'motion_model/sql' 具体使用 前提假设： 1.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-05-31</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item disabled">
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/tags/ruby/page/2/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

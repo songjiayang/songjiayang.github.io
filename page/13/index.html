@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta name="generator" content="Hugo 0.72.0" />
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>小鱼驿站 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="小鱼驿站" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="小鱼驿站"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <div class="homepage-content">
+        
+    </div>
+
+    
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-04-07-tong-guo-zi-you-kan-weban-quan-she-ji/">通过点评集字游戏浅谈 Web 安全设计</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        点评集字是什么? 它是大众点评推出的一个集字活动，凡凑齐 “大众点评霸王餐” 几字即可获得点评 pass 卡，从而真正意义享受霸王餐。
+活动规则？ 首先需要参与活动，凡参与活动者会生成一个属于自己的活动页面，用户可以将页面通过微信朋友圈分享，呼唤小伙伴帮助抽字。 每日每账号仅1次抽字机会，账号可以是微信和点评用户。
+这个活动蛮有趣味，一方面它可以利用免费和侥幸心理，大大提到用户粘性，其次利用微信朋友圈的强大分享能力，提高影响力。 我想这个活动的 PV 也该是挺不错吧。我身边确实还有不少朋友每天定时提示我，帮他抽字！
+每天重复做相同事情，再加上每天只能投一票（每票价值可观），这让我瞬间就有种想刷票的冲动！好吧，说干就干&hellip;
+寻找刷票入口和套路： 首先通过微信浏览器查看活动详情链接，将链接复制到电脑 chrome 浏览器上，清除链接中的干扰参数（主要和微信账户相关）， 此时一个干净完整的活动页面暴漏在你眼前。
+点击抽字，系统提示需要登录,
+没点评账号？
+没事，随便注册一个吧。
+神马，可以随便注册？
+是的，使用邮件注册点评账户，在未经过邮箱验证之前，用户可以登录并做很多操作，例如这里的活动抽字。
+当注册成功后，跳转到先前活动页面，点击抽字; Bingo, 系统提示 “抽字成功” ！
+过程程序化： 如上，刷票套路已经很清晰了，但是人工操作不免有些枯燥和费事，想想还是写段脚本来解决这个问题吧。
+很多语言，很多类库都可以模拟用户浏览器行为，个人原因选择的是 ruby 版 mechanize 。
+程序主要负责实现自动注册和自动抽字即可，由于涉及商业问题，具体代码逻辑不便公开。
+程序运行效果图：
+由于本人技术拙劣，对于验证码破解很不在行，但我知道这方面是可以攻破的（有收费服务）。本人程序验证码全是人工识别， 尽管如此，效果也十分明显, 经初略测试，5分钟大约可以完成100次抽字。
+ 总结： 点评的最大问题就是对未经认证用户，给予过大功能权限；例如这里的抽字投票，其实发帖，回帖之类也应该注意此类问题。 总的而言，当功能涉及产生他人账户相关数据的时候，最好需要确保用户是认证合法的，当然直接注册购买团购是可以的 :smile: 。
+ BTW：欢迎点评工程师邮件交流讨论，如果文章涉及侵权，请联系指出！
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-04-07</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%9C%89%E8%B6%A3">#有趣</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-04-05-actionmailer-na-xie-shi-2/">ActionMailer 那些事 (二)</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        这篇博客是上一篇 ActionMailer 那些事(一) 的续。
+如你所知，上一篇博客提到邮件发送的 from 别名设置，其实，正常情况下，邮件from地址可以任意填写， 一般邮件服务器是不检查 from 值的（只要包含email格式）。
+为什么会有任意填写 from 地址的需求？
+因为有时系统会代替客户发送邮件，而期望邮件接受者可以直接通过邮件回复发送的用户，此时，邮件的 from 就该填写用户的 email 了。
+本来这并不是问题，因为你只要将 from 值修改成用户的 email 皆可，对于绝大多数邮件服务商这样是可以的，但是 gmail 不行。
+为什么不行？
+首先 gmail 处于自己的考虑，必须保证 from 的地址是配置发送邮件账号的 email 地址; 它可以通过简单的正则替换就搞定这个事情，毕竟所有邮件它都有能力修改。
+解决办法？
+不要使用 gmail 作为应用邮件发送服务器，毕竟它本来就不干这个事情，你应该选择那些邮件专业服务器提供厂商， 例如 SendGrid, Mailgun 等。
+ 友情提示一下： heroku上面邮件服务器，如果配置为 gamil，将无法发送邮件，因为 gmail 已经封了所有来自 heroku 的认证请求。
+ 推荐阅读： ActionMailer 那些事(一)
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-04-05</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-04-05-actionmailer-na-xie-shi-1/">ActionMailer 那些事(一)</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        上周遇到这样一个需求，系统邮件发送至客户，客户看到的邮件 from 地址不应该是直接的 email,而应该是email对应的一个别名。如图：
+在 Rails 如何实现？其实只需将邮件发送的 from 参数 写成 &quot;NAME &lt;EMAIL&gt;&quot; 的形式即可：
+ class NotifyMailer &lt; ActionMailer::Base def new_user() xxxxx mail(from: &quot;Matter.build &lt;no-reply@matter.build&gt;&quot;, .....) end end 如果你想统一配置 from 的格式，只需添加 ActionMailer::Base.default 默认值即可，例如：
+#config/application.rb ... ActionMailer::Base.default :from =&gt; 'Matter.build &lt;no-reply@matter.build&gt;' ... 推荐阅读： ActionMailer 那些事(二)
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-04-05</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-02-28-a-better-way-for-thinking-sphinx-deltas-and-associations/">A better way to reindex associations in thinking-sphinx</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        众所周知，thinking-sphinx 提供了 Real-Time 和 Delta 两种索引，而我在项目中经常使用后者。 使用这种方式，通常你会遇到这样一个问题：
+ If you are using associations for field or attribute data, delta indexing will not automatically happen when you make changes to those association models. You will need to add a manual delta hook to make it all update accordingly.
+ 举个例子：
+Article model 有这样索引:
+indexes comments.content, :as =&gt; :comments 当 comments 有变化（更新或删除）， article.comments 是不会自动重新索引的; 为使其重新索引, 我们不得不 Do a hack：
+# comment.rb after_save :set_article_delta_flag after_destroy :set_article_delta_flag # .
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-02-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-02-26-redmine-lazy-packages/">Redmine lazy package</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        ####Why this repository 所有的一切都源自一篇博客 5-redmine-plugins-will-change-way-you-work。 当我一个一个寻找这些插件时，发现这是一件超级浪费时间的事，更何况 redminecrm （一个redmine资源站点 ） 还被墙了 (&gt;﹏&lt;) 不～ ；所以，我决定将我常用的一些插件和皮肤汇总在这里，方便有需求的朋友使用。
+项目地址： https://github.com/songjiayang/redmine-lazy-package 。
+插件包括:
+ redmine_checklists redmine_agile redmine_ timelog_ timer redmine_ github _hook  ps：所有插件均成功跑在 redmine 3.0版本之上
+How to use 1.将plugins 和 public/thmemes 的文件拷贝到你的 redmine 项目对应目录中。
+2.依次执行命令
+bundle install --without development test bundle exec rake redmine:plugins NAME=redmine_checklists RAILS_ENV=production bundle exec rake redmine:plugins NAME=redmine_agile RAILS_ENV=production 3. 重启 reminde，进入 ～/admin/plugins 和 ~/settings?tab=display 页面设置插件和皮肤。 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-02-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-02-23-wei-shi-yao-bu-kuang-jia/">为什么你的 Rails 不需要 JS 框架</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        现在前端的繁荣程度前所未有，尤其是前端 MVC 框架，多之又多，有点乱花渐入迷人眼的味道。
+前端框架使用与否取决于你的应用形态，即 website 还是 web app。通常而言，网站为主的应用是不需要任何前端 mvc 框架的。 本文的意图不是为了排斥前端框架，而是为了讲述在没有使用任何前端框架的情况下，如何更好地组织项目的 js 代码。
+依赖的类库: 项目是按照 rails 4.2 官方推荐的方式，主要使用了 Turbolinks .
+ jQuery. Coffeescript. Turbolinks. HeadJS, 使用 headjs-rails gem, 用来异步加载 js 代码，从而加快项目速度.  代码组织结构:  一个页面对应了一个 js 视图类。 通用组件，全部放到 widget 目录里面。 application.js 引入所有 js 依赖和项目自启动逻辑。  视图代码 任何页面都继承于 ApplicationView ，如果没有属于自己的view,那么自动调用 ApplicationView.
+window.Views ||= {} class Views.ApplicationView render: -&gt; Widgets.FancyBox.enable() Widgets.MarkdownEditor.enable() cleanup: -&gt; Widgets.FancyBox.cleanup() Widgets.MarkdownEditor.cleanup() 因为我们要在很多个页面都使用 FancyBox 和 MarkdownEditor 这两个组建，所有直接就写在了ApplicationView里面。
+特定的 view 直接继承 ApplicationView：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-02-23</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-02-16-ruby-yuan-ma-yue-du-ji-hua/">一起阅读 Ruby 类库的源码吧！</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        (I want you: 图片来源 500px)事情源于一天和同事讨论 Ruby 单例实现，当时为了了解 Singleton 这个 module 更多东西 ，顺手将 Ruby 代码 clone 下来，结果惊奇发现其代码注释非常详细，十分方便阅读：
+所以就有了这个阅读计划。
+开始阅读  克隆最新的ruby代码， git clone git@github.com:ruby/ruby.git 。 需要阅读的代码在 ruby_xx/lib 文件夹里面。 ok, 开始吧，先从自己最熟悉的 module 下手。  结束时间 现在我正阅读的版本是 2.2, 需要阅读的文件总计 find . -name &quot;*.rb&quot; | wc -l（626个）。 这意味着，即使每天阅读一个模块，几乎都要花费半年时间了，可见这是一件长期的计划。
+阅读源码是一种好的习惯，也是持续学习的过程，而且好的代码总能让人反复咀嚼，因为此计划暂无 deadline。
+阅读产物 阅读会根据自己理解，不定期通过博客给出有一些代码演示或旧代码重构，你期待了吗？如果你感兴趣，加入此计划吧。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-02-16</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-22-gitchang-jian-wen-ti-hui-zong/">git 常见问题汇总</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        1. git log 常用命令： 下一条: return 下一页: space bar 前一页: w 退出: q 帮助: h 2. git tag 常用命令： git tag -a v1.4 -m 'my version 1.4' #当前提交添加 tag git tag -a v1.4 9fceb02 #给任意提交添加 tag git tag -d v1.4 # 删除一个tag git push origin :refs/tags/v1.4 # 删除远程仓库tag git show v1.4 git push origin --tags 参考： http://git-scm.com/book/en/v2/Git-Basics-Tagging
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                        <li><a href="tags/git">#git</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-16-pian-bo-ke-yin-fa-de-si-kao/">一篇帖子引发的思考</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        这是一篇在 Ruby－China 上讨论的比较激烈的帖子，原帖地址 https://ruby-china.org/topics/23766。
+原帖属于楼主的经验分享帖，一个关于 sidekiq 的 worker 被全部占用，无法释放的问题。 出现这个问题的原因是，楼主 sidekiq worker 中有一段网络请求的代码，但由于网络请求服务不稳定，导致无响应或者响应很慢，所以，worker 全部都被占用了。
+解决这个问题的办法很简单，就是设置 Timeout 时间。
+ IO 请求都需要设置超时时间。
+ 楼主在原帖中还提到了 sidekiq 常见 Frozen worker 的两种情况：
+ DNS lookup - resolving a hostname might hang. This has a serious side effect in MRI of locking up everything because of the way MRI uses DNS by default. The solution is to run require &lsquo;resolv-replace&rsquo; in your initializer, which installs a pure Ruby DNS resolver that works concurrently.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-16</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-01-15-online-2-tool-collection/">Online 2-tool collection</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        js2coffee, 一个 js 和 coffee 互相转化的网站。 html2slim, 一个 html 和 slim 互相转化的网站。   NOTES：if you have more pretty sites, please comment to me.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-01-15</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/page/12/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/page/14/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

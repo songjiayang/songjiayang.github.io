@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>正则 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/%E6%AD%A3%E5%88%99/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="正则" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/%E6%AD%A3%E5%88%99/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2014-10-09T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="正则"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: 正则</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-10-09-zhuan-zai-zheng-ze-biao-da-shi-jian-ming-can-kao/">正则表达式简明参考</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        本文章转载于 http://www.xiaoleilu.com/regex-guide/ ,感谢作者的干货，以备日后查询检索之用，以下属于转载内容，版权归原作者。
+前言 我想在网上最出名的正则相关的一篇文章就是《正则表达式30分钟入门教程》了，说实话这篇文章确实是我的正则入门，但是随着使用熟练，冗长的文章已经不能满足我了，在此做个归纳总结，用于快速查阅。
+以下语法在Java中有效，大部分应该是通用的。
+元字符 元字符，又叫字符集，就是用一些特殊符号表示特定种类的字符或位置。
+匹配字符
+ . 匹配除换行符以外的任意字符 \w 匹配字母或数字或下划线或汉字 \s 匹配任意的空白符 \d 匹配数字  匹配位置
+ \b 匹配单词的开始或结束 ^ 匹配字符串的开始 $ 匹配字符串的结束 \G 上一个匹配的结尾（本次匹配开始） \A 字符串开头(类似^，但不受处理多行选项的影响) \Z 字符串结尾或行尾(不受处理多行选项的影响) \z 字符串结尾(类似$，但不受处理多行选项的影响)  重复
+ * 重复零次或更多次 + 重复一次或更多次 ? 重复零次或一次 {n} 重复n次 {n,} 重复n次或更多次 {n,m} 重复n到m次  字符转义 如果想匹配元字符本身或者正则中的一些特殊字符，使用\转义。例如匹配*这个字符则使用\*，匹配\这个字符，使用\\。
+需要转义的字符：$, (, ), *, +, ., [, ], ?, \, ^, {, }, |
+字符类 当需要匹配明确的字符或字符集合时候，就用到字符类。
+特殊字符
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-10-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%AD%A3%E5%88%99">#正则</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-09-15-javascriptzhong-ru-he-hu-lue-da-xiao-zheng-ze-pi-pei-dong-tai-zi-fu-chuan/">JS 中如何忽略大小正则匹配动态字符串</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        大家应该都知道在 Javascript 中正则匹配可以使用 match 方法。
+一个最简单的正则匹配例子 ：
+ &quot;Foo&quot;.match(/foo/i); 输出结果：
+['Foo'] Ok, 要解决标题中所说问题，我有必要先说明下在这里动态字符串指的是个什么？
+动态字符串是指： 正则表达式是个变量，具体内容无法提前知道，例如需要对用户输入的结果进行正则匹配。那该如何处理这种情况？
+我们可以通过实例化一个带有字符串参数的 RegExp 对象来处理这个问题，例如：
+var input = &quot;foo&quot; ; var re = new RegExp(input, &quot;i&quot;) ; &quot;Foo&quot;.match(re) ; 输出结果：
+['Foo'] 代码中 input 变量表示用户输入的值（可以根据具体情况获取）， re 就是根据输入内容生成的 RegExp 实例，其中 i 这个参数表示忽略大小写。
+参考资料：
+ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match http://www.w3schools.com/jsref/jsref_obj_regexp.asp  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-09-15</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%AD%A3%E5%88%99">#正则</a></li>
+                    
+                        <li><a href="tags/js">#js</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta name="generator" content="Hugo 0.72.0" />
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>小鱼驿站 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="小鱼驿站" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="小鱼驿站"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <div class="homepage-content">
+        
+    </div>
+
+    
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-03-04-goling-ji-chu-bian-cheng-ru-men-jiao-cheng-11-fa-bu-liao/">[Go零基础编程入门教程-11] 方法</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        课程内容:
+ 方法声明 简单示例 接收者类型 命名冲突 接收者为值和指针区别  Go 实战交流群： 694650181
+GitBook： https://songjiayang.gitbooks.io/go-basic-courses/content/ch5/method.html
+查看所有视频，请点击链接。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-03-04</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go%E9%9B%B6%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B">#GO零基础编程入门教程</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-03-02-wo-de-di-ge-slideshare/">我的第一个 SlideShare</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天第一次在 SlideShare 上发布了一个关于Prometheus 的演讲稿，所以有必要 mark 一下。
+它的主要内容有：
+ Prometheus 入门 Prometheus 与 Node Exporter Prometheus 与 Alertmanager Prometheus 与 容器  如果你感兴趣，可以点击详情链接进行阅读。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-03-02</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                        <li><a href="tags/%E5%88%86%E4%BA%AB">#分享</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-03-01-ru-he-xiu-gai-wei-xin-gao-jing-mo-ban/">如何定制微信告警模版</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        AlertManger 从 v0.12 已经默认支持企业微信发送告警信息了，具体步骤可以参见 alertmanger-with-wechat。
+最近不少朋友在群里问到：“如何定制微信告警消息？”，下面来讲解下具体步骤。
+1. 添加自定义模版 在 alertmanager 目录添加 一个 wechat.tmpl 文件，根据需求添加告警信息。
+a: 如果分组有多条告警信息，可以通过循环输出的方式：
+效果如图：
+b: 如果分组只想显示一条信息，那么可以使用公用信息：
+效果如图：
+2. 修改配置文件 打开 alertmanger.yml 文件，添加自定义模版配置：
+templates: - 'wechat.tmpl' 保存重新加载配置即可。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-03-01</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-02-28-ru-he-zai-ben-di-cha-kan-gitbook-dian-zi-shu/">如何在本地查看 GitBook 电子书</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        背景 至从在 gocn 发布 《Go 零基础编程入门教程》的新闻后，越来越多的小伙伴加入到了我们的 go 语言学习群(QQ:694650181)。
+在学习的过程中，有不少同学都在反馈配套电子书 GitBook在线无法打开的问题（因为 gitbooks.io 被墙）。
+所以今天我要介绍的是如何使用 gitbook 命令行工具在本地查看 GitBook 电子书，下面我就以《Go 零基础编程入门教程》为例。
+安装 gitbook 使用 npm 安装：
+npm install gitbook-cli -g 参考 本地安装 gitbook 命令行
+下载电子书源代码并在本地查看 a. 下载电子数
+git clone git@github.com:songjiayang/go-basic-courses.git b. 运行 gitbook 服务
+cd go-basic-courses gitbook serve 然后打开浏览器，访问 http://localhost:4000 即可。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-02-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/gitbook">#gitbook</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-02-27-ru-he-liang-hua-ni-de-fu-wu/">如何量化你的服务</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        我们经常被问到：“你服务运行的质量如何？“
+问题很简单，几个字，但想要回答好并不容易，因为你需要有明确的数据来支持你的结论。
+ 那我们该如何量化我们的服务呢？
+ 使用 USE 方法 通常我们使用 USE 方法来量化我们的硬件资源使用情况，它具体指：
+ Utilisation: % time that the resource was busy Saturation: amount of work resource has to do, often queue length Errors: the count of error events  我们的硬件资源常见检测项包括：
+我们来看看一个 Prometheus 关于内存查询的例子：
+内存使用率（Utilisation）:
+1 - sum( node_memory_MemFree{job=“…”} + node_memory_Cached{job=“…”} + node_memory_Buffers{job=“…”}) / sum(node_memory_MemTotal{job=“…”}) 内存饱和（Saturation）:
+1e3 * sum( rate(node_vmstat_pgpgin{job=“…”}[1m]) + rate(node_vmstat_pgpgout{job=“…”}[1m])) ) 使用 RED 方法 通常我们使用 RED 方法来量化我们后端服务的运行情况（尤其微服务），它具体指：
+ Rate: number of requests per second Errors: the number of those requests that are failing Duration: the amount of time those requests take  使用 Prometheus 查询例子：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-02-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-02-26-shen-ru-liao-jie-go-yu-yan-de-fang-fa/">深入了解 Go 语言的方法</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        方法主要源于 OOP 语言，在传统面向对象语言中 (例如 C++), 我们会用一个“类”来封装属于自己的数据和函数，这些类的函数就叫做方法。
+虽然 Go 不是经典意义上的面向对象语言，但是我们可以在一些接收者（自定义类型，结构体）上定义函数，同理这些接收者的函数在 Go 里面也叫做方法。
+声明 方法（method）的声明和函数很相似, 只不过它必须指定接收者，我们先来看个简单例子：
+package main type T struct{} func (t T) F() {} func main() { t := T{} t.F() } 接收者类型不是任意类型 例如：
+package main func (t int64) F() {} func main() { t := int64(10) t.F() } 当运行以下代码会得到 cannot define new methods on non-local type int64 类似错误信息，我们可以使用自定义类型来解决：
+package main type T int64 func (t T) F() {} func main() { t := T(10) t.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-02-25</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-02-23-ru-pei-zhi-zi-ding-yi-de-gitignore/">.gitignore 瘦身秘诀</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        我们在使用 git 的时候经常会遇到这样一个问题，团队成员使用的编辑器很多，比如 vscode, vim, idea ，而它们产生的临时文件又各不相同，这时我们该怎么处理？
+常见方法 将用到的编辑器产生的临时文件格式都添加到 .gitignore 文件中，所以最后它就变成这样或者更多：
+# Editor files #	################	*~	.*.swp	.*.swo	*.iml	.idea	tags	.history	.vscode 这样的问题：
+ 需要修改 .gitignore，添加新的文件格式，然后 git commit。 编辑器很多而且有新的产生，何时是个头。  改进方法 其实在项目目录下，有个叫做 .git/info/exclude 的文件，它可以用于自定义个人忽略选项，从而避免以上问题。
+以 vscode 编辑器为例，我们做以下简单调整即可：
+ 删除 .gitignore 中 Editor files 有关内容。 在 .git/info/exclude 中添加 .vscode。  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-02-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/git">#git</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-02-22-alertmanger-with-wechat/">Alertmanger With WeChat</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Alertmanger 从 v0.12 开始已经默认支持企业微信了，真的非常接地气啊，今天我们就来一起体验一下。
+准备工作 step 1: 访问网站 注册企业微信账号（不需要企业认证）。
+step 2: 访问apps 创建第三方应用，点击创建应用按钮 -&gt; 填写应用信息：
+使用版本  prometheus: 2.0.darwin-amd64 node_exporter: 0.15.0.darwin-amd64 alertmanager: 0.14.darwin-amd64  详细配置： prometheus 配置： # Alertmanager configuration alerting: alertmanagers: - static_configs: - targets: - localhost:9093 rule_files: - &quot;rules.yml&quot; scrape_configs: - job_name: 'node' static_configs: - targets: ['localhost:9100'] rules.yml 配置：
+groups: - name: node rules: - alert: server_status expr: up{job=&quot;node&quot;} == 0 for: 15s annotations: summary: &quot;机器 {{ $labels.instance }} 挂了&quot; alertmanger 配置： route: group_by: ['alertname'] receiver: 'wechat' receivers: - name: 'wechat' wechat_configs: - corp_id: 'xxx' to_party: '1' agent_id: '1000002' api_secret: 'xxxx' 参数说明：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-02-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-01-30-prometheus-shu-ju-an-quan-zhi-basic-ren-zheng/">Prometheus 数据安全之 Basic 认证</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        我们都知道 Promethetheus 是不带认证和数据加密的，但很多时候我们又想在公网中直接使用它的管理界面，如果不做任何处理，它将存在严重的数据泄漏安全问题。
+下面我将介绍如何通过 nginx 的 basic 认证来解决这一问题。
+原始 Prometheus 代理配置 server { listen 80; server_name example.coom; location / { proxy_pass http://localhost:9090/; } } 说明：使用 nignx 的 proxy_pass 代理我们 Prometheus 服务。
+使用 htpasswd 生成认证密钥对 htpasswd 属于 apache2-utils 包，下面我将演示在 Ubuntu 上的安装和配置过程。
+Step1: 安装 apache2-utils
+$ sudo apt-get install apache2-utils Step2: 生成认证密钥
+$ htpasswd -c /etc/nginx/.htpasswd monitor New password: Re-type new password: Adding password for user monitor 说明：monitor 可以修改为任意用户名。
+Step3: 使用 cat 查看生成内容:
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-01-30</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2018-01-26-shi-yong-which-better-bang-zhu-ni-tiao-xuan-geng-hao-de-yi-lai-ku/">使用 which-better 帮助你挑选更好的依赖库</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        作为一名职场新人对于工具或者开源库的选择往往会陷入长时间的纠结，因为你不知道选择哪个更好。如果没有老司机的指导，一步小心你就会 make a bad chose。
+基于此，我开发了一个小工具来帮助大家，用它会大大缩短你选择时间，而且不会出现大问题。
+前言  我们选择的是具有相似功能的库或者系统。 备选方案都放在 GitHub，因为 GitHub 是最火的开源软件平台。  工作原理 我们从 关注人数， 最近更新日期， 贡献人数 三个维度給备选方案进行排名，最后再按照各维度的排名进行汇总从而出总排名，排名越靠前表现越好，说明更值得选择。
+为什么是这三个维度？ 我是这么认为的：
+ 关注人数可以反应项目火热程度。 最后更新日期可以反应项目的维护情况，是否有被作者弃坑的风险。 贡献人数说明项目开源社区参与度。  好了，下面我们来看一个实际的例子。
+举个例子 Go 语言里面选择哪个包管理工具更好？
+我们的备选方案有:
+ golang/dep Masterminds/glide tools/godep kardianos/govendor pote/gpm  当我们使用 which-better 来评测的结果为：
+$ which-better -r golang/dep,Masterminds/glide,tools/godep,kardianos/govendor,pote/gpm golang/dep: 3 Masterminds/glide: 8 tools/godep: 9 kardianos/govendor: 11 pote/gpm: 15 可以看到 golang/dep 在三个维度都是第一名，优势明显，所以在这个例子中我会毫不犹豫的选择 golang/dep 作为包管理工具。
+写在最后 如果你对这个项目感兴趣的话，可以访问地址 https://github.com/songjiayang/which-better 查看具体的安装步骤。
+这么好用的工具你还等什么？ just enjoy it.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-01-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE">#开源项目</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/page/3/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/page/5/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

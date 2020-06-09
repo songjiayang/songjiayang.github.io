@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta name="generator" content="Hugo 0.72.0" />
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>小鱼驿站 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="小鱼驿站" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="小鱼驿站"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <div class="homepage-content">
+        
+    </div>
+
+    
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-26-shi-yong-css-countershi-xian-jian-dan-ji-shu/">使用 css counter 实现简单计数</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天在 Matter 中添加了一个新功能，为 table 的每个 tr 添加一个序号， 大概效果如图：
+由于需要在 table 中进行一些比较复杂的 dom 操作,比如 tr 的移动，删除，直觉告诉我， 使用js的方式会比较麻烦，所以就打算使用纯 css 方案。
+使用 css 的 计数器 参考 https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Counters
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/css">#css</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-25-hello-rack/">Hello Rack</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Rack 是什么？ Rack 是一个模块化的 ruby webserver 接口；它是 web server 到 web framework的中间件。
+为什么需要 Rack? 因为 Rack，项目可以从 web server 到 web framework 任意切换组合。例如同一个rails应用可以使用不同的 web server（unicorn, thin, puma ..）
+Rack定义? 提供一个叫做 app 的 object， 这个 object 具有 call 方法；call 方法可以传递 ENV 作为参数; 返回是一个数组，数组包含了3个东西：
+ http 返回状态码 Hash 形式的 header信息 返回的body信息，必须具有 each 方法。  Rack 的基本使用 ruby 代码中直接运行
+# my_rack_app.rb require 'rack' app = Proc.new do |env| ['200', {'Content-Type' =&gt; 'text/html'}, ['A barebones rack app.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-25</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-21-zai-jin-yong-robotsde-wang-zhan-ru-he-shi-yong-qi-niu-jing-xiang/">如何在禁用爬虫的网站上使用七牛镜像</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        测试服务器上由于某种原因需要禁用所有爬虫，完全禁用的代码很简单， 只需要在public下面的 robots.txt 文件中添加如下代码即可。
+# See http://www.robotstxt.org/wc/norobots.html for documentation on how to use the robots.txt file # # To ban all spiders from the entire site uncomment the next two lines: User-Agent: * Disallow: / 上述代码虽然简单，但是确实有点太粗暴，因为它也会禁止七牛的爬虫（该网站使用了七牛的镜像服务）。
+为了继续使用七牛的服务，需要做一些额外操作。
+ 修改七牛镜像源为一个以 cdn开头的二级域名, 例如 cdn.eradai.com。 在public下面新建一个 robots.allow.txt 的文件，内容为空。 修改 nginx 配置,在 server 里面添加如下代码：  # HTTP server { ...... location /robots.txt { if ($host = 'cdn.eradai.com') { rewrite ^/robots\.txt /robots.allow.txt last; } } .
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-20-thinking-sphinx-can-not-search-chinese/">Thinking-sphinx can not search chinese</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天发现 Matter 在生产环境不支持中文全文搜索（英文可以），开发环境支持中文搜索。
+Matter 的全文搜索使用的是 thinking-sphinx， 底层是 sphinxsearch 。
+由于习惯性思维，我很快的查看了线上的 sphinxsearch 版本， 发现版本比较低， 所以立马升级了线上的 sphinx 版本(与开发一致)。 很不幸，不是这个原因，问题犹在，需要调整思路。
+经过对比线上和本地自动生成的 x.sphinx.conf 文件，发现本地 生成的配置文件多了 sql_query_pre = SET NAMES utf8 这句。
+也许问题就出现在这里，那为什么开发环境会多处这句配置？
+通过在 github 的 thinking-sphinx 项目里面搜索 SET NAMES utf8 和 utf8_query_pre 瞬间恍然大悟！
+原来线上的 database.yml 里面并没有设置编码方式，而默认编码并非utf8，所以不支持中文。 而开发环境支持中文搜索的原因正是在 database.yml 里面设置了 encoding: utf8。 待生产环境加上这句后，问题得以解决，可以正常搜索中文了。
+这个bug的修复并非如此顺利，因为一开始浪费了很多时间在其他方向上，最后在同事 serco-chen 的提醒下，通过对照配置文件差异后，才得以解决，在此感谢他。
+通过此次捉虫，感触最深的就是：
+  当我们调试和解决bug的时候，不妨尝试采用对照的方式，切勿先入为主，以为是必然就忽略了某些细节。
+  
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-20</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-20-rails-deploy-with-capistrano3/">Rails deploy with capistrano3</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今天将公司 Reset 项目的部署由 capistrano2+unicorn+sidekiq 换成了 capistrano3+puma+sidekiq 。
+以下是个人整理的几个重要地方。
+1. 修改 Gemfile 文件 #Gemfile gem 'puma' group :development do ..... # cap deploy plugins gem 'capistrano', '~&gt; 3.2.0' gem 'capistrano-rvm', '~&gt; 0.1.2' gem 'capistrano-bundler', '~&gt; 1.1.3' gem 'capistrano-rails', '~&gt; 1.1.2' gem 'capistrano-sidekiq', '~&gt; 0.4.0' gem 'capistrano3-puma', '~&gt; 0.8.3' ..... end 2. 修改 Capfile 文件 #Capfile # Load DSL and Setup Up Stages require 'capistrano/setup' # Includes default deployment tasks require 'capistrano/deploy' # Includes tasks from other gems included in your Gemfile # # For documentation on these, see for example: # # https://github.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-20</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-15-trzai-tablezhong-shang-xia-yi-dong-cao-zuo-jian-dan-shi-xian/">Table 中任意上下移动 row 的简单实现</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        刚在 matter.build 里面实现了一个给项目材料任意排序的功能，主要技术包含：
+ table中如何实现上下移动 sectionRowIndex 属性使用  Row 上下移动主要使用使用jquery 的 prev,next 和 after,before 来实现,具体代码如下： $.fn.moveUp = -&gt; $.each this, -&gt; $(this).after $(this).prev() $.fn.moveDown = -&gt; $.each this, -&gt; $(this).before $(this).next() 有了上面代码，你就可以通过 $('tr::eq(2)').moveUp() 和 $('tr::eq(0)').moveDown() 来实现 tr上下移动了。
+想获取任意一个tr在table中位置，可以使用 tr 的 sectionRowIndex 属性 。 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-15</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/css">#css</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-12-plupload-rails-error-uncaught-error-error-calling-method-on-npobject/">The Problem &#34;Uncaught Error: Error calling method on NPObject&#34; with plupload-rails</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        昨天，突然发现在 IE 上传图片的时候，报出错误 Uncaught Error: Error calling method on NPObject, google了一下，发现这个是 flash 抛出来的错误，主要是跨站的问题。
+####为什么会跨站呢？ 首先我们使用qiniu作为静态资源的镜像加速，所以用于上传的插件也来自七牛。 主要涉及的资源是 Moxie.swf（flash 使用） 和 Moxie.xap（silverlight） 这两个。
+plupload-rails 中关于资源加载代码是这样的：
+// Assigns default Plupload settings that work with the asset pipeline. (function ($) { var proxied = plupload.Uploader; plupload.Uploader = function (settings) { settings = $.extend({}, settings, { multipart: true, flash_swf_url: '&lt;%= asset_path(&quot;Moxie.swf&quot;) %&gt;', silverlight_xap_url: '&lt;%= asset_path(&quot;Moxie.xap&quot;) %&gt;' }); return proxied.call(this, settings); }; plupload.Uploader.prototype = proxied.prototype; }(jQuery)); 很显然，问题出现在 asset_path(&quot;Moxie.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-12</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-07-gemfile-bundle-ti-shi-unable-to-connect-to-github-dot-com-wen-ti/">Bundle 的时候出现 &#39;unable to connect to github.com&#39; 问题</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        最近新开了一台日本的亚马逊机器，在使用 cap2 做发布的时候， 在 bundle 那步出现报错，提示信息类似：
+Fetching git://github.com/activeadmin/activeadmin.git fatal: unable to connect to github.com: github.com[0: 192.30.252.130]: errno=Connection refused 这是因为我部分 gem 是使用 github 仓库安装，而服务器上无法通过 git 协议连接到 github 获取代码, 所有报错。出现这个原因可能是因为我亚马逊机器设置的问题，（比如某些协议不支持或者端口没打开）。
+Anyway, 既然 git 协议通不过，那么我们可以尝试换成 https 协议。遗憾的是，Gemfile里面，不能直接指定请求发送的协议， 但是我们可以尝试修改 git global config ，针对 github 将 git 协议重定向到 https上，这个有点像 dns 设置。
+具体设置:
+git config --global url.&quot;https://github.com&quot;.insteadOf git://github.com 在服务器上执行了以上代码后,重新执行 cap production deploy 就可以了。
+参考链接： http://stackoverflow.com/questions/21260689/force-bundle-install-to-use-https-instead-of-git-for-github-based-gems
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-07</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-11-05-unixxi-tong-jian-kong-zhi-m-slash-monit/">超好用的监控工具之 M/Monit</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        1. M/Monit 是什么？ 简单而言，Monit 是一款轻量级，好用的监控工具，它能够监控unix系统，网络，云服务等任务，它还能够自动重启服务。下面是一段官方的描述：
+ Easy, proactive monitoring of Unix systems, network and cloud services. Conduct automatic maintenance and recovery and execute meaningful causal actions in error situations
+ 2. 如何安装 M/Monit ? apt 类系统上安装：
+sudo apt-get install monit yum 类系统上安装:
+sudo yum install monit 3. M/Monit 主要目录 以ubuntu系统为例，monit的配置目录主要在 /etc/monit, 主要包含：
+drwxr-xr-x 2 root root 4096 Nov 5 05:33 conf.d -rw------- 1 root root 10962 Nov 5 04:30 monitrc drwxr-xr-x 2 root root 4096 Nov 4 10:24 monitrc.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-11-05</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-10-27-bei-yi-wang-de-logrotate/">被遗忘的 logrotate</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        随着时间的推移，Application的日志内容越来越多（对我而言，主要是nginx 和 unicorn），而日志分析第一步往往是日志分片， 因为你不可能一次去处理几十天的日志，内容太多。
+有些人可能会自己写一些定时任务来处理日志分片，其实这样做既费事，又不能保证与其他任务进程完美结合，而Linux 上自带的 logrotate 却是一个比较好解决方案， 而且 logrotate 底层是依赖了 crontab, 很容易自定义任务周期。
+logrotate 的配置文件默认都放在了 /etc/logrotate.d 里面。
+其实 nginx 本身就做好了分片，下面是一段nginx 默认的 logrotate 配置。
+# 文件位置是 /etc/logrotate.d/nginx /var/log/nginx/*.log { weekly missingok rotate 52 compress delaycompress notifempty create 0640 www-data adm sharedscripts prerotate if [ -d /etc/logrotate.d/httpd-prerotate ]; then \ run-parts /etc/logrotate.d/httpd-prerotate; \ fi \ endscript postrotate [ -s /run/nginx.pid ] &amp;&amp; kill -USR1 `cat /run/nginx.pid` endscript } 我使用的 unicorn 的配置：
+# 文件位置是 /etc/logrotate.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-10-27</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/page/14/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/page/16/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

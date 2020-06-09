@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>PDF 打印大杀器之 PhantomJS - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="PDF 打印大杀器之 PhantomJS" />
+<meta property="og:description" content="PDF 打印是件麻烦事 ！！！
+开发调试问题：  大量代码与样式，输出内容排版组织有关，单元测试难写 。 没有简单的预览功能，无法逐步调整样式 。  定制样式问题：  PDF 本身支持的内容样式十分多，所以通过程序 DSL 构件 PDF 的代码冗余高 。 图片排版始终是个问题 。 国际化的问题（有些库对 I18n支持不够友好）。  为什么选择 PhantomJS ？  PhantomJS 的屏幕抓取功能十分好用，PDF 打印支持好，抓取打印代码简单 。 内容模版使用 html&#43;css，代码简单而且方便预览调试，开发更容易 。  PhantomJS 打印的例子 // Simple Javascript example console.log(&#39;Loading a web page&#39;); var page = require(&#39;webpage&#39;).create(); var url = &#39;http://phantomjs.org/&#39;; page.open(url, function (status) { //Page is loaded! page.render(&#39;example.pdf&#39;) phantom.exit(); }); 应该各语言都有它的 wrapper , Ruby 语言我推荐 phantompdf, 因为公司开源项目，而且我们项目中一直在用 :smile: 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2015-10-26-pdf-da-yin-da-sha-qi-zhi-phantomjs/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2015-10-26T23:31:00+08:00" />
+<meta property="article:modified_time" content="2015-10-26T23:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="PDF 打印大杀器之 PhantomJS"/>
+<meta name="twitter:description" content="PDF 打印是件麻烦事 ！！！
+开发调试问题：  大量代码与样式，输出内容排版组织有关，单元测试难写 。 没有简单的预览功能，无法逐步调整样式 。  定制样式问题：  PDF 本身支持的内容样式十分多，所以通过程序 DSL 构件 PDF 的代码冗余高 。 图片排版始终是个问题 。 国际化的问题（有些库对 I18n支持不够友好）。  为什么选择 PhantomJS ？  PhantomJS 的屏幕抓取功能十分好用，PDF 打印支持好，抓取打印代码简单 。 内容模版使用 html&#43;css，代码简单而且方便预览调试，开发更容易 。  PhantomJS 打印的例子 // Simple Javascript example console.log(&#39;Loading a web page&#39;); var page = require(&#39;webpage&#39;).create(); var url = &#39;http://phantomjs.org/&#39;; page.open(url, function (status) { //Page is loaded! page.render(&#39;example.pdf&#39;) phantom.exit(); }); 应该各语言都有它的 wrapper , Ruby 语言我推荐 phantompdf, 因为公司开源项目，而且我们项目中一直在用 :smile: 。"/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">PDF 打印大杀器之 PhantomJS</h1>
+        </header>
+        <div class="content">
+            <p><img src="/images/phantomjs.png" alt="phantomjs.png"></p>
+<p>PDF 打印是件麻烦事 ！！！</p>
+<h4 id="开发调试问题">开发调试问题：</h4>
+<ol>
+<li>大量代码与样式，输出内容排版组织有关，单元测试难写 。</li>
+<li>没有简单的预览功能，无法逐步调整样式 。</li>
+</ol>
+<h4 id="定制样式问题">定制样式问题：</h4>
+<ol>
+<li>PDF 本身支持的内容样式十分多，所以通过程序 DSL 构件 PDF 的代码冗余高 。</li>
+<li>图片排版始终是个问题 。</li>
+<li>国际化的问题（有些库对 I18n支持不够友好）。</li>
+</ol>
+<h4 id="为什么选择-phantomjs-">为什么选择 PhantomJS ？</h4>
+<ol>
+<li>PhantomJS 的屏幕抓取功能十分好用，PDF 打印支持好，抓取打印代码简单 。</li>
+<li>内容模版使用 html+css，代码简单而且方便预览调试，开发更容易 。</li>
+</ol>
+<h4 id="phantomjs-打印的例子">PhantomJS 打印的例子</h4>
+<pre><code>// Simple Javascript example
+
+console.log('Loading a web page');
+var page = require('webpage').create();
+var url = 'http://phantomjs.org/';
+page.open(url, function (status) {
+  //Page is loaded!
+  page.render('example.pdf')
+  phantom.exit();
+});
+</code></pre><p>应该各语言都有它的 wrapper , Ruby 语言我推荐 <a href="https://github.com/mcspring/phantompdf">phantompdf</a>,
+因为公司开源项目，而且我们项目中一直在用 :smile: 。</p>
+<p>总结： 如果你还在为项目中 PDF 打印而烦恼，不妨尝试使用 PhantomJS 的方案，就个人经验而言，它是我见过 PDF 打印最简单的方式了。</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-10-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

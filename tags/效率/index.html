@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>效率 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/tags/%E6%95%88%E7%8E%87/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="效率" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/%E6%95%88%E7%8E%87/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2017-11-22T23:39:21+00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="效率"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <h1>Tag: 效率</h1>
+    <div class="post-info">
+        <a href="/tags">To all tags</a>
+    </div>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-11-22-huan-ge-zi-shi-fa-bao-rang-ni-ti-yan-qian-suo-wei-you-de-kuai-gan/">换个姿势发包，让你体验前所未有的快感</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        一种全新的方式进行 Go 语言项目打包并发布到 GitHub, 让你体会到前所未有的快感。
+背景 我们都知道 Go 语言项目非常方便交叉编译，这意味着 GitHub 项目在发布新版本的时候， 需要尽可能编译成不同平台的二进制文件，并再将它们一一上传到此次 release 的下载列表中， 整个过程显得重复和耗时。
+下面我将介绍使用 gco 和 ghr 将整个过程自动化起来，实现一键打包发布， 其中 gco 负责编译， ghr 负责上传发布。
+gco 使用 gco 是我写的一个针对 Go 项目的交叉编译脚本。
+安装步骤
+curl https://raw.githubusercontent.com/songjiayang/gco/master/gco.sh -o /usr/local/bin/gco chmod +x /usr/local/bin/gco 使用方法
+gco example v0.1 main.go 参数说明：
+ example 是你编译的项目名称 v0.1 是编译的版本 main.go 是项目的 main 包位置  所有编译的包默认放到项目的 ./pkg 目录 下。
+ghr 使用 ghr 是社区写的一个批量上传打包文件到 GitHub 的命令行工具，你可以到 https://github.com/tcnksm/ghr/releases 下载对应版本。
+使用方法：
+export GITHUB_TOKEN=&quot;.....&quot; // 添加 GITHUB_TOKEN 环境变量 ghr v0.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-11-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-11-10-ru-he-zai-wei-xin-zhong-jin-xing-you-ya-xie-zuo/">如何在微信中进行优雅写作</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        作为一名 Coder，如果浪费时间在微信排版之类的问题，显然是不划算的，今天我们一起来讨论下一些改进的方案。
+缘起 半年来，断断续续写过十多遍文章，虽然数量不多，但我已感受到了微信自带网页编辑器的难用。
+ 代码高亮支持极差，以至于我会贴图。 编写的内容，在网页、手机预览中存在细微差异，需要不断微调。 出现各种莫名其妙的行高、段落间距，调整过程非常麻烦。 无默认模版，对于写作新人来说，所写文章排版风格差异大，不利于阅读。  由于以上种种问题，会让我很难专注书写过程，在调整样式上浪费不少时间。
+解决之道 首先我想到的就是 Markdown, 最近几年特别流行，自己的博客也一直用它书写，应该大家都很熟悉它吧。
+它作为一门轻量的标记语言，能让你聚焦到内容本身，排版问题就让模版去解决，所以在很长一段时间我想做一款 Chrome 插件，能够直接将你书写的内容转化为带有微信支持的 HTML 代码。
+不过，在我还未开发之前，已经在市面上找到了一款类似的工具，那就是 WXMarkdown: http://md.barretlee.com。
+它基本满足了我的需求：
+ 友好的代码高亮。 支持多种模版。 使用 Markdown 写作，转化的内容不存在样式偏差。  但它还有一些不足的地方：
+ 不能够一键导入微信编辑器。 没有暂存功能，不敢在线编写，非常容易丢失内容。  总结 本篇文章使用了 WXMarkdown 转码，是不是样式看上去舒服很多，以后我会定期分享一些实用小工具，欢迎大家关注。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-11-10</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-10-31-github-lao-niao-zhuang-x-zhi-nan/">GitHub 老鸟装 X 指南</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        常在 GitHub 泡，不免会碰到各种莫名奇妙的缩写（例如 LGTM，TL;DR），如果你连这些缩写什么意思都不知道，那又如何用它们去实力装 X 呢？
+不过，你不用担心，今天万圣节，给大家带来福利，Github 装 X 缩写大汇总：
+ PR: Pull Request. (给项目提交代码) LGTM: Looks Good To Me. (代码看起来不错，可以合并) SGTM: Sounds Good To Me. (同上) WIP: Work In Progress. (提示管理员，代码正在开发中，可以不忙 Code Review，主要应用于非常大的 PR, 分批次提交代码) PTAL: Please Take A Look. (提示别人来看看) TBR: To Be Reviewed. (提示管理员可以进行 Code Review) TL;DR: Too Long; Didn&rsquo;t Read. (代码太长, 不方便 Code Review) TBD: To Be Done(or Defined/Discussed/Decided/Determined). (用于表示代码开发状态, 例如：完成，讨论中，延期等)  看完之后，是不是有种恍然大明白的感觉，恨不得马上去 GitHub 试试？
+其实熟悉掌握这些缩写并不是为了装 X，而是更加高效的进行团队协助，所有大家有必要掌握之。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-10-31</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-05-27-chang-yong-web-kuang-jia-tun-tu-lu-dui-bi/">个人常用 web 框架吞吐率对比</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        目的 测试个人经常使用的不同 App server（主要用来做 API）的吞吐率。
+测试主机  系统： MacBook Air (11-inch, Early 2015) CPU: 1.6 GHz Intel Core i5 x4 (4 核) 内存： 4 GB 1600 MHz DDR3  参数对比 1. Golang Gin 框架（协程模式）  Go 1.6 Gin v1.0rc1  2. Node Koa 框架 (多进程的异步IO模式)  Node v6.1.0 Koa 1.2.0  3. Ruby Sinatra 框架 (多进程多线程模式)  Ruby 2.3.1p112 Sinatra 1.4.7 Puma 3.4.0  测试方法  使用 wrk 测试工具 压力参数参考 http://www.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-05-27</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-03-28-zi-di-xiang-shang-zhu-bu-wan-shan-zhi-shi-ti-xi/">自顶向下，自底向上，逐步完善知识体系</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        自顶向下和自底向上, 往往被人们用来描述软件开发的不同思路，但是我觉得它们同样可以用来表示不同的学习思路和方向。
+先来说说自顶向下： 所谓自顶向下，就是根据自身职业规划（某一阶段目标），并针对该目标的实现，理清需要得知识储备，并勾勒出知识点之间的联系，简而言之即知识体系。
+自顶向下的知识体系是宏观指导，它具有重要性：
+ 大方向上不会跑偏，对各种新技术有更好的取舍标准，不至于茫然而恐慌，也不会随意跟风。 能够提升新知识的获取速度，因为你总是发散的思考问题，更容易产生联系。 能够提高问题解决能力。不知你有没有发现，请教那些经验丰富的同事的时候，他们经常很快就会定位到问题所在， 即使 google 也会比你更快搜索出结果。同样面对的是新问题，为什么他们就比你快，不知道你思考过没有。其中的奥妙我认为还是在于知识体系， 因为同事关注的不是问题表象，而是产生问题的上下文，再根据具体问题，就能很快检索出关键词。 一切的根源原来在于同事拥有比你更完善和健全的知识体系！  写到这里，我停下了很久，为的就是规划和整理自己的知识脉络（我将另起博客讨论这个问题）。
+自低向上： 如果我们将个人发展比喻成一棵不断成长的树，那么自顶向下的知识体系就好比树径，枝干；树光有躯干是不行的， 因为你还要有叶子（需要光合作用），此时自底向上的学习就好比一片片枝头的树叶，足够的树叶才能为躯干的生长提供充足的能量。
+所以，自底向上的学习也是极其重要的，它是知识体系落地实施的坚实基础，如果没有它，知识体系就是空洞的，夸夸其谈。
+作为一名 Ruby 开发者，开发新功能对你来说是容易的，因为你不需要了解太多底层技术实现，社区中总能找到对应的封装； 你只需要看看某个 gem 的文档就能快速搞定工作。
+但是这样对于个人发展而言，真的好吗？如果你仅仅只是会用 gem（工具）， 而不是了解背后的依赖的基础知识和原理，你的水平只是停留在使用工具层面。
+你会为工具变化太快而烦恼，因为工具都是为某一特定需求的具体实现， 需求和实现都是在不断变化的，它只是一些花哨的招式而已。
+自底向上的学习，恰恰可以解决这些问题，因为它学习和补充的是更底层的知识， 它们是经典而久经考验的，也不常常变化，它更像内功心法，当你真正领悟的时候， 根本不会在乎工具的一招一式，使用任何工具实现都能轻松驾驭。
+当写到这里的时候，我已经开始将我经常用到的 gem 找出来，反复阅读和推敲其源码。
+总结：
+自顶向下和自底向上是两个不同纬度的学习方法，自顶向下是自底向上的宏观指导，自底向上是自顶向下的坚实基础，它们互相联系，缺一不可。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-03-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-03-24-wo-men-kai-shi-shi-yong-okrliao/">我们开始使用 OKR</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        什么是 OKR OKR 全称是 Objectives and Key Results 即目标与关键成果法，OKR是一套定义和跟踪目标及其完成情况的管理工具和方法。
+以下是维基百科的描述:
+    OKR stands for Objectives and Key Results. It is a method of defining and tracking objectives and their outcomes.
+为什么我们开始使用 OKR 长久以来，公司没有引入任何员工考核机制，虽然不同项目组有自己的管理工具（Redmine, GitHub Issues 等）， 但当年终时，却发现很难恒定这一年的工作成绩。
+就一般个人而言，也无法第一时间知道公司战略变化，想为公司的发展更多思考都没办法，参与感不足。
+最近 OKR 挺火的，大概也是因为 google 项目组引入 OKR 缘故吧； 但是不光如此，我身边也有不少朋友所在公司正在尝试使用它（互联网创业型公司）。
+我们使用 OKR 主要想解决以下问题：
+ 信息透明： 可以在同一个地方很容易看到公司，团队，以及任何同事的目标和任务。这样可以方便地了解公司战略方针，团队任务规划，以及其他同事的想法和研究方向。 自动汇总： 如果将 OKR 迭代周期（一个季度）完成情况，加以简单汇总，就会自动得出公司，团队，个人这一年的成绩（大事件）。 提升个人能力： 首先个人 OKR 是根据公司，团队 OKR 自主制定的，这样可以驱动你对公司，项目全方位思考，寻找可以让公司变得更好的解决办法。 其次个人 OKR 往往有一定的难度，具有研究性，系统性。  如何实践 OKR  工具：Trello 分类：Company OKR, Teams OKR, Individual OKR 基本格式：  Objective: 我要实现的具体目标 KR: 具体实践结果1 KR: 具体实践结果2 .
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-03-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-03-04-translate-english-with-hacker-way/">Translate English with Hacker Way</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        背景：
+ruby 开发对英文单词量比较高，像我这种半吊子英文水平，使用英汉字典翻译的时候较多。
+前段时间看到 @lingceng 写的 bing_dictionary ，试用结果非常满意，速度快而且翻译比较准确。最近开始背诵单词，所以想将每天查询记录收集起来，以备每晚巩固之用, 故写了 dict_cache。
+安装 gem install dict_cache 如何使用 1. 翻译单词 （用到 bing_dictionary） dict apple 2. 查询每日记录，默认是当天 dict_cache date:2016-03-04 dict_cache // today is default 3. dict_cache clear 清空所有缓存记录 4. dict_cache --help/-h 帮助 欢迎大家使用，有任何问题和想法，任何 issue 和 pr 都 OK.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-03-04</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-02-22-write-professional-emails-in-english/">DOs and DON&#39;Ts in Professional Emails</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        DO  首先，你需要一个看起来比较靠谱的邮件地址，邮件名称比较正式。 邮件基本结构包含主题，称呼，正文和结束问候四部分。主题要明确，比如： ‘Canceling My Order’ 就要好于 ‘Hello, Dear xxx’。称呼要正确，我们可以使用职称，邮件名；但千万不要用错误性别的称呼，乱用了 Mrs 和 Mr 。正文要简明，邮件不是写书，所有内容要简洁，尽量用主动形式，不要使用被动语句，通常一个邮件 1~2 个段落为好。结束问候，不可缺少，可以简单的为 Regards 或者 Best Regards. 考虑你邮件发送对象的阅读理解能力，要让他能知道你讲的是什么。  DON&rsquo;T  不要出现诸如： 单词拼写，语法，标点符号，大写字母之类的低级错误。 不要写太长的邮件。 不要抱怨责备。 不要出现 Fuck, shit 之类的词语。 不要没有经过检查就发送邮件。  参考： https://www.coursera.org/learn/professional-emails-english/home/welcome。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-02-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-01-21-ru-he-dao-chu-ibooks-zhong-de-highlight-he-note/">如何导出 iBooks 中的 Highlight 和 Note</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        前提： 需要 mac 电脑一台。
+第一步： 将手机 或 Pad 的书籍同步到 mac 上，只要使用同一苹果账号，将自动同步，包括书籍的 highlight 和 note。
+第二步： 在 mac 上的 iBooks 中打开待导出的书籍，点击左上角 “show notes” 按钮，然后依次点击展开书本章节。 待鼠标焦点停留在 note 上的时候，使用命令 cmd + a 和 cmd + c 全部选中内容并复制。
+第三步： 打开文本工具，使用 cmd + v 粘贴即可。
+ 以下内容属于对应步骤操作结果图例：
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-01-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2015-10-29-jin-ri-tui-jian-zhi-sublimelinter/">今日推荐之 SublimeLinter</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        SublimeLinter 是什么？ SublimeLinter 是一个 Sublime Text 3 上的代码诊断框架，用于代码错误和不良的代码风格高亮提示。 值得注意的是，它只是个框架，接口，不包含具体某种语言的诊断，针对特定语言代码的诊断需要依赖以它为基础的插件， 比如 ES6 的SublimeLinter-contrib-eslint-d, Ruby 的 SublimeLinter-contrib-ruby-lint， 等等。
+SublimeLinter 安装  使用命令cmd+shift+p 打开命令面板（ Linux/Windows 使用 ctrl+shift+p）。 选择 Package Control: Install Package 项 。 在可用 Sublime 插件包列表中输入 linter， 选择 SublimeLinter 。 安装完毕，重启 Sublime 。  SublimeLinter 配置  Tools -&gt; SublimeLinter -&gt; Lint Mode -&gt; Save only Tools -&gt; SublimeLinter -&gt; Mark Style -&gt; Outline  具体 linter 插件安装 按照如上 SublimeLinter 安装 方式，在 Sublime 插件包列表中输入 SublimeLinter-, 就能找到你想要的语言插件了。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-10-29</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%95%88%E7%8E%87">#效率</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item disabled">
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/tags/%E6%95%88%E7%8E%87/page/2/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

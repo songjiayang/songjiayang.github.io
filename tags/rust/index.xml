@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rust on 小鱼驿站</title>
+    <link>/tags/rust/</link>
+    <description>小鱼驿站 (rust)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 26 Nov 2019 17:08:00 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/rust/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何使用京东云快速搭建高可靠的 Rust 镜像服务</title>
+      <link>/posts/2019-11-26-ru-he-shi-yong-jing-dong-yun-kuai-su-da-jian-gao-ke-kao-de-rust-jing-xiang-fu-wu/</link>
+      <pubDate>Tue, 26 Nov 2019 17:08:00 +0800</pubDate>
+      
+      <guid>/posts/2019-11-26-ru-he-shi-yong-jing-dong-yun-kuai-su-da-jian-gao-ke-kao-de-rust-jing-xiang-fu-wu/</guid>
+      <description>&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;目前国内使用 Rust 的越来越多，而在使用的时候有时我们经常会遇到依赖包无法下载或下载很慢的情况，所以我们非常需要一个高可靠的国内 Rust 的镜像服务来提高 Rust 包的安装速度。&lt;/p&gt;
+&lt;p&gt;先来分析下 Rust 依赖安装慢的原因，我们都知道 Rust 依赖安装主要分为两个步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;依赖包索引更新， Rust 依赖包索引托管在 GitHub，仓库地址为 &lt;a href=&#34;https://github.com/rust-lang/crates.io-index&#34;&gt;https://github.com/rust-lang/crates.io-index&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;依赖包下载， Rust 的依赖包资源统一下载地址为 &lt;a href=&#34;https://crates.io/api/v1/crates&#34;&gt;https://crates.io/api/v1/crates&lt;/a&gt;， 通过 &lt;code&gt;dig crates.io&lt;/code&gt; 可以发现其服务器全部托管在国外。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;以上两点原因，大大影响了 Rust 依赖安装的速度，故在搭建 Rust 镜像的时候就要把这两个服务放到国内来。&lt;/p&gt;
+&lt;h2 id=&#34;搭建思路&#34;&gt;搭建思路&lt;/h2&gt;
+&lt;h3 id=&#34;解决索引托管的问题&#34;&gt;解决索引托管的问题&lt;/h3&gt;
+&lt;p&gt;使用京东云的云主机自己搭建 crates.io-index 的 git 服务器。这里说下为什么不使用国内已有的 git 托管服务商，原因如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;国内的 git 托管服务都不支持 GitHub 仓库的镜像服务，无法做到项目自动更新，所以还是需要额外的服务器来完成同步工作。&lt;/li&gt;
+&lt;li&gt;无法自定义 git 项目地址和域名，比如 git://rust-mirror.jdcloud.com。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;解决依赖包下载的问题&#34;&gt;解决依赖包下载的问题&lt;/h3&gt;
+&lt;p&gt;这里使用京东云对象存储的镜像回源功能很容易解决这个问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对象存储提供永久性存储，防止内容丢失，还提供 https 安全访问。&lt;/li&gt;
+&lt;li&gt;对象存储的镜像回源功能可以很简单的实现资源包从 &lt;code&gt;https://crates.io/api/v1/crates&lt;/code&gt; 的抓取，抓取的内容还能自动进行签名校验，保证数据的准确性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;动手搭建&#34;&gt;动手搭建&lt;/h2&gt;
+&lt;h3 id=&#34;第一步-创建并配置对象存储空间&#34;&gt;第一步： 创建并配置对象存储空间&lt;/h3&gt;
+&lt;p&gt;因为需要在 crates.io-index 的 config.json 中配置新的 dl 地址（对象存储 Bucket 公网访问地址），所以我们先来申请和配置对象存储。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;创建存储空间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;进入京东云的控制台，选择 &amp;ldquo;存储&amp;rdquo; -&amp;gt; &amp;ldquo;对象存储&amp;rdquo; -&amp;gt; &amp;ldquo;空间管理&amp;rdquo; -&amp;gt; &amp;ldquo;华北-北京&amp;rdquo; -&amp;gt; &amp;ldquo;新建空间&amp;rdquo;，填写空间基本信息（这里的空间名称为 &amp;ldquo;rust-mirror&amp;rdquo;）：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/bucket01.png&#34; alt=&#34;bucket01.png&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;配置镜像回源：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;选择 &amp;ldquo;对象存储&amp;rdquo; -&amp;gt; &amp;ldquo;空间管理&amp;rdquo; -&amp;gt; &amp;ldquo;rust-mirror&amp;rdquo; -&amp;gt; &amp;ldquo;空间设置&amp;rdquo; -&amp;gt; &amp;ldquo;镜像回源&amp;rdquo; -&amp;gt; &amp;ldquo;设置规则&amp;rdquo;，填写信息如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/bucket02.png&#34; alt=&#34;bucket02.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;点击保存设置后，可以在配置规则列表看到刚配置的规则信息：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/bucket03.png&#34; alt=&#34;bucket03.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;到目前为止，我们已经创建好了一个对象存储的空间，取名叫 &amp;ldquo;rust-mirror&amp;rdquo;，并为它配置了 &lt;code&gt;https://crates.io&lt;/code&gt; 的镜像规则，接下来我们就可以使该空间的下载域名 &lt;code&gt;rust-mirror.s3.cn-north-1.jdcloud-oss.com&lt;/code&gt; 来下载 Rust 的安装包了。&lt;/p&gt;
+&lt;h3 id=&#34;第二步-搭建-cratesio-index-git-同步服务器&#34;&gt;第二步: 搭建 crates.io-index git 同步服务器&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;申请云主机&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;进入京东云的控制台，选择 &amp;ldquo;弹性计算&amp;rdquo; -&amp;gt; &amp;ldquo;实例&amp;rdquo; -&amp;gt; &amp;ldquo;华北北京&amp;rdquo; -&amp;gt; &amp;ldquo;创建&amp;rdquo;，并选择相应配置即可创建对应主机实例（rust-mirror-01）：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/server01.png&#34; alt=&#34;server01.png&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装 git 并创建仓库目录：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;yum install git &lt;span style=&#34;color:#75715e&#34;&gt;# 安装 git&lt;/span&gt;
+mkdir /opt/git &lt;span style=&#34;color:#75715e&#34;&gt;# 创建 git 仓库根目录&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;使用 https 拉取 github.com/rust-lang/crates.io-index.git 仓库：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;cd /opt/git
+git clone https://github.com/rust-lang/crates.io-index.git crates.io-index.git
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;修改 crates.io-index.git/config.json ，将 dl 参数修改为 &lt;code&gt;https://rust-mirror.s3.cn-north-1.jdcloud-oss.com/api/v1/crates&lt;/code&gt;（对象存储 &lt;code&gt;rust-mirror&lt;/code&gt; 空间访问地址）， 保存并提交。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;添加自动更新脚本 crates.io-index-sync.sh：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/bin/bash
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;cd /opt/git/crates.io-index.git &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git fetch origin &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git rebase origin/master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;crontab -e&lt;/code&gt; 修改 crontab，设置为10分钟自动同步 GitHub 仓库：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;*/10 * * * * /opt/git-config/crates.io-index-sync.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;配置-git-协议公开访问权限&#34;&gt;配置 git 协议公开访问权限&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;git daemon&lt;/code&gt; 暴露只读的 &lt;code&gt;/opt/git/rates.io-index.git&lt;/code&gt; 仓库，使用方式如下：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;yum install git-daemon
+&lt;span style=&#34;color:#75715e&#34;&gt;# 使用暴露 /opt/git 目录为只读权限&lt;/span&gt;
+git daemon --base-path&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/opt/git --export-all --reuseaddr --informative-errors --verbose 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;注意： git daemon 默认监听的端口为 9418，所以需要配置主机的 TCP 9418 防火墙入口规则：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/server02.png&#34; alt=&#34;server02.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;设置完成后我们就可以使用命令 &lt;code&gt;git clone git://IP/crates.io-index.git&lt;/code&gt; 从我们服务器拉取 Rust 的最新镜像索引了。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;设置开机启动项：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;添加 /etc/init.d/rustgitdaemon 启动脚本，并添加执行权限。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/bin/bash
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+start&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+  echo starting
+  git daemon --base-path&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/opt/git --export-all --reuseaddr --informative-errors --verbose &amp;amp;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+stop&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+  echo stoping
+  pid&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;ps -ef | grep &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;git daemon&amp;#34;&lt;/span&gt; | grep -v grep | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{print $2}&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;
+  kill $pid &amp;amp;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$1&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; in
+start&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+  start
+  ;;
+stop&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+  stop
+  ;;
+*&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+  echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;USAGE &lt;/span&gt;$0&lt;span style=&#34;color:#e6db74&#34;&gt; {start|stop}&amp;#34;&lt;/span&gt;
+  exit
+&lt;span style=&#34;color:#66d9ef&#34;&gt;esac&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;添加 rustgitdaemon 服务配置，新建一个叫 /usr/lib/systemd/system/rustgitdaemon.service 的文件，并添加如下内容：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Unit&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+Description&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;rustgitdaemon Service
+After&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;network.target
+
+&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Service&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+Type&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;forking
+ExecStart&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/etc/init.d/rustgitdaemon start
+ExecStop&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/etc/init.d/rustgitdaemon stop
+PrivateTmp&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;true
+
+&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Install&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+WantedBy&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;multi-user.target
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;保存并执行命令:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;systemctl enable rustgitdaemon
+systemctl start rustgitdaemon
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;配置-http-协议公开访问权限&#34;&gt;配置 http 协议公开访问权限&lt;/h4&gt;
+&lt;p&gt;这里主要使用 nginx + fcgi 的方案。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装并启动 fcgi&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;# 安装 nginx 扩展，使其支持 cgi
+cd /usr/local/src
+git clone https://github.com/lighttpd/spawn-fcgi.git
+cd spawn-fcgi &amp;amp;&amp;amp; ./autogen.sh &amp;amp;&amp;amp; ./configure &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install
+
+# 安装fcgi
+yum -y install fcgi-devel
+
+# 安装fcgi的管理工具
+cd /usr/local/src
+git clone https://github.com/gnosek/fcgiwrap.git
+cd fcgiwrap &amp;amp;&amp;amp; autoreconf -i &amp;amp;&amp;amp; ./configure &amp;amp;&amp;amp; make &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;配置 fcgi 启动脚本，新建文件 &lt;code&gt;vi /etc/init.d/fcgiwrap&lt;/code&gt;，添加如下内容：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#! /bin/bash
+### BEGIN INIT INFO
+# Provides:          fcgiwrap
+# Required-Start:    $remote_fs
+# Required-Stop:     $remote_fs
+# Should-Start:
+# Should-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: FastCGI wrapper
+# Description:       Simple server for running CGI applications over FastCGI
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+SPAWN_FCGI=&amp;quot;/usr/local/bin/spawn-fcgi&amp;quot;
+DAEMON=&amp;quot;/usr/local/sbin/fcgiwrap&amp;quot;
+NAME=&amp;quot;fcgiwrap&amp;quot;
+
+PIDFILE=&amp;quot;/var/run/$NAME.pid&amp;quot;
+
+FCGI_SOCKET=&amp;quot;/var/run/$NAME.socket&amp;quot;
+FCGI_USER=&amp;quot;nginx&amp;quot;
+FCGI_GROUP=&amp;quot;nginx&amp;quot;
+FORK_NUM=5
+SCRIPTNAME=/etc/init.d/$NAME
+
+case &amp;quot;$1&amp;quot; in
+    start)
+        echo -n &amp;quot;Starting $NAME... &amp;quot;
+
+        PID=`pidof $NAME`
+        if [ ! -z &amp;quot;$PID&amp;quot; ]; then
+            echo &amp;quot; $NAME already running&amp;quot;
+            exit 1
+        fi
+
+        $SPAWN_FCGI -u $FCGI_USER -g $FCGI_GROUP -s $FCGI_SOCKET -P $PIDFILE -F $FORK_NUM -f $DAEMON
+
+        if [ &amp;quot;$?&amp;quot; != 0 ]; then
+            echo &amp;quot; failed&amp;quot;
+            exit 1
+        else
+            echo &amp;quot; done&amp;quot;
+        fi
+    ;;
+
+    stop)
+        echo -n &amp;quot;Stoping $NAME... &amp;quot;
+
+        PID=`pidof $NAME`
+        if [ ! -z &amp;quot;$PID&amp;quot; ]; then
+            kill `pidof $NAME`
+            if [ &amp;quot;$?&amp;quot; != 0 ]; then
+                echo &amp;quot; failed. re-quit&amp;quot;
+                exit 1
+            else
+                rm -f $pid
+                echo &amp;quot; done&amp;quot;
+            fi
+        else
+            echo &amp;quot;$NAME is not running.&amp;quot;
+            exit 1
+        fi
+    ;;
+
+    status)
+        PID=`pidof $NAME`
+        if [ ! -z &amp;quot;$PID&amp;quot; ]; then
+            echo &amp;quot;$NAME (pid $PID) is running...&amp;quot;
+        else
+            echo &amp;quot;$NAME is stopped&amp;quot;
+            exit 0
+        fi
+    ;;
+
+    restart)
+        $SCRIPTNAME stop
+        sleep 1
+        $SCRIPTNAME start
+    ;;
+
+    *)
+        echo &amp;quot;Usage: $SCRIPTNAME {start|stop|restart|status}&amp;quot;
+        exit 1
+    ;;
+esac
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注意： 这里我使用 &lt;code&gt;nginx&lt;/code&gt; 用户组启动 fcgi，因为接下来我们会在 nignx 中配合使用，不然会出现访问权限问题。&lt;/p&gt;
+&lt;p&gt;启动 fcgi:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;chmod a+x /etc/init.d/fcgiwrap
+chkconfig --level 35 fcgiwrap on
+/etc/init.d/fcgiwrap start
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;安装、配置、启动 nginx&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;安装命令：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;yum install nginx
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;配置 nginx, 新建文件 &lt;code&gt;vi /etc/nginx/conf.d/rust-mirror.conf &lt;/code&gt;，添加内容如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;server {
+    listen 80; 
+    server_name rust-mirror.jdcloud.com;
+    client_max_body_size 100m;
+    
+    error_log  /var/log/nginx/rust-mirror.error.log  error;
+    access_log /var/log/nginx/rust-mirror.access.log main;
+    
+    location ~ ^.*\.git/objects/([0-9a-f]+/[0-9a-f]+|pack/pack-[0-9a-f]+.(pack|idx))$ {
+        root /opt/git;
+    }  
+
+    location ~ /.*\.git/(HEAD|info/refs|objects/info/.*|git-(upload|receive)-pack)$ {
+        root          /opt/git;
+        fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+        fastcgi_connect_timeout 24h;
+        fastcgi_read_timeout 24h;
+        fastcgi_send_timeout 24h;
+        fastcgi_param SCRIPT_FILENAME   /usr/local/git/libexec/git-core/git-http-backend;
+        fastcgi_param PATH_INFO         $uri;
+        fastcgi_param GIT_HTTP_EXPORT_ALL &amp;quot;&amp;quot;;
+        fastcgi_param GIT_PROJECT_ROOT  /opt/git;
+        fastcgi_param REMOTE_USER $remote_user;
+        include fastcgi_params;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;启动 nginx&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;systemctl enable nginx
+systemctl start nginx
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;到这一步，我们就可以使用 http 协议来拉取我们的 git 仓库。&lt;/p&gt;
+&lt;h3 id=&#34;git-server-的高可用&#34;&gt;git server 的高可用&lt;/h3&gt;
+&lt;p&gt;到目前为止，我们的 Rust 镜像已经搭建完毕，但此服务存在单点故障，因为我们的 git server 只有一个节点，那如何使我们的服务高可靠呢？&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;复制一个叫 rust-mirror-02 的节点，配置和启动服务完全和 rust-mirror-01 节点一样，并且两个节点属于同一个 VPC 子网。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;创建一个分布式负载均衡，其后端服务配置为 rust-mirror-01 和 rust-mirror-02 的 git daemon （TCP:9418）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;使用说明&#34;&gt;使用说明&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;在 $HOME/.cargo/config 中添加如下内容：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;registry&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+index &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://github.com/rust-lang/crates.io-index&amp;#34;&lt;/span&gt;
+replace-with &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mirror-example&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;source.mirror-example&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+registry &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;git://rust-mirror.example.com/crates.io-index.git&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果所处的环境中不允许使用 git 协议, 可以把上述地址改为&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;registry &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://rust-mirror.example.com/crates.io-index.git&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;注意： 本地通过配置 &lt;code&gt;hosts&lt;/code&gt; 使 rust-mirror.example.com 指向负载均衡的入口地址。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用体验：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;git clone git@github.com:libra/libra.git
+cd libra
+cargo build
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可以看到如下输出：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/demo01.png&#34; alt=&#34;demo01.png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结：&lt;/h2&gt;
+&lt;p&gt;因为有云才让我们搭建 Rust 国内镜像变得如此简单。&lt;/p&gt;
+&lt;p&gt;到目前为止，我们使用京东公有云的对象存储、云主机、负载均衡快速搭建了一个高可用的 Rust 国内镜像服务，欢迎大家前来体验。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

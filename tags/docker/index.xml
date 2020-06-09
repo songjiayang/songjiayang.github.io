@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on 小鱼驿站</title>
+    <link>/tags/docker/</link>
+    <description>小鱼驿站 (docker)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 02 Apr 2019 18:10:29 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Unit Test In Go With Docker</title>
+      <link>/posts/2019-04-02-golang-test-with-docker/</link>
+      <pubDate>Tue, 02 Apr 2019 18:10:29 +0800</pubDate>
+      
+      <guid>/posts/2019-04-02-golang-test-with-docker/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/docker-testing.png&#34; alt=&#34;docker-testing.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;本篇文章主要讲解如何在 Docker 中进行 Go 单元测试，依赖 Docker 和 Go Modules。&lt;/p&gt;
+&lt;h3 id=&#34;为什么是-docker&#34;&gt;为什么是 Docker&lt;/h3&gt;
+&lt;p&gt;在 Docker 之前我们往往需要在 Jenkins 服务器上配置不同的 Go 版本以及针对每个项目配置 GOPATH，项目之间的隔离性差，经常出现基础库版本冲突的问题。&lt;/p&gt;
+&lt;p&gt;有了 Docker，我们可以在不同容器中运行单元测试，该测试不局限不同项目，甚至可以是同一项目不同分支。&lt;/p&gt;
+&lt;p&gt;所以在测试隔离性和项目测试并发度上都有很大提升，而且测试结束后，环境清理也简单许多。&lt;/p&gt;
+&lt;h3 id=&#34;为什么是-go-modules&#34;&gt;为什么是 Go Modules&lt;/h3&gt;
+&lt;p&gt;Go Modules 作为官方默认的包管理工具，基本解决了 Go 长期存在的包管理问题，它为我们的项目管理带来很多好处：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;自动解析和添加依赖&lt;/li&gt;
+&lt;li&gt;签名验证&lt;/li&gt;
+&lt;li&gt;依赖缓存&lt;/li&gt;
+&lt;li&gt;支持相对路径依赖&lt;/li&gt;
+&lt;li&gt;支持依赖一键打包，方便在离线环境下运行程序&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;实际例子&#34;&gt;实际例子&lt;/h3&gt;
+&lt;p&gt;下面我们来看一个简单例子，来自 &lt;a href=&#34;https://gin-gonic.com/docs/testing/&#34;&gt;Gin Testing Example&lt;/a&gt;，项目目录结构为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ tree .
+.
+├── go.mod
+├── go.sum
+├── main.go
+└── main_test.go
+
+0 directories, 4 files
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;main.go 内容：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+func setupRouter() *gin.Engine {
+	r := gin.Default()
+	r.GET(&amp;quot;/ping&amp;quot;, func(c *gin.Context) {
+		c.String(200, &amp;quot;pong&amp;quot;)
+	})
+	return r
+}
+
+func main() {
+	r := setupRouter()
+	r.Run(&amp;quot;:8080&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;main_test.go 内容：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+	&amp;quot;net/http&amp;quot;
+	&amp;quot;net/http/httptest&amp;quot;
+	&amp;quot;testing&amp;quot;
+
+	&amp;quot;github.com/stretchr/testify/assert&amp;quot;
+)
+
+func TestPingRoute(t *testing.T) {
+	router := setupRouter()
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest(&amp;quot;GET&amp;quot;, &amp;quot;/ping&amp;quot;, nil)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, 200, w.Code)
+	assert.Equal(t, &amp;quot;pong&amp;quot;, w.Body.String())
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;首先尝试在主机执行 &lt;code&gt;go test ./...&lt;/code&gt; ，测试通过，下面我们想办法在 Docker 中进行测试。&lt;/p&gt;
+&lt;h3 id=&#34;docker-运行测试&#34;&gt;Docker 运行测试&lt;/h3&gt;
+&lt;p&gt;步骤1: 对项目依赖进行打包，方便在 Docker 无网环境下运行单元测试&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;go mod vendor
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;此时所有的依赖都打包放在项目根目录的 vendor 下面：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ tree .
+.
+├── go.mod
+├── go.sum
+├── main.go
+├── main_test.go
+└── vendor
+    ├── github.com
+    │   ├── davecgh
+    │   │   └── go-spew
+    │   │       ├── LICENSE
+    │   │       └── spew
+    │   │           ├── bypass.go
+    │   │           ├── bypasssafe.go
+    │   │           ├── common.go
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;步骤2: 制作 Go Docker 镜像&lt;/p&gt;
+&lt;p&gt;因为我们只需要 Go 的标准环境，所以可以使用官方的标准镜像，例如 golang:1.12.1。&lt;/p&gt;
+&lt;p&gt;如果你有特殊需求，可以定制自己的 Go 镜像, 例如自定义启动命令，添加数据库依赖等：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Dockerfile:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;FROM ubuntu
+RUN apt-get update &amp;amp;&amp;amp; apt-get install -y libssl1.0.0 libssl-dev gcc
+
+RUN mkdir -p /data/db /opt/go/ /opt/gopath
+
+# go1.xx.x.linux-amd64.tar.gz 解压缩后为 go
+ADD go /opt/go 
+RUN cp /opt/go/bin/* /usr/local/bin/
+ENV GOROOT=/opt/go GOPATH=/opt/gopath
+
+WORKDIR /ws
+CMD GOPROXY=off go test -mod=vendor ./...
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;执行 docker build:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;docker build . -t gotesting:v0.0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;步骤3: 在 Docker 中运行 Golang 测试&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 golang:1.12.1:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;$ docker run --volume=$(pwd):/ws \
+     --workdir=/ws golang:1.12.1 \
+    /bin/bash -c &amp;quot;GOPROXY=off go test -mod=vendor ./...&amp;quot;
+ok  	github.com/songjiayang/gin-test	0.011s
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;使用自定义镜像 gotesting:v0.0.1:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;docker run --volume=$(pwd):/ws gotesting:v0.0.1
+ok  	github.com/songjiayang/gin-test	0.014s
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以看到两种方式都能在 Docker 中运行 Go 单元测试，自定义镜像可以指定默认运行命令，使操作更简单，上面命令的含义是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&amp;ndash;volume=$(pwd):/ws ：将项目根目录映射到 Docker 容器中的 /ws 目录。&lt;/li&gt;
+&lt;li&gt;&amp;ndash;workdir=/ws ： 指定容器运行工作目录为 /ws, 即映射外面项目根目录。&lt;/li&gt;
+&lt;li&gt;/bin/bash -c &amp;ldquo;GOPROXY=off go test -mod=vendor ./&amp;hellip;&amp;rdquo; : 表示在 Docker 中以离线，vendor 模式运行 Go 单元测试。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;做的更好&#34;&gt;做的更好&lt;/h3&gt;
+&lt;p&gt;到目前为止，我们已经掌握在 Docker 中运行 Go 单元测试的方法。当然我们还可以做的更好，Docker 运行的标准输出可以和 Jenkins 天然集成，实现项目的自动测试。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

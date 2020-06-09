@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Prometheus 数据安全之 Basic 认证 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="Prometheus 数据安全之 Basic 认证" />
+<meta property="og:description" content="我们都知道 Promethetheus 是不带认证和数据加密的，但很多时候我们又想在公网中直接使用它的管理界面，如果不做任何处理，它将存在严重的数据泄漏安全问题。
+下面我将介绍如何通过 nginx 的 basic 认证来解决这一问题。
+原始 Prometheus 代理配置 server { listen 80; server_name example.coom; location / { proxy_pass http://localhost:9090/; } } 说明：使用 nignx 的 proxy_pass 代理我们 Prometheus 服务。
+使用 htpasswd 生成认证密钥对 htpasswd 属于 apache2-utils 包，下面我将演示在 Ubuntu 上的安装和配置过程。
+Step1: 安装 apache2-utils
+$ sudo apt-get install apache2-utils Step2: 生成认证密钥
+$ htpasswd -c /etc/nginx/.htpasswd monitor New password: Re-type new password: Adding password for user monitor 说明：monitor 可以修改为任意用户名。
+Step3: 使用 cat 查看生成内容:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2018-01-30-prometheus-shu-ju-an-quan-zhi-basic-ren-zheng/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2018-01-30T22:56:26+00:00" />
+<meta property="article:modified_time" content="2018-01-30T22:56:26+00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="Prometheus 数据安全之 Basic 认证"/>
+<meta name="twitter:description" content="我们都知道 Promethetheus 是不带认证和数据加密的，但很多时候我们又想在公网中直接使用它的管理界面，如果不做任何处理，它将存在严重的数据泄漏安全问题。
+下面我将介绍如何通过 nginx 的 basic 认证来解决这一问题。
+原始 Prometheus 代理配置 server { listen 80; server_name example.coom; location / { proxy_pass http://localhost:9090/; } } 说明：使用 nignx 的 proxy_pass 代理我们 Prometheus 服务。
+使用 htpasswd 生成认证密钥对 htpasswd 属于 apache2-utils 包，下面我将演示在 Ubuntu 上的安装和配置过程。
+Step1: 安装 apache2-utils
+$ sudo apt-get install apache2-utils Step2: 生成认证密钥
+$ htpasswd -c /etc/nginx/.htpasswd monitor New password: Re-type new password: Adding password for user monitor 说明：monitor 可以修改为任意用户名。
+Step3: 使用 cat 查看生成内容:"/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">Prometheus 数据安全之 Basic 认证</h1>
+        </header>
+        <div class="content">
+            <p>我们都知道 Promethetheus 是不带认证和数据加密的，但很多时候我们又想在公网中直接使用它的管理界面，如果不做任何处理，它将存在严重的数据泄漏安全问题。</p>
+<p>下面我将介绍如何通过 nginx 的 basic 认证来解决这一问题。</p>
+<h3 id="原始-prometheus-代理配置">原始 Prometheus 代理配置</h3>
+<pre><code>server {
+    listen 80;
+    server_name example.coom;
+
+    location / {
+        proxy_pass http://localhost:9090/;
+    }
+}
+</code></pre><p>说明：使用 nignx 的 <code>proxy_pass</code> 代理我们 Prometheus 服务。</p>
+<h3 id="使用-htpasswd-生成认证密钥对">使用 htpasswd 生成认证密钥对</h3>
+<p>htpasswd 属于 <code>apache2-utils</code> 包，下面我将演示在 Ubuntu 上的安装和配置过程。</p>
+<p>Step1: 安装 apache2-utils</p>
+<pre><code>$ sudo apt-get install apache2-utils
+</code></pre><p>Step2: 生成认证密钥</p>
+<pre><code>$ htpasswd -c /etc/nginx/.htpasswd monitor
+
+
+New password:
+Re-type new password:
+Adding password for user monitor
+</code></pre><p>说明：<code>monitor</code> 可以修改为任意用户名。</p>
+<p>Step3: 使用 cat 查看生成内容:</p>
+<pre><code>$ cat /etc/nginx/.htpasswd
+
+monitor:$apr1$EEV......
+</code></pre><h3 id="修改-nginx-配置">修改 nginx 配置</h3>
+<pre><code>server {
+    listen 80;
+    server_name example.coom;
+
+    location / {
+        auth_basic &quot;Prometheus&quot;;
+        auth_basic_user_file &quot;/etc/nginx/.htpasswd&quot;;
+        
+        proxy_pass http://localhost:9090/;
+    }
+}
+</code></pre><p>保存配置，重启 nignx 服务后，你访问域名 example.com 将出现 basic 认证的界面:</p>
+<p><img src="/images/prometheus/nginx-basic.png" alt="nginx-basic.png"></p>
+<p>输入正确的账号密码，你将进入 Prometheus 管理界面。</p>
+<h3 id="写在最后">写在最后</h3>
+<p>我们可以使用 nginx 的 basic auth 的方式来解决 Prometheus 认证的问题，此方法同样适用 Alertmanger 或者 NodeExporter。</p>
+<p>从现在起，不要再让你的监控数据在公网中裸奔，赶快去修改配置吧。</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-01-30</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

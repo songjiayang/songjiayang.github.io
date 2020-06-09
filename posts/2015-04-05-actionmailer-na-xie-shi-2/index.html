@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>ActionMailer 那些事 (二) - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="ActionMailer 那些事 (二)" />
+<meta property="og:description" content="这篇博客是上一篇 ActionMailer 那些事(一) 的续。
+如你所知，上一篇博客提到邮件发送的 from 别名设置，其实，正常情况下，邮件from地址可以任意填写， 一般邮件服务器是不检查 from 值的（只要包含email格式）。
+为什么会有任意填写 from 地址的需求？
+因为有时系统会代替客户发送邮件，而期望邮件接受者可以直接通过邮件回复发送的用户，此时，邮件的 from 就该填写用户的 email 了。
+本来这并不是问题，因为你只要将 from 值修改成用户的 email 皆可，对于绝大多数邮件服务商这样是可以的，但是 gmail 不行。
+为什么不行？
+首先 gmail 处于自己的考虑，必须保证 from 的地址是配置发送邮件账号的 email 地址; 它可以通过简单的正则替换就搞定这个事情，毕竟所有邮件它都有能力修改。
+解决办法？
+不要使用 gmail 作为应用邮件发送服务器，毕竟它本来就不干这个事情，你应该选择那些邮件专业服务器提供厂商， 例如 SendGrid, Mailgun 等。
+ 友情提示一下： heroku上面邮件服务器，如果配置为 gamil，将无法发送邮件，因为 gmail 已经封了所有来自 heroku 的认证请求。
+ 推荐阅读： ActionMailer 那些事(一)" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2015-04-05-actionmailer-na-xie-shi-2/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2015-04-05T23:31:00+08:00" />
+<meta property="article:modified_time" content="2015-04-05T23:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="ActionMailer 那些事 (二)"/>
+<meta name="twitter:description" content="这篇博客是上一篇 ActionMailer 那些事(一) 的续。
+如你所知，上一篇博客提到邮件发送的 from 别名设置，其实，正常情况下，邮件from地址可以任意填写， 一般邮件服务器是不检查 from 值的（只要包含email格式）。
+为什么会有任意填写 from 地址的需求？
+因为有时系统会代替客户发送邮件，而期望邮件接受者可以直接通过邮件回复发送的用户，此时，邮件的 from 就该填写用户的 email 了。
+本来这并不是问题，因为你只要将 from 值修改成用户的 email 皆可，对于绝大多数邮件服务商这样是可以的，但是 gmail 不行。
+为什么不行？
+首先 gmail 处于自己的考虑，必须保证 from 的地址是配置发送邮件账号的 email 地址; 它可以通过简单的正则替换就搞定这个事情，毕竟所有邮件它都有能力修改。
+解决办法？
+不要使用 gmail 作为应用邮件发送服务器，毕竟它本来就不干这个事情，你应该选择那些邮件专业服务器提供厂商， 例如 SendGrid, Mailgun 等。
+ 友情提示一下： heroku上面邮件服务器，如果配置为 gamil，将无法发送邮件，因为 gmail 已经封了所有来自 heroku 的认证请求。
+ 推荐阅读： ActionMailer 那些事(一)"/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">ActionMailer 那些事 (二)</h1>
+        </header>
+        <div class="content">
+            <p>这篇博客是上一篇 <a href="/technical/actionmailer-na-xie-shi">ActionMailer 那些事(一)</a> 的续。</p>
+<p>如你所知，上一篇博客提到邮件发送的 from 别名设置，其实，正常情况下，邮件from地址可以任意填写，
+<em>一般邮件服务器</em>是不检查 from 值的（只要包含email格式）。</p>
+<p><strong>为什么会有任意填写 from 地址的需求？</strong></p>
+<p>因为有时系统会代替客户发送邮件，而期望邮件接受者可以直接通过邮件回复发送的用户，此时，邮件的 from 就该填写用户的 email 了。</p>
+<p>本来这并不是问题，因为你只要将 from 值修改成用户的 email 皆可，对于绝大多数邮件服务商这样是可以的，<code>但是 gmail 不行</code>。</p>
+<p><strong>为什么不行？</strong></p>
+<p>首先 gmail 处于自己的考虑，必须保证 from 的地址是配置发送邮件账号的 email 地址;
+它可以通过简单的正则替换就搞定这个事情，毕竟所有邮件它都有能力修改。</p>
+<p><strong>解决办法？</strong></p>
+<p>不要使用 gmail 作为应用邮件发送服务器，毕竟它本来就不干这个事情，你应该选择那些邮件专业服务器提供厂商，
+例如 SendGrid, Mailgun 等。</p>
+<blockquote>
+<p>友情提示一下： heroku上面邮件服务器，如果配置为 gamil，将无法发送邮件，因为 gmail 已经封了所有来自 heroku 的认证请求。</p>
+</blockquote>
+<p>推荐阅读： <a href="/technical/actionmailer-na-xie-shi">ActionMailer 那些事(一)</a></p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-04-05</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

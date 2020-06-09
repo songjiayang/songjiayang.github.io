@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>通过点评集字游戏浅谈 Web 安全设计 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="通过点评集字游戏浅谈 Web 安全设计" />
+<meta property="og:description" content="点评集字是什么? 它是大众点评推出的一个集字活动，凡凑齐 “大众点评霸王餐” 几字即可获得点评 pass 卡，从而真正意义享受霸王餐。
+活动规则？ 首先需要参与活动，凡参与活动者会生成一个属于自己的活动页面，用户可以将页面通过微信朋友圈分享，呼唤小伙伴帮助抽字。 每日每账号仅1次抽字机会，账号可以是微信和点评用户。
+这个活动蛮有趣味，一方面它可以利用免费和侥幸心理，大大提到用户粘性，其次利用微信朋友圈的强大分享能力，提高影响力。 我想这个活动的 PV 也该是挺不错吧。我身边确实还有不少朋友每天定时提示我，帮他抽字！
+每天重复做相同事情，再加上每天只能投一票（每票价值可观），这让我瞬间就有种想刷票的冲动！好吧，说干就干&hellip;
+寻找刷票入口和套路： 首先通过微信浏览器查看活动详情链接，将链接复制到电脑 chrome 浏览器上，清除链接中的干扰参数（主要和微信账户相关）， 此时一个干净完整的活动页面暴漏在你眼前。
+点击抽字，系统提示需要登录,
+没点评账号？
+没事，随便注册一个吧。
+神马，可以随便注册？
+是的，使用邮件注册点评账户，在未经过邮箱验证之前，用户可以登录并做很多操作，例如这里的活动抽字。
+当注册成功后，跳转到先前活动页面，点击抽字; Bingo, 系统提示 “抽字成功” ！
+过程程序化： 如上，刷票套路已经很清晰了，但是人工操作不免有些枯燥和费事，想想还是写段脚本来解决这个问题吧。
+很多语言，很多类库都可以模拟用户浏览器行为，个人原因选择的是 ruby 版 mechanize 。
+程序主要负责实现自动注册和自动抽字即可，由于涉及商业问题，具体代码逻辑不便公开。
+程序运行效果图：
+由于本人技术拙劣，对于验证码破解很不在行，但我知道这方面是可以攻破的（有收费服务）。本人程序验证码全是人工识别， 尽管如此，效果也十分明显, 经初略测试，5分钟大约可以完成100次抽字。
+ 总结： 点评的最大问题就是对未经认证用户，给予过大功能权限；例如这里的抽字投票，其实发帖，回帖之类也应该注意此类问题。 总的而言，当功能涉及产生他人账户相关数据的时候，最好需要确保用户是认证合法的，当然直接注册购买团购是可以的 :smile: 。
+ BTW：欢迎点评工程师邮件交流讨论，如果文章涉及侵权，请联系指出！" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2015-04-07-tong-guo-zi-you-kan-weban-quan-she-ji/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2015-04-07T22:31:00+08:00" />
+<meta property="article:modified_time" content="2015-04-07T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="通过点评集字游戏浅谈 Web 安全设计"/>
+<meta name="twitter:description" content="点评集字是什么? 它是大众点评推出的一个集字活动，凡凑齐 “大众点评霸王餐” 几字即可获得点评 pass 卡，从而真正意义享受霸王餐。
+活动规则？ 首先需要参与活动，凡参与活动者会生成一个属于自己的活动页面，用户可以将页面通过微信朋友圈分享，呼唤小伙伴帮助抽字。 每日每账号仅1次抽字机会，账号可以是微信和点评用户。
+这个活动蛮有趣味，一方面它可以利用免费和侥幸心理，大大提到用户粘性，其次利用微信朋友圈的强大分享能力，提高影响力。 我想这个活动的 PV 也该是挺不错吧。我身边确实还有不少朋友每天定时提示我，帮他抽字！
+每天重复做相同事情，再加上每天只能投一票（每票价值可观），这让我瞬间就有种想刷票的冲动！好吧，说干就干&hellip;
+寻找刷票入口和套路： 首先通过微信浏览器查看活动详情链接，将链接复制到电脑 chrome 浏览器上，清除链接中的干扰参数（主要和微信账户相关）， 此时一个干净完整的活动页面暴漏在你眼前。
+点击抽字，系统提示需要登录,
+没点评账号？
+没事，随便注册一个吧。
+神马，可以随便注册？
+是的，使用邮件注册点评账户，在未经过邮箱验证之前，用户可以登录并做很多操作，例如这里的活动抽字。
+当注册成功后，跳转到先前活动页面，点击抽字; Bingo, 系统提示 “抽字成功” ！
+过程程序化： 如上，刷票套路已经很清晰了，但是人工操作不免有些枯燥和费事，想想还是写段脚本来解决这个问题吧。
+很多语言，很多类库都可以模拟用户浏览器行为，个人原因选择的是 ruby 版 mechanize 。
+程序主要负责实现自动注册和自动抽字即可，由于涉及商业问题，具体代码逻辑不便公开。
+程序运行效果图：
+由于本人技术拙劣，对于验证码破解很不在行，但我知道这方面是可以攻破的（有收费服务）。本人程序验证码全是人工识别， 尽管如此，效果也十分明显, 经初略测试，5分钟大约可以完成100次抽字。
+ 总结： 点评的最大问题就是对未经认证用户，给予过大功能权限；例如这里的抽字投票，其实发帖，回帖之类也应该注意此类问题。 总的而言，当功能涉及产生他人账户相关数据的时候，最好需要确保用户是认证合法的，当然直接注册购买团购是可以的 :smile: 。
+ BTW：欢迎点评工程师邮件交流讨论，如果文章涉及侵权，请联系指出！"/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">通过点评集字游戏浅谈 Web 安全设计</h1>
+        </header>
+        <div class="content">
+            <p><img src="/images/dp_jz.png" alt="点评集字"></p>
+<h3 id="点评集字是什么">点评集字是什么?</h3>
+<p>它是大众点评推出的一个集字活动，凡凑齐 “大众点评霸王餐” 几字即可获得点评 pass 卡，从而真正意义享受霸王餐。</p>
+<h3 id="活动规则">活动规则？</h3>
+<p>首先需要参与活动，凡参与活动者会生成一个属于自己的活动页面，用户可以将页面通过微信朋友圈分享，呼唤小伙伴帮助抽字。
+每日每账号仅1次抽字机会，账号可以是微信和点评用户。</p>
+<!-- raw HTML omitted -->
+<p>这个活动蛮有趣味，一方面它可以利用免费和侥幸心理，大大提到用户粘性，其次利用微信朋友圈的强大分享能力，提高影响力。
+我想这个活动的 PV 也该是挺不错吧。我身边确实还有不少朋友每天定时提示我，帮他抽字！</p>
+<p>每天重复做相同事情，再加上每天只能投一票（每票价值可观），这让我瞬间就有种想刷票的冲动！好吧，说干就干&hellip;</p>
+<h3 id="寻找刷票入口和套路">寻找刷票入口和套路：</h3>
+<p>首先通过微信浏览器查看活动详情链接，将链接复制到电脑 chrome 浏览器上，清除链接中的干扰参数（主要和微信账户相关），
+此时一个干净完整的活动页面暴漏在你眼前。</p>
+<p>点击抽字，系统提示需要登录,<br>
+没点评账号？<br>
+没事，随便注册一个吧。<br>
+神马，可以随便注册？<br>
+是的，使用邮件注册点评账户，在未经过邮箱验证之前，用户可以登录并做很多操作，例如这里的活动抽字。</p>
+<p>当注册成功后，跳转到先前活动页面，点击抽字; Bingo, 系统提示 “抽字成功” ！</p>
+<h3 id="过程程序化">过程程序化：</h3>
+<p>如上，刷票套路已经很清晰了，但是人工操作不免有些枯燥和费事，想想还是写段脚本来解决这个问题吧。</p>
+<p>很多语言，很多类库都可以模拟用户浏览器行为，个人原因选择的是 ruby 版 <code>mechanize</code> 。</p>
+<p>程序主要负责实现自动注册和自动抽字即可，由于涉及商业问题，具体代码逻辑不便公开。</p>
+<p>程序运行效果图：</p>
+<p><img src="/images/dp_pass.png" alt="dp_pass"></p>
+<p>由于本人技术拙劣，对于验证码破解很不在行，但我知道这方面是可以攻破的（有收费服务）。本人程序验证码全是人工识别，
+尽管如此，效果也十分明显, 经初略测试，5分钟大约可以完成100次抽字。</p>
+<!-- raw HTML omitted -->
+<blockquote>
+<p>总结： 点评的最大问题就是对未经认证用户，给予过大功能权限；例如这里的抽字投票，其实发帖，回帖之类也应该注意此类问题。
+总的而言，当功能涉及产生他人账户相关数据的时候，最好需要确保用户是认证合法的，当然直接注册购买团购是可以的 :smile: 。</p>
+</blockquote>
+<p>BTW：欢迎点评工程师邮件交流讨论，如果文章涉及侵权，请联系指出！</p>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2015-04-07</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%9C%89%E8%B6%A3">#有趣</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

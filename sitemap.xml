@@ -1,0 +1,1223 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/tags/containerd/</loc>
+    <lastmod>2020-06-04T17:03:04+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2020-06-04-containerd-qi-dong-bao-cuo-jie-jue-ban-fa/</loc>
+    <lastmod>2020-06-04T17:03:04+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/</loc>
+    <lastmod>2020-06-04T17:03:04+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-06-04T17:03:04+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/</loc>
+    <lastmod>2020-06-04T17:03:04+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-06-04T17:03:04+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2020-05-06-wo-suo-li-jie-de-bian-yuan-ji-suan/</loc>
+    <lastmod>2020-05-06T16:31:56+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97/</loc>
+    <lastmod>2020-05-06T16:31:56+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2020-04-28-wo-li-jie-de-yun-yuan-sheng/</loc>
+    <lastmod>2020-04-28T16:15:17+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/rust/</loc>
+    <lastmod>2019-11-26T17:08:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2019-11-26-ru-he-shi-yong-jing-dong-yun-kuai-su-da-jian-gao-ke-kao-de-rust-jing-xiang-fu-wu/</loc>
+    <lastmod>2019-11-26T17:08:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/go/</loc>
+    <lastmod>2019-10-10T16:24:35+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2019-10-10-go-he-andji-shi-li/</loc>
+    <lastmod>2019-10-10T16:24:35+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2019-09-26-ru-he-kua-ping-tai-bian-yi-armde-cgocheng-xu/</loc>
+    <lastmod>2019-09-26T17:38:08+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2019-05-31-go-zhong-you-ya-guan-bi-zi-jin-cheng/</loc>
+    <lastmod>2019-05-31T14:51:06+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2019-05-23-shi-yong-cgroup-shi-xian-nei-cun-kong-zhi/</loc>
+    <lastmod>2019-05-23T18:12:57+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/docker/</loc>
+    <lastmod>2019-04-02T18:10:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2019-04-02-golang-test-with-docker/</loc>
+    <lastmod>2019-04-02T18:10:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2019-03-21-go-http-zhong-flusher-zai-shi-ji-kai-fa-zhong-de-ying-yong/</loc>
+    <lastmod>2019-03-21T20:16:31+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/ipfs/</loc>
+    <lastmod>2019-02-28T17:29:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2019-02-28-ipfs-pubsub-quan-wei-zhi-nan/</loc>
+    <lastmod>2019-02-28T17:29:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2019-02-20-ipfsming-ming-xi-tong-shen-ru-jie-xi/</loc>
+    <lastmod>2019-02-20T17:17:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2019-02-15-filecoin-za-nian/</loc>
+    <lastmod>2019-02-15T14:36:16+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2019-01-18-ipfs-nei-rong-yong-sheng-de-li-jie/</loc>
+    <lastmod>2019-01-18T18:18:50+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/mongodb/</loc>
+    <lastmod>2019-01-07T14:38:44+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2019-01-07-mongo-connect-with-tls-in-go/</loc>
+    <lastmod>2019-01-07T14:38:44+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-08-09-ipfs-zhong-er-wei-ma-de-wen-ti/</loc>
+    <lastmod>2018-08-09T21:01:37+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-08-08-shi-yong-ipfs-da-jian-ge-ren-bo-ke/</loc>
+    <lastmod>2018-08-08T20:35:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/prometheus/</loc>
+    <lastmod>2018-06-26T22:06:37+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-06-26-prometheus-de-you-ya-guan-bi-zi-shi/</loc>
+    <lastmod>2018-06-26T22:06:37+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-06-24-summary-shu-ju-lei-xing-xiang-jie/</loc>
+    <lastmod>2018-06-24T22:05:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-06-21-jie-huo-guan-yu-promql-fan-wei-cha-xun-de-wen-ti/</loc>
+    <lastmod>2018-06-21T22:03:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-06-15-prometheus-2-dot-3-geng-xin-gai-lan/</loc>
+    <lastmod>2018-06-15T21:58:01+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-05-13-json-xu-lie-hua-he-fan-xu-lie-hua-in-go/</loc>
+    <lastmod>2018-05-13T21:42:59+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-04-11-rong-qi-jian-kong-zhi-cadvisor-zhi-prometheus-ji-cheng/</loc>
+    <lastmod>2018-04-11T11:44:56+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-04-10-jrong-qi-jian-kong-zhi-cadvisor/</loc>
+    <lastmod>2018-04-10T17:49:39+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-04-09-alertmanager-mo-ban-zhong-shi-jian-format/</loc>
+    <lastmod>2018-04-09T17:08:44+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-03-11-goling-ji-chu-bian-cheng-ru-men-jiao-cheng-3-fen-zhi-xun-huan/</loc>
+    <lastmod>2018-03-11T22:05:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/go%E9%9B%B6%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</loc>
+    <lastmod>2018-03-11T22:05:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-03-09-liu-cheng-kong-zhi-zhi-fen-zhi-xun-huan/</loc>
+    <lastmod>2018-03-09T18:14:10+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-03-08-guan-yu-prometheus-target-hashmod-de-yong-fa/</loc>
+    <lastmod>2018-03-08T12:11:32+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-03-06-zai-go-zhong-fa-song-multipart-biao-dan-qing-qiu/</loc>
+    <lastmod>2018-03-06T16:51:25+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-03-04-goling-ji-chu-bian-cheng-ru-men-jiao-cheng-11jie-kou/</loc>
+    <lastmod>2018-03-04T00:46:13+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-03-04-goling-ji-chu-bian-cheng-ru-men-jiao-cheng-11-fa-bu-liao/</loc>
+    <lastmod>2018-03-04T00:39:22+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E5%88%86%E4%BA%AB/</loc>
+    <lastmod>2018-03-02T07:38:51+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-03-02-wo-de-di-ge-slideshare/</loc>
+    <lastmod>2018-03-02T07:38:51+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-03-01-ru-he-xiu-gai-wei-xin-gao-jing-mo-ban/</loc>
+    <lastmod>2018-03-01T04:11:07+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/gitbook/</loc>
+    <lastmod>2018-02-28T06:19:38+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-02-28-ru-he-zai-ben-di-cha-kan-gitbook-dian-zi-shu/</loc>
+    <lastmod>2018-02-28T06:19:38+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-02-27-ru-he-liang-hua-ni-de-fu-wu/</loc>
+    <lastmod>2018-02-26T18:02:53+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-02-26-shen-ru-liao-jie-go-yu-yan-de-fang-fa/</loc>
+    <lastmod>2018-02-25T19:56:30+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-02-23-ru-pei-zhi-zi-ding-yi-de-gitignore/</loc>
+    <lastmod>2018-02-22T16:00:25+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/git/</loc>
+    <lastmod>2018-02-22T16:00:25+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-02-22-alertmanger-with-wechat/</loc>
+    <lastmod>2018-02-21T18:52:10+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-01-30-prometheus-shu-ju-an-quan-zhi-basic-ren-zheng/</loc>
+    <lastmod>2018-01-30T22:56:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-01-26-shi-yong-which-better-bang-zhu-ni-tiao-xuan-geng-hao-de-yi-lai-ku/</loc>
+    <lastmod>2018-01-26T23:55:58+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/</loc>
+    <lastmod>2018-01-26T23:55:58+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-01-22-prometheus-shu-ju-an-quan-zhi-basic-ren-zheng0/</loc>
+    <lastmod>2018-01-22T21:56:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-01-19-ru-he-jiang-tong-tiao-gao-jing-xin-xi-fa-song-gei-duo-ge-qu-dao/</loc>
+    <lastmod>2018-01-19T23:55:26+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2018-01-03-prometheus-ji-qun-fang-an-zhi-remote-read-shi-zhan/</loc>
+    <lastmod>2018-01-03T23:54:45+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-12-12-prometheus-2-dot-0-gao-jing-gui-ze-jie-shao/</loc>
+    <lastmod>2017-12-12T23:50:46+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-11-27-guan-yu-er-dai-shen-fen-zheng-ni-ying-gai-liao-jie-de-na-xie-shi-er/</loc>
+    <lastmod>2017-11-27T23:47:08+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E7%9F%A5%E8%AF%86%E6%89%A9%E5%B1%95/</loc>
+    <lastmod>2017-11-27T23:47:08+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-11-22-huan-ge-zi-shi-fa-bao-rang-ni-ti-yan-qian-suo-wei-you-de-kuai-gan/</loc>
+    <lastmod>2017-11-22T23:39:21+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E6%95%88%E7%8E%87/</loc>
+    <lastmod>2017-11-22T23:39:21+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-11-10-ru-he-zai-wei-xin-zhong-jin-xing-you-ya-xie-zuo/</loc>
+    <lastmod>2017-11-10T23:29:41+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-10-31-github-lao-niao-zhuang-x-zhi-nan/</loc>
+    <lastmod>2017-10-31T23:27:43+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E5%88%9B%E4%B8%9A/</loc>
+    <lastmod>2017-10-24T11:09:30+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-10-24-da-xue-shi-wo-men-zuo-liao-jian-hen-ku-de-shi/</loc>
+    <lastmod>2017-10-24T11:09:30+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-10-23-can-jia-go-hack-2017-shi-chong-zen-yang-de-ti-yan/</loc>
+    <lastmod>2017-10-23T10:57:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E6%B4%BB%E5%8A%A8/</loc>
+    <lastmod>2017-10-23T10:57:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-09-25-ge-you-yu-pei-zhi-bu-dang-dao-zhi-prometheus-gao-jing-shi-xiao-de-bug/</loc>
+    <lastmod>2017-09-25T23:02:11+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-09-24-why-is-gopher/</loc>
+    <lastmod>2017-09-24T23:02:28+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-09-21-ge-prometheus-cha-xun-de-qi-guai-wen-ti/</loc>
+    <lastmod>2017-09-21T23:02:58+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-08-18-cloudnativecon-2017-prometheus-bao-dao/</loc>
+    <lastmod>2017-08-18T22:02:05+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-07-24-win32-xiao-bai-yong-hu-github-mai-keng-zhi-nan/</loc>
+    <lastmod>2017-07-24T22:02:52+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/leetcode/</loc>
+    <lastmod>2017-07-05T22:02:22+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-07-05-ru-he-cha-zhao-shu/</loc>
+    <lastmod>2017-07-05T22:02:22+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-06-13-cai-yun-zhi-nan-bu-qu-yi-han-qu-liao-shi-wang-de-di-fang/</loc>
+    <lastmod>2017-06-13T22:02:22+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E6%97%85%E6%B8%B8/</loc>
+    <lastmod>2017-06-13T22:02:22+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-05-23-du-xin-sheng-you-gan/</loc>
+    <lastmod>2017-05-23T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E8%AF%BB%E4%B9%A6/</loc>
+    <lastmod>2017-05-23T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/ruby/</loc>
+    <lastmod>2017-03-27T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2017-03-27-dui-zhao-ruby-lai-xue-crystal/</loc>
+    <lastmod>2017-03-27T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-11-08-zuo-wei-ming-kai-fa-zhe-wo-shi-ru-he-kan-dai-wei-xin-xiao-ying-yong-de/</loc>
+    <lastmod>2016-11-08T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E5%BE%AE%E4%BF%A1/</loc>
+    <lastmod>2016-11-08T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-11-08-use-textfile-collector-to-make-your-node-exporter-more-powerful/</loc>
+    <lastmod>2016-11-08T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-11-02-a-bug-about-prometheus-rule-incorrect-configuration/</loc>
+    <lastmod>2016-11-02T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-10-31-why-my-delta-isa-negative-number/</loc>
+    <lastmod>2016-10-31T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-10-22-prometheus-alert-slack-receiver/</loc>
+    <lastmod>2016-10-22T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-10-21-prometheus-with-mysqld-exporter/</loc>
+    <lastmod>2016-10-21T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-10-20-prometheus-with-alertmanager/</loc>
+    <lastmod>2016-10-20T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-09-19-prometheuswith-hot-reload/</loc>
+    <lastmod>2016-09-19T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-09-14-how-to-monitor-your-system-with-prometheus/</loc>
+    <lastmod>2016-09-14T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-08-27-promcon2016bao-dao/</loc>
+    <lastmod>2016-08-27T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-06-26-benchmarks-in-golang/</loc>
+    <lastmod>2016-06-26T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-06-26-qian-hou-duan-fen-chi-ji-ben-wan-fa/</loc>
+    <lastmod>2016-06-26T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E6%9E%B6%E6%9E%84/</loc>
+    <lastmod>2016-06-26T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-06-11-duan-wu-huang-shan-san-ri-you/</loc>
+    <lastmod>2016-06-11T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-05-27-chang-yong-web-kuang-jia-tun-tu-lu-dui-bi/</loc>
+    <lastmod>2016-05-27T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-03-28-zi-di-xiang-shang-zhu-bu-wan-shan-zhi-shi-ti-xi/</loc>
+    <lastmod>2016-03-28T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-03-24-wo-men-kai-shi-shi-yong-okrliao/</loc>
+    <lastmod>2016-03-24T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-03-09-where-is-my-tempfile/</loc>
+    <lastmod>2016-03-09T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-03-07-ruby-proc-mi-si/</loc>
+    <lastmod>2016-03-07T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-03-04-translate-english-with-hacker-way/</loc>
+    <lastmod>2016-03-04T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/ssl/</loc>
+    <lastmod>2016-02-23T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-02-23-tong-guo-fan-xiang-dai-li-jie-jue-fei-ssl-zi-yuan-yin-ru-de-wen-ti/</loc>
+    <lastmod>2016-02-23T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-02-22-write-professional-emails-in-english/</loc>
+    <lastmod>2016-02-22T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-02-21-the-lunchbox-zhai-lu/</loc>
+    <lastmod>2016-02-21T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-02-18-wo-xiang-tui-jian-xia-wei-xin-yue-du/</loc>
+    <lastmod>2016-02-18T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-02-17-mei-ge-ren-du-ying-gai-ti-yan-ci-chun-yun/</loc>
+    <lastmod>2016-02-17T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E6%9C%89%E8%B6%A3/</loc>
+    <lastmod>2016-01-21T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-01-21-shuo-shuo-na-xie-wang-zhan-console-li-de-cai-dan/</loc>
+    <lastmod>2016-01-21T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2016-01-21-ru-he-dao-chu-ibooks-zhong-de-highlight-he-note/</loc>
+    <lastmod>2016-01-21T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-11-01-ren-xing-de-you-dian-zhai-lu/</loc>
+    <lastmod>2015-11-01T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-10-29-jin-ri-tui-jian-zhi-sublimelinter/</loc>
+    <lastmod>2015-10-29T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-10-26-pdf-da-yin-da-sha-qi-zhi-phantomjs/</loc>
+    <lastmod>2015-10-26T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/js/</loc>
+    <lastmod>2015-10-18T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-10-18-kick-dot-js-fen-xiang/</loc>
+    <lastmod>2015-10-18T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E6%84%9F%E6%82%9F/</loc>
+    <lastmod>2015-10-17T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-10-17-shang-hai-zhen-de-bu-cuo/</loc>
+    <lastmod>2015-10-17T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-10-15-jin-wan-tong-shi-wen-liao-wo-zhe-yang-ge-wen-ti/</loc>
+    <lastmod>2015-10-15T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-10-10-huo-che-zhan-fu-jin-zuo-chu-zu-liu-yi/</loc>
+    <lastmod>2015-10-10T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-09-24-gai-bian-hen-nan-dan-wo-men-bie-wu-xuan-ze/</loc>
+    <lastmod>2015-09-24T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-09-09-mian-fei-gao-qing-da-tu-zi-yuan-zhan-dian-mu-lu/</loc>
+    <lastmod>2015-09-09T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-08-27-wo-bing-bu-xu-yao-jquery/</loc>
+    <lastmod>2015-08-27T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-08-25-strong-parameters-allow-hashes-with-unknown-keys-to-be-permitted/</loc>
+    <lastmod>2015-08-25T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-08-19-rails-girl-sh/</loc>
+    <lastmod>2015-08-19T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-08-17-railri-li-xiao-cha-jian/</loc>
+    <lastmod>2015-08-17T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/linux/</loc>
+    <lastmod>2015-08-12T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-08-12-linux-jin-cheng-guan-li-fang-fa-zong-jie/</loc>
+    <lastmod>2015-08-12T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-08-05-ti-gao-gong-zuo-xiao-lu-zhi-slack-shi-yong/</loc>
+    <lastmod>2015-08-05T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-07-30-what-is-mario-butterfly/</loc>
+    <lastmod>2015-07-30T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E4%BA%A7%E5%93%81/</loc>
+    <lastmod>2015-07-30T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-07-29-repo-url-change-not-work-in-capistrano3/</loc>
+    <lastmod>2015-07-29T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-07-28-what-issue-tracker-have-you-used/</loc>
+    <lastmod>2015-07-28T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-07-24-zhou-zong-jie-1/</loc>
+    <lastmod>2015-07-24T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-07-07-1928nian-zai-yan-zhou-zhong-shan-da-xue-de-jiang-jie-xuan/</loc>
+    <lastmod>2015-07-07T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/elixir/</loc>
+    <lastmod>2015-06-30T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-06-30-elixir-ji-ben-shu-ju-lei-xing/</loc>
+    <lastmod>2015-06-30T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/ie/</loc>
+    <lastmod>2015-06-24T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-06-24-ie-liu-lan-qi-yang-shi-yi-chu-de-wen-ti/</loc>
+    <lastmod>2015-06-24T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-06-15-qing-hai-hu-qi-xing/</loc>
+    <lastmod>2015-06-15T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-05-31-rui-shi-jun-dao-zhi-motionmodel/</loc>
+    <lastmod>2015-05-31T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-05-31-rubymotion-root-path/</loc>
+    <lastmod>2015-05-31T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-05-30-wei-shi-yao-xuan-ze-rubymotion/</loc>
+    <lastmod>2015-05-30T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-05-19-font-aswsome-upgrade-script-ruby/</loc>
+    <lastmod>2015-05-19T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-05-18-shi-yong-generateming-zi-dong-sheng-cheng-modelde-shi-hou-zhi-ding-bu-tong-de-orm/</loc>
+    <lastmod>2015-05-18T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-05-05-wu-wo-men-qi-qu-gou-qi/</loc>
+    <lastmod>2015-05-05T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-04-23-you-shi-wo-ren-wei-zi-ji-shi-shi-ren-1/</loc>
+    <lastmod>2015-04-23T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-04-19-shang-hai-zi-ran-bo-wu-guan/</loc>
+    <lastmod>2015-04-19T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-04-18-actionmailer-na-xie-shi-4/</loc>
+    <lastmod>2015-04-18T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-04-18-actionmailer-na-xie-shi-3/</loc>
+    <lastmod>2015-04-18T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-04-16-you-chong-lu-xing-jiao-du-jia/</loc>
+    <lastmod>2015-04-16T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-04-09-du-wo-yan-zhong-zhen-zheng-you-xiu-de-cto-bi-ji/</loc>
+    <lastmod>2015-04-09T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-04-07-tong-guo-zi-you-kan-weban-quan-she-ji/</loc>
+    <lastmod>2015-04-07T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-04-05-actionmailer-na-xie-shi-2/</loc>
+    <lastmod>2015-04-05T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-04-05-actionmailer-na-xie-shi-1/</loc>
+    <lastmod>2015-04-05T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-02-28-a-better-way-for-thinking-sphinx-deltas-and-associations/</loc>
+    <lastmod>2015-02-28T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-02-26-redmine-lazy-packages/</loc>
+    <lastmod>2015-02-26T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-02-23-wei-shi-yao-bu-kuang-jia/</loc>
+    <lastmod>2015-02-23T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-02-16-ruby-yuan-ma-yue-du-ji-hua/</loc>
+    <lastmod>2015-02-16T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-01-22-gitchang-jian-wen-ti-hui-zong/</loc>
+    <lastmod>2015-01-22T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-01-16-pian-bo-ke-yin-fa-de-si-kao/</loc>
+    <lastmod>2015-01-16T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-01-15-online-2-tool-collection/</loc>
+    <lastmod>2015-01-15T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-01-13-qing-gei-ta-5fen-zhong/</loc>
+    <lastmod>2015-01-13T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-01-12-error-incompatible-library-version-nokogiri-dot-bundle-requires-version-11-dot-0-0-or-later/</loc>
+    <lastmod>2015-01-12T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-01-10-upgrade-ruby-to-2-dot-2-with-rvm/</loc>
+    <lastmod>2015-01-10T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-01-09-rails-cache-store-de-ge-xiao-keng/</loc>
+    <lastmod>2015-01-09T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/mysql/</loc>
+    <lastmod>2015-01-07T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2015-01-07-mysql-start-with-an-error-in-my-mac-os/</loc>
+    <lastmod>2015-01-07T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-12-23-mian-fei-de-bian-cheng-zhong-wen-shu-ji-suo-yin/</loc>
+    <lastmod>2014-12-23T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-12-19-mysql-performance-filesort/</loc>
+    <lastmod>2014-12-19T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/css/</loc>
+    <lastmod>2014-12-16T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-12-16-css-zhi-white-space/</loc>
+    <lastmod>2014-12-16T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-12-01-upgrade-jekyll-to-2-dot-5-2/</loc>
+    <lastmod>2014-12-01T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-12-01-how-to-fix-the-thead-in-a-table/</loc>
+    <lastmod>2014-12-01T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-11-26-shi-yong-css-countershi-xian-jian-dan-ji-shu/</loc>
+    <lastmod>2014-11-26T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-11-25-hello-rack/</loc>
+    <lastmod>2014-11-25T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-11-21-zai-jin-yong-robotsde-wang-zhan-ru-he-shi-yong-qi-niu-jing-xiang/</loc>
+    <lastmod>2014-11-21T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-11-20-thinking-sphinx-can-not-search-chinese/</loc>
+    <lastmod>2014-11-20T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-11-20-rails-deploy-with-capistrano3/</loc>
+    <lastmod>2014-11-20T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-11-15-trzai-tablezhong-shang-xia-yi-dong-cao-zuo-jian-dan-shi-xian/</loc>
+    <lastmod>2014-11-15T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-11-12-plupload-rails-error-uncaught-error-error-calling-method-on-npobject/</loc>
+    <lastmod>2014-11-12T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-11-07-gemfile-bundle-ti-shi-unable-to-connect-to-github-dot-com-wen-ti/</loc>
+    <lastmod>2014-11-07T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-11-05-unixxi-tong-jian-kong-zhi-m-slash-monit/</loc>
+    <lastmod>2014-11-05T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-10-27-bei-yi-wang-de-logrotate/</loc>
+    <lastmod>2014-10-27T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-10-12-ru-he-pan-duan-ge-shu-zu-de-suo-you-yuan-su-shi-fou-du-zai-ling-wai-ge-shu-zu-zhong/</loc>
+    <lastmod>2014-10-12T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E6%AD%A3%E5%88%99/</loc>
+    <lastmod>2014-10-09T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-10-09-zhuan-zai-zheng-ze-biao-da-shi-jian-ming-can-kao/</loc>
+    <lastmod>2014-10-09T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-10-04-how-to-disable-nginx-ip-visit/</loc>
+    <lastmod>2014-10-04T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/nginx/</loc>
+    <lastmod>2014-10-04T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-09-20-how-to-bootstrap-your-rails-server/</loc>
+    <lastmod>2014-09-20T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-09-15-javascriptzhong-ru-he-hu-lue-da-xiao-zheng-ze-pi-pei-dong-tai-zi-fu-chuan/</loc>
+    <lastmod>2014-09-15T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-09-12-how-to-write-a-rails-asset-plugin/</loc>
+    <lastmod>2014-09-12T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-31-ruby-2-dot-1-xin-te-xing/</loc>
+    <lastmod>2014-08-31T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-31-rails4-dot-2zhong-hen-shao-you-ren-zhi-dao-de-te-xing/</loc>
+    <lastmod>2014-08-31T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-26-chang-yin-xiang-shen-ke-de-mian-shi/</loc>
+    <lastmod>2014-08-26T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E9%9D%A2%E8%AF%95/</loc>
+    <lastmod>2014-08-26T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-25-how-to-cross-domain-post-data-in-rails/</loc>
+    <lastmod>2014-08-25T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-24-xin-yun/</loc>
+    <lastmod>2014-08-24T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-19-rails-with-jsonp/</loc>
+    <lastmod>2014-08-19T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/html/</loc>
+    <lastmod>2014-08-15T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-15-htmlzhi-yu-yi-wang/</loc>
+    <lastmod>2014-08-15T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-13-change-mysql-default-character-set-to-utf8/</loc>
+    <lastmod>2014-08-13T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-12-full-page-background-image/</loc>
+    <lastmod>2014-08-12T23:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-12-add-js-logic-to-activeadmin/</loc>
+    <lastmod>2014-08-12T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-11-learn-to-code-html-css-part-1/</loc>
+    <lastmod>2014-08-11T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-04-rails-zi-dan-fei/</loc>
+    <lastmod>2014-08-04T22:31:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-08-03-qi-zhou-qi-yu-yan-zhi-elixir-an-zhuang-pian/</loc>
+    <lastmod>2014-08-03T20:19:04+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-06-29-the-difference-between-bash-profile-and-bashrc/</loc>
+    <lastmod>2014-06-29T14:43:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-06-29-how-to-use-cancan-in-rails-model/</loc>
+    <lastmod>2014-06-29T14:38:38+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-06-29-a-good-way-to-manage-aliases-in-unix-like-using-bash/</loc>
+    <lastmod>2014-06-29T14:19:11+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-06-27-ru-he-shi-yong-gitguan-li-xiang-mu-dai-ma-fa-bu-ban-ben-/</loc>
+    <lastmod>2014-06-27T10:49:22+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-04-03-how-to-start-active-admin-with-existing-model/</loc>
+    <lastmod>2014-04-03T11:20:20+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-04-02-ordering-null-values-last-in-thinking-sphinx/</loc>
+    <lastmod>2014-04-02T15:12:38+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-03-14-how-to-solve-out-of-sort-memrory-problem-of-mysql/</loc>
+    <lastmod>2014-03-14T11:38:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-02-26-how-to-solve-the-err-unknown-command-psetex-problem/</loc>
+    <lastmod>2014-02-26T10:19:47+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-02-22-how-to-start-postgresql-with-rails/</loc>
+    <lastmod>2014-02-22T00:24:32+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/postgresql/</loc>
+    <lastmod>2014-02-22T00:24:32+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-02-20-chang-yong-gemsqing-dan/</loc>
+    <lastmod>2014-02-20T13:38:46+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-02-03-song-ben-xing-hong-de-bian-cheng-shi-jie-zhong-wen-ban-de-du-shu-kan-wu/</loc>
+    <lastmod>2014-02-03T12:50:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-30-ni-zen-yao-she-de-wo-nan-guo-huang-pin-yuan/</loc>
+    <lastmod>2014-01-30T23:56:58+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-28-linuxxia-ci-pan-xing-neng-jian-dan-jian-ce/</loc>
+    <lastmod>2014-01-28T20:30:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-28-linuxxiang-qing-de-fang-fa/</loc>
+    <lastmod>2014-01-28T20:10:42+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-24-dai-ma-xing-tong-ji-zhi-gitming-ling/</loc>
+    <lastmod>2014-01-24T21:23:49+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-22-xing-neng-ce-shi-gong-ju-zhi-httperf/</loc>
+    <lastmod>2014-01-22T19:56:06+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-22-railszhong-counter-cachede-yong/</loc>
+    <lastmod>2014-01-22T17:27:30+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-21-liang-ge-cha-kan-linuxduan-kou-zhan-yong-qing-kuang-de-ming-ling/</loc>
+    <lastmod>2014-01-21T22:42:26+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-21-linuxci-pan-jian-kong/</loc>
+    <lastmod>2014-01-21T21:58:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-21-mysql-console-command/</loc>
+    <lastmod>2014-01-21T15:07:16+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-19-ding-shi-ren-wu-zhi-crontab/</loc>
+    <lastmod>2014-01-19T22:48:59+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-19-how-to-break-div-with-a-new-line/</loc>
+    <lastmod>2014-01-19T22:41:25+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-17-capistrano-deploy-with-forward-agent-by-ssh/</loc>
+    <lastmod>2014-01-17T12:01:51+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-12-ubuntu-plus-rails4-plus-postgresql9-dot-3-chu-ti-yan/</loc>
+    <lastmod>2014-01-12T15:40:03+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-12-rails4-herokubu-shu-chu-ti-yan/</loc>
+    <lastmod>2014-01-12T15:22:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-12-ubuntu-plus-passager-plus-nginx-railsbu-shu-da-jian/</loc>
+    <lastmod>2014-01-12T15:18:38+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-12-transform-hash-key-type-in-rails/</loc>
+    <lastmod>2014-01-12T15:11:08+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-11-wei-shi-yao-xuan-ze-nginxfu-wu-qi/</loc>
+    <lastmod>2014-01-11T22:29:50+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-11-shi-yong-pluploadchuang-jian-tempimage/</loc>
+    <lastmod>2014-01-11T19:57:14+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-11-railszhong-de-guo-ji-hua-jie-jue-fang-an/</loc>
+    <lastmod>2014-01-11T01:41:39+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/2014-01-10-li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/</loc>
+    <lastmod>2014-01-10T23:37:05+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/about/</loc>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+  </url>
+  
+</urlset>

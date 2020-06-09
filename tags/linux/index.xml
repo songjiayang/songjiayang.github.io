@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on 小鱼驿站</title>
+    <link>/tags/linux/</link>
+    <description>小鱼驿站 (linux)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 12 Aug 2015 22:31:00 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Linux 进程管理方法总结</title>
+      <link>/posts/2015-08-12-linux-jin-cheng-guan-li-fang-fa-zong-jie/</link>
+      <pubDate>Wed, 12 Aug 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-08-12-linux-jin-cheng-guan-li-fang-fa-zong-jie/</guid>
+      <description>&lt;p&gt;作为一名后端工程师，难免会与服务器打交道，懂些常见基本运维技能将有助于你快速排查问题，提高工作效率；其中进程管理属于最基本的入门技能。&lt;/p&gt;
+&lt;p&gt;写在前面： 所有例子跑在 ubuntu 14.0.4 上，其他 linux 版本也基本相同。&lt;/p&gt;
+&lt;h3 id=&#34;top-命令&#34;&gt;top 命令&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;top
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;top - 14:18:10 up 298 days,  1:59,  2 users,  load average: 0.21, 0.23, 0.22
+Tasks:  77 total,   1 running,  76 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.3 us,  0.3 sy,  0.0 ni,  0.0 id, 99.3 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem:   1017972 total,   954880 used,    63092 free,      152 buffers
+KiB Swap:  1048572 total,   655128 used,   393444 free.    13588 cached Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+ 3743 deploy    20   0  869224 184396    748 S  0.0 18.1 316:32.87 ruby
+30840 deploy    20   0  836504 163364    808 S  0.0 16.0   0:10.59 ruby
+28860 mysql     20   0 1474952 143452      0 S  0.0 14.1   0:07.11 mysqld
+31049 deploy    20   0  767176 122260      0 S  0.0 12.0   0:05.98 ruby
+10764 deploy    20   0  749244  28852      0 S  0.0  2.8   3:19.23 ruby
+ 1391 deploy    20   0   25144   6352    492 S  0.0  0.6   0:00.21 bash
+  600 syslog    20   0  256360   2744      0 S  0.0  0.3   0:45.98 rsyslogd  
+  ...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如上图所示，使用 top 命令，不仅可以看到所有正在运行的用户进程，还有系统资源使用统计信息，比较简单直观。&lt;/p&gt;
+&lt;p&gt;提示： 使用 &lt;code&gt;shift + m&lt;/code&gt; 可以根据内存使用率排序。&lt;/p&gt;
+&lt;p&gt;我经常使用这个命令查看内存使用情况，寻找占用内存较大的进程。&lt;/p&gt;
+&lt;h3 id=&#34;ps-命令&#34;&gt;ps 命令&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;ps aux
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.1  33660  1120 ?        Ss    2014   0:09 /sbin/init
+root         2  0.0  0.0      0     0 ?        S     2014   0:00 [kthreadd]
+root         3  0.0  0.0      0     0 ?        S     2014  46:47 [ksoftirqd/0]
+root         5  0.0  0.0      0     0 ?        S     2014   0:01 [kworker/u:0]
+root         6  0.0  0.0      0     0 ?        S     2014   0:00 [migration/0]
+....
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;aux 选项可以列出所有用户进程（除当前 terminal 进程）。&lt;/p&gt;
+&lt;p&gt;如果只是列出所有进程并不好用，毕竟进程太多，此时我们可以结合 grep 命令作关键词匹配，比如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ps aux | grep mysql
+
+deploy    1567  0.0  0.0  10460   916 pts/2    S+   14:06   0:00 grep --color=auto mysql
+mysql    28860  0.0 14.0 1474952 143448 ?      Ssl  11:20   0:06 /usr/sbin/mysqld
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我们还可以用 &lt;code&gt;ps PID&lt;/code&gt; 显示某特定进程信息:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ps 28860
+
+PID TTY      STAT   TIME COMMAND
+28860 ?        Ssl    0:06 /usr/sbin/mysqld
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;kill-命令&#34;&gt;kill 命令&lt;/h3&gt;
+&lt;p&gt;当我们发现某些进程僵死，或者想强制结束某个进程的时候，往往会使用 kill 命令。&lt;/p&gt;
+&lt;p&gt;最基本命令格式是： &lt;code&gt;kill PID&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;kill 命令有很多选项，使用 kill -l 可以查看：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+ 1) SIGHUP	 2) SIGINT	 3) SIGQUIT	 4) SIGILL	 5) SIGTRAP
+ 6) SIGABRT	 7) SIGBUS	 8) SIGFPE	 9) SIGKILL	10) SIGUSR1
+11) SIGSEGV	12) SIGUSR2	13) SIGPIPE	14) SIGALRM	15) SIGTERM
+16) SIGSTKFLT	17) SIGCHLD	18) SIGCONT	19) SIGSTOP	20) SIGTSTP
+21) SIGTTIN	22) SIGTTOU	23) SIGURG	24) SIGXCPU	25) SIGXFSZ
+26) SIGVTALRM	27) SIGPROF	28) SIGWINCH	29) SIGIO	30) SIGPWR
+31) SIGSYS	34) SIGRTMIN	35) SIGRTMIN+1	36) SIGRTMIN+2	37) SIGRTMIN+3
+38) SIGRTMIN+4	39) SIGRTMIN+5	40) SIGRTMIN+6	41) SIGRTMIN+7	42) SIGRTMIN+8
+43) SIGRTMIN+9	44) SIGRTMIN+10	45) SIGRTMIN+11	46) SIGRTMIN+12	47) SIGRTMIN+13
+48) SIGRTMIN+14	49) SIGRTMIN+15	50) SIGRTMAX-14	51) SIGRTMAX-13	52) SIGRTMAX-12
+53) SIGRTMAX-11	54) SIGRTMAX-10	55) SIGRTMAX-9	56) SIGRTMAX-8	57) SIGRTMAX-7
+58) SIGRTMAX-6	59) SIGRTMAX-5	60) SIGRTMAX-4	61) SIGRTMAX-3	62) SIGRTMAX-2
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其实，平时我用的比较多的只有第 9 选项 &lt;code&gt;SIGKILL&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;最后在提一下，&lt;code&gt;kill PID&lt;/code&gt; 和 &lt;code&gt;kill -9 PID&lt;/code&gt; 的区别。&lt;/p&gt;
+&lt;p&gt;首先 kill PID 命令不会直接删除进程，而是向该进程发送一个关闭信息，这样好处是进程可以自己控制结束动作，在结束之前可以做一些额外操作。
+但是对于有些应用程序，没有相应删除的实现，那么你就只有使用 －9 选项，强制结束进程。&lt;/p&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+&lt;p&gt;进程管理大致思路就是设法找到相应进程，查询进程运行状况，删除或重启进程。其中会结合使用 top, ps, kill 等命令。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>超好用的监控工具之 M/Monit</title>
+      <link>/posts/2014-11-05-unixxi-tong-jian-kong-zhi-m-slash-monit/</link>
+      <pubDate>Wed, 05 Nov 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-11-05-unixxi-tong-jian-kong-zhi-m-slash-monit/</guid>
+      <description>&lt;h4 id=&#34;1-mmonithttpmmonitcom-是什么&#34;&gt;1. &lt;a href=&#34;http://mmonit.com/&#34;&gt;M/Monit&lt;/a&gt; 是什么？&lt;/h4&gt;
+&lt;p&gt;简单而言，Monit 是一款轻量级，好用的监控工具，它能够监控unix系统，网络，云服务等任务，它还能够自动重启服务。&lt;!-- raw HTML omitted --&gt;
+下面是一段官方的描述：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Easy, proactive monitoring of Unix systems, network and cloud services. Conduct automatic maintenance and recovery and execute meaningful causal actions in error situations&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;2-如何安装-mmonit-&#34;&gt;2. 如何安装 M/Monit ?&lt;/h4&gt;
+&lt;p&gt;apt 类系统上安装：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install monit
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;yum 类系统上安装:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo yum install monit
+&lt;/code&gt;&lt;/pre&gt;&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h4 id=&#34;3-mmonit-主要目录&#34;&gt;3. M/Monit 主要目录&lt;/h4&gt;
+&lt;p&gt;以ubuntu系统为例，monit的配置目录主要在  &lt;code&gt;/etc/monit&lt;/code&gt;, 主要包含：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;drwxr-xr-x  2 root root  4096 Nov  5 05:33 conf.d
+-rw-------  1 root root 10962 Nov  5 04:30 monitrc
+drwxr-xr-x  2 root root  4096 Nov  4 10:24 monitrc.d
+drwxr-xr-x  2 root root  4096 Nov  4 10:24 templates
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其中 monitrc 是主配置文件，config.d 是各种具体任务监控的配置目录，monitrc 会包含 conf.d 所有文件。 monitrc.d 里面有很多配置模版，你可以直接使用，只需要做个软链到 conf.d 即可。&lt;/p&gt;
+&lt;h4 id=&#34;4-一些常用任务监控脚本&#34;&gt;4. 一些常用任务监控脚本&lt;/h4&gt;
+&lt;p&gt;nginx 监控&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; check process nginx with pidfile /var/run/nginx.pid
+   group www
+   group nginx
+   start program = &amp;quot;/etc/init.d/nginx start&amp;quot;
+   stop program = &amp;quot;/etc/init.d/nginx stop&amp;quot;
+#  if failed port 80 protocol http request &amp;quot;/&amp;quot; then restart
+   if 5 restarts with 5 cycles then timeout
+   depend nginx_bin
+   depend nginx_rc
+
+ check file nginx_bin with path /usr/sbin/nginx
+   group nginx
+   include /etc/monit/templates/rootbin
+
+ check file nginx_rc with path /etc/init.d/nginx
+   group nginx
+   include /etc/monit/templates/rootbin
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;redis 监控&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;if failed port 6379 then alert
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;系统资源监控&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;check system matter.build
+  if loadavg (1min) &amp;gt; 4 then alert
+  if loadavg (5min) &amp;gt; 2 then alert
+  if memory usage &amp;gt; 75% then alert
+  if swap usage &amp;gt; 25% then alert
+  if cpu usage (user) &amp;gt; 70% then alert
+  if cpu usage (system) &amp;gt; 30% then alert
+  if cpu usage (wait) &amp;gt; 30% then alert
+
+check device var with path /
+  if SPACE usage &amp;gt; 80% then alert
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;sidekiq 监控&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;check process rails_app-sidekiq
+   with pidfile /var/www/rails_app/shared/pids/sidekiq.pid
+   stop program = &amp;quot;/usr/bin/env HOME=/home/deploy /bin/bash -c &#39;[ ! -f /var/www/rails_app/current/tmp/pids/sidekiq.pid ] || kill `cat /var/www/rails_app/current/tmp/pids/sidekiq.pid` || true&#39;&amp;quot;
+   if changed pid then alert
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;unicorn 监控&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; if failed unixsocket /tmp/unicorn.rails_app_production.sock then alert
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>被遗忘的 logrotate</title>
+      <link>/posts/2014-10-27-bei-yi-wang-de-logrotate/</link>
+      <pubDate>Mon, 27 Oct 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-10-27-bei-yi-wang-de-logrotate/</guid>
+      <description>&lt;p&gt;随着时间的推移，Application的日志内容越来越多（对我而言，主要是nginx 和 unicorn），而日志分析第一步往往是日志分片， 因为你不可能一次去处理几十天的日志，内容太多。&lt;/p&gt;
+&lt;p&gt;有些人可能会自己写一些定时任务来处理日志分片，其实这样做既费事，又不能保证与其他任务进程完美结合，而Linux 上自带的 &lt;a href=&#34;https://github.com/stevendanna/logrotate&#34;&gt;logrotate&lt;/a&gt; 却是一个比较好解决方案， 而且 logrotate 底层是依赖了 crontab, 很容易自定义任务周期。&lt;/p&gt;
+&lt;p&gt;logrotate 的配置文件默认都放在了 /etc/logrotate.d 里面。&lt;/p&gt;
+&lt;p&gt;其实 nginx 本身就做好了分片，下面是一段nginx 默认的 logrotate 配置。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 文件位置是 /etc/logrotate.d/nginx
+/var/log/nginx/*.log {
+    weekly
+    missingok
+    rotate 52
+    compress
+    delaycompress
+    notifempty
+    create 0640 www-data adm
+    sharedscripts
+    prerotate
+        if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+          run-parts /etc/logrotate.d/httpd-prerotate; \
+        fi \
+    endscript
+    postrotate
+        [ -s /run/nginx.pid ] &amp;amp;&amp;amp; kill -USR1 `cat /run/nginx.pid`
+    endscript
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我使用的 unicorn 的配置：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 文件位置是 /etc/logrotate.d/unicorn_procution
+
+# Modify the following glob to match the logfiles your app writes to:
+/var/www/rails_app/shared/log/app_production.log {
+    weekly
+    missingok
+        # keep 12 rotates
+    rotate 12
+    compress # must use with delaycompress below
+        # add timestamp to log file
+    dateext
+
+    # this is important if using &amp;quot;compress&amp;quot; since we need to call
+    # the &amp;quot;lastaction&amp;quot; script below before compressing:
+    delaycompress
+
+    # note the lack of the evil &amp;quot;copytruncate&amp;quot; option in this
+    # config.  Unicorn supports the USR1 signal and we send it
+    # as our &amp;quot;lastaction&amp;quot; action:
+    lastaction
+        pid=/var/www/rails_app/current/tmp/pids/unicorn.pid
+        sudo test -s $pid &amp;amp;&amp;amp; sudo kill -USR1 &amp;quot;$(cat $pid)&amp;quot;
+    endscript
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;OK，按照上面的配置，已经实现了 nginx 和unicorn 日志分片了。&lt;/p&gt;
+&lt;p&gt;更多 logrotate 参数 的意义可以参考 &lt;a href=&#34;http://linux.die.net/man/8/logrotate&#34;&gt;http://linux.die.net/man/8/logrotate&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The difference between .bash_profile and .bashrc</title>
+      <link>/posts/2014-06-29-the-difference-between-bash-profile-and-bashrc/</link>
+      <pubDate>Sun, 29 Jun 2014 14:43:23 +0800</pubDate>
+      
+      <guid>/posts/2014-06-29-the-difference-between-bash-profile-and-bashrc/</guid>
+      <description>&lt;p&gt;Traditionally, when you log into a Unix system, the system would start one program for you. That program is a shell, i.e., a program designed to start other programs. It&amp;rsquo;s a command line shell: you start another program by typing its name. The default shell, a Bourne shell, reads commands from &lt;code&gt;~/.profile&lt;/code&gt; when it is invoked as the login shell.&lt;/p&gt;
+&lt;p&gt;Bash is a Bourne-like shell. It reads commands from &lt;code&gt;~/.bash_profile&lt;/code&gt; when it is invoked as the login shell, and if that file doesn&amp;rsquo;t exist¹, it tries reading &lt;code&gt;~/.profile&lt;/code&gt; instead.&lt;/p&gt;
+&lt;p&gt;You can invoke a shell directly at any time, for example by launching a terminal emulator inside a GUI environment. If the shell is not a login shell, it doesn&amp;rsquo;t read &lt;code&gt;~/.profile&lt;/code&gt;. When you start bash as an interactive shell (i.e., not to run a script), it reads &lt;code&gt;~/.bashrc&lt;/code&gt; (except when invoked as a login shell, then it only reads &lt;code&gt;~/.bash_profile&lt;/code&gt; or &lt;code&gt;~/.profile&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Therefore:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;~/.profile&lt;/code&gt; is the place to put stuff that applies to your whole session, such as programs that you want to start when you log in (but not graphical programs, they go into a different file), and environment variable definitions.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;~/.bashrc&lt;/code&gt; is the place to put stuff that applies only to bash itself, such as alias and function definitions, shell options, and prompt settings. (You could also put key bindings there, but for bash they normally go into &lt;code&gt;~/.inputrc&lt;/code&gt;.)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;~/.bash_profile&lt;/code&gt; can be used instead of &lt;code&gt;~/.profile&lt;/code&gt;, but it is read by bash only, not by any other shell. (This is mostly a concern if you want your initialization files to work on multiple machines and your login shell isn&amp;rsquo;t bash on all of them.) This is a logical place to include &lt;code&gt;~/.bashrc&lt;/code&gt; if the shell is interactive. I recommend the following contents in &lt;code&gt;~/.bash_profile&lt;/code&gt;:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;if [ -r ~/.profile ]; then . ~/.profile; ficase &amp;quot;$-&amp;quot; in *i*) if [ -r ~/.bashrc ]; then . ~/.bashrc; fi;; esac
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;On modern unices, there&amp;rsquo;s an added complication related to ~/.profile. If you log in in a graphical environment (that is, if the program where you type your password is running in graphics mode), you don&amp;rsquo;t automatically get a login shell that reads ~/.profile. Depending on the graphical login program, on the window manager or desktop environment you run afterwards, and on how your distribution configured these programs, your ~/.profile may or may not be read. If it&amp;rsquo;s not, there&amp;rsquo;s usually another place where you can define environment variables and programs to launch when you log in, but there is unfortunately no standard location.&lt;/p&gt;
+&lt;p&gt;Note that you may see here and there recommendations to either put environment variable definitions in~/.bashrc or always launch login shells in terminals. Both are bad ideas. The most common problem with either of these ideas is that your environment variables will only be set in programs launched via the terminal, not in programs started directly with an icon or menu or keyboard shortcut.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://superuser.com/questions/183870/difference-between-bashrc-and-bash-profile&#34;&gt;http://superuser.com/questions/183870/difference-between-bashrc-and-bash-profile&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>A good way to manage aliases in Unix-like using BASH</title>
+      <link>/posts/2014-06-29-a-good-way-to-manage-aliases-in-unix-like-using-bash/</link>
+      <pubDate>Sun, 29 Jun 2014 14:19:11 +0800</pubDate>
+      
+      <guid>/posts/2014-06-29-a-good-way-to-manage-aliases-in-unix-like-using-bash/</guid>
+      <description>&lt;p&gt;To introduce how it works, a example [&lt;em&gt;bundle exec rake&lt;/em&gt; ] alias will be given.&lt;/p&gt;
+&lt;p&gt;Now, let&amp;rsquo;s start.&lt;/p&gt;
+&lt;p&gt;1.1 open your ~/.bashrc file&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;vim ~/.bashrc
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;1.2 add alias commands trigger commands to ~/.bashrc&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;1.3 add all the alias commands that you want to ~/.bash_aliases&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;alias rake=&#39;bundle exec rake&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;All alias commands with the same format like  &lt;code&gt;alias &amp;lt;name&amp;gt;=&#39;&amp;lt;linux_command&amp;gt;&#39;&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linux 下磁盘性能简单检测</title>
+      <link>/posts/2014-01-28-linuxxia-ci-pan-xing-neng-jian-dan-jian-ce/</link>
+      <pubDate>Tue, 28 Jan 2014 20:30:48 +0800</pubDate>
+      
+      <guid>/posts/2014-01-28-linuxxia-ci-pan-xing-neng-jian-dan-jian-ce/</guid>
+      <description>&lt;p&gt;1.使用dd命令简单测试磁盘I/O&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;dd if=/dev/zero of=testfile bs=1M count=512 conv=fdatasync
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2.使用hdparm命令&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo hdparm -t /dev/sda
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Linux 下查看 CPU 详情的方法</title>
+      <link>/posts/2014-01-28-linuxxiang-qing-de-fang-fa/</link>
+      <pubDate>Tue, 28 Jan 2014 20:10:42 +0800</pubDate>
+      
+      <guid>/posts/2014-01-28-linuxxiang-qing-de-fang-fa/</guid>
+      <description>&lt;p&gt;1.通过查看/proc/cupinfo文件信息&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cat /proc/cpuinfo
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2.通过ls命令查看&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;lscup
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>性能测试工具之 httperf</title>
+      <link>/posts/2014-01-22-xing-neng-ce-shi-gong-ju-zhi-httperf/</link>
+      <pubDate>Wed, 22 Jan 2014 19:56:06 +0800</pubDate>
+      
+      <guid>/posts/2014-01-22-xing-neng-ce-shi-gong-ju-zhi-httperf/</guid>
+      <description>&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;下载&lt;a href=&#34;https://httperf.googlecode.com/files/httperf-0.9.0.tar.gz&#34;&gt;httperf&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;配置环境 &lt;code&gt;./config&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;编译 &lt;code&gt;make&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安装 &lt;code&gt;make install&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;httperf的基本使用&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;==&amp;gt; httperf  --hog  --server=www.ruby-china.org  --wsess=100,100,0.1  --burst-length=10  --rate=5  --timeout=5
+
+
+httperf --hog --timeout=5 --client=0/1 --server=www.ruby-china.org --port=80 --uri=/ --rate=5 --send-buffer=4096 --recv-buffer=16384 --wsess=100,100,0.100 --burst-length=10
+httperf: warning: open file limit &amp;gt; FD_SETSIZE; limiting max. # of open files to FD_SETSIZE
+Maximum connect burst length: 1
+
+Total: connections 100 requests 10000 replies 10000 test-duration 23.630 s
+
+Connection rate: 4.2 conn/s (236.3 ms/conn, &amp;lt;=21 concurrent connections)
+Connection time [ms]: min 3829.2 avg 3977.6 max 4149.9 median 3991.5 stddev 105.9
+Connection time [ms]: connect 74.3
+Connection length [replies/conn]: 100.000
+
+Request rate: 423.2 req/s (2.4 ms/req)
+Request size [B]: 71.0
+
+Reply rate [replies/s]: min 304.4 avg 450.8 max 505.6 stddev 97.7 (4 samples)
+Reply time [ms]: response 90.4 transfer 0.0
+Reply size [B]: header 195.0 content 184.0 footer 0.0 (total 379.0)
+Reply status: 1xx=0 2xx=0 3xx=10000 4xx=0 5xx=0
+
+CPU time [s]: user 2.28 system 21.27 (user 9.7% system 90.0% total 99.7%)
+Net I/O: 186.4 KB/s (1.5*10^6 bps)
+
+Errors: total 0 client-timo 0 socket-timo 0 connrefused 0 connreset 0
+Errors: fd-unavail 0 addrunavail 0 ftab-full 0 other 0
+
+Session rate [sess/s]: min 1.20 avg 4.23 max 5.20 stddev 1.91 (100/100)
+Session: avg 1.00 connections/session
+Session lifetime [s]: 4.0
+Session failtime [s]: 0.0
+Session length histogram: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;更多使用说明可以通过命令&lt;code&gt; man httperf&lt;/code&gt; 来查看.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>两个查看 Linux 端口占用情况的命令</title>
+      <link>/posts/2014-01-21-liang-ge-cha-kan-linuxduan-kou-zhan-yong-qing-kuang-de-ming-ling/</link>
+      <pubDate>Tue, 21 Jan 2014 22:42:26 +0800</pubDate>
+      
+      <guid>/posts/2014-01-21-liang-ge-cha-kan-linuxduan-kou-zhan-yong-qing-kuang-de-ming-ling/</guid>
+      <description>&lt;h4 id=&#34;netstat-和-lsof是两个很好的查看服务器上端口占用情况的命令简单使用如下&#34;&gt;&lt;code&gt;netstat&lt;/code&gt; 和 &lt;code&gt;lsof&lt;/code&gt;是两个很好的查看服务器上端口占用情况的命令，简单使用如下：&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;=&amp;gt; netstat -tupln
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 127.0.0.1:27017         0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:11211         0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:6379          0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:28017         0.0.0.0:*               LISTEN      -
+
+
+=&amp;gt; lsof -i
+COMMAND     PID        USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+chrome     3081 songjiayang   78u  IPv4 285465      0t0  TCP sjy-computer.lan:44393-&amp;gt;ea-in-f113.1e100.net:https (ESTABLISHED)
+chrome     3081 songjiayang  101u  IPv4 282282      0t0  TCP sjy-computer.lan:44344-&amp;gt;ea-in-f113.1e100.net:https (ESTABLISHED)
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>linux磁盘监控</title>
+      <link>/posts/2014-01-21-linuxci-pan-jian-kong/</link>
+      <pubDate>Tue, 21 Jan 2014 21:58:41 +0800</pubDate>
+      
+      <guid>/posts/2014-01-21-linuxci-pan-jian-kong/</guid>
+      <description>&lt;p&gt;大家可能都知道Linux上的&lt;code&gt;top&lt;/code&gt;命令，使用它可以实时显示系统的运行状况，如图:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://book-share.qiniudn.com/Screenshot%20from%202014-01-21%2022:01:34.png&#34; alt=&#34;top&#34;&gt;&lt;/p&gt;
+&lt;p&gt;top命令很好，唯独无法清楚的监控系统磁盘I/O的读写情况，iotop这个软件就可以很好的弥补top不足，能对服务器的磁盘进行实时监控。&lt;/p&gt;
+&lt;h4 id=&#34;iotop安装&#34;&gt;iotop安装&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt; sudo apt-get install iotop
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;运行iotop&#34;&gt;运行iotop&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;sudo iotop  
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;运行效果&#34;&gt;运行效果&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;http://book-share.qiniudn.com/Screenshot%20from%202014-01-21%2022:01:56.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>定时任务之 crontab</title>
+      <link>/posts/2014-01-19-ding-shi-ren-wu-zhi-crontab/</link>
+      <pubDate>Sun, 19 Jan 2014 22:48:59 +0800</pubDate>
+      
+      <guid>/posts/2014-01-19-ding-shi-ren-wu-zhi-crontab/</guid>
+      <description>&lt;p&gt;####1.编辑定时任务 &lt;code&gt;crontab -e&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;####2. crontab 中的时间对应关系&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;* * * * *
+m h dom mon dow
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####3. 查询当前用户的定时任务 &lt;code&gt;crontab -l&lt;/code&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Capistrano Deploy With Forward Agent By SSH</title>
+      <link>/posts/2014-01-17-capistrano-deploy-with-forward-agent-by-ssh/</link>
+      <pubDate>Fri, 17 Jan 2014 12:01:51 +0800</pubDate>
+      
+      <guid>/posts/2014-01-17-capistrano-deploy-with-forward-agent-by-ssh/</guid>
+      <description>&lt;p&gt;使用Capistrano部署应用的时候，服务器往往会到一个具有访问权限的git仓库拉取代码; 如果你不想把 server 的 pub key，copy 到仓库服务器上的话，你可以尝试使用本地代理的方式。&lt;/p&gt;
+&lt;p&gt;具体操作如下：&lt;/p&gt;
+&lt;p&gt;####1. 配置deploy文件,手动开启代理服务.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;set :ssh_options, {:forward_agent =&amp;gt; true}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;####2. 告诉SSH Agent你的key&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ssh-add ~/.ssh/id_rsa
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参考资料&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://opensoul.org/2009/06/24/capistrano-git-and-ssh-keys/&#34;&gt;http://opensoul.org/2009/06/24/capistrano-git-and-ssh-keys/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>利用 httpd 做简单的 web 应用性能检测</title>
+      <link>/posts/2014-01-10-li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/</link>
+      <pubDate>Fri, 10 Jan 2014 23:37:05 +0800</pubDate>
+      
+      <guid>/posts/2014-01-10-li-yong-httpdzuo-jian-dan-de-webying-yong-xing-neng-jian-ce/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;网站上线之前一般都会做下抗压能力测试，比如并发和最大请求数等。其实我们可以使用 httpd（ab） 来模拟测试。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;ubuntu上安装-ab&#34;&gt;ubuntu上安装 Ab&lt;/h4&gt;
+&lt;p&gt;使用命令 &lt;code&gt;sudo apt-get install httpd&lt;/code&gt; 安装，有时你会得类似 &amp;ldquo;Package httpd is a virtual package provided by: &amp;ldquo;的错误提示；这是因为httpd是作为一个lib，会被给出的包所自动安装，所以随便选择一个提示的包就好，比如选择 &lt;code&gt;apache2-mpm-worker 2.2.22-6ubuntu5.1&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install apache2-mpm-worker 2.2.22-6ubuntu5.1
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;ab命令的使用&#34;&gt;Ab命令的使用&lt;/h4&gt;
+&lt;p&gt;使用ab命令进行测试的时候，主要用到的参数-c 和-n ; 其中-c 表示并发量（模拟同时多少人访问），-n表示一共发送的http请求数，所谓请求数量越大，数据相对越准确。&lt;/p&gt;
+&lt;h4 id=&#34;实战之-ruby-china&#34;&gt;实战之 Ruby-China&lt;/h4&gt;
+&lt;p&gt;测试语句：&lt;code&gt;ab -c 20 -n 2000 http://ruby-china.org/&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;执行结果:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Server Software:        nginx/1.4.2
+Server Hostname:        ruby-china.org
+Server Port:            80
+
+Document Path:          /
+Document Length:        33568 bytes
+
+Concurrency Level:      20
+Time taken for tests:   116.274 seconds
+Complete requests:      2000
+Failed requests:        1128
+   (Connect: 0, Receive: 0, Length: 1128, Exceptions: 0)
+Write errors:           0
+Non-2xx responses:      22
+Total transferred:      68131781 bytes
+HTML transferred:       66399247 bytes
+Requests per second:    17.20 [#/sec] (mean)
+Time per request:       1162.744 [ms] (mean)
+Time per request:       58.137 [ms] (mean, across all concurrent requests)
+Transfer rate:          572.22 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:       17  144  70.0    140    1183
+Processing:    18 1017 422.2   1005    2925
+Waiting:       18  302 163.9    261    1429
+Total:         37 1160 417.0   1147    3041
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;分析测试结果可知，ruby-china 使用的是nginx web 服务器，大约每秒可以处理17个请求，每个请求大概耗时1162ms, 网络流量572Kb/每秒 .&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

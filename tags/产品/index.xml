@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>产品 on 小鱼驿站</title>
+    <link>/tags/%E4%BA%A7%E5%93%81/</link>
+    <description>小鱼驿站 (产品)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 30 Jul 2015 22:31:00 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/%E4%BA%A7%E5%93%81/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>what is mario&#39;s butterfly </title>
+      <link>/posts/2015-07-30-what-is-mario-butterfly/</link>
+      <pubDate>Thu, 30 Jul 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-07-30-what-is-mario-butterfly/</guid>
+      <description>&lt;p&gt;还记得不久前我提到的 issue tracker 吗？ 在写那篇文章的时候，它的名字还未想好。几天过去了，我们决定暂时叫它  Mario&amp;rsquo;s Butterfly 。&lt;/p&gt;
+&lt;p&gt;😄 &lt;strong&gt;超级玛丽＋蝴蝶&lt;/strong&gt; 是种怎样的体验，请看图：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其实我也不知道怎么会将它们联系在一起，but who care !&lt;/p&gt;
+&lt;p&gt;昨天已将项目初始化，并 push 到了 &lt;a href=&#34;https://github.com/giga-opensource/mario-api&#34;&gt;github&lt;/a&gt;，感兴趣的朋友可以 fork &amp;amp; star 。&lt;/p&gt;
+&lt;p&gt;写这篇的目的，主要想说这个项目正式开始了，也希望借此有个好的开始。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>what issue trackers have you used</title>
+      <link>/posts/2015-07-28-what-issue-tracker-have-you-used/</link>
+      <pubDate>Tue, 28 Jul 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-07-28-what-issue-tracker-have-you-used/</guid>
+      <description>&lt;p&gt;先做个调查，贵司都使用了哪些 issue tracker 工具，不介意的话，请分享在结尾留言板中 :smile:。&lt;/p&gt;
+&lt;h3 id=&#34;写在前面&#34;&gt;写在前面：&lt;/h3&gt;
+&lt;p&gt;我司规模较小，项目组开发人数也一直维持在 4～6，在选择工具的时候，&lt;code&gt;简单&lt;/code&gt;好用被看成第一要素。&lt;/p&gt;
+&lt;p&gt;使用过的方案：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;github issue&lt;/li&gt;
+&lt;li&gt;Trello&lt;/li&gt;
+&lt;li&gt;redmine&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;放弃 github 原因：
+a. 由于墙的缘故，访问速度比较慢。
+b. 版本和状态，需要用它的 tag 功能实现，管理起来有点混乱。
+c. 排序和filter不够用。&lt;/p&gt;
+&lt;p&gt;放弃 Trello 原因：
+a. 没有版本概念。
+b. issue多的时候，比较乱，没有分类排序。&lt;/p&gt;
+&lt;p&gt;redmine 是我们正在使用的工具,但是我们天天都在抱怨它。 选择原因： a. 想要的功能基本都有（其实只使用了20%）。 b.免费，可以自己搭建。 抱怨地方： a. 概念过于复杂，配置太多，很多概念都用不到（在我们团队）。 b. ux太烂，超级不喜欢页面跳转，这方面比较喜欢trello的设计。&lt;/p&gt;
+&lt;p&gt;目前为止，我们还没有找到一款 fit taste 的工具，所以我们打算花点周末时间 (预计20小时)，量身定做一款。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;它将是一个非常简单的 issue tracker 工具（名字还没想好），简单，再简单 ++++++&lt;/p&gt;
+&lt;p&gt;第一版的 mockup 大概这样：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/codeLog_project-list-page.png&#34; alt=&#34;codeLog_tracker&#34;&gt;
+&lt;img src=&#34;/images/codeLog_tracker-page.png&#34; alt=&#34;codeLog_tracker&#34;&gt;
+&lt;img src=&#34;/images/codeLog_card-show-page.png&#34; alt=&#34;codeLog_tracker&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Do you like it? 告诉大家一个好消息，这个工具是免费的, just take away.&lt;/p&gt;
+&lt;p&gt;最后向大家征求产品名字，show me， don&amp;rsquo;t be shy.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

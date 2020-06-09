@@ -1,0 +1,1234 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>效率 on 小鱼驿站</title>
+    <link>/tags/%E6%95%88%E7%8E%87/</link>
+    <description>小鱼驿站 (效率)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 Nov 2017 23:39:21 +0000</lastBuildDate>
+    
+    <atom:link href="/tags/%E6%95%88%E7%8E%87/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>换个姿势发包，让你体验前所未有的快感</title>
+      <link>/posts/2017-11-22-huan-ge-zi-shi-fa-bao-rang-ni-ti-yan-qian-suo-wei-you-de-kuai-gan/</link>
+      <pubDate>Wed, 22 Nov 2017 23:39:21 +0000</pubDate>
+      
+      <guid>/posts/2017-11-22-huan-ge-zi-shi-fa-bao-rang-ni-ti-yan-qian-suo-wei-you-de-kuai-gan/</guid>
+      <description>&lt;p&gt;一种全新的方式进行 Go 语言项目打包并发布到 GitHub, 让你体会到前所未有的快感。&lt;/p&gt;
+&lt;h3 id=&#34;背景&#34;&gt;背景&lt;/h3&gt;
+&lt;p&gt;我们都知道 Go 语言项目非常方便交叉编译，这意味着 GitHub 项目在发布新版本的时候，
+需要尽可能编译成不同平台的二进制文件，并再将它们一一上传到此次 release 的下载列表中，
+整个过程显得重复和耗时。&lt;/p&gt;
+&lt;p&gt;下面我将介绍使用 gco 和 ghr 将整个过程自动化起来，实现一键打包发布， 其中 gco 负责编译， ghr 负责上传发布。&lt;/p&gt;
+&lt;h3 id=&#34;gco-使用&#34;&gt;gco 使用&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;gco&lt;/code&gt; 是我写的一个针对 Go 项目的交叉编译脚本。&lt;/p&gt;
+&lt;p&gt;安装步骤&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;curl https://raw.githubusercontent.com/songjiayang/gco/master/gco.sh -o  /usr/local/bin/gco
+
+chmod +x /usr/local/bin/gco
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用方法&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gco example v0.1 main.go
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参数说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;example 是你编译的项目名称&lt;/li&gt;
+&lt;li&gt;v0.1 是编译的版本&lt;/li&gt;
+&lt;li&gt;main.go 是项目的 main 包位置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所有编译的包默认放到项目的 ./pkg 目录 下。&lt;/p&gt;
+&lt;h3 id=&#34;ghr-使用&#34;&gt;ghr 使用&lt;/h3&gt;
+&lt;p&gt;ghr 是社区写的一个批量上传打包文件到 GitHub 的命令行工具，你可以到 &lt;a href=&#34;https://github.com/tcnksm/ghr/releases&#34;&gt;https://github.com/tcnksm/ghr/releases&lt;/a&gt; 下载对应版本。&lt;/p&gt;
+&lt;p&gt;使用方法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export GITHUB_TOKEN=&amp;quot;.....&amp;quot; // 添加 GITHUB_TOKEN 环境变量
+
+ghr v0.1 pkg/
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参数说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;v0.1 是发布的版本&lt;/li&gt;
+&lt;li&gt;pkg/ 是为二进制包放的目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;实战&#34;&gt;实战&lt;/h3&gt;
+&lt;p&gt;下面是我录制的一段小视频，根据一个实际例子演示整个发布流程，参考 &lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzA5ODg4ODY2OA==&amp;amp;mid=2648014953&amp;amp;idx=1&amp;amp;sn=e7ad5f952e9c4445921ee7defaf3c312&amp;amp;chksm=88ab9edabfdc17cc89da8e124582d831043e8cd7935221c690406daa36cf513630d2862f7938#rd&#34;&gt;链接&lt;/a&gt; 。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何在微信中进行优雅写作</title>
+      <link>/posts/2017-11-10-ru-he-zai-wei-xin-zhong-jin-xing-you-ya-xie-zuo/</link>
+      <pubDate>Fri, 10 Nov 2017 23:29:41 +0000</pubDate>
+      
+      <guid>/posts/2017-11-10-ru-he-zai-wei-xin-zhong-jin-xing-you-ya-xie-zuo/</guid>
+      <description>&lt;p&gt;作为一名 Coder，如果浪费时间在微信排版之类的问题，显然是不划算的，今天我们一起来讨论下一些改进的方案。&lt;/p&gt;
+&lt;h3 id=&#34;缘起&#34;&gt;缘起&lt;/h3&gt;
+&lt;p&gt;半年来，断断续续写过十多遍文章，虽然数量不多，但我已感受到了微信自带网页编辑器的难用。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;代码高亮支持极差，以至于我会贴图。&lt;/li&gt;
+&lt;li&gt;编写的内容，在网页、手机预览中存在细微差异，需要不断微调。&lt;/li&gt;
+&lt;li&gt;出现各种莫名其妙的行高、段落间距，调整过程非常麻烦。&lt;/li&gt;
+&lt;li&gt;无默认模版，对于写作新人来说，所写文章排版风格差异大，不利于阅读。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;由于以上种种问题，会让我很难专注书写过程，在调整样式上浪费不少时间。&lt;/p&gt;
+&lt;h3 id=&#34;解决之道&#34;&gt;解决之道&lt;/h3&gt;
+&lt;p&gt;首先我想到的就是 Markdown, 最近几年特别流行，自己的博客也一直用它书写，应该大家都很熟悉它吧。&lt;/p&gt;
+&lt;p&gt;它作为一门轻量的标记语言，能让你聚焦到内容本身，排版问题就让模版去解决，所以在很长一段时间我想做一款 Chrome 插件，能够直接将你书写的内容转化为带有微信支持的 HTML 代码。&lt;/p&gt;
+&lt;p&gt;不过，在我还未开发之前，已经在市面上找到了一款类似的工具，那就是 WXMarkdown: &lt;a href=&#34;http://md.barretlee.com&#34;&gt;http://md.barretlee.com&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;它基本满足了我的需求：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;友好的代码高亮。&lt;/li&gt;
+&lt;li&gt;支持多种模版。&lt;/li&gt;
+&lt;li&gt;使用 Markdown 写作，转化的内容不存在样式偏差。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;但它还有一些不足的地方：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;不能够一键导入微信编辑器。&lt;/li&gt;
+&lt;li&gt;没有暂存功能，不敢在线编写，非常容易丢失内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+&lt;p&gt;本篇文章使用了 WXMarkdown 转码，是不是样式看上去舒服很多，以后我会定期分享一些实用小工具，欢迎大家关注。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>GitHub 老鸟装 X 指南</title>
+      <link>/posts/2017-10-31-github-lao-niao-zhuang-x-zhi-nan/</link>
+      <pubDate>Tue, 31 Oct 2017 23:27:43 +0000</pubDate>
+      
+      <guid>/posts/2017-10-31-github-lao-niao-zhuang-x-zhi-nan/</guid>
+      <description>&lt;p&gt;常在 GitHub 泡，不免会碰到各种莫名奇妙的缩写（例如 &lt;code&gt;LGTM&lt;/code&gt;，&lt;code&gt;TL;DR&lt;/code&gt;），如果你连这些缩写什么意思都不知道，那又如何用它们去实力装 X 呢？&lt;/p&gt;
+&lt;p&gt;不过，你不用担心，今天万圣节，给大家带来福利，Github 装 X 缩写大汇总：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PR: Pull Request. (给项目提交代码)&lt;/li&gt;
+&lt;li&gt;LGTM: Looks Good To Me. (代码看起来不错，可以合并)&lt;/li&gt;
+&lt;li&gt;SGTM: Sounds Good To Me. (同上)&lt;/li&gt;
+&lt;li&gt;WIP: Work In Progress. (提示管理员，代码正在开发中，可以不忙 Code Review，主要应用于非常大的 PR, 分批次提交代码)&lt;/li&gt;
+&lt;li&gt;PTAL: Please Take A Look. (提示别人来看看)&lt;/li&gt;
+&lt;li&gt;TBR: To Be Reviewed. (提示管理员可以进行 Code Review)&lt;/li&gt;
+&lt;li&gt;TL;DR: Too Long; Didn&amp;rsquo;t Read. (代码太长, 不方便 Code Review)&lt;/li&gt;
+&lt;li&gt;TBD: To Be Done(or Defined/Discussed/Decided/Determined). (用于表示代码开发状态, 例如：完成，讨论中，延期等)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;看完之后，是不是有种恍然大明白的感觉，恨不得马上去 GitHub 试试？&lt;/p&gt;
+&lt;p&gt;其实熟悉掌握这些缩写并不是为了装 X，而是更加高效的进行团队协助，所有大家有必要掌握之。&lt;/p&gt;
+&lt;p&gt;最后，我想说，如有遗漏，欢迎补充！&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>个人常用 web 框架吞吐率对比</title>
+      <link>/posts/2016-05-27-chang-yong-web-kuang-jia-tun-tu-lu-dui-bi/</link>
+      <pubDate>Fri, 27 May 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-05-27-chang-yong-web-kuang-jia-tun-tu-lu-dui-bi/</guid>
+      <description>&lt;h3 id=&#34;目的&#34;&gt;目的&lt;/h3&gt;
+&lt;p&gt;测试个人经常使用的不同 App server（主要用来做 API）的吞吐率。&lt;/p&gt;
+&lt;h3 id=&#34;测试主机&#34;&gt;测试主机&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;系统： MacBook Air (11-inch, Early 2015)&lt;/li&gt;
+&lt;li&gt;CPU: 1.6 GHz Intel Core i5 x4 (4 核)&lt;/li&gt;
+&lt;li&gt;内存： 4 GB 1600 MHz DDR3&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;参数对比&#34;&gt;参数对比&lt;/h3&gt;
+&lt;h5 id=&#34;1-golang-gin-框架协程模式&#34;&gt;1. Golang Gin 框架（协程模式）&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;Go 1.6&lt;/li&gt;
+&lt;li&gt;Gin v1.0rc1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;2-node-koa-框架-多进程的异步io模式&#34;&gt;2. Node Koa 框架 (多进程的异步IO模式)&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;Node v6.1.0&lt;/li&gt;
+&lt;li&gt;Koa 1.2.0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;3-ruby-sinatra-框架-多进程多线程模式&#34;&gt;3. Ruby Sinatra 框架 (多进程多线程模式)&lt;/h5&gt;
+&lt;ul&gt;
+&lt;li&gt;Ruby 2.3.1p112&lt;/li&gt;
+&lt;li&gt;Sinatra 1.4.7&lt;/li&gt;
+&lt;li&gt;Puma 3.4.0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;测试方法&#34;&gt;测试方法&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 wrk 测试工具&lt;/li&gt;
+&lt;li&gt;压力参数参考 &lt;a href=&#34;http://www.littlelines.com/blog/2014/07/08/elixir-vs-ruby-showdown-phoenix-vs-rails/&#34;&gt;http://www.littlelines.com/blog/2014/07/08/elixir-vs-ruby-showdown-phoenix-vs-rails/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;分别测试 &lt;code&gt;/users&lt;/code&gt; (有 DB 查询) 和 &lt;code&gt;/static&lt;/code&gt; （无 DB 查询）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;数据准备&#34;&gt;数据准备&lt;/h3&gt;
+&lt;p&gt;采用 mongodb 作为测试，并选用了各自最为流行的 mongo 驱动。&lt;/p&gt;
+&lt;p&gt;进入 mongo console 执行以下命令：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;use ruby2go2node2elixir
+
+db.users.insert([
+  {&amp;quot;_id&amp;quot;: ObjectId(), &amp;quot;username&amp;quot;: &amp;quot;Josh Williams&amp;quot;, &amp;quot;created_at&amp;quot;: new Date(), &amp;quot;updated_at&amp;quot;: new Date()},
+  {&amp;quot;_id&amp;quot;: ObjectId(), &amp;quot;username&amp;quot;: &amp;quot;Josh Williams&amp;quot;, &amp;quot;created_at&amp;quot;: new Date(), &amp;quot;updated_at&amp;quot;: new Date()},
+  {&amp;quot;_id&amp;quot;: ObjectId(), &amp;quot;username&amp;quot;: &amp;quot;Josh Williams&amp;quot;, &amp;quot;created_at&amp;quot;: new Date(), &amp;quot;updated_at&amp;quot;: new Date()},
+  {&amp;quot;_id&amp;quot;: ObjectId(), &amp;quot;username&amp;quot;: &amp;quot;Josh Williams&amp;quot;, &amp;quot;created_at&amp;quot;: new Date(), &amp;quot;updated_at&amp;quot;: new Date()},
+  {&amp;quot;_id&amp;quot;: ObjectId(), &amp;quot;username&amp;quot;: &amp;quot;Josh Williams&amp;quot;, &amp;quot;created_at&amp;quot;: new Date(), &amp;quot;updated_at&amp;quot;: new Date()}
+])
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;启动服务&#34;&gt;启动服务：&lt;/h3&gt;
+&lt;p&gt;所有命令都是在项目根目录前提下执行：&lt;/p&gt;
+&lt;h5 id=&#34;gin-golang绑定在3000端口&#34;&gt;Gin (golang)（绑定在3000端口）&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;cd go
+source env.sh
+make
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;koa-nodejs绑定在3001端口&#34;&gt;Koa (nodejs)（绑定在3001端口）&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;cd nodejs
+npm install
+npm start
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;sinatra-ruby绑定在3002端口&#34;&gt;Sinatra (ruby)（绑定在3002端口）&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;cd ruby
+bundle
+puma -C puma.rb
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;wrk-本地测试结果&#34;&gt;Wrk 本地测试结果&lt;/h3&gt;
+&lt;h4 id=&#34;gin-golang&#34;&gt;Gin (golang)&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;wrk -t4 -c100 -d30S --timeout 2000 &amp;quot;http://127.0.0.1:3000/static&amp;quot;
+Running 30s test @ http://127.0.0.1:3000/static
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    14.63ms   59.10ms 779.91ms   96.68%
+    Req/Sec     5.42k     1.37k   20.49k    86.36%
+  634806 requests in 30.10s, 167.09MB read
+Requests/sec:  21092.78
+Transfer/sec:      5.55MB
+
+wrk -t4 -c100 -d30S --timeout 2000 &amp;quot;http://127.0.0.1:3000/users&amp;quot;
+Running 30s test @ http://127.0.0.1:3000/users
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    17.63ms    5.65ms 125.03ms   80.56%
+    Req/Sec     1.43k   317.13     2.19k    59.50%
+  171245 requests in 30.03s, 143.06MB read
+Requests/sec:   5702.07
+Transfer/sec:      4.76MB
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;koa-nodejs&#34;&gt;Koa (nodejs)&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;#### 多进程模式
+
+wrk -t4 -c100 -d30S --timeout 2000 &amp;quot;http://127.0.0.1:3001/static&amp;quot;
+Running 30s test @ http://127.0.0.1:3001/static
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    10.77ms    8.97ms 199.54ms   94.74%
+    Req/Sec     2.56k   374.25     4.50k    87.25%
+  305517 requests in 30.03s, 84.20MB read
+Requests/sec:  10172.22
+Transfer/sec:      2.80MB
+
+wrk -t4 -c100 -d30S --timeout 2000 &amp;quot;http://127.0.0.1:3001/users&amp;quot;
+Running 30s test @ http://127.0.0.1:3001/users
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    44.25ms   18.20ms 460.36ms   85.57%
+    Req/Sec   576.93     83.73     0.85k    76.90%
+  68859 requests in 30.01s, 56.08MB read
+Requests/sec:   2294.72
+Transfer/sec:      1.87MB
+
+##### 单进程模式
+
+wrk -t4 -c100 -d30S --timeout 2000 &amp;quot;http://127.0.0.1:3001/static&amp;quot;
+Running 30s test @ http://127.0.0.1:3001/static
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    21.21ms    1.45ms  47.63ms   93.30%
+    Req/Sec     1.18k   103.09     1.88k    86.25%
+  141520 requests in 30.06s, 39.00MB read
+Requests/sec:   4708.48
+Transfer/sec:      1.30MB
+
+wrk -t4 -c100 -d30S --timeout 2000 &amp;quot;http://127.0.0.1:3001/users&amp;quot;
+Running 30s test @ http://127.0.0.1:3001/users
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    73.37ms   10.07ms 212.29ms   87.93%
+    Req/Sec   342.42     66.59   505.00     63.45%
+  40923 requests in 30.08s, 33.33MB read
+Requests/sec:   1360.40
+Transfer/sec:      1.11MB
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;sinatra-ruby&#34;&gt;Sinatra (ruby)&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;wrk -t4 -c100 -d30S --timeout 2000 &amp;quot;http://127.0.0.1:3002/static&amp;quot;
+Running 30s test @ http://127.0.0.1:3002/static
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    22.83ms   28.96ms 392.78ms   88.99%
+    Req/Sec     1.23k   334.43     2.07k    60.92%
+  147405 requests in 30.06s, 35.85MB read
+Requests/sec:   4903.72
+Transfer/sec:      1.19MB
+
+wrk -t4 -c100 -d30S --timeout 2000 &amp;quot;http://127.0.0.1:3002/users&amp;quot;
+Running 30s test @ http://127.0.0.1:3002/users
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   153.62ms  121.39ms   1.09s    73.08%
+    Req/Sec   159.87     36.28   287.00     69.44%
+  19111 requests in 30.05s, 16.51MB read
+Requests/sec:    635.96
+Transfer/sec:    562.70KB
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;吞吐率倍数关系&#34;&gt;吞吐率倍数关系&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;无 DB 查询:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;
+  gin &amp;gt; koa(多进程) &amp;gt; koa(单进程) ~= sinatra   
+     (2x)          (2x)
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;有 DB 查询:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;  gin &amp;gt; koa(多进程) &amp;gt; koa(单进程) &amp;gt; sinatra   
+     (2x)          (2x)         (2x)
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;结论&#34;&gt;结论：&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;在 4 核 CPU 条件下， golang 并发大概是 Nodejs 的两倍，Ruby 8 倍。因为 golang 有更好的并发模型，所以核数越多，这个差距越大 。&lt;/li&gt;
+&lt;li&gt;多进程的并发模型，代价其实挺大的。 比如 Node 多进程模式并发能力并没有随核数成倍增加，大致是其核数／2 的提升。&lt;/li&gt;
+&lt;li&gt;Ruby GIL 缘故，其并发能力最差不足为奇。但是现在主流的都是微服务，RESTful API，一些性能要求较高的 业务完全可以考虑其他性能更好的语言。在其他语言领域，有些 ruby 棘手的问题，或许根本就不存在。&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>自顶向下，自底向上，逐步完善知识体系</title>
+      <link>/posts/2016-03-28-zi-di-xiang-shang-zhu-bu-wan-shan-zhi-shi-ti-xi/</link>
+      <pubDate>Mon, 28 Mar 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-03-28-zi-di-xiang-shang-zhu-bu-wan-shan-zhi-shi-ti-xi/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/tree-1308055_1280.jpg&#34; alt=&#34;tree-1308055_1280.jpg&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;自顶向下&lt;/strong&gt;和&lt;strong&gt;自底向上&lt;/strong&gt;, 往往被人们用来描述软件开发的不同思路，但是我觉得它们同样可以用来表示不同的学习思路和方向。&lt;/p&gt;
+&lt;h3 id=&#34;先来说说自顶向下&#34;&gt;先来说说自顶向下：&lt;/h3&gt;
+&lt;p&gt;所谓自顶向下，就是根据自身职业规划（某一阶段目标），并针对该目标的实现，理清需要得知识储备，并勾勒出知识点之间的联系，简而言之即知识体系。&lt;/p&gt;
+&lt;p&gt;自顶向下的知识体系是宏观指导，它具有重要性：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;大方向上不会跑偏，对各种新技术有更好的取舍标准，不至于茫然而恐慌，也不会随意跟风。&lt;/li&gt;
+&lt;li&gt;能够提升新知识的获取速度，因为你总是发散的思考问题，更容易产生联系。&lt;/li&gt;
+&lt;li&gt;能够提高问题解决能力。不知你有没有发现，请教那些经验丰富的同事的时候，他们经常很快就会定位到问题所在，
+即使 google 也会比你更快搜索出结果。同样面对的是新问题，为什么他们就比你快，不知道你思考过没有。其中的奥妙我认为还是在于知识体系，
+因为同事关注的不是问题表象，而是产生问题的上下文，再根据具体问题，就能很快检索出关键词。
+一切的根源原来在于同事拥有比你更完善和健全的知识体系！&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;写到这里，我停下了很久，为的就是规划和整理自己的知识脉络（我将另起博客讨论这个问题）。&lt;/p&gt;
+&lt;h3 id=&#34;自低向上&#34;&gt;自低向上：&lt;/h3&gt;
+&lt;p&gt;如果我们将个人发展比喻成一棵不断成长的树，那么自顶向下的知识体系就好比树径，枝干；树光有躯干是不行的，
+因为你还要有叶子（需要光合作用），此时自底向上的学习就好比一片片枝头的树叶，足够的树叶才能为躯干的生长提供充足的能量。&lt;/p&gt;
+&lt;p&gt;所以，自底向上的学习也是极其重要的，它是知识体系落地实施的坚实基础，如果没有它，知识体系就是空洞的，夸夸其谈。&lt;/p&gt;
+&lt;p&gt;作为一名 Ruby 开发者，开发新功能对你来说是容易的，因为你不需要了解太多底层技术实现，社区中总能找到对应的封装；
+你只需要看看某个 gem 的文档就能快速搞定工作。&lt;/p&gt;
+&lt;p&gt;但是这样对于个人发展而言，真的好吗？如果你仅仅只是会用 gem（工具），
+而不是了解背后的依赖的基础知识和原理，你的水平只是停留在使用工具层面。&lt;/p&gt;
+&lt;p&gt;你会为工具变化太快而烦恼，因为工具都是为某一特定需求的具体实现，
+需求和实现都是在不断变化的，它只是一些花哨的招式而已。&lt;/p&gt;
+&lt;p&gt;自底向上的学习，恰恰可以解决这些问题，因为它学习和补充的是更底层的知识，
+它们是经典而久经考验的，也不常常变化，它更像内功心法，当你真正领悟的时候，
+根本不会在乎工具的一招一式，使用任何工具实现都能轻松驾驭。&lt;/p&gt;
+&lt;p&gt;当写到这里的时候，我已经开始将我经常用到的 gem 找出来，反复阅读和推敲其源码。&lt;/p&gt;
+&lt;p&gt;总结：&lt;/p&gt;
+&lt;p&gt;自顶向下和自底向上是两个不同纬度的学习方法，自顶向下是自底向上的宏观指导，自底向上是自顶向下的坚实基础，它们互相联系，缺一不可。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>我们开始使用 OKR</title>
+      <link>/posts/2016-03-24-wo-men-kai-shi-shi-yong-okrliao/</link>
+      <pubDate>Thu, 24 Mar 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-03-24-wo-men-kai-shi-shi-yong-okrliao/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/okr.png&#34; alt=&#34;ork.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;什么是-okr&#34;&gt;什么是 OKR&lt;/h3&gt;
+&lt;p&gt;OKR 全称是 Objectives and Key Results 即目标与关键成果法，OKR是一套定义和跟踪目标及其完成情况的管理工具和方法。&lt;/p&gt;
+&lt;p&gt;以下是维基百科的描述:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;OKR stands for Objectives and Key Results. It is a method of defining and tracking objectives and their outcomes.&lt;/p&gt;
+&lt;h3 id=&#34;为什么我们开始使用-okr&#34;&gt;为什么我们开始使用 OKR&lt;/h3&gt;
+&lt;p&gt;长久以来，公司没有引入任何员工考核机制，虽然不同项目组有自己的管理工具（Redmine, GitHub Issues 等），
+但当年终时，却发现很难恒定这一年的工作成绩。&lt;/p&gt;
+&lt;p&gt;就一般个人而言，也无法第一时间知道公司战略变化，想为公司的发展更多思考都没办法，参与感不足。&lt;/p&gt;
+&lt;p&gt;最近 OKR 挺火的，大概也是因为 google 项目组引入 OKR 缘故吧；
+但是不光如此，我身边也有不少朋友所在公司正在尝试使用它（互联网创业型公司）。&lt;/p&gt;
+&lt;p&gt;我们使用 OKR 主要想解决以下问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;信息透明：
+可以在同一个地方很容易看到公司，团队，以及任何同事的目标和任务。这样可以方便地了解公司战略方针，团队任务规划，以及其他同事的想法和研究方向。&lt;/li&gt;
+&lt;li&gt;自动汇总：
+如果将 OKR 迭代周期（一个季度）完成情况，加以简单汇总，就会自动得出公司，团队，个人这一年的成绩（大事件）。&lt;/li&gt;
+&lt;li&gt;提升个人能力：
+首先个人 OKR 是根据公司，团队 OKR 自主制定的，这样可以驱动你对公司，项目全方位思考，寻找可以让公司变得更好的解决办法。
+其次个人 OKR 往往有一定的难度，具有研究性，系统性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;如何实践-okr&#34;&gt;如何实践 OKR&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;工具：Trello&lt;/li&gt;
+&lt;li&gt;分类：Company OKR, Teams OKR, Individual OKR&lt;/li&gt;
+&lt;li&gt;基本格式：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;Objective: 我要实现的具体目标
+KR: 具体实践结果1
+KR: 具体实践结果2
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;具体如图：
+&lt;img src=&#34;/images/okr_1.png&#34; alt=&#34;OKR_1&#34;&gt;&lt;br&gt;
+我的第一个 OKR:
+&lt;img src=&#34;/images/okr_2.png&#34; alt=&#34;OKR_2&#34;&gt;&lt;/p&gt;
+&lt;p&gt;注意：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;OKR 目标最好是可以测量的，比如让&lt;code&gt;网站注册用户达到 1 万&lt;/code&gt;就明显好过&lt;code&gt;让网站注册用户增加&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;OKR 得分最好接近 0.6~0.7，这个分数表示自己定的任务合适，既不多也不少，难度也合适。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;总结： OKR 是我们公司引入一套新的管理方法，效果还是很明显的。
+就我个人而言，公司参与感是大大提高了，而且也发现很多项目中需要弥补的地方，总之希望它能够帮助我们快速进步，发展更好，也希望大家尝试使用。&lt;/p&gt;
+&lt;p&gt;参考链接： &lt;a href=&#34;https://en.wikipedia.org/wiki/OKR&#34;&gt;https://en.wikipedia.org/wiki/OKR&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Translate English with Hacker Way</title>
+      <link>/posts/2016-03-04-translate-english-with-hacker-way/</link>
+      <pubDate>Fri, 04 Mar 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-03-04-translate-english-with-hacker-way/</guid>
+      <description>&lt;p&gt;背景：&lt;/p&gt;
+&lt;p&gt;ruby 开发对英文单词量比较高，像我这种半吊子英文水平，使用英汉字典翻译的时候较多。&lt;/p&gt;
+&lt;p&gt;前段时间看到 &lt;a href=&#34;https://ruby-china.org/lingceng&#34;&gt;@lingceng&lt;/a&gt; 写的 &lt;a href=&#34;https://github.com/lingceng/bing_dictionary&#34;&gt;bing_dictionary&lt;/a&gt; ，试用结果非常满意，速度快而且翻译比较准确。最近开始背诵单词，所以想将每天查询记录收集起来，以备每晚巩固之用, 故写了 &lt;a href=&#34;https://github.com/songjiayang/dict_cache&#34;&gt;dict_cache&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;安装&#34;&gt;安装&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;gem install dict_cache
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;如何使用&#34;&gt;如何使用&lt;/h2&gt;
+&lt;h4 id=&#34;1-翻译单词-用到-bing_dictionary&#34;&gt;1. 翻译单词 （用到 bing_dictionary）&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;dict apple
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;http://7o512j.com1.z0.glb.clouddn.com/translate_word.png&#34; alt=&#34;translate_word.png&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;2-查询每日记录默认是当天&#34;&gt;2. 查询每日记录，默认是当天&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;dict_cache date:2016-03-04
+
+dict_cache // today is default
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;http://7o512j.com1.z0.glb.clouddn.com/daily_words&#34; alt=&#34;list_words.png&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;3-dict_cache-clear-清空所有缓存记录&#34;&gt;3. &lt;code&gt;dict_cache clear&lt;/code&gt; 清空所有缓存记录&lt;/h4&gt;
+&lt;h4 id=&#34;4-dict_cache---help-h--帮助&#34;&gt;4. &lt;code&gt;dict_cache --help/-h&lt;/code&gt;  帮助&lt;/h4&gt;
+&lt;p&gt;欢迎大家使用，有任何问题和想法，任何 &lt;a href=&#34;https://github.com/songjiayang/dict_cache/issues&#34;&gt;issue&lt;/a&gt; 和 pr 都 OK.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>DOs and DON&#39;Ts in Professional Emails</title>
+      <link>/posts/2016-02-22-write-professional-emails-in-english/</link>
+      <pubDate>Mon, 22 Feb 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-02-22-write-professional-emails-in-english/</guid>
+      <description>&lt;h3 id=&#34;do&#34;&gt;DO&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;首先，你需要一个看起来比较靠谱的邮件地址，邮件名称比较正式。&lt;/li&gt;
+&lt;li&gt;邮件基本结构包含主题，称呼，正文和结束问候四部分。主题要明确，比如： ‘Canceling My Order’ 就要好于 ‘Hello, Dear xxx’。称呼要正确，我们可以使用职称，邮件名；但千万不要用错误性别的称呼，乱用了 Mrs 和 Mr 。正文要简明，邮件不是写书，所有内容要简洁，尽量用主动形式，不要使用被动语句，通常一个邮件 1~2 个段落为好。结束问候，不可缺少，可以简单的为 Regards 或者 Best Regards.&lt;/li&gt;
+&lt;li&gt;考虑你邮件发送对象的阅读理解能力，要让他能知道你讲的是什么。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;dont&#34;&gt;DON&amp;rsquo;T&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;不要出现诸如： 单词拼写，语法，标点符号，大写字母之类的低级错误。&lt;/li&gt;
+&lt;li&gt;不要写太长的邮件。&lt;/li&gt;
+&lt;li&gt;不要抱怨责备。&lt;/li&gt;
+&lt;li&gt;不要出现 Fuck, shit 之类的词语。&lt;/li&gt;
+&lt;li&gt;不要没有经过检查就发送邮件。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;参考： &lt;a href=&#34;https://www.coursera.org/learn/professional-emails-english/home/welcome&#34;&gt;https://www.coursera.org/learn/professional-emails-english/home/welcome&lt;/a&gt;。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何导出 iBooks 中的 Highlight 和 Note</title>
+      <link>/posts/2016-01-21-ru-he-dao-chu-ibooks-zhong-de-highlight-he-note/</link>
+      <pubDate>Thu, 21 Jan 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-01-21-ru-he-dao-chu-ibooks-zhong-de-highlight-he-note/</guid>
+      <description>&lt;p&gt;前提： 需要 mac 电脑一台。&lt;/p&gt;
+&lt;p&gt;第一步： 将手机 或 Pad 的书籍同步到 mac 上，只要使用同一苹果账号，将自动同步，包括书籍的 highlight 和 note。&lt;/p&gt;
+&lt;p&gt;第二步： 在 mac 上的 iBooks 中打开待导出的书籍，点击左上角 “show notes” 按钮，然后依次点击展开书本章节。 待鼠标焦点停留在 note 上的时候，使用命令 cmd + a 和 cmd + c 全部选中内容并复制。&lt;/p&gt;
+&lt;p&gt;第三步： 打开文本工具，使用 &lt;code&gt;cmd + v&lt;/code&gt; 粘贴即可。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;以下内容属于对应步骤操作结果图例：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>今日推荐之 SublimeLinter</title>
+      <link>/posts/2015-10-29-jin-ri-tui-jian-zhi-sublimelinter/</link>
+      <pubDate>Thu, 29 Oct 2015 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-10-29-jin-ri-tui-jian-zhi-sublimelinter/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/linter.png&#34; alt=&#34;linter.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;sublimelinter-是什么&#34;&gt;SublimeLinter 是什么？&lt;/h3&gt;
+&lt;p&gt;SublimeLinter 是一个 Sublime Text 3 上的代码诊断框架，用于代码错误和不良的代码风格高亮提示。
+值得注意的是，它只是个框架，接口，不包含具体某种语言的诊断，针对特定语言代码的诊断需要依赖以它为基础的插件，
+比如 ES6 的&lt;code&gt;SublimeLinter-contrib-eslint-d&lt;/code&gt;, Ruby 的 &lt;code&gt;SublimeLinter-contrib-ruby-lint&lt;/code&gt;， 等等。&lt;/p&gt;
+&lt;h3 id=&#34;sublimelinter-安装&#34;&gt;SublimeLinter 安装&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;使用命令&lt;code&gt;cmd+shift+p&lt;/code&gt; 打开命令面板（ Linux/Windows 使用 &lt;code&gt;ctrl+shift+p&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;选择 &lt;code&gt;Package Control: Install Package&lt;/code&gt; 项 。&lt;/li&gt;
+&lt;li&gt;在可用 Sublime 插件包列表中输入 &lt;code&gt;linter&lt;/code&gt;， 选择 &lt;code&gt;SublimeLinter&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;安装完毕，重启 Sublime 。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;sublimelinter-配置&#34;&gt;SublimeLinter 配置&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;Tools -&amp;gt; SublimeLinter -&amp;gt; Lint Mode -&amp;gt; Save only&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Tools -&amp;gt; SublimeLinter -&amp;gt; Mark Style -&amp;gt; Outline&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;具体-linter-插件安装&#34;&gt;具体 linter 插件安装&lt;/h3&gt;
+&lt;p&gt;按照如上 &lt;code&gt;SublimeLinter 安装&lt;/code&gt; 方式，在 Sublime 插件包列表中输入 &lt;code&gt;SublimeLinter-&lt;/code&gt;, 就能找到你想要的语言插件了。&lt;/p&gt;
+&lt;p&gt;至此，你已可以在 Sublime 中愉快使用 linter 了。&lt;/p&gt;
+&lt;p&gt;这么好的东西，你还等什么，赶快去安装吧！&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;PS: 以下是我们项目中 ES6 和 Ruby 规则的配置文件，（配置文件放在项目根目录下）：&lt;/p&gt;
+&lt;p&gt;.eslintrc&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;extends&amp;quot;: &amp;quot;airbnb&amp;quot;,
+  &amp;quot;rules&amp;quot;: {
+    &amp;quot;valid-jsdoc&amp;quot;: 2,
+
+    // Disable until Flow supports let and const
+    &amp;quot;no-var&amp;quot;: 0,
+    &amp;quot;vars-on-top&amp;quot;: 0,
+
+    // Disable Airbnb-specific rules unless need to support it
+    &amp;quot;comma-dangle&amp;quot;: 0,
+    &amp;quot;id-length&amp;quot;: 0,
+
+    // Disable in prefer to single quote for consistence
+    &amp;quot;jsx-quotes&amp;quot;: 0,
+
+    // Disable temporarily
+    &amp;quot;react/prop-types&amp;quot;: 0,
+
+    // Disable cause of the name convention of Redux actions and action creators
+    &amp;quot;no-shadow&amp;quot;: 0,
+    &amp;quot;no-unused-expressions&amp;quot;: [2, { allowTernary: true }]
+  }
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;.rubocop.yml&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;AllCops:
+  RunRailsCops: true
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+
+Style/ClassAndModuleChildren:
+  Description: &#39;Checks style of children classes and modules.&#39;
+  Enabled: false
+
+Metrics/ClassLength:
+  Description: &#39;Avoid classes longer than 100 lines of code.&#39;
+  Enabled: false
+
+Metrics/ModuleLength:
+  Description: &#39;Avoid modules longer than 100 lines of code.&#39;
+  Enabled: false
+
+Style/Documentation:
+  Description: &#39;Document classes and non-namespace modules.&#39;
+  Enabled: false
+
+Style/HashSyntax:
+  Description: &amp;gt;-
+                 Prefer Ruby 1.9 hash syntax { a: 1, b: 2 } over 1.8 syntax
+                 { :a =&amp;gt; 1, :b =&amp;gt; 2 }.
+  StyleGuide: &#39;https://github.com/bbatsov/ruby-style-guide#hash-literals&#39;
+  Enabled: true
+
+Metrics/MethodLength:
+  CountComments: false  # count full line comments?
+  Max: 20
+
+Metrics/LineLength:
+  Max: 120
+  # To make it possible to copy or click on URIs in the code, we allow lines
+  # contaning a URI to be longer than Max.
+  AllowURI: true
+  URISchemes:
+    - http
+    - https
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/SpaceInsideHashLiteralBraces:
+  Description: &amp;quot;Use spaces inside hash literal braces - or don&#39;t.&amp;quot;
+  StyleGuide: &#39;https://github.com/bbatsov/ruby-style-guide#spaces-operators&#39;
+  Enabled: false
+
+Style/BracesAroundHashParameters:
+  Description: &#39;Enforce braces style around hash parameters.&#39;
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+  SupportedStyles:
+    - with_first_parameter
+    - with_fixed_indentation
+
+Style/SingleSpaceBeforeFirstArg:
+  Description: &amp;gt;-
+                 Checks that exactly one space is used between a method name
+                 and the first argument for method calls without parentheses.
+  Enabled: false
+
+Style/RescueModifier:
+  Description: &#39;Avoid using rescue in its modifier form.&#39;
+  StyleGuide: &#39;https://github.com/bbatsov/ruby-style-guide#no-rescue-modifiers&#39;
+  Enabled: false
+
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>今晚同事问了我这样一个问题</title>
+      <link>/posts/2015-10-15-jin-wan-tong-shi-wen-liao-wo-zhe-yang-ge-wen-ti/</link>
+      <pubDate>Thu, 15 Oct 2015 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-10-15-jin-wan-tong-shi-wen-liao-wo-zhe-yang-ge-wen-ti/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/coding.png&#34; alt=&#34;coding.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;快下班时，同事突然问我：“你觉得你现在写代码最大的问题是什么？”。&lt;/p&gt;
+&lt;p&gt;被同事这么一问，不知道如何回答为好，几番思考，觉得自己目前最大的问题应该是代码 &lt;strong&gt;命名&lt;/strong&gt; 方面。
+这里当然不是指简单的使用驼峰还是下划线的风格问题，而是指代码命名的语意化，规范和稳健（整个系统中不经常因为功能相似或调整频繁修改方法名称）。&lt;/p&gt;
+&lt;p&gt;命名不好其实是很大问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;代码可阅读性下降。&lt;/li&gt;
+&lt;li&gt;不利于参与开源项目。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;分析问题，得出如下原因： 自己英语词汇量不够（尤其计算机高频词汇）；对于资源，行为，状态的组合命名使用不好；代码功能解耦不够，功能粒度不细。&lt;/p&gt;
+&lt;p&gt;解决此问题的方法，我觉得最直接的办法就是阅读大量规范代码，不妨从自己平时使用最多的类库入手，这些类库往往在 github 都能找到。&lt;/p&gt;
+&lt;p&gt;有道是，多阅读源代码，就会分辨出代码的质量好坏。那种标准，舒服的代码风格早已潜移默化，运用到自己的代码中，当然是再自然不过。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>免费高清大图资源站目录</title>
+      <link>/posts/2015-09-09-mian-fei-gao-qing-da-tu-zi-yuan-zhan-dian-mu-lu/</link>
+      <pubDate>Wed, 09 Sep 2015 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-09-09-mian-fei-gao-qing-da-tu-zi-yuan-zhan-dian-mu-lu/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.gratisography.com&#34;&gt;http://www.gratisography.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://picjumbo.com&#34;&gt;https://picjumbo.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.lifeofpix.com&#34;&gt;http://www.lifeofpix.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://pixabay.com/en/editors_choice/5&#34;&gt;https://pixabay.com/en/editors_choice/5&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://raumrot.com&#34;&gt;http://raumrot.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://jaymantri.com&#34;&gt;http://jaymantri.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://publicdomainarchive.com&#34;&gt;http://publicdomainarchive.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://images.superfamous.com&#34;&gt;http://images.superfamous.com&lt;/a&gt; - CC 3.0 License&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://nos.twnsnd.co&#34;&gt;http://nos.twnsnd.co&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://picography.co&#34;&gt;http://picography.co&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://magdeleine.co/browse/2&#34;&gt;http://magdeleine.co/browse/2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://unsplash.com&#34;&gt;https://unsplash.com&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;原文出处： &lt;a href=&#34;http://icodesign.me/post/Free-Design-Photo-Resource-Library&#34;&gt;http://icodesign.me/post/Free-Design-Photo-Resource-Library&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>提高工作效率之 slack </title>
+      <link>/posts/2015-08-05-ti-gao-gong-zuo-xiao-lu-zhi-slack-shi-yong/</link>
+      <pubDate>Wed, 05 Aug 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-08-05-ti-gao-gong-zuo-xiao-lu-zhi-slack-shi-yong/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;Slack 想必大家都知道吧，最近我又开始大量使用它了，包括 mac 应用 和 手机 App。
+它吸引我最重要一点是超级多的第三方插件.&lt;/p&gt;
+&lt;p&gt;下图就是昨天刚添加的 github 插件后效果：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;有了它 github 上任何 comment, pull request, new branch 都能第一时间知道，再也不用担心邮件提示不及时了。
+btw: slack 的‘嘟嘟’声提示真心不错，哈哈。&lt;/p&gt;
+&lt;p&gt;应该还有很多好玩的插件，以后慢慢添加咯，还没使用的朋友赶快到 slack 插件市场添加吧。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Redmine lazy package</title>
+      <link>/posts/2015-02-26-redmine-lazy-packages/</link>
+      <pubDate>Thu, 26 Feb 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-02-26-redmine-lazy-packages/</guid>
+      <description>&lt;p&gt;####Why this repository
+所有的一切都源自一篇博客 &lt;a href=&#34;http://it-consultis.com/blog/5-redmine-plugins-will-change-way-you-work&#34;&gt;5-redmine-plugins-will-change-way-you-work&lt;/a&gt;。
+当我一个一个寻找这些插件时，发现这是一件超级浪费时间的事，更何况 &lt;a href=&#34;http://www.redminecrm.com&#34;&gt;redminecrm&lt;/a&gt; （一个redmine资源站点 ）
+还被墙了 (&amp;gt;﹏&amp;lt;) 不～  ；所以，我决定将我常用的一些插件和皮肤汇总在这里，方便有需求的朋友使用。&lt;/p&gt;
+&lt;p&gt;项目地址： &lt;a href=&#34;https://github.com/songjiayang/redmine-lazy-package&#34;&gt;https://github.com/songjiayang/redmine-lazy-package&lt;/a&gt; 。&lt;/p&gt;
+&lt;p&gt;插件包括:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.redminecrm.com/projects/checklist/pages/1&#34;&gt;redmine_checklists&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.redminecrm.com/projects/agile/pages/2&#34;&gt;redmine_agile&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/emovere/redmine_timelog_timer&#34;&gt;redmine_ timelog_ timer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/koppen/redmine_github_hook&#34;&gt;redmine_ github _hook&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ps：所有插件均成功跑在 redmine 3.0版本之上&lt;/p&gt;
+&lt;h4 id=&#34;how-to-use&#34;&gt;How to use&lt;/h4&gt;
+&lt;p&gt;1.将plugins 和 public/thmemes 的文件拷贝到你的 redmine 项目对应目录中。&lt;br&gt;
+2.依次执行命令&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;bundle install --without development test
+bundle exec rake redmine:plugins NAME=redmine_checklists RAILS_ENV=production
+bundle exec rake redmine:plugins NAME=redmine_agile RAILS_ENV=production
+&lt;/code&gt;&lt;/pre&gt;&lt;h5 id=&#34;3-重启-reminde进入-adminplugins-和-settingstabdisplay-页面设置插件和皮肤&#34;&gt;3. 重启 reminde，进入 ～/admin/plugins 和 ~/settings?tab=display 页面设置插件和皮肤。&lt;/h5&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>git 常见问题汇总</title>
+      <link>/posts/2015-01-22-gitchang-jian-wen-ti-hui-zong/</link>
+      <pubDate>Thu, 22 Jan 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-01-22-gitchang-jian-wen-ti-hui-zong/</guid>
+      <description>&lt;h4 id=&#34;1-git-log-常用命令&#34;&gt;1. &lt;code&gt;git log&lt;/code&gt; 常用命令：&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;下一条:  return
+下一页:  space bar
+前一页:  w
+退出:  q
+帮助:  h
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;2-git-tag-常用命令&#34;&gt;2. &lt;code&gt;git tag&lt;/code&gt; 常用命令：&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;git tag -a v1.4 -m &#39;my version 1.4&#39; #当前提交添加 tag
+git tag -a v1.4 9fceb02  #给任意提交添加 tag
+git tag -d v1.4 # 删除一个tag
+git push origin :refs/tags/v1.4 # 删除远程仓库tag
+git show v1.4
+git push origin --tags
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参考： &lt;a href=&#34;http://git-scm.com/book/en/v2/Git-Basics-Tagging&#34;&gt;http://git-scm.com/book/en/v2/Git-Basics-Tagging&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Online 2-tool collection</title>
+      <link>/posts/2015-01-15-online-2-tool-collection/</link>
+      <pubDate>Thu, 15 Jan 2015 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2015-01-15-online-2-tool-collection/</guid>
+      <description>&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://js2coffee.org/&#34;&gt;js2coffee&lt;/a&gt;, 一个 js 和 coffee 互相转化的网站。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://html2slim.herokuapp.com/&#34;&gt;html2slim&lt;/a&gt;, 一个 html 和 slim 互相转化的网站。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;NOTES：if you have more pretty sites, please comment to me.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>免费的编程中文书籍索引</title>
+      <link>/posts/2014-12-23-mian-fei-de-bian-cheng-zhong-wen-shu-ji-suo-yin/</link>
+      <pubDate>Tue, 23 Dec 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-12-23-mian-fei-de-bian-cheng-zhong-wen-shu-ji-suo-yin/</guid>
+      <description>&lt;p&gt;本文为 github 开源项目 &lt;a href=&#34;https://github.com/justjavac/free-programming-books-zh_CN&#34;&gt;《免费的编程中文书籍索引》&lt;/a&gt; 的镜像版本，方便访问国外网络有问题的童鞋。&lt;/p&gt;
+&lt;p&gt;============================&lt;/p&gt;
+&lt;p&gt;免费的编程中文书籍索引，欢迎投稿。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;国外程序员在 &lt;a href=&#34;http://stackoverflow.com/a/1713/343194&#34;&gt;stackoverflow&lt;/a&gt; 推荐的程序员必读书籍，&lt;a href=&#34;http://justjavac.com/other/2012/05/15/qualified-programmer-should-read-what-books.html&#34; title=&#34;一个合格的程序员应该读过哪些书&#34;&gt;中文版&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/q/38210/343194&#34;&gt;stackoverflow&lt;/a&gt; 上的程序员应该阅读的非编程类书籍有哪些？ &lt;a href=&#34;what-non-programming-books-should-programmers-read.md&#34;&gt;中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vhf/free-programming-books&#34;&gt;github&lt;/a&gt; 上的一个流行的编程书籍索引  &lt;a href=&#34;https://github.com/vhf/free-programming-books/blob/master/free-programming-books-zh.md&#34;&gt;中文版&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;感谢 &lt;a href=&#34;https://github.com/siberiawolf&#34;&gt;@siberiawolf&lt;/a&gt; 使用 Bootstrap 开发了网页版，地址：http://siberiawolf.com/free_programming/index.html&lt;/p&gt;
+&lt;h2 id=&#34;参与交流&#34;&gt;参与交流&lt;/h2&gt;
+&lt;p&gt;欢迎大家将珍藏已久的经典免费书籍共享出来，您可以：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;a href=&#34;https://github.com/justjavac/free-programming-books-zh_CN/issues&#34;&gt;Issues&lt;/a&gt; 以及 Pull Request&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;贡献者名单: &lt;a href=&#34;https://github.com/justjavac/free-programming-books-zh_CN/graphs/contributors&#34;&gt;https://github.com/justjavac/free-programming-books-zh_CN/graphs/contributors&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;目录&#34;&gt;目录&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;#%E8%AF%AD%E8%A8%80%E6%97%A0%E5%85%B3%E7%B1%BB&#34;&gt;语言无关类&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F&#34;&gt;操作系统&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#web%E6%9C%8D%E5%8A%A1%E5%99%A8&#34;&gt;WEB服务器&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6&#34;&gt;版本控制&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#nosql&#34;&gt;NoSQL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#mysql&#34;&gt;MySQL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E9%A1%B9%E7%9B%AE%E7%9B%B8%E5%85%B3&#34;&gt;项目相关&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F&#34;&gt;设计模式&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#web&#34;&gt;Web&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%A4%A7%E6%95%B0%E6%8D%AE&#34;&gt;大数据&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF&#34;&gt;编程艺术&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;#%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3%E7%B1%BB&#34;&gt;语言相关类&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#awk&#34;&gt;AWK&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#cc&#34;&gt;C/C++&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#css&#34;&gt;CSS/HTML&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#dart&#34;&gt;Dart&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#fortran&#34;&gt;Fortran&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#java&#34;&gt;Java&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#javascript&#34;&gt;JavaScript&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#php&#34;&gt;PHP&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#ios&#34;&gt;iOS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#android&#34;&gt;Android&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#python&#34;&gt;Python&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#prolog&#34;&gt;Prolog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#ruby&#34;&gt;Ruby&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#shell&#34;&gt;Shell&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#go&#34;&gt;Go&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#groovy&#34;&gt;Groovy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#latex&#34;&gt;LaTeX&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#lisp&#34;&gt;LISP&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#lua&#34;&gt;Lua&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#haskell&#34;&gt;Haskell&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#r&#34;&gt;R&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#scala&#34;&gt;Scala&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#swift&#34;&gt;Swift&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#vimscript&#34;&gt;Vimscript&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#scheme&#34;&gt;Scheme&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;#%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E5%8F%8A%E5%85%B6%E5%AE%83&#34;&gt;读书笔记及其它&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;语言无关类&#34;&gt;语言无关类&lt;/h2&gt;
+&lt;h3 id=&#34;操作系统&#34;&gt;操作系统&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://i.linuxtoy.org/docs/guide/index.html&#34;&gt;开源世界旅行手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://vbird.dic.ksu.edu.tw/&#34;&gt;鸟哥的Linux私房菜&lt;/a&gt; (简体)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sourceforge.net/apps/trac/elpi/wiki/ALP&#34;&gt;Linux 系统高级编程&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://billie66.github.io/TLCL/index.html&#34;&gt;The Linux Command Line&lt;/a&gt; (中英文版)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://oss.org.cn/kernel-book/ldd3/index.html&#34;&gt;Linux 设备驱动&lt;/a&gt; (第三版)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.kerneltravel.net/kernel-book/%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90Linux%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81.html&#34;&gt;深入分析Linux内核源码&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://cb.vu/unixtoolbox_zh_CN.xhtml&#34;&gt;UNIX TOOLBOX&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/widuu/chinese_docker&#34;&gt;Docker中文指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yeasy/docker_practice&#34;&gt;Docker —— 从入门到实践&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://freeradius.akagi201.org&#34;&gt;FreeRADIUS新手入门&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://aaaaaashu.gitbooks.io/mac-dev-setup/content/&#34;&gt;Mac 开发配置手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.freebsd.org/doc/zh_CN/books/handbook/index.html&#34;&gt;FreeBSD 使用手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://billie66.github.io/TLCL/book/&#34;&gt;Linux 命令行(中文版)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;智能系统&#34;&gt;智能系统&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/gmszone/designiot&#34;&gt;一步步搭建物联网系统&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;web服务器&#34;&gt;WEB服务器&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://tengine.taobao.org/book/index.html&#34;&gt;Nginx开发从入门到精通&lt;/a&gt; (淘宝团队出品)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;版本控制&#34;&gt;版本控制&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000&#34;&gt;Git教程&lt;/a&gt; （本文由 &lt;a href=&#34;http://weibo.com/liaoxuefeng&#34;&gt;@廖雪峰&lt;/a&gt; 创作，如果觉得本教程对您有帮助，可以去 &lt;a href=&#34;https://itunes.apple.com/cn/app/git-jiao-cheng/id876420437&#34;&gt;iTunes&lt;/a&gt; 购买）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://rogerdudler.github.io/git-guide/index.zh.html&#34;&gt;git - 简易指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://backlogtool.com/git-guide/cn/&#34;&gt;猴子都能懂的GIT入门&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gitref.justjavac.com&#34;&gt;Git 参考手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://git-scm.com/book/zh&#34;&gt;Pro Git&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www-cs-students.stanford.edu/~blynn/gitmagic/intl/zh_cn/&#34;&gt;Git Magic&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.worldhello.net/gotgithub/index.html&#34;&gt;GotGitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://gitbook.liuhui998.com/index.html&#34;&gt;Git Community Book 中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://mercurial.selenic.com/wiki/ChineseTutorial&#34;&gt;Mercurial 使用教程&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://bucunzai.net/hginit/&#34;&gt;HgInit (中文版)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://igit.linuxtoy.org/&#34;&gt;沉浸式学 Git&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/flyhigher139/Git-Cheat-Sheet&#34;&gt;Git-Cheat-Sheet&lt;/a&gt; （感谢 @flyhigher139 翻译了中文版）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://snowdream86.gitbooks.io/github-cheat-sheet/content/zh/index.html&#34;&gt;GitHub秘籍&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/waylau/github-help&#34;&gt;Github帮助文档&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;nosql&#34;&gt;NoSQL&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.yankay.com/wp-content/NoSql_Database_Note.html&#34;&gt;NoSQL数据库笔谈&lt;/a&gt; (&lt;a href=&#34;http://yankaycom-wordpress.stor.sinaapp.com/uploads/2012/12/NoSQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AC%94%E8%B0%88v2.pdf&#34;&gt;PDF&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.redisbook.com/en/latest/&#34;&gt;Redis 设计与实现&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.redisdoc.com/en/latest/&#34;&gt;Redis 命令参考&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/huangz1990/redis-3.0-annotated&#34;&gt;带有详细注释的 Redis 3.0 代码&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/huangz1990/annotated_redis_source&#34;&gt;带有详细注释的 Redis 2.6 代码&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/justinyhuang/the-little-mongodb-book-cn/blob/master/mongodb.md&#34;&gt;The Little MongoDB Book&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/JasonLai256/the-little-redis-book/blob/master/cn/redis.md&#34;&gt;The Little Redis Book&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.neo4j.org.cn/&#34;&gt;Neo4j 简体中文手册 v1.8&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://neo4j.tw/&#34;&gt;Neo4j .rb 中文資源&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;mysql&#34;&gt;MySQL&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cnblogs.com/leoo2sk/archive/2011/07/10/mysql-index.html&#34;&gt;MySQL索引背后的数据结构及算法原理&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;项目相关&#34;&gt;项目相关&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://article.yeeyan.org/view/2251/94882&#34;&gt;持续集成（第二版）&lt;/a&gt; (译言网)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ibm.com/developerworks/cn/java/j-ap/&#34;&gt;让开发自动化系列专栏&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ibm.com/developerworks/cn/java/j-cq/&#34;&gt;追求代码质量&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fool2fish/selenium-doc&#34;&gt;selenium 中文文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://local.joelonsoftware.com/wiki/Chinese_(Simplified)&#34;&gt;Joel谈软件&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://local.joelonsoftware.com/wiki/%E9%A6%96%E9%A0%81&#34;&gt;約耳談軟體(Joel on Software)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;设计模式&#34;&gt;设计模式&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/me115/design_patterns&#34;&gt;图说设计模式&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;web&#34;&gt;Web&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.20thingsilearned.com/zh-CN/home&#34;&gt;关于浏览器和网络的 20 项须知&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://knowledge.ecomfe.com/&#34;&gt;前端知识体系&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://jinlong.github.io/2013/08/29/devtoolsecrets/&#34;&gt;浏览器开发工具的秘密&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/CN-Chrome-DevTools/CN-Chrome-DevTools&#34;&gt;Chrome 开发者工具中文手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://open.chrome.360.cn/extension_dev/overview.html&#34;&gt;Chrome扩展开发文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.gruntjs.org/&#34;&gt;Grunt中文文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/AlloyTeam/Mars&#34;&gt;移动Web前端知识库&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://deerchao.net/tutorials/regex/regex.htm&#34;&gt;正则表达式30分钟入门教程&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fouber/blog/issues/2&#34;&gt;前端开发体系建设日记&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/hoosin/mobile-web-favorites&#34;&gt;移动前端开发收藏夹&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/darcyliu/google-styleguide/blob/master/JSONStyleGuide.md&#34;&gt;JSON风格指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/bolasblack/http-api-guide&#34;&gt;HTTP 接口设计指北&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/hacke2/hacke2.github.io/issues/1&#34;&gt;前端资源分享（一）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/hacke2/hacke2.github.io/issues/3&#34;&gt;前端资源分享（二）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://coderlmn.github.io/code-standards/&#34;&gt;前端代码规范 及 最佳实践&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.flygon.net/archives/427&#34;&gt;w3school教程整理&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://man.lupaworld.com/content/network/wireshark/index.html&#34;&gt;Wireshark用户手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://happypeter.github.io/tealeaf-http/&#34;&gt;HTTP 下午茶&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;大数据&#34;&gt;大数据&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Flowerowl/Big-Data-Resources&#34;&gt;大数据/数据挖掘/推荐系统/机器学习相关资源&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;编程艺术&#34;&gt;编程艺术&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/julycoding/The-Art-Of-Programming-by-July&#34;&gt;程序员编程艺术&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.oschina.net/translate/what-every-programmer-should-know-about-memory-part1?print&#34;&gt;每个程序员都应该了解的内存知识(译)&lt;/a&gt;【第一部分】&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://read.douban.com/ebook/4972883/&#34;&gt;取悦的工序：如何理解游戏&lt;/a&gt; (豆瓣阅读，免费书籍)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;其它&#34;&gt;其它&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://softwaredownload.gitbooks.io/openwrt-fanqiang/&#34;&gt;OpenWrt智能、自动、透明翻墙路由器教程&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;语言相关类&#34;&gt;语言相关类&lt;/h2&gt;
+&lt;h3 id=&#34;awk&#34;&gt;AWK&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://awk.readthedocs.org/en/latest/&#34;&gt;awk程序设计语言&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;cc&#34;&gt;C/C++&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/forhappy/A-Detailed-Cplusplus-Concurrency-Tutorial&#34;&gt;C++ 并发编程指南&lt;/a&gt; (&lt;a href=&#34;http://weibo.com/1702076100&#34;&gt;@傅海平ICT&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://akaedu.github.io/book/&#34;&gt;Linux C编程一站式学习&lt;/a&gt; (宋劲杉, 北京亚嵌教育研究中心)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/leeyiw/cgdb-manual-in-chinese&#34;&gt;CGDB中文手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/hellogcc/100-gdb-tips/blob/master/src/index.md&#34;&gt;100个gdb小技巧&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/hellogcc/100-gcc-tips/blob/master/src/index.md&#34;&gt;100个gcc小技巧&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/anjuke/zguide-cn&#34;&gt;ZMQ 指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ituring.com.cn/book/1203&#34;&gt;How to Think Like a Computer Scientist&lt;/a&gt; (中英文版)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://scc.qibebt.cas.cn/docs/linux/base/%B8%FA%CE%D2%D2%BB%C6%F0%D0%B4Makefile-%B3%C2%F0%A9.pdf&#34;&gt;跟我一起写Makefile(PDF)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.yayu.org/book/gnu_make/&#34;&gt;GNU make中文手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.huihoo.com/gnu/linux/gmake.html&#34;&gt;GNU make 指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://zh-google-styleguide.readthedocs.org/en/latest/google-cpp-styleguide/contents/&#34;&gt;Google C++ 风格指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/andycai/cprimer&#34;&gt;C/C++ Primer&lt;/a&gt; (by @andycai)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.nowamagic.net/librarys/books/contents/c&#34;&gt;简单易懂的C魔法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sewm.pku.edu.cn/src/paradise/reference/CMake%20Practice.pdf&#34;&gt;Cmake 实践&lt;/a&gt; (PDF版)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.sunistudio.com/cppfaq/&#34;&gt;C++ FAQ LITE(中文版)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Mooophy/Cpp-Primer&#34;&gt;C++ Primer 5th Answers&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;css&#34;&gt;CSS&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://zh.learnlayout.com/&#34;&gt;学习CSS布局&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/chadluo/CSS-Guidelines/blob/master/README.md&#34;&gt;通用 CSS 笔记、建议与指导&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://css.doyoe.com/&#34;&gt;CSS参考手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://yanxyz.github.io/emmet-docs/&#34;&gt;Emmet 文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://alloyteam.github.io/code-guide/&#34;&gt;前端代码规范&lt;/a&gt; (腾讯alloyteam团队)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;dart&#34;&gt;Dart&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://dart.lidian.info/wiki/Language_Tour&#34;&gt;Dart 语言导览&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;fortran&#34;&gt;Fortran&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://micro.ustc.edu.cn/Fortran/ZJDing/&#34;&gt;Fortran77和90/95编程入门&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;java&#34;&gt;Java&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/waylau/apache-shiro-1.2.x-reference&#34;&gt;Apache Shiro 用户指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/waylau/Jersey-2.x-User-Guide&#34;&gt;Jersey 2.x 用户指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://mybatis.github.io/mybatis-3/zh/index.html&#34;&gt;MyBatis中文文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/waylau/RestDemo&#34;&gt;用jersey构建REST服务&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/waylau/activiti-5.x-user-guide&#34;&gt;Activiti 5.x 用户指南&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;javascript&#34;&gt;JavaScript&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://chajn.org/jsguide/javascriptguide.html&#34;&gt;Google JavaScript 代码风格指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/adamlu/javascript-style-guide&#34;&gt;Airbnb JavaScript 规范&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://javascript.ruanyifeng.com/&#34;&gt;JavaScript 标准参考教程（alpha）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://pij.robinqu.me/&#34;&gt;Javascript编程指南&lt;/a&gt; (&lt;a href=&#34;https://github.com/RobinQu/Programing-In-Javascript&#34;&gt;源码&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/justjavac/12-javascript-quirks&#34;&gt;javascript 的 12 个怪癖&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://bonsaiden.github.io/JavaScript-Garden/zh/&#34;&gt;JavaScript 秘密花园&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://icodeit.org/jsccp/&#34;&gt;JavaScript核心概念及实践&lt;/a&gt; (PDF) (此书已由人民邮电出版社出版发行，但作者依然免费提供PDF版本，希望开发者们去购买，支持作者)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/f2er/javascript.patterns&#34;&gt;《JavaScript 模式》&lt;/a&gt;翻译，此书中文版有售，但是纸质书翻译的还没有这个版本翻译的好&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://justjavac.com/named-function-expressions-demystified.html&#34;&gt;命名函数表达式探秘&lt;/a&gt;  (注:原文由&lt;a href=&#34;http://www.cn-cuckoo.com&#34;&gt;为之漫笔&lt;/a&gt;翻译，原始地址无法打开，所以此处地址为我博客上的备份)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.oschina.net/translate/learning-javascript-design-patterns&#34;&gt;学用 JavaScript 设计模式&lt;/a&gt; (开源中国)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cnblogs.com/TomXu/archive/2011/12/15/2288411.html&#34;&gt;深入理解JavaScript系列&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://es6.ruanyifeng.com/&#34;&gt;ECMAScript 6 入门&lt;/a&gt; (作者：阮一峰)&lt;/li&gt;
+&lt;li&gt;jQuery
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cn-cuckoo.com/deconstructed/jquery.html&#34;&gt;jQuery 解构&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.nowamagic.net/librarys/books/contents/jquery&#34;&gt;简单易懂的JQuery魔法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://i5ting.github.io/How-to-write-jQuery-plugin/build/jquery.plugin.html&#34;&gt;How to write jQuery plugin&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Node.js
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.nodebeginner.org/index-zh-cn.html&#34;&gt;Node入门&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://nqdeng.github.io/7-days-nodejs/&#34;&gt;七天学会NodeJS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/nodejs-tw/nodejs-wiki-book&#34;&gt;Nodejs Wiki Book&lt;/a&gt; (繁体中文)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://expressjs.jser.us/&#34;&gt;express.js 中文文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/turingou/koa-guide&#34;&gt;koa 中文文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/nswbmw/N-blog&#34;&gt;使用 Express + MongoDB 搭建多人博客&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://javascript.ruanyifeng.com/nodejs/express.html&#34;&gt;Express框架&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.gitbook.io/book/0532/nodejs&#34;&gt;nodejs文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/alsotang/node-lessons&#34;&gt;Node.js 包教不包会&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.npmjs.org/package/learnyounode-zh-cn&#34;&gt;Learn You The Node.js For Much Win! (中文版)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://i5ting.github.io/node-debug-tutorial/&#34;&gt;Node debug 三法三例&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;underscore.js
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://learningcn.com/underscore/&#34;&gt;Underscore.js中文文档&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;backbone.js
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.the5fire.com/backbone-js-tutorials-pdf-download.html&#34;&gt;backbone.js入门教程&lt;/a&gt; (PDF)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/the5fire/backbonejs-learning-note&#34;&gt;Backbone.js入门教程第二版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://feliving.github.io/developing-backbone-applications&#34;&gt;Developing Backbone.js Applications(中文版)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;AngularJS
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mgechev/angularjs-style-guide/blob/master/README-zh-cn.md&#34;&gt;AngularJS最佳实践和风格指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/peiransun/angularjs-cn&#34;&gt;AngularJS中译本&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/zensh/AngularjsTutorial_cn&#34;&gt;AngularJS入门教程&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/xufei/Make-Your-Own-AngularJS/blob/master/01.md&#34;&gt;构建自己的AngularJS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.waylau.com/build-angularjs-app-with-yeoman-in-windows/&#34;&gt;在Windows环境下用Yeoman构建AngularJS项目&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.360weboy.com/handbook/zepto/index.html&#34;&gt;zepto 简明中文手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Sea.js
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://island205.github.io/HelloSea.js/&#34;&gt;Hello Sea.js&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;CoffeeScript
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://island205.github.io/coffeescript-cookbook.github.com/&#34;&gt;CoffeeScript Cookbook&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://island205.github.io/tlboc/&#34;&gt;The Little Book on CoffeeScript中文版&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;ExtJS
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://extjs-doc-cn.github.io/ext4api/&#34;&gt;Ext4.1.0 中文文档&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ituring.com.cn/minibook/950&#34;&gt;Chrome扩展及应用开发&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;php&#34;&gt;PHP&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.laruence.com/2010/06/21/1608.html&#34;&gt;PHP调试技术手册&lt;/a&gt;(PDF)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.blogkun.com/project.html&#34;&gt;XDebug 2中文手册(译)&lt;/a&gt; (CHM)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://wulijun.github.io/php-the-right-way/&#34;&gt;PHP之道&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/justjavac/PHP-Best-Practices-zh_CN&#34;&gt;PHP 最佳实践&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/reeze/tipi&#34;&gt;深入理解PHP内核&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.walu.cc/phpbook/&#34;&gt;PHP扩展开发及内核应用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://codeigniter.org.cn/user_guide/index.html&#34;&gt;CodeIgniter 用户指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.golaravel.com/docs/&#34;&gt;Laravel4 中文文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/huanghua581/laravel-getting-started&#34;&gt;Laravel 入门&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://symfony-docs-chs.readthedocs.org/en/latest/&#34;&gt;Symfony2中文文档&lt;/a&gt; (未译完)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://phalcon.5iunix.net/&#34;&gt;Phalcon中文文档&lt;/a&gt;（翻译进行中）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://yiibook.com/&#34;&gt;YiiBook几本Yii框架的在线教程&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.nowamagic.net/librarys/books/contents/php&#34;&gt;简单易懂的PHP魔法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/LinkedDestiny/swoole-doc&#34;&gt;swoole文档及入门教程&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;ios&#34;&gt;iOS&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/qinjx/30min_guides/blob/master/ios.md&#34;&gt;iOS开发60分钟入门&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://isux.tencent.com/ios-human-interface-guidelines-ui-design-basics-ios7.html&#34;&gt;iOS7人机界面指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://zh-google-styleguide.readthedocs.org/en/latest/google-objc-styleguide/&#34;&gt;Google Objective-C Style Guide 中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://wileam.com/iphone-6-screen-cn/&#34;&gt;iPhone 6 屏幕揭秘&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://nilsun.github.io/apple-watch/&#34;&gt;Apple Watch开发初探&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.apple.com/library/ios/referencelibrary/GettingStarted/RoadMapiOSCh/index.html&#34;&gt;马上着手开发 iOS 应用程序&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jkyin/Subtitle&#34;&gt;网易斯坦福大学公开课：iOS 7应用开发字幕文件&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;android&#34;&gt;Android&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.apkbus.com/design/index.html&#34;&gt;Android Design(中文版)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Google Material Design 正體中文版 (&lt;a href=&#34;http://wcc723.gitbooks.io/google_design_translate/content/style-icons.html&#34;&gt;译本一&lt;/a&gt; &lt;a href=&#34;https://github.com/1sters/material_design_zh&#34;&gt;译本二&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://hukai.me/android-training-course-in-chinese/index.html&#34;&gt;Google Android官方培训课程中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stormzhang.github.io/android/2014/07/07/learn-android-from-rookie/&#34;&gt;Android学习之路&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/waylau/Gradle-2-User-Guide&#34;&gt;Gradle 2 用户指南&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;python&#34;&gt;Python&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000&#34;&gt;小白的Python教程&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://woodpecker.org.cn/abyteofpython_cn/chinese/&#34;&gt;简明Python教程&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://looly.gitbooks.io/python-basic&#34;&gt;零基础学Python&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.pythondoc.com/pythontutorial27/index.html&#34;&gt;Python 2.7 官方教程中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.pythondoc.com/pythontutorial3/index.html&#34;&gt;Python 3.3 官方教程中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sebug.net/paper/books/dive-into-python3/&#34;&gt;深入 Python 3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.google.com/p/zhong-wiki/wiki/PEP8&#34;&gt;PEP8 Python代码风格规范&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://zh-google-styleguide.readthedocs.org/en/latest/google-python-styleguide/&#34;&gt;Google Python 风格指南 中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://liam0205.me/2013/11/02/Python-tutorial-zh_cn/&#34;&gt;Python入门教程&lt;/a&gt; (&lt;a href=&#34;http://liam0205.me/attachment/Python/The_Python_Tutorial_zh-cn.pdf&#34;&gt;PDF&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://article.yeeyan.org/view/311527/287706&#34;&gt;Python的神奇方法指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sebug.net/paper/books/LearnPythonTheHardWay/&#34;&gt;笨办法学 Python&lt;/a&gt; （&lt;a href=&#34;http://liam0205.me/attachment/Python/PyHardWay/Learn_Python_The_Hard_Way_zh-cn.pdf&#34;&gt;PDF&lt;/a&gt;版下载）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://django-chinese-docs.readthedocs.org/en/latest/&#34;&gt;Django 文档中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/brantyoung/zh-django-best-practices&#34;&gt;Django 最佳实践&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://djangobook.py3k.cn/2.0/&#34;&gt;The Django Book 中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://webpy.org/tutorial3.zh-cn&#34;&gt;web.py 0.3 新手指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://webpy.org/cookbook/index.zh-cn&#34;&gt;Web.py Cookbook 简体中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://woodpecker.org.cn/diveintopython/&#34;&gt;Dive Into Python 中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://associates.amazon.cn/gp/associates/network/main.html&#34;&gt;Bottle 文档中文版&lt;/a&gt; (需翻墙)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.jinkan.org/docs/flask/&#34;&gt;Flask 文档中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.jinkan.org/docs/jinja2/&#34;&gt;Jinja2 文档中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://werkzeug-docs-cn.readthedocs.org/zh_CN/latest/&#34;&gt;Werkzeug 文档中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://spacewander.github.io/explore-flask-zh&#34;&gt;Flask之旅&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://demo.pythoner.com/itt2zh/index.html&#34;&gt;Introduction to Tornado 中文翻译&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://pan.baidu.com/s/1qW4pvnY&#34;&gt;Python自然语言处理中文版&lt;/a&gt; （感谢陈涛同学的翻译，也谢谢 &lt;a href=&#34;https://github.com/shwley&#34;&gt;@shwley&lt;/a&gt; 联系了作者）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://liam0205.me/2014/09/11/matplotlib-tutorial-zh-cn/&#34;&gt;Python 绘图库 matplotlib 官方指南中文翻译&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://scrapy-chs.readthedocs.org/zh_CN/latest/&#34;&gt;Scrapy 0.25 文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/carfly/thinkpython-cn&#34;&gt;ThinkPython&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;ruby&#34;&gt;Ruby&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/JuanitoFatas/ruby-style-guide/blob/master/README-zhCN.md&#34;&gt;Ruby 风格指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/JuanitoFatas/rails-style-guide/blob/master/README-zhCN.md&#34;&gt;Rails 风格指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://lrthw.github.io/&#34;&gt;笨方法學 Ruby&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://guides.ruby-china.org/&#34;&gt;Ruby on Rails 指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ihower.tw/rails4/index.html&#34;&gt;Ruby on Rails 實戰聖經&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://railstutorial-china.org/&#34;&gt;Ruby on Rails Tutorial 原书第 3 版&lt;/a&gt; (本书网页版免费提供，电子版以 PDF、EPub 和 Mobi 格式提供购买，仅售 9.9 美元)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://wusuopu.gitbooks.io/write-ruby-extension-with-c/content/&#34;&gt;编写Ruby的C拓展&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://ruby-china.org/topics/22386&#34;&gt;Ruby 源码解读&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;shell&#34;&gt;Shell&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/qinjx/30min_guides/blob/master/shell.md&#34;&gt;Shell脚本编程30分钟入门&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;go&#34;&gt;Go&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Unknwon/go-fundamental-programming&#34;&gt;Go编程基础&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Unknwon/the-way-to-go_ZH_CN&#34;&gt;Go入门指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://mikespook.com/learning-go/&#34;&gt;学习Go语言&lt;/a&gt; (&lt;a href=&#34;http://xxiyy.qiniudn.com/%E5%AD%A6%E4%B9%A0%20Go%20%E8%AF%AD%E8%A8%80(Golang).pdf?download&#34;&gt;PDF&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/astaxie/build-web-application-with-golang&#34;&gt;Go Web 编程&lt;/a&gt; (此书已经出版，希望开发者们去购买，支持作者的创作)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/astaxie/Go-in-Action&#34;&gt;Go实战开发&lt;/a&gt; (当我收录此项目时，作者已经写完第三章，如果读完前面章节觉得有帮助，可以给作者&lt;a href=&#34;https://me.alipay.com/astaxie&#34;&gt;捐赠&lt;/a&gt;，以鼓励作者的继续创作)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/astaxie/NPWG_zh&#34;&gt;Network programming with Go 中文翻译版本&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;groovy&#34;&gt;Groovy&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ibm.com/developerworks/cn/java/j-pg/&#34;&gt;实战 Groovy 系列&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;latex&#34;&gt;LaTeX&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://liam0205.me/2014/09/08/latex-introduction/&#34;&gt;一份其实很短的 LaTeX 入门文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.mohu.org/info/lshort-cn.pdf&#34;&gt;一份不太简短的 LATEX 2ε 介绍&lt;/a&gt; （PDF版）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;lisp&#34;&gt;LISP&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://acl.readthedocs.org/en/latest/&#34;&gt;ANSI Common Lisp 中文翻譯版&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;lua&#34;&gt;Lua&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/andycai/luaprimer&#34;&gt;Lua编程入门&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;haskell&#34;&gt;Haskell&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://rwh.readthedocs.org/en/latest/&#34;&gt;Real World Haskell 中文版&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;r&#34;&gt;R&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yihui/r-ninja&#34;&gt;R语言忍者秘笈&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;scala&#34;&gt;Scala&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://twitter.github.io/scala_school/zh_cn/index.html&#34;&gt;Scala课堂&lt;/a&gt; (Twitter的Scala中文教程)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://twitter.github.io/effectivescala/index-cn.html&#34;&gt;Effective Scala&lt;/a&gt;(Twitter的Scala最佳实践的中文翻译)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://zh.scala-tour.com/&#34;&gt;Scala指南&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;swift&#34;&gt;Swift&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://numbbbbb.github.io/the-swift-programming-language-in-chinese/&#34;&gt;The Swift Programming Language 中文版&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;perl&#34;&gt;Perl&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/horus/modern_perl_book&#34;&gt;Modern Perl 中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://perl.linuxtoy.org/&#34;&gt;Perl 程序员应该知道的事&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;prolog&#34;&gt;Prolog&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://fengdidi.github.io/blog/2011/11/15/qian-yan/&#34;&gt;笨办法学Prolog&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;vimscript&#34;&gt;Vimscript&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://learnvimscriptthehardway.onefloweroneworld.com/&#34;&gt;笨方法学Vimscript 中译本&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vimcn/vimcdoc&#34;&gt;Vim中文文档&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;scheme&#34;&gt;Scheme&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://deathking.github.io/yast-cn/&#34;&gt;Yet Another Scheme Tutorial Scheme入门教程&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;读书笔记及其它&#34;&gt;读书笔记及其它&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/fool2fish/dragon-book-exercise-answers&#34;&gt;编译原理（紫龙书）中文第2版习题答案&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://hawstein.com/posts/make-thiner-programming-pearls.html&#34;&gt;把《编程珠玑》读薄&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/XiaolongJason/ReadingNote/blob/master/Effective%20C%2B%2B/Effective%20C%2B%2B.md&#34;&gt;Effective C++读书笔记&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/qyuhen/book&#34;&gt;Golang 学习笔记、Python 学习笔记、C 学习笔记&lt;/a&gt; (PDF)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/code4craft/jsoup-learning&#34;&gt;Jsoup 学习笔记&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lzjun567/note&#34;&gt;学习笔记: Vim、Python、memcached&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ituring.com.cn/activity/details/2004&#34;&gt;图灵开放书翻译计划&amp;ndash;C++、Python、Java等&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://g.yeeyan.org/books/2095&#34;&gt;蒂姆·奥莱利随笔&lt;/a&gt; （由译言网翻译，电子版免费）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://coer.zju.edu.cn/liu/octave-tutorial-cn.pdf&#34;&gt;Octave 入门&lt;/a&gt; （PDF版）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sicp.readthedocs.org/en/latest/&#34;&gt;SICP 解题集&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/hacke2/hacke2.github.io/issues/2&#34;&gt;精彩博客集合&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.xiaoleilu.com/regex-guide/&#34;&gt;正则表达式简明参考&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/sparanoid/chinese-copywriting-guidelines&#34;&gt;中文文案排版指北&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;测试相关&#34;&gt;测试相关&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://appium.io/slate/cn/v1.2.0/&#34;&gt;移动APP自动化测试优秀框架Appium API Reference V1.2.0 CN&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Upgrade jekyll to 2.5.2</title>
+      <link>/posts/2014-12-01-upgrade-jekyll-to-2-dot-5-2/</link>
+      <pubDate>Mon, 01 Dec 2014 23:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-12-01-upgrade-jekyll-to-2-dot-5-2/</guid>
+      <description>&lt;p&gt;今天将自己博客生成器 &lt;a href=&#34;!https://github.com/jekyll/jekyll&#34;&gt;jekyll&lt;/a&gt; 由 2.4.0 升级到了 2.5.2。&lt;/p&gt;
+&lt;p&gt;升级代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gem update jekyll -v 2.5.2
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;升级完毕后，在构建博客的时候，出现 &lt;code&gt;cannot load such file -- mercenary/program (LoadError)&lt;/code&gt; 的错误。&lt;/p&gt;
+&lt;p&gt;解决办法：使用 bundle exec 运行 jekyll ，或者切换到项目根目录，重新执行 bundle install。&lt;/p&gt;
+&lt;p&gt;参考资料： &lt;a href=&#34;https://github.com/mmistakes/skinny-bones-jekyll/issues/10&#34;&gt;https://github.com/mmistakes/skinny-bones-jekyll/issues/10&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何在禁用爬虫的网站上使用七牛镜像</title>
+      <link>/posts/2014-11-21-zai-jin-yong-robotsde-wang-zhan-ru-he-shi-yong-qi-niu-jing-xiang/</link>
+      <pubDate>Fri, 21 Nov 2014 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2014-11-21-zai-jin-yong-robotsde-wang-zhan-ru-he-shi-yong-qi-niu-jing-xiang/</guid>
+      <description>&lt;p&gt;测试服务器上由于某种原因需要禁用所有爬虫，完全禁用的代码很简单，
+只需要在public下面的 robots.txt 文件中添加如下代码即可。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# See http://www.robotstxt.org/wc/norobots.html for documentation on how to use the robots.txt file
+#
+# To ban all spiders from the entire site uncomment the next two lines:
+User-Agent: *
+Disallow: /
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上述代码虽然简单，但是确实有点太粗暴，因为它也会禁止七牛的爬虫（该网站使用了七牛的镜像服务）。&lt;/p&gt;
+&lt;p&gt;为了继续使用七牛的服务，需要做一些额外操作。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;修改七牛镜像源为一个以 cdn开头的二级域名, 例如 cdn.eradai.com。&lt;/li&gt;
+&lt;li&gt;在public下面新建一个 &lt;code&gt;robots.allow.txt&lt;/code&gt; 的文件，内容为空。&lt;/li&gt;
+&lt;li&gt;修改 nginx 配置,在 server 里面添加如下代码：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;# HTTP
+server {
+  ......
+
+  location /robots.txt {
+    if ($host = &#39;cdn.eradai.com&#39;) {
+      rewrite ^/robots\.txt /robots.allow.txt last;
+    }
+  }
+  .....
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;经过以上三步，就可简单解决七牛爬虫被禁止的问题，原理是利用 nginx 的重定向。
+将一个特殊域名请求重定向到 robots.allow.txt,
+而 robots.allow.txt，开放了所有爬虫协议。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

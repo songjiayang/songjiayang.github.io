@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta name="generator" content="Hugo 0.72.0" />
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>小鱼驿站 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="小鱼驿站" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="小鱼驿站"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <div class="homepage-content">
+        
+    </div>
+
+    
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-09-25-ge-you-yu-pei-zhi-bu-dang-dao-zhi-prometheus-gao-jing-shi-xiao-de-bug/">一个由于配置不当导致 Prometheus 告警失效的 bug</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        随着对 Prometheus, Alertmanager 深入了解，我们配置的告警通知可读性提高了不少。
+但是有一个问题不断困扰着我们，现象大致为：
+在逻辑上我们认为是同一条的告警内容，在告警通知里面出现多次，而且已经过时告警还在不断发（一直报）。
+我们可以将这个问题简单总结为以下几点:
+ Prometheus Rule 一条查询结果，在 Alertmanager 却对应了多条警告。 Alertmanager 里面有警报一直处于未恢复的状态（没有收到 Prometheus 发送的 resolved 请求）  出现问题的原因 一开始我怀疑，是不是 Prometheus 向 Alertmanager 发送的 Resolved 通知有丢失, 导致部分历史警告一直处于未恢复状态。
+经排查，发现 Prometheus 和 Alertmanager 都未重启过，所以理论上不存在丢失通知的情况，即使有也是很低频的，无法解释问题 2 的大量情况。
+为了彻底搞清楚这个问题，我们有必要先弄清楚 Prometheus 中的 Rule 触发产生的告警在 Alertmanager 中是怎么对应的。
+1. 如何区分两条告警 根据 Prometheus common/alert 中的代码可知，所有具有相同 Labels 的告警为同一告警。
+那如何才算具有相同 Labels 呢，它的计算逻辑为对一个 map 按照 key 排序，然后依次对 key, value 取值，做 hash 计算，代码逻辑大致为：
+2. Prometheus 产生一条 Alert 的逻辑 Prometheus 执行配置中的 Rule 查询的时候，如果有满足条件的结果，就会产生对应告警，而告警条目数与查询出的纪录条数一致。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-09-25</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-09-24-why-is-gopher/">Why is gopher</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        众所周知 Golang programmer 都以 Gopher 自居，例如我加入的某微信讨论群就叫 “Gopher”，Golang Conf China 也取名为 GopherConf 。
+那对于一名长期从事 Ruby 开发的 Rubist，心中有个疑问，这 Gopher 到底啥来头，为啥取名叫 Gopher 呢？
+Gopher 是什么 Gopher， 英文直译为：地鼠（就是那个萌萌的，有两颗大暴牙的小动物）。
+而 Golang 中的 gopher 是 Go 语言的一个标志性吉祥物，也是 Golang 项目最具特色的部分。
+它的形象和地鼠一样，萌的可以， 像这样
+关于 Go gopher 的更多设计可以参见 https://github.com/golang/go/wiki/Gopher .
+那 gopher 是如何一步一步发展成今天这样子，我们有必要了解下它的前世今生。
+Gopher 成长进化史 大约在15年前（比 Go 项目还早 5 年），gopher 首先出现在新泽西州 WFMU 广播电台的推广活动中，当时法国人 Renee 被委托设计一个年度筹款活动用的 T 恤，gopher 就这样诞生了。
+接下来 gopher 又出现在了贝尔实验室，当时作为 Bob Flandrena 在贝尔实验室邮件系统中的头像，其中还使用了其他一系列萌萌的头像。
+在 Go 创建之初，当时急需要一个图标，Renee 作为自愿者参与画作，这样就诞生了第一个 Go T恤和 Google Code 网站上的标志性图案。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-09-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/go">#go</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-09-21-ge-prometheus-cha-xun-de-qi-guai-wen-ti/">一个 Prometheus 查询的奇怪问题</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        昨天下午，一同事对我说 Prometheus 告警触发了，但是没发现对应的结果，我让她发了对应的截图给我：
+原来同事使用了图一的查询来监控服务状态码为 4xx, 且非 400 和 419 的情况。
+这个查询的逻辑看上去很合理，首先计算 4xx 的总数，然后再减去 400 和 419 的总数，最后查看计算结果是否 &gt; 0 。
+但通过图一和图二我们不难发现以下两个问题：
+ 图一查询结果怎么会有负数。 根据图二结果可知，不存在非 400和 419 的 4xx 数据，但为何图一查询结果却有 &gt; 0 的情况。  这两个问题，其实本质上是一个问题，那就是浮点数的精度问题，对于这个问题，我在 github 提了一个 issue， 得到的回复也大相径庭。
+所以，我们需要尽量避免浮点数运算，尤其使用除法和减法来做监控告警的依据。
+那回到同事这个需求，我们可以采用聚合的正则匹配来解决，其语句应该是这样：
+变通了一下，查询语句简单不少，性能也有所提升。
+总结 凡是能够直接通过查询搞定的，就不要再用计算表达式；如果用了表达式，需要注意精度问题，尤其做减法和除法。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-09-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-08-18-cloudnativecon-2017-prometheus-bao-dao/">CloudNativeCon 2017 Prometheus 报道</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        最近两天 PromCon 2017 正如火如荼的进行着，具体演讲主题以及大会安排可以参考链接 http://t.cn/RCUGHoy，或者访问 Twitter 频道 #PromCon2017查看最新动态。
+目前大会还未结束，暂时无法获取相关 slide, 但是我们可以回顾一下今年 3/29～ 3/30 的 CloudNativeCon 2017 大会，下面是我整理的关于 Prometheus 的分享主题和以及对应的视频，资料链接（需要翻墙）。
+主要介绍 Prometheus 的成长历史，如何从一个公司内部系统到多人贡献的优秀开源系统的华丽转变。
+ video: http://t.cn/RCyH0mA slide: http://t.cn/RCyQluy  主要介绍 Prometheus 的 Counter 数据模型，最佳实践。
+ video: http://t.cn/RCynpyG slide: http://t.cn/RCyQluy  主要介绍最新版本 AlertManager 的高可用模型, 再也不用担心告警的 HA 问题了。
+ video: http://t.cn/RCyugqk slide: 缺失  主要介绍 Cloud Native 生产环境中如何使用 Prometheus 监控告警，释放运维人力的案例。
+ video: http://t.cn/RCUUOvt slide: 缺失  详细介绍 AlertManager 的架构，各个组建作用，配置示例，并根据实践为 AlertManager 写了一个告警历史查询的插件。
+ video: http://t.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-08-18</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/prometheus">#prometheus</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-07-24-win32-xiao-bai-yong-hu-github-mai-keng-zhi-nan/">win32 小白用户 GitHub 埋坑指南</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        这周作为教练参加了上海举办的 Girl&rsquo;s Coding Day 活动，期间发现有部分学员使用的是 win 32位的操作系统，出现了按照教程无法安装 GitHub Desktop 的问题 ，故编写了本篇指导，帮助那些对 Git, GitHub 不是很了解的同学，方便其快速上手。
+本篇指导主要运行在 win32 操作系统上。
+概念 Git: 是一个分布式的代码管理系统，使用它可以很方便的做到多人协作，同步，回滚代码，而使用频率较高的命令包括：
+ git init （初始化项目） git add . （添加修改文件) git commit -m &quot;xxx&quot; （提交修改到本地仓库) git push origin xxxx （提交代码到中央仓库） git pull origin xxxx （从中央仓库下载代码）  GitHub: 是一个git 代码在线托管网站，主要实现了使用浏览器查看代码，分享和管理代码，简单理解就是代码中央仓库的可视化管理平台
+使用步骤 Step 1: 访问 https://pan.baidu.com/s/1dFfAzyL ，下载安装 win32 版本 git。
+ 安装完成后，点击开始菜单 -&gt; 输入 git -&gt; 点击 Git CMD 进入 git 终端。 在终端光标处输入 git config --global user.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-07-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/git">#git</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-07-05-ru-he-cha-zhao-shu/">如何快速从一数组中找出两个数，使其和为一特定数字</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        为了简单起见，数组中没有重复数字。
+举例：
+数组 A = [1, 5, 7, 2, 4, 6] 满足和为 10 的两个数字为 4 和 6。
+解题思路一： 穷举，即任取两个数的组合，一共的可能性为 c(n, 2) = n!/((n-2)!2!) = n(n-1) / 2, 故其时间复杂度为 O(n*n)。
+解题思路二： 只要在数组中能够寻找到 Sum - A[i] 的数即可。
+ 因为要查找，所以将原数组进行一次排序，这里使用堆排序，其时间复杂度为 O(n*logn)。 有序数组，采用二分查找，其时间复杂度为 O(log2n) 。 一次循环查找，所以总的时间复杂度为 O(n*log2n)。  解题思路三： 和思路二相似，只是不需要排序，并将步骤 2 中查找算法换成 hash 表， 那么查找的时间复杂度降为 O(1)，故总的时间复杂度为 O(n)，不过这样会带来额外的空间开销。
+最近失眠越来越严重了，爬起来随便写了点东西。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-07-05</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/leetcode">#leetcode</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-06-13-cai-yun-zhi-nan-bu-qu-yi-han-qu-liao-shi-wang-de-di-fang/">彩云之南，不去遗憾，去了失望的地方</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        彩云之南，多么美丽的名字；大理、丽江，多么具有诗意；不知道多少人，就因为名字而想去看看。
+今年端午节，和朋友相约，一起去了一趟云南。
+结果与其说是有些遗憾，不如说是失望，纵然有天气缘故，但是整个云南给我的感觉是这几年发展太快，商业气息太重，和想像的那片诗意，风花雪月，一点不着调。
+我的行程是这样：上海 -&gt; 昆明 -&gt; 丽江 -&gt; 大理，洱海 -&gt; 玉龙雪山 -&gt; 上海，历时五天五夜，期间看望了大伯父，闲逛丽江古城，骑行游洱海，攀登玉龙雪山。
+第一天: 飞抵昆明 航班延误，加上拿行李花费不少时间，让大伯父在机场等了足足 2 个小时，又开车半小时，穿过昆明城，到达他家已是凌晨3点左右。
+第二天：陪伯父闲聊 一早他就带我去吃云南的小吃，烧饵块，糍粑等，中午又给我做鲈飞鱼，下午带我去他家周围转转，才发现这地方真的是山清水秀，空气清新啊，适合居住。
+晚上，大伯父驱车送我去昆明火车站，然后开始我一晚的火车之旅。
+不得不说，云南蛮大的，而且火车特别慢，从昆明到丽江，卧铺可以坐 10 多个小时。
+第三天：丽江古城接朋友 早上 8 点过，火车到达丽江，在丽江感觉被山环绕，远眺山峰，偶尔还能看到白雪。
+天气实在不好，丽江的天就像姑娘的脸，说变就变，一直雨兮兮的；加上一夜火车，就没有心思去古城逛了。
+在客栈休息，泡着普洱茶，坐等朋友从远方来（成都）。
+第四天：骑游大理洱海 我和朋友去大理了，是的，你没有听错，我又从丽江返回了大理。
+一来是因为行程的主要目的是玉龙雪山，因为刚到这边，怕高反，所以先去大理玩玩。
+二来苍山洱海，下关风，大理古城，实在有点迫不及待想去，毕竟每个名字都充满故事。
+然而，可谓期望越大，失望越大，大理人超级多，而且都是卖东西的。洱海由于整治，周边酒店都已关闭（预计 2018 年 5 月恢复），很冷清，加上天气不好，感觉特别无趣和凄凉。
+晚上又火车返回丽江，真的车马劳累，和朋友话语较少，气氛略显尴尬。
+第五天：攀登玉龙雪山 重头戏终于来了, 去爬玉龙雪山啦，可惜今天的雨下的真大。
+不过这又有什么，山上不就是下雪吗，我这样一遍一遍安慰自己。
+不得不说，高海拔缺氧真的厉害，虽然带了氧气瓶，但是在攀登过程头痛的特别厉害，下山回去休息了好久。
+晚上还和朋友去看了《丽江*千古情》演出，特别喜欢茶马古道一节表演。
+第六天：返回上海 今天，天气终于晴朗，可惜已是离别日。
+睡到自然醒，早上在丽江古城转了一下，发现人少的时候，还是挺漂亮的。
+晚上，我从丽江飞回了上海。
+写在最后 云南之行，去过了才发现和想的不太一样，有点失望。
+不过在路途认识的朋友，一路陪伴的人，都特别好，还有非常感谢你陪伴的这次旅行。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-06-13</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E6%97%85%E6%B8%B8">#旅游</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-05-23-du-xin-sheng-you-gan/">《新生——七年就是一辈子》读后感</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        最近将李笑来老师的《新生——七年就是一辈子》一口气读完，此书作为不是那么鸡汤的鸡汤，内容颇为精彩，整个阅读过程，可谓酣畅淋漓，沉浸其中。
+《新生》是一本怎样的书 新生是笑来的一本众创书籍，可以在网络上免费获取。
+它提出了
+ 我们相信通过学习获取重生，对于我们来说 ，七年就是一辈子。
+ 这是一个非常犀利的观点，七年时间，通过学习获取一种新的生存技能，可谓重生。而人生就是在 born and reborn 不断迭代进化的，这里既然到了重生，可想跨界之大。
+书中例子也可以看出，笑来从销售到新东方老师，再到互联网 geek, 风投，以及在线教育，职场跨度很大。
+不过，为啥是是七年？
+书中得知，笑来干销售和新东方老师都是七年，这是偶然还是他在刻意强调这个数字呢？
+但是这不妨碍我对这个神奇数字研究，我在网上查了一下，发现一周恰好七天，月亮周期是 28 天，即 4 周，世界上有七大奇迹，而且我们公司也有七字 ——&gt; 七牛。
+七，代表一种周期性的特性，具有持续性。
+关于复利 复利原本只是计息的计算方式，大家可以参考维基百科。但是在本书中却有了更广泛的含义，即人生复利曲线。
+通常情况下，人的职业发展是满足复利曲线的，即一开始投入时间多，收益较少，最多 1:1 比例；但是随着时间的增长，超过某个时间拐点，收益就会远远超过时间的投入，呈现一种爆炸性趋势，就像这样：
+不难看出，复利曲线需要满足以下点：
+ 一直有收益（进步） 持续足够时间（超过拐点）  可见人生就是在不断拟合复利曲线的过程，只是很多人在还未到达拐点的时候，就放弃罢了，可惜。
+关于财务自由 财务自由的定义，见仁见智，反正我觉得不为钱发愁呗，不嫌多的。
+ 开源节流  在积累财富初期，比如刚开始工作的时候，收入主要来源于工资，工资又少，还要忙于各种技能提升，所以能够省下来的钱确实不够多。
+但是无论如何，都应该分清“必需”和“必虚”，能够对必需的花费好不吝啬，对必虚的花费，坚决杜绝。
+分清必需和必虚的关键在于，这个花费是是否存在收益（长期），如果只是图一时刺激，挥霍钱财，这是非常非常不明智的。
+ 尽量不做 All In  收益和风险往往是成正比，即使风险只是 0.01%, 如果 All In 有可能你就输个精光。我们不能有赌徒心态，时不时玩个几倍杠杆，是的，赢钱很爽，但是这会上瘾，一不小心，步入万丈深渊，可怕。
+无论什么时候，都应该有个应急的小金库（10W+），平时就放在那里，彻底忘记它，遇到特殊情况的时候，你会发现，有钱比什么都好使。
+ 睡觉也能挣钱  正常情况，只有工资收入是很难满足复利曲线的，此时我们就应该想想其他变现手段了，买股票，投资房产，当暴发户？可惜，我不是富二代，没有这个资本，也错过了时代，但是,
+这是一个互联网繁荣的时代，知识变现极其容易的时代，你难道不想通过信息的拷贝就带来财富积累吗？
+大家都有这样的想法，对么？不过谈何容易。
+在没钱的时候，忘掉什么炒股赚钱，买彩票当暴发户这种赌徒心态，你能够投资的，只有自己。多看书，多跨界学习新技能，也许在未来的时间轴上，这些看似不经意的点，却连成了线，而它却和复利曲线惊人的相似。
+开始跑题 好了，废话说完，我默默的打开了京东的网页，开始选书了。
+参考链接： 新生。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-05-23</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E8%AF%BB%E4%B9%A6">#读书</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2017-03-27-dui-zhao-ruby-lai-xue-crystal/">对照 Ruby 学 Crystal - Part 0</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Crystal 是一门神奇的语言，它号称 Fast as C, slick as Ruby， 至于速度方面有待考证，不过它的语法和 Ruby 非常相似，可见其胶水能力。
+本篇文章是对照 Ruby 学 Crystal 系列基础篇，主要介绍 Crystal 社区中与 Ruby 对应的工具链。
+Version Manager 使用 crenv 来管理多个不同版本的 Crystal， Ruby 中与之对应的是 rbenv 或者 rvm 。
+Dependency Manager 使用 shards 来管理项目依赖，Ruby 中对应的是 bundler 。
+Testing 测试框比较多，这里选取较常用的来做个比较，
+minitest.cr 对应 Ruby 中的 minitest 。 spec2.cr 对应 Ruby 中的 rspec 。
+Database Drivers 这个话题对应的就比较多了，应该主流的数据库都有对应的 driver 吧，例如， crystal-mysql 对应 Ruby 的 mysql2 。 mongo.cr 对应 Ruby 的 mongoid 。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2017-03-27</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2016-11-08-zuo-wei-ming-kai-fa-zhe-wo-shi-ru-he-kan-dai-wei-xin-xiao-ying-yong-de/">作为一名开发者，我是如何看待微信小应用的</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        微信小应用终于开放内测了，一时间网络上炸开了锅，对此评论褒贬不一。
+有的把它说的无比万能，是各种 App 的终结者, 也有把它看衰的非常彻底，觉得就是张小龙实验的玩具。
+那么作为一名立志站在技术前沿的开发者，我们不能被网络上的各种嘴炮所忽悠，对微信小应用应保有自己的判断和认识。
+以下是我想与大家分享的一些看法：
+好的方面：
+上手容易，微信小应用使用了目前非常火的 js native 的方案，意味着无论你是从 react+native 还是 weex 过来，都不会太大的技术负担。其实微信小应用就是在这些社区方案中，摸索并标准化了一套自己的方案而已,开发技术和常见的 Web 并没太多差异。
+文档清晰，我想说这次小应用的文档绝非外包，我花费了并不多的时间，就把所有想要了解的东西都了解了完全，而且基本都找到了示例代码，这个和微信公众号文档比起来，简直爽的不要不要的。
+API 丰富，有人说，微信小应用，只能做做简单的表单应用，这一点，我不认同。对于常规的应用，可能一般的 UI 组件就能满足，比如图片，列表，表单等；但对于一些复杂功能，微信小应用的 API 同样可以满足。你不仅可以使用 websocket （同时只能存在一个 websocket）实现实时消息，使用 cavans 绘图，还能使用地图，重力感应接口来做更多有趣的事情。
+UI 统一，微信提供了统一的 UI 接口，意味着你只需要写一套代码就可以运行在不同的平台了，平台的差异性，让微信去解决吧。微信小应用中引入了 flex 和 rpx (responsive pixel)，意味着在处理响应式布局方面，变得更加容易。
+作为开发者，我们终于可以从各平台差异性以及不同分辨率适配中释放出来，更多的关注功能和引流。
+应用市场，相较于同时上架苹果 App 商城，以及国内各大主流 Android App 商城，现在你只需要在微信APP 商城上架一次，这显得更加方便而敏捷。
+对于用户而言，管理自己的应用也变得方更加简单，不仅因为 App 下载更容易，花费时间更少，而且还因为可以将用户 App 和微信帐号绑定，实现跨手机的云端同步。
+不好的方面：
+接口开放力度不够，或许是因为微信对小应用的一些额外担忧，像一些对于引流非常关键功能，比如朋友圈分享，微信并没有开放。这意味着用户只能通过扫描二维码或则使用微信内置的 App 搜索了解和下载应用。这样对于开发者而言，引流和变现是个比较大的问题。
+因为微信小应用才刚开始，待其运营成熟以后，微信会不会慢慢开放接口，我们拭目以待。
+完全放弃支付宝支付功能，大家都知道支付宝和微信不能共存，选择了微信小应用，意味着你就自动放弃了支付宝，这个对于一些电商应用，是个比较大的打击。
+以上，就是我对于微信的一些个人看法，作为一名开发者，我觉得微信小应用具有还是具有很高的创新价值，此时我突然想到了 JVM，不知不觉陷入了一种 write once, run anywhere 的 yy 中。
+至于微信小应用能不能火起来，我不敢说，这取决于机遇和微信团队的运营能力，但是对于新的事物，我们应该多一点包容，多一点尝试，个人持乐观态度。
+最后，祝大家工作更顺利，生活更美好。
+是的，明天又是美好的一天！
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2016-11-08</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E5%BE%AE%E4%BF%A1">#微信</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/page/5/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/page/7/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

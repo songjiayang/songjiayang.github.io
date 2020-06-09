@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>一场印象深刻的面试 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="一场印象深刻的面试" />
+<meta property="og:description" content="这是A同学对B同学之间的一场技术面试，整个过程大概2个半小时，期间基本是一问一答的形式；面试涉及内容之广，故记录于此，以备他日面试他人之用。
+####基本技能篇
+ 最早接触的Ruby版本，使用过的最新Ruby版本； Ruby2.x有哪些新特性，平时使用了这些新特性？ Ruby中一般使用的是进程还是线程，具体是什么技术，这种技术的好处和坏处？ 使用过最早的Rails版本，最新4.x版本有无使用，与3.x有哪些大的改变？ Rails中有哪些可以作为单独的Gem使用的模块？ Rails Model中哪些属于ActiveModel,哪些属于ActiveRecord ? 模型中共享的代码代码一般放在哪里？ models和lib哪些是autoloaded？ 项目中css是怎么组织的？ 假如有一段css只有一个页面用到，而不想全局引入，该如何处理？ 响应式设计的原理，大概写法？ 数据库表中有个字段叫attribute,如何在不修改表结构的情况下，正常使用ActiveRecord？ Rails中Base Transactions 和 Instance Transactions的区别？ 队列用的什么？ 缓存用的什么？ Rails默认缓存是什么，工作原理，和其他缓存的优劣？ Delay Jobs用的什么技术，定时任务怎么处理？ Application Server用的是什么，为什么选择，平时有无当机情况，怎么处理？ 平时写测试不？用的什么技术，什么时候改写测试，什么时候可以不写？ 部署工具用的什么？ 数据库用过哪些？PostgreSQL有哪些特性，是否在项目中使用？ 是否做过Api对接，选用的什么技术？ 想对iphone和android返回不同的结果，该怎么处理，直接在代码中写if/else之类的判断是否可取？ 开发过程中遇到bug，你的一般解决问题流程是？  ####基础安全篇
+对称加密和非对称加密有什么不同？ 平时我们说的64位加密和128位加密，那个位指的是什么？ 假如用户在网页上分享一个链接给特定的人，并且只有该特定人才能访问，该如何处理？ 如何设计一个找回密码的功能？ 如何避免用户靠多次／频繁修改token，从而测试出正确的token? Api设计中如何保证请求是合法的，数据是可靠的？ Rails开发中常见的安全问题有哪些？ 腾讯邮箱会在用户不知道的情况下，将用户邮件内容中的链接全部点击一遍（网络机器人），那么区分出是腾讯机器人的请求，如何block? OAuth 2.0的基本原理，如何自己设计一个OAuth 2.0认证系统？ 使用过哪些第三方的OAuth 2.0认证服务？  ####基础网络篇
+UDP和TCP有什么区别？ TCP的会话过程？ 打开一个https的页面，除了第一步域名解析，那下一步是什么？ TCP发包和接受包，哪个是顺序的？ 假如你网站特别慢，你该如何排查原因？过程是怎样？ 无线wifi分为哪些类？ 路由器和集线器有什么区别？ 192.168.0.20中的20什么意思，那16呢？  ####基础Linux篇 41. 当输入free命令后,出现的buffers指的是什么？Swap又指什么，Swap有什么作用，一般在哪个目录？ 42. 假如我有部分命令需要开机启动，但是需要sudo,如何针对部分命令，配置sudo不需要密码？ 43. ssh如何无密码登录？ 44. 一个项目有多个子项目组成，如何使用git来管理？" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/2014-08-26-chang-yin-xiang-shen-ke-de-mian-shi/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="article:published_time" content="2014-08-26T22:31:00+08:00" />
+<meta property="article:modified_time" content="2014-08-26T22:31:00+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="一场印象深刻的面试"/>
+<meta name="twitter:description" content="这是A同学对B同学之间的一场技术面试，整个过程大概2个半小时，期间基本是一问一答的形式；面试涉及内容之广，故记录于此，以备他日面试他人之用。
+####基本技能篇
+ 最早接触的Ruby版本，使用过的最新Ruby版本； Ruby2.x有哪些新特性，平时使用了这些新特性？ Ruby中一般使用的是进程还是线程，具体是什么技术，这种技术的好处和坏处？ 使用过最早的Rails版本，最新4.x版本有无使用，与3.x有哪些大的改变？ Rails中有哪些可以作为单独的Gem使用的模块？ Rails Model中哪些属于ActiveModel,哪些属于ActiveRecord ? 模型中共享的代码代码一般放在哪里？ models和lib哪些是autoloaded？ 项目中css是怎么组织的？ 假如有一段css只有一个页面用到，而不想全局引入，该如何处理？ 响应式设计的原理，大概写法？ 数据库表中有个字段叫attribute,如何在不修改表结构的情况下，正常使用ActiveRecord？ Rails中Base Transactions 和 Instance Transactions的区别？ 队列用的什么？ 缓存用的什么？ Rails默认缓存是什么，工作原理，和其他缓存的优劣？ Delay Jobs用的什么技术，定时任务怎么处理？ Application Server用的是什么，为什么选择，平时有无当机情况，怎么处理？ 平时写测试不？用的什么技术，什么时候改写测试，什么时候可以不写？ 部署工具用的什么？ 数据库用过哪些？PostgreSQL有哪些特性，是否在项目中使用？ 是否做过Api对接，选用的什么技术？ 想对iphone和android返回不同的结果，该怎么处理，直接在代码中写if/else之类的判断是否可取？ 开发过程中遇到bug，你的一般解决问题流程是？  ####基础安全篇
+对称加密和非对称加密有什么不同？ 平时我们说的64位加密和128位加密，那个位指的是什么？ 假如用户在网页上分享一个链接给特定的人，并且只有该特定人才能访问，该如何处理？ 如何设计一个找回密码的功能？ 如何避免用户靠多次／频繁修改token，从而测试出正确的token? Api设计中如何保证请求是合法的，数据是可靠的？ Rails开发中常见的安全问题有哪些？ 腾讯邮箱会在用户不知道的情况下，将用户邮件内容中的链接全部点击一遍（网络机器人），那么区分出是腾讯机器人的请求，如何block? OAuth 2.0的基本原理，如何自己设计一个OAuth 2.0认证系统？ 使用过哪些第三方的OAuth 2.0认证服务？  ####基础网络篇
+UDP和TCP有什么区别？ TCP的会话过程？ 打开一个https的页面，除了第一步域名解析，那下一步是什么？ TCP发包和接受包，哪个是顺序的？ 假如你网站特别慢，你该如何排查原因？过程是怎样？ 无线wifi分为哪些类？ 路由器和集线器有什么区别？ 192.168.0.20中的20什么意思，那16呢？  ####基础Linux篇 41. 当输入free命令后,出现的buffers指的是什么？Swap又指什么，Swap有什么作用，一般在哪个目录？ 42. 假如我有部分命令需要开机启动，但是需要sudo,如何针对部分命令，配置sudo不需要密码？ 43. ssh如何无密码登录？ 44. 一个项目有多个子项目组成，如何使用git来管理？"/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+
+    <article class="post">
+        <header>
+            <h1 class="post-title">一场印象深刻的面试</h1>
+        </header>
+        <div class="content">
+            <p>这是A同学对B同学之间的一场技术面试，整个过程大概2个半小时，期间基本是一问一答的形式；面试涉及内容之广，故记录于此，以备他日面试他人之用。</p>
+<p>####基本技能篇</p>
+<ol>
+<li>最早接触的Ruby版本，使用过的最新Ruby版本； Ruby2.x有哪些新特性，平时使用了这些新特性？</li>
+<li>Ruby中一般使用的是进程还是线程，具体是什么技术，这种技术的好处和坏处？</li>
+<li>使用过最早的Rails版本，最新4.x版本有无使用，与3.x有哪些大的改变？</li>
+<li>Rails中有哪些可以作为单独的Gem使用的模块？</li>
+<li>Rails Model中哪些属于ActiveModel,哪些属于ActiveRecord ?</li>
+<li>模型中共享的代码代码一般放在哪里？</li>
+<li>models和lib哪些是autoloaded？</li>
+<li>项目中css是怎么组织的？</li>
+<li>假如有一段css只有一个页面用到，而不想全局引入，该如何处理？</li>
+<li>响应式设计的原理，大概写法？</li>
+<li>数据库表中有个字段叫<code>attribute</code>,如何在不修改表结构的情况下，正常使用ActiveRecord？</li>
+<li>Rails中Base Transactions 和 Instance Transactions的区别？</li>
+<li>队列用的什么？</li>
+<li>缓存用的什么？ Rails默认缓存是什么，工作原理，和其他缓存的优劣？</li>
+<li>Delay Jobs用的什么技术，定时任务怎么处理？</li>
+<li>Application Server用的是什么，为什么选择，平时有无当机情况，怎么处理？</li>
+<li>平时写测试不？用的什么技术，什么时候改写测试，什么时候可以不写？</li>
+<li>部署工具用的什么？</li>
+<li>数据库用过哪些？PostgreSQL有哪些特性，是否在项目中使用？</li>
+<li>是否做过Api对接，选用的什么技术？</li>
+<li>想对iphone和android返回不同的结果，该怎么处理，直接在代码中写if/else之类的判断是否可取？</li>
+<li>开发过程中遇到bug，你的一般解决问题流程是？</li>
+</ol>
+<p>####基础安全篇</p>
+<ol start="23">
+<li>对称加密和非对称加密有什么不同？</li>
+<li>平时我们说的64位加密和128位加密，那个位指的是什么？</li>
+<li>假如用户在网页上分享一个链接给特定的人，并且只有该特定人才能访问，该如何处理？</li>
+<li>如何设计一个找回密码的功能？</li>
+<li>如何避免用户靠多次／频繁修改token，从而测试出正确的token?</li>
+<li>Api设计中如何保证请求是合法的，数据是可靠的？</li>
+<li>Rails开发中常见的安全问题有哪些？</li>
+<li>腾讯邮箱会在用户不知道的情况下，将用户邮件内容中的链接全部点击一遍（网络机器人），那么区分出是腾讯机器人的请求，如何block?</li>
+<li>OAuth 2.0的基本原理，如何自己设计一个OAuth 2.0认证系统？</li>
+<li>使用过哪些第三方的OAuth 2.0认证服务？</li>
+</ol>
+<p>####基础网络篇</p>
+<ol start="33">
+<li>UDP和TCP有什么区别？</li>
+<li>TCP的会话过程？</li>
+<li>打开一个https的页面，除了第一步域名解析，那下一步是什么？</li>
+<li>TCP发包和接受包，哪个是顺序的？</li>
+<li>假如你网站特别慢，你该如何排查原因？过程是怎样？</li>
+<li>无线wifi分为哪些类？</li>
+<li>路由器和集线器有什么区别？</li>
+<li>192.168.0.20中的20什么意思，那16呢？</li>
+</ol>
+<p>####基础Linux篇
+41. 当输入<code>free</code>命令后,出现的buffers指的是什么？Swap又指什么，Swap有什么作用，一般在哪个目录？
+42. 假如我有部分命令需要开机启动，但是需要sudo,如何针对部分命令，配置sudo不需要密码？
+43. ssh如何无密码登录？
+44. 一个项目有多个子项目组成，如何使用git来管理？</p>
+<p>####基础项目/架构篇</p>
+<ol start="45">
+<li>如何设计一个电商系统，大概有哪几张表？</li>
+<li>订单表和哪些关联？</li>
+<li>退款记录只与哪个有关？</li>
+<li>购物车为什么要单独一张表，是否可以和订单表合并，如果合并，那么如何区分是订单还是购物车？</li>
+<li>多种优惠卷的设计？</li>
+</ol>
+<p>####基础职场篇</p>
+<ol start="50">
+<li>假如你的一个同事技术又不好，又喜欢唠叨，又偷懒不干活，你会怎么办？会给他指出? 给其他同事说? 给老板说吗？</li>
+<li>如果有人反对你的设计，而且围住你办公室，叫你出去，你会选择出门吗？</li>
+<li>假如项目deadline块到了，但是发现还有不少功能还没完成，你会怎么办？</li>
+<li>你认为5k,10k,15,20k的人有什么区别，你觉得你是属于哪一类？</li>
+<li>你喜欢将代码最快发布，抢占市场，还是将功能做到perfact后再发布？</li>
+<li>你觉得远程办公有什么好处和不好的地方，你喜欢远程办公吗？</li>
+</ol>
+<p>####生活习惯篇
+56. 平时晚上几点睡觉，早上几点起床？
+57. 一般下班都喜欢做什么？
+58. 过去一年你觉得你做的最酷的事情是什么？
+59. 用过哪些数码产品，你最喜欢哪个？
+60. mac上的软件你有在使用哪些？你觉得他们有什么值得提高的？
+61. 你有为国外的软件或服务付费吗？
+62. 喜欢开源吗？阅读过哪些开源项目，你觉得他们写的好吗？好在哪里？</p>
+<p>xxxxx 省略部分未记住的问题？</p>
+<blockquote>
+<blockquote>
+<p>总结： 我们平时可以不妨了解一些面试题目，即有助于了解自身实力，也可以认识一些不错的朋友！</p>
+</blockquote>
+</blockquote>
+
+        </div>
+        
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-08-26</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/%E9%9D%A2%E8%AF%95">#面试</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "QVWu0t8l1w" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

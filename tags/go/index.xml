@@ -1,0 +1,1439 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>go on 小鱼驿站</title>
+    <link>/tags/go/</link>
+    <description>小鱼驿站 (go)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 10 Oct 2019 16:24:35 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go 和 Android 集成实战</title>
+      <link>/posts/2019-10-10-go-he-andji-shi-li/</link>
+      <pubDate>Thu, 10 Oct 2019 16:24:35 +0800</pubDate>
+      
+      <guid>/posts/2019-10-10-go-he-andji-shi-li/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/goandroid/cover.png&#34; alt=&#34;cover.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;看到这个标题，你可能会问，为什么要在 Android 中运行 Go，直接使用 Java 不挺好吗？&lt;/p&gt;
+&lt;p&gt;是的，如果你有现成很强大的 Java 团队，这没有问题，但并不是所有团队都是如此。而且我在这里想强调的是 Android 与 Go 的集合，即在 Android 程序中使用 Go 而不是完全用 Go 来写 Android 程序。&lt;/p&gt;
+&lt;p&gt;我能想到在 Android 中用 Go 的一些原因：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;团队熟悉 Go, 对 Java/Android 了解不多。&lt;/li&gt;
+&lt;li&gt;已经有现成的 Go 核心代码，比如开源类库: libp2p，turn/stun 类库等。&lt;/li&gt;
+&lt;li&gt;自己服务的 SDK 其核心逻辑复杂，繁琐，涉及大量网络或并发的操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;能够在 Android 上使用 Go 代码，得益于 Go 强大的交叉编译能力，那该如何在 Android 上使用我们的 Go 库呢，接下来我将通过一个简单的示例来讲解。&lt;/p&gt;
+&lt;h2 id=&#34;实例教程&#34;&gt;实例教程&lt;/h2&gt;
+&lt;p&gt;本例是在 Android 程序中使用 Go 编译的一个简单动态库来实现对网站测速的简单例子。&lt;/p&gt;
+&lt;p&gt;思路：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Go 交叉编译为 Android 平台支持的 so 文件。&lt;/li&gt;
+&lt;li&gt;在 Android 中使用 JNA 调用该 so 文件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;依赖：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://golang.org/dl&#34;&gt;Go&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.android.com/ndk/downloads#stable-downloads&#34;&gt;NDK r20&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/java-native-access/jna&#34;&gt;JNA 5.4.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;说明: 演示环境为 Mac。&lt;/p&gt;
+&lt;h3 id=&#34;编写-go-测试代码&#34;&gt;编写 Go 测试代码&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;编写 speedtester 的核心代码，实现对任意网站访问速度的检测：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;speedtester&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;net/http&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;time&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Perform&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;url&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;) (&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt;) {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;req&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewRequest&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MethodGet&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;url&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;startAt&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Now&lt;/span&gt;()
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;DefaultClient&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Do&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;req&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;cost&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Now&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;Sub&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;startAt&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;
+	}
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;defer&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Body&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Close&lt;/span&gt;()
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; int(&lt;span style=&#34;color:#a6e22e&#34;&gt;cost&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Millisecond&lt;/span&gt;), &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;编写 CGO 代码，暴露一个 &lt;code&gt;Perform&lt;/code&gt; API 函数：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C&amp;#34;&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/songjiayang/go-android/go/speedtester&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;//export Perform
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Perform&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;url&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;C&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;char&lt;/span&gt;) &lt;span style=&#34;color:#a6e22e&#34;&gt;C&lt;/span&gt;.&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;cost&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;speedtester&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Perform&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;C&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;GoString&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;url&lt;/span&gt;))
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+	}
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;C&lt;/span&gt;.int(&lt;span style=&#34;color:#a6e22e&#34;&gt;cost&lt;/span&gt;)
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;交叉编译动态链接库&#34;&gt;交叉编译动态链接库&lt;/h3&gt;
+&lt;p&gt;前面一片文章 &lt;a href=&#34;http://localhost:4000/posts/ru-he-kua-ping-tai-bian-yi-armde-cgocheng-xu&#34;&gt;如何在 Ubuntu 上交叉编译 ARM 架构的 CGO 程序&lt;/a&gt; 中我已提到过如何交叉编译 CGO 代码，只不过当时交叉编译的平台是 Linux，现在我们使用类似的方式来编译 Android 版本。&lt;/p&gt;
+&lt;p&gt;交叉编译 Android 版本的动态库不仅需要指定 GCC 还要指定 NDK_TOOLCHAIN，所以我们先下载对应的 NDK 。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step1: 下载 ndk r20&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;wget https://dl.google.com/android/repository/android-ndk-r20-darwin-x86_64.zip
+unzip android-ndk-r20-darwin-x86_64.zip
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;解压缩后，可以看到 ndk 目录为：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/goandroid/ndk.png&#34; alt=&#34;ndk.png&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step2: 编译 toolchain&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们可以使用 ndk 自带的 make-standalone-toolchain.sh 脚本，编译特定的 toolchain，使用命令如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./android-ndk-r20/build/tools/make-standalone-toolchain.sh \
+--toolchain=aarch64-linux-android-4.9 --platform=android-29 \
+--install-dir=~/Library/toolchain --force
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参数说明：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;toolchain 参数表示对应 Android 的 ARCH，arm32 使用 arm-linux-androideabi-4.9，arm64 使用 aarch64-linux-android-4.9。&lt;/li&gt;
+&lt;li&gt;platform 参数表示对应 Android API的版本，25 对应 Android7.1.1，26 对应 Android8.0，27 对应Android8.1，28 对应 Android9.0，29 对应 Android10.0。&lt;/li&gt;
+&lt;li&gt;install-dir 参数表示编译的目标 toolchain 存放位置，后面交叉编译 Go 代码会用到。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Step3: 执行交叉编译&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用刚刚编译好的 toolchain 来交叉编译：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;CGO_ENABLED=1 GOOS=android NDK_TOOLCHAIN=~/Library/toolchain \ 
+GOARCH=arm64 CC=~/Library/toolchain/bin/aarch64-linux-android-gcc \
+go build -buildmode=c-shared -o libspeedtester.so api.go
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;此时会在目录下生成一个 &lt;code&gt;libspeedtester.so&lt;/code&gt; 文件，通过 file 命令查看其信息如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;libspeedtester.so: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, not stripped
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;android-代码集成&#34;&gt;Android 代码集成&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Step1: 使用 Android Studio 新建一个工程，名叫 goandroid 的工程。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/goandroid/app.png&#34; alt=&#34;app.png&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step2: 添加 jna 依赖&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在 &lt;code&gt;build.gradle&lt;/code&gt; 文件中的 &lt;code&gt;dependencies&lt;/code&gt; 中添加依赖：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;implementation &#39;net.java.dev.jna:jna:5.4.0&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;/images/goandroid/app02.png&#34; alt=&#34;app02.png&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step3: 添加 jna Android 平台依赖&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在 app/libs 目录下新建一个叫做 arm64-v8a 的目录，目录下存放 &lt;code&gt;libjnidispatch.so&lt;/code&gt; 以及我们的动态库 &lt;code&gt;libspeedtester.so&lt;/code&gt; 文件，其次还要修改 &lt;code&gt;build.gradle&lt;/code&gt; 文件，添加 &lt;code&gt;sourceSets&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/goandroid/app03.png&#34; alt=&#34;app03.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;说明：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;libjnidispatch&lt;/code&gt; 文件需要根据不同的CPU架构来选择，可以点击连接 &lt;a href=&#34;https://github.com/java-native-access/jna/tree/master/dist&#34;&gt;jna/dist&lt;/a&gt; 下载对应平台的 jar 包，解压缩 jar 包后，可以提取 libjnidispatch 文件。&lt;/li&gt;
+&lt;li&gt;手机不同架构，所新建的目录名称不同，比如我这里 arm64 的手机为 arm64-v8a，具体视情况而定。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Step4: 新加一个 &lt;code&gt;SpeedTester&lt;/code&gt; 接口来使用我们的 &lt;code&gt;libspeedtester.so&lt;/code&gt; 库&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; com.example.goandroid&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; com.sun.jna.Library&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; com.sun.jna.Native&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;SpeedTester&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; Library &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    SpeedTester INSTANCE &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Native&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;load&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;speedtester&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; SpeedTester&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Perform&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String url&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Step5: 修改程序首页，调用 &lt;code&gt;SpeedTester&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;修改 &lt;code&gt;activity_main.xml&lt;/code&gt; 文件添加如下内容：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
+&amp;lt;LinearLayout xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;
+    xmlns:app=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot;
+    xmlns:tools=&amp;quot;http://schemas.android.com/tools&amp;quot;
+    android:layout_width=&amp;quot;match_parent&amp;quot;
+    android:orientation=&amp;quot;vertical&amp;quot;
+    android:layout_height=&amp;quot;match_parent&amp;quot;
+    tools:context=&amp;quot;.MainActivity&amp;quot;&amp;gt;
+
+    &amp;lt;EditText
+        android:id=&amp;quot;@+id/urlInput&amp;quot;
+        android:layout_width=&amp;quot;match_parent&amp;quot;
+        android:layout_height=&amp;quot;wrap_content&amp;quot;
+        android:hint=&amp;quot;请输入要测试 URL&amp;quot;
+        android:layout_marginLeft=&amp;quot;10dp&amp;quot;
+        android:inputType=&amp;quot;text&amp;quot;
+        /&amp;gt;
+
+    &amp;lt;Button
+        android:id=&amp;quot;@+id/onTest&amp;quot;
+        android:layout_width=&amp;quot;150dp&amp;quot;
+        android:layout_height=&amp;quot;45dp&amp;quot;
+        android:text=&amp;quot;点击测速&amp;quot; /&amp;gt;
+
+&amp;lt;/LinearLayout&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;修改 &lt;code&gt;MainActivity&lt;/code&gt; 代码，使用 &lt;code&gt;SpeedTester&lt;/code&gt; 进行测速。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; com.example.goandroid&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; android.os.Bundle&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; android.util.Log&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; android.view.View&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; android.widget.EditText&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; androidx.appcompat.app.AppCompatActivity&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MainActivity&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; AppCompatActivity &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Bundle savedInstanceState&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;super&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;onCreate&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;savedInstanceState&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+        setContentView&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;R&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;layout&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;activity_main&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+
+        &lt;span style=&#34;color:#75715e&#34;&gt;// register id
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        findViewById&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;R&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;onTest&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setOnClickListener&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; View&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;OnClickListener&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(){&lt;/span&gt;
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onClick&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;View v&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+                EditText registerIdText &lt;span style=&#34;color:#f92672&#34;&gt;=(&lt;/span&gt;EditText&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;findViewById&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;R&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;urlInput&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+                String url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; registerIdText&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getText&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;toString&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+                Log&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;d&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GOAndroid&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;start speed testing with url: &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; url&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; cost &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; SpeedTester&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;INSTANCE&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Perform&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;url&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+                Log&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;d&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GOAndroid&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;finish speed testing with result: &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; cost &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ms&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;};&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;});&lt;/span&gt;
+
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Step6: 修改 &lt;code&gt;AndroidManifest.xml&lt;/code&gt;，开启网络权限&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;uses-permission android:name=&amp;quot;android.permission.INTERNET&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;Step7: 真机模拟运行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;程序首页：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/goandroid/app04.png&#34; alt=&#34;app04.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;输入 &lt;code&gt;http://jd.com&lt;/code&gt;，点击测试，可以在 Logcat 中看到输出结果：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/goandroid/app05.png&#34; alt=&#34;app05.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;可以看到，在 Logcat 日志中已经打印输出了测试 &lt;a href=&#34;http://jd.com&#34;&gt;http://jd.com&lt;/a&gt; 网站的速度了，说明在 Android 真机中调用我们的 Go 代码已经成功。&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+&lt;p&gt;今天我们通过一个 Android 程序中调用 Go 交叉编译的动态链接库的简单示例来演示了在 Android 中如何使用 Go，其过程大致为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;选用 NDK 的 make-standalone-toolchain.sh 编译本机环境的 toolchain。&lt;/li&gt;
+&lt;li&gt;使用编译出来的 toolchain 交叉编译 Android 系统的动态库。&lt;/li&gt;
+&lt;li&gt;在 Android 中使用 jna 来使用该动态库。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;代码参考 &lt;a href=&#34;https://github.com/songjiayang/go-android&#34;&gt;songjiayang/go-android&lt;/a&gt; 。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何在 Ubuntu 上交叉编译 ARM 架构的 CGO 程序</title>
+      <link>/posts/2019-09-26-ru-he-kua-ping-tai-bian-yi-armde-cgocheng-xu/</link>
+      <pubDate>Thu, 26 Sep 2019 17:38:08 +0800</pubDate>
+      
+      <guid>/posts/2019-09-26-ru-he-kua-ping-tai-bian-yi-armde-cgocheng-xu/</guid>
+      <description>&lt;p&gt;我们都知道在不涉及 CGO 的时候，Go 的交叉编译非常简单，只需要设置对应的 GOOS 和 GOARCH 即可，但当涉及到 CGO 时，问题就变得有点复杂了，因为你需要指定特定的 GCC。&lt;/p&gt;
+&lt;p&gt;例如，想在 Ubuntu 上交叉编译一个带有 CGO 的动态库，目标 CPU 架构为 arm，我们该如何操作呢？&lt;/p&gt;
+&lt;h2 id=&#34;示例代码&#34;&gt;示例代码&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;# shared.go
+package main
+
+import &amp;quot;C&amp;quot;
+
+//export Sum
+func Sum(a, b int) int {
+	return a + b
+}
+
+func main(){}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个代码使用到了 CGO，然后暴露一个 &lt;code&gt;Sum&lt;/code&gt; 方法，实现两个整数相加。&lt;/p&gt;
+&lt;h2 id=&#34;编译-32-位的-arm&#34;&gt;编译 32 位的 arm&lt;/h2&gt;
+&lt;p&gt;因为通过设置 &lt;code&gt;CGO_ENABLED=1&lt;/code&gt; 开启 CGO 编译，执行命令如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;CGO_ENABLED=1 GOOS=linux GOARCH=arm go build -buildmode=c-shared -o share.so 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;但不幸，命令报错： &lt;code&gt;gcc: error: unrecognized command line option &#39;-marm&#39;&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;正如一开始我提到，交叉编译 CGO 需要选择特定的 arm 交叉编译工具，而 Ubuntu 上编译 32 位的 arm 可以使用 &lt;code&gt;gcc-arm-linux-gnueabihf&lt;/code&gt;，安装命令如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;sudo apt-get update
+sudo apt-get install gcc-arm-linux-gnueabihf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装完成后，指定 &lt;code&gt;CC&lt;/code&gt; 重新编译：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; CGO_ENABLED&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; GOOS&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;linux GOARCH&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;arm CC&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;arm-linux-gnueabihf-gcc go build -buildmode&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;c-shared -o share.so 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;命令成功运行，此时目录下已经生成了一个叫做 &lt;code&gt;share.so&lt;/code&gt; 的文件，通过 &lt;code&gt;file&lt;/code&gt; 命令查看其属性，可以确认确实为 &lt;code&gt;arm 32&lt;/code&gt; 版本。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;share.so: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), dynamically linked, BuildID[sha1]=7b23579ddcbebdfc8f4b68512859661a45d66996, not stripped
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;编译-64-位的-arm&#34;&gt;编译 64 位的 arm&lt;/h2&gt;
+&lt;p&gt;交叉编译的时候，不仅要针对平台选择 GCC，而且还要根据操作系统的位数来选，所以 64 位需要选择不同的 GCC，这里推荐 &lt;a href=&#34;https://releases.linaro.org/components/toolchain/binaries/5.3-2016.02/aarch64-linux-gnu/gcc-linaro-5.3-2016.02-x86_64_aarch64-linux-gnu.tar.xz&#34;&gt;gcc-linaro-5.3-2016.02-x86_64_aarch64-linux-gnu.tar.xz&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;安装命令:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;wget https://releases.linaro.org/components/toolchain/binaries/5.3-2016.02/aarch64-linux-gnu/gcc-linaro-5.3-2016.02-x86_64_aarch64-linux-gnu.tar.xz 
+
+tar xvf gcc-linaro-5.3-2016.02-x86_64_aarch64-linux-gnu.tar.xz -C /usr/lib/
+
+echo &#39;export PATH=&amp;quot;$PATH:/usr/lib/gcc-linaro-5.3-2016.02-x86_64_aarch64-linux-gnu/bin&amp;quot;&#39; &amp;gt;&amp;gt; ~/.bashrc
+
+source ~/.bashrc
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安装完成，重新执行编译命令：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; CGO_ENABLED=1 GOOS=linux GOARCH=arm64 CC=aarch64-linux-gnu-gcc-5.3.1 go build -buildmode=c-shared -o share.so 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;编译成功，并产生一个 share.so 文件，同样我们使用 &lt;code&gt;file share.so&lt;/code&gt; 查看其元信息为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;share.so: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, BuildID[sha1]=5b0e7ff7c3af178039a7b934df8ca3e7572ab5b5, not stripped
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;到目前为止，我们已经成功在 Ubuntu 系统上交叉编译出了 CGO 程序的 arm 和 arm64 两个版本。&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+&lt;p&gt;当 Go 交叉编译涉及到 CGO 时，只指定 GOOS 和 GOARCH 是不够的，还需要通过 CC 参数指定相应的 GCC 版本，而 GCC 的选择又与当前系统以及目标架构有关：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;交叉编译目标 CPU 架构（包括 32位 还是 64位）。&lt;/li&gt;
+&lt;li&gt;交叉编译所在操作系统。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何在 Go 中优雅关闭子进程</title>
+      <link>/posts/2019-05-31-go-zhong-you-ya-guan-bi-zi-jin-cheng/</link>
+      <pubDate>Fri, 31 May 2019 14:51:06 +0800</pubDate>
+      
+      <guid>/posts/2019-05-31-go-zhong-you-ya-guan-bi-zi-jin-cheng/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/golang-fork.png&#34; alt=&#34;golang-fork.png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;如何在-go-中运行一个外部命令&#34;&gt;如何在 Go 中运行一个外部命令&lt;/h2&gt;
+&lt;p&gt;有时我们会遇到这样的需求，在一个主进程中启动另外一个进程，而在 Go 中可以使用 exec 包的 &lt;code&gt;Cmd&lt;/code&gt; 来轻松实现这类需求，例如代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;log&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os/exec&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os/signal&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;exec&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Cmd&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Path&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;nc&amp;#34;&lt;/span&gt;,
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Args&lt;/span&gt;: []&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-u&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-l&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;8888&amp;#34;&lt;/span&gt;},
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Dir&lt;/span&gt;:  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/usr/bin&amp;#34;&lt;/span&gt;,
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Start&lt;/span&gt;(); &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Panic&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Start child process with pid&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Process&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Pid&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; make(&lt;span style=&#34;color:#66d9ef&#34;&gt;chan&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Signal&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;signal&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Notify&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Interrupt&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Got signal:&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt;)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这段代码的含义是： 使用 &lt;code&gt;nc -u -l 8888&lt;/code&gt; 来模拟一个常驻进程，然后通过 Go 的 &lt;code&gt;exec.Cmd&lt;/code&gt; 来运行它，并且 Go 代码不退出，运行代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ go run main.go
+
+Start child process with pid &lt;span style=&#34;color:#ae81ff&#34;&gt;35904&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;输出结果表明我们已经通过 Go 成功调用外部命令，起了一个子进程，其进程号为 &lt;code&gt;35904&lt;/code&gt;，我们还可以通过命令 &lt;code&gt;ps -ef 35904&lt;/code&gt; 来确认：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; UID   PID  PPID   C STIME   TTY           TIME CMD
+&lt;span style=&#34;color:#ae81ff&#34;&gt;2062309935&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;35904&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;35903&lt;/span&gt;   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;  3:36PM ttys008    0:00.00 -u -l &lt;span style=&#34;color:#ae81ff&#34;&gt;8888&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;如何结束子进程&#34;&gt;如何结束子进程&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;首先想到的就是 &lt;code&gt;kill&lt;/code&gt; 命令，尝试使用 &lt;code&gt;kill 35904&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ kill &lt;span style=&#34;color:#ae81ff&#34;&gt;35904&lt;/span&gt;
+$ ps -ef &lt;span style=&#34;color:#ae81ff&#34;&gt;35904&lt;/span&gt;
+
+UID   PID  PPID   C STIME   TTY           TIME CMD
+&lt;span style=&#34;color:#ae81ff&#34;&gt;2062309935&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;35904&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;35903&lt;/span&gt;   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;  3:36PM ttys008    0:00.00 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;nc&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;发现 kill 命令并不好用，进程还在，然后换成  &lt;code&gt;kill -9&lt;/code&gt; 也同样不起作用。不过该进程已经停止运行了，可以看到监听由 &lt;code&gt;0:00.00 -u -l 8888&lt;/code&gt; 变成了 &lt;code&gt;0:00.00 (nc)&lt;/code&gt;, 不再监听 8888 端口，只是进程资源还没释放而已。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 Go 代码结束该进程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因为 Go 的 Cmd 内置了 &lt;code&gt;Process.Kill()&lt;/code&gt; 函数，我们可以尝试使用它来关闭子进程，修改代码，添加如下内容：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// After five second, kill cmd&#39;s process
+time.Sleep(5 * time.Second)
+cmd.Process.Kill()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;重新运行代码，发现 5 秒过后，该子进程还在。其实调用 &lt;code&gt;cmd.Process.Kill()&lt;/code&gt; 和外部使用 kill 命令是一样的，父进程还没有释放资源，所以子进程不能清理完成。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;cmd.Wait()&lt;/code&gt; 完成资源清理，修改后的完整代码如下：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;log&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os/exec&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os/signal&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;time&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;exec&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Cmd&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Path&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;nc&amp;#34;&lt;/span&gt;,
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Args&lt;/span&gt;: []&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-u&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-l&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;8888&amp;#34;&lt;/span&gt;},
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Dir&lt;/span&gt;:  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/usr/bin&amp;#34;&lt;/span&gt;,
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Start&lt;/span&gt;(); &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Panic&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Start child process with pid&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Process&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Pid&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Wait releases any resources associated with the Cmd
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;go&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;() {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Wait&lt;/span&gt;(); &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Child process %d exit with err: %v\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Process&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Pid&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+		}
+	}()
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// After five second, kill cmd&amp;#39;s process
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sleep&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Second&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Process&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Kill&lt;/span&gt;()
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; make(&lt;span style=&#34;color:#66d9ef&#34;&gt;chan&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Signal&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;signal&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Notify&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Interrupt&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Got signal:&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt;)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;运行代码，可以得到如下结果：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;go&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;run&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;.&lt;span style=&#34;color:#66d9ef&#34;&gt;go&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;Start&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;child&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;process&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;with&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pid&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;41666&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;Child&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;process&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;41666&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;exit&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;with&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;signal&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;killed&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;再通过 &lt;code&gt;ps -el 41666&lt;/code&gt; 命令确认子进程 &lt;code&gt;41666&lt;/code&gt; 已不存在。&lt;/p&gt;
+&lt;h3 id=&#34;结语&#34;&gt;结语&lt;/h3&gt;
+&lt;p&gt;Go 中 exec.Cmd 封装的很好，对于外部命令调用非常方便，但是使用它的时候，需要注意对子进程的资源进行释放，其关键函数就是 &lt;code&gt;cmd.Wait()&lt;/code&gt;,
+所以用到 cmd 的地方，一定添加 &lt;code&gt;cmd.Wait()&lt;/code&gt; 的逻辑。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;参考链接：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://golang.org/pkg/os/exec/#Cmd.Wait&#34;&gt;https://golang.org/pkg/os/exec/#Cmd.Wait&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何在 Go 中使用 CGroup 实现进程内存控制</title>
+      <link>/posts/2019-05-23-shi-yong-cgroup-shi-xian-nei-cun-kong-zhi/</link>
+      <pubDate>Thu, 23 May 2019 18:12:57 +0800</pubDate>
+      
+      <guid>/posts/2019-05-23-shi-yong-cgroup-shi-xian-nei-cun-kong-zhi/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/cgroup/lxc.png&#34; alt=&#34;lxc.png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;从 Linux 内核 2.6.25 开始，&lt;code&gt;CGroup&lt;/code&gt; 支持对进程内存的隔离和限制，这也是 Docker 等容器技术的底层支撑。&lt;/p&gt;
+&lt;p&gt;使用 CGroup 有如下好处：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在共享的机器上，进程相互隔离，互不影响，对其它进程是种保护。&lt;/li&gt;
+&lt;li&gt;对于存在内存泄漏的进程，可以设置内存限制，通过系统 OOM 触发的 Kill 信号量来实现重启。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;cgroup-快速入门&#34;&gt;CGroup 快速入门&lt;/h2&gt;
+&lt;h3 id=&#34;默认挂载分组&#34;&gt;默认挂载分组&lt;/h3&gt;
+&lt;p&gt;Linux 系统默认支持 &lt;code&gt;CGroup&lt;/code&gt;, 而且默认挂载所有选项，可以使用 &lt;code&gt;mount -t cgroup&lt;/code&gt; 来查看：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ mount -t cgroup
+
+cgroup on /sys/fs/cgroup/systemd type cgroup &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;rw,nosuid,nodev,noexec,relatime,xattr,release_agent&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/usr/lib/systemd/systemd-cgroups-agent,name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;systemd&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+cgroup on /sys/fs/cgroup/net_cls type cgroup &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;rw,nosuid,nodev,noexec,relatime,net_cls&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+cgroup on /sys/fs/cgroup/cpuset type cgroup &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;rw,nosuid,nodev,noexec,relatime,cpuset&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+cgroup on /sys/fs/cgroup/perf_event type cgroup &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;rw,nosuid,nodev,noexec,relatime,perf_event&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+cgroup on /sys/fs/cgroup/freezer type cgroup &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;rw,nosuid,nodev,noexec,relatime,freezer&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+cgroup on /sys/fs/cgroup/memory type cgroup &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;rw,nosuid,nodev,noexec,relatime,memory&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+cgroup on /sys/fs/cgroup/cpu,cpuacct type cgroup &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;rw,nosuid,nodev,noexec,relatime,cpuacct,cpu&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+cgroup on /sys/fs/cgroup/hugetlb type cgroup &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;rw,nosuid,nodev,noexec,relatime,hugetlb&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+cgroup on /sys/fs/cgroup/devices type cgroup &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;rw,nosuid,nodev,noexec,relatime,devices&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+cgroup on /sys/fs/cgroup/blkio type cgroup &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;rw,nosuid,nodev,noexec,relatime,blkio&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;CGroup&lt;/code&gt; 相关的资源包括 &lt;code&gt;cpu&lt;/code&gt;,&lt;code&gt;memory&lt;/code&gt;,&lt;code&gt;blkio&lt;/code&gt;等，而我们今天主要关心的是内存，即 &lt;code&gt;/sys/fs/cgroup/memory&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;创建-climits-内存分组&#34;&gt;创建 &lt;code&gt;climits&lt;/code&gt; 内存分组&lt;/h3&gt;
+&lt;p&gt;我们可以使用 &lt;code&gt;mkdir /sys/fs/cgroup/memory/climits&lt;/code&gt; 来创建属于自己的内存组 &lt;code&gt;climits&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ mkdir /sys/fs/cgroup/memory/climits
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;此时系统已经在目录 &lt;code&gt;/sys/fs/cgroup/memory/climits&lt;/code&gt; 下为我们生成了内存相关的所有配置：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ls -la /sys/fs/cgroup/memory/climits
+
+cgroup.clone_children  memory.kmem.limit_in_bytes          memory.kmem.tcp.usage_in_bytes  memory.memsw.max_usage_in_bytes  memory.soft_limit_in_bytes  tasks
+cgroup.event_control   memory.kmem.max_usage_in_bytes      memory.kmem.usage_in_bytes      memory.memsw.usage_in_bytes      memory.stat
+cgroup.procs           memory.kmem.slabinfo                memory.limit_in_bytes           memory.move_charge_at_immigrate  memory.swappiness
+memory.failcnt         memory.kmem.tcp.failcnt             memory.max_usage_in_bytes       memory.numa_stat                 memory.usage_in_bytes
+memory.force_empty     memory.kmem.tcp.limit_in_bytes      memory.memsw.failcnt            memory.oom_control               memory.use_hierarchy
+memory.kmem.failcnt    memory.kmem.tcp.max_usage_in_bytes  memory.memsw.limit_in_bytes     memory.pressure_level            notify_on_release
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;主要配置含义：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;cgroup.procs: 使用该组配置的进程列表。&lt;/li&gt;
+&lt;li&gt;memory.limit_in_bytes：内存使用限制。&lt;/li&gt;
+&lt;li&gt;memory.memsw.limit_in_bytes：内存和交换分区总计限制。&lt;/li&gt;
+&lt;li&gt;memory.swappiness: 交换分区使用比例。&lt;/li&gt;
+&lt;li&gt;memory.usage_in_bytes： 当前进程内存使用量。&lt;/li&gt;
+&lt;li&gt;memory.stat: 内存使用统计信息。&lt;/li&gt;
+&lt;li&gt;memory.oom_control: OOM 控制参数。&lt;/li&gt;
+&lt;li&gt;其它，参考&lt;a href=&#34;http://man7.org/linux/man-pages/man7/cgroups.7.html&#34;&gt;官方手册&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;设置内存限制&#34;&gt;设置内存限制&lt;/h3&gt;
+&lt;p&gt;假设有进程 pid &lt;code&gt;1234&lt;/code&gt;，希望设置内存限制为 10MB，我们可以这样操作：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;limit_in_bytes 设置为 10MB&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;echo 10M &amp;gt; /sys/fs/cgroup/memory/climits/memory.limit_in_bytes
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;swappiness 设置为 0，表示禁用交换分区，实际生产中可以配置合适的比例。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;echo 0 &amp;gt; /sys/fs/cgroup/memory/climits/memory.swappiness
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;添加控制进程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;echo 1234 &amp;gt; /sys/fs/cgroup/memory/climits/cgroup.procs
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当进程 &lt;code&gt;1234&lt;/code&gt; 使用内存超过 10MB 的时候，默认进程 &lt;code&gt;1234&lt;/code&gt; 会触发 OOM，被系统 Kill 掉。&lt;/p&gt;
+&lt;h2 id=&#34;go-实现进程内存限制&#34;&gt;Go 实现进程内存限制&lt;/h2&gt;
+&lt;p&gt;上面我们已经讲到 CGroup 内存限制的原理，接下来我们就用 Go 代码来实现一个简单的进程内存限制以及守护（被 Kill 能够自动重启）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;进程测试代码:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;该代码主要逻辑是每隔一秒申请 1MB 存储空间，并且不释放，然后再打印下 Go 的内存申请情况。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// example/simple_app.go
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;runtime&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;time&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; (
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;MB&lt;/span&gt; = &lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;blocks&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; make([][&lt;span style=&#34;color:#a6e22e&#34;&gt;MB&lt;/span&gt;]&lt;span style=&#34;color:#66d9ef&#34;&gt;byte&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Child pid is&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Getpid&lt;/span&gt;())
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; ; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;blocks&lt;/span&gt; = append(&lt;span style=&#34;color:#a6e22e&#34;&gt;blocks&lt;/span&gt;, [&lt;span style=&#34;color:#a6e22e&#34;&gt;MB&lt;/span&gt;]&lt;span style=&#34;color:#66d9ef&#34;&gt;byte&lt;/span&gt;{})
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;printMemUsage&lt;/span&gt;()
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sleep&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Second&lt;/span&gt;)
+	}
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;printMemUsage&lt;/span&gt;() {
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;m&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;runtime&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MemStats&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;runtime&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ReadMemStats&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;m&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Alloc = %v MiB&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;bToMb&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;m&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Alloc&lt;/span&gt;))
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;\tSys = %v MiB \n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;bToMb&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;m&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sys&lt;/span&gt;))
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;bToMb&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;b&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;uint64&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;uint64&lt;/span&gt; {
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;b&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MB&lt;/span&gt;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;通过 GOOS=linux GOARCH=amd64 go build -o simpleapp example/simple_app.go 命令，编译一个 Linux 版本的可执行程序 &lt;code&gt;simpleapp&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;进程守护程序&#34;&gt;进程守护程序&lt;/h3&gt;
+&lt;p&gt;该守护程序主要实现进程内存限制和进程守护（自动重启），代码如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// main.go
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;flag&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;io/ioutil&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;log&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os/exec&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os/signal&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;path/filepath&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;syscall&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; (
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;rssLimit&lt;/span&gt;   &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;cgroupRoot&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; (
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;procsFile&lt;/span&gt;       = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;cgroup.procs&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;memoryLimitFile&lt;/span&gt; = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;memory.limit_in_bytes&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;swapLimitFile&lt;/span&gt;   = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;memory.swappiness&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;init&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;flag&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;IntVar&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;rssLimit&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;memory&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;memory limit with MB.&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;flag&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StringVar&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;cgroupRoot&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;root&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/sys/fs/cgroup/memory/climits&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;cgroup root path&amp;#34;&lt;/span&gt;)
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;flag&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Parse&lt;/span&gt;()
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// set memory limit
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;mPath&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;filepath&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Join&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;cgroupRoot&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;memoryLimitFile&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;whiteFile&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;mPath&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;rssLimit&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// set swap memory limit to zero
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;sPath&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;filepath&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Join&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;cgroupRoot&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;swapLimitFile&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;whiteFile&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;sPath&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;go&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;startCmd&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;./simpleapp&amp;#34;&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; make(&lt;span style=&#34;color:#66d9ef&#34;&gt;chan&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Signal&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;signal&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Notify&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Interrupt&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Got signal:&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt;)
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;whiteFile&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;path&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;) {
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ioutil&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;WriteFile&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;path&lt;/span&gt;, []byte(&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sprintf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%d&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt;)), &lt;span style=&#34;color:#ae81ff&#34;&gt;0755&lt;/span&gt;); &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Panic&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ExitStatus&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Signal&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Signal&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Code&lt;/span&gt;   &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;startCmd&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;command&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;) {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;restart&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; make(&lt;span style=&#34;color:#66d9ef&#34;&gt;chan&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ExitStatus&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;runner&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;() {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;exec&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Cmd&lt;/span&gt;{
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;Path&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;command&lt;/span&gt;,
+		}
+
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Stdout&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Stdout&lt;/span&gt;
+
+		&lt;span style=&#34;color:#75715e&#34;&gt;// start app
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Start&lt;/span&gt;(); &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Panic&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+		}
+
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;add pid&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Process&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Pid&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;to file cgroup.procs&amp;#34;&lt;/span&gt;)
+
+		&lt;span style=&#34;color:#75715e&#34;&gt;// set cgroup procs id
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;pPath&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;filepath&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Join&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;cgroupRoot&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;procsFile&lt;/span&gt;)
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;whiteFile&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;pPath&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Process&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Pid&lt;/span&gt;)
+
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Wait&lt;/span&gt;(); &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;cmd return with error:&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+		}
+
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;status&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ProcessState&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sys&lt;/span&gt;().(&lt;span style=&#34;color:#a6e22e&#34;&gt;syscall&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;WaitStatus&lt;/span&gt;)
+
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;options&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ExitStatus&lt;/span&gt;{
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;Code&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;status&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ExitStatus&lt;/span&gt;(),
+		}
+
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;status&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Signaled&lt;/span&gt;() {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;options&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Signal&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;status&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Signal&lt;/span&gt;()
+		}
+
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;cmd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Process&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Kill&lt;/span&gt;()
+
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;restart&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;options&lt;/span&gt;
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;go&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;runner&lt;/span&gt;()
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;status&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;restart&lt;/span&gt;
+
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;switch&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;status&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Signal&lt;/span&gt; {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Kill&lt;/span&gt;:
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app is killed by system&amp;#34;&lt;/span&gt;)
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;:
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app exit with code:&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;status&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Code&lt;/span&gt;)
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
+		}
+
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;restart app..&amp;#34;&lt;/span&gt;)
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;go&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;runner&lt;/span&gt;()
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这段代码的主要逻辑为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过配置参数 memory ，修改 memory.limit_in_bytes 和 memory.swappiness 来设置最大内存使用量。&lt;/li&gt;
+&lt;li&gt;通过 cmd.Start() 启动一个进程。&lt;/li&gt;
+&lt;li&gt;将新生成的进程号 cmd.Process.Pid 写到 cgroup.procs。&lt;/li&gt;
+&lt;li&gt;通过 cmd.Wait() 接收命令输出结果。&lt;/li&gt;
+&lt;li&gt;如果返回结果为 Kill 信号的时候，能够重启任务。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通过 GOOS=linux GOARCH=amd64 go build -o climits main.go  命令，编译一个 Linux 版本的可执行程序 &lt;code&gt;climits&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;运行示例&#34;&gt;运行示例&lt;/h3&gt;
+&lt;p&gt;我们已经提前创建了一个叫做 &lt;code&gt;climits&lt;/code&gt; 的内存相关 CGroup，并且目录下包含 &lt;code&gt;climits&lt;/code&gt;, &lt;code&gt;simpleapp&lt;/code&gt; 两个可执行程序。&lt;/p&gt;
+&lt;p&gt;此时运行命令 &lt;code&gt;./climits -memory 60&lt;/code&gt;，可以看到如下输出：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;root@A04-R08-I197-202-3DGCDB2 climits&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# ./climit -memory 60&lt;/span&gt;
+add pid &lt;span style=&#34;color:#ae81ff&#34;&gt;48189&lt;/span&gt; to file cgroup.procs
+Child pid is &lt;span style=&#34;color:#ae81ff&#34;&gt;48189&lt;/span&gt;
+Alloc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; MiB	Sys &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;66&lt;/span&gt; MiB 
+Alloc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; MiB	Sys &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;66&lt;/span&gt; MiB 
+Alloc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt; MiB	Sys &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;68&lt;/span&gt; MiB 
+Alloc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt; MiB	Sys &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;68&lt;/span&gt; MiB 
+Alloc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;16&lt;/span&gt; MiB	Sys &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;68&lt;/span&gt; MiB 
+Alloc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;16&lt;/span&gt; MiB	Sys &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;68&lt;/span&gt; MiB 
+...
+Alloc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt; MiB	Sys &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;134&lt;/span&gt; MiB 
+Alloc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt; MiB	Sys &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;134&lt;/span&gt; MiB 
+cmd &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; with error: signal: killed
+app is killed by system
+restart app..
+add pid &lt;span style=&#34;color:#ae81ff&#34;&gt;48256&lt;/span&gt; to file cgroup.procs
+Child pid is &lt;span style=&#34;color:#ae81ff&#34;&gt;48256&lt;/span&gt;
+Alloc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; MiB	Sys &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;66&lt;/span&gt; MiB 
+Alloc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; MiB	Sys &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;68&lt;/span&gt; MiB 
+Alloc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt; MiB	Sys &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;68&lt;/span&gt; MiB 
+Alloc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; MiB	Sys &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;68&lt;/span&gt; MiB 
+^CGot signal: interrupt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;通过输出可以看出，当内存超过一定限制后，进程 &lt;code&gt;48189&lt;/code&gt; 会被 Kill 掉，守护程序收到 Kill 信号后，会先关闭老进程，再重启新进程 &lt;code&gt;48256&lt;/code&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+&lt;p&gt;这篇文章主要简单介绍了 CGroup 控制进程内存的原理，并通过 Go 代码实现一个简单的进程守护，支持内存限制和进程重启。我们还可以通过它来查看进程内存使用详细信息，以此完成一个简易内存 container。&lt;/p&gt;
+&lt;p&gt;参考链接：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://man7.org/linux/man-pages/man7/cgroups.7.html&#34;&gt;man7/cgroups&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://segmentfault.com/a/1190000008125359&#34;&gt;限制cgroup的内存使用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/songjiayang/climits&#34;&gt;climits源代码&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Unit Test In Go With Docker</title>
+      <link>/posts/2019-04-02-golang-test-with-docker/</link>
+      <pubDate>Tue, 02 Apr 2019 18:10:29 +0800</pubDate>
+      
+      <guid>/posts/2019-04-02-golang-test-with-docker/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/docker-testing.png&#34; alt=&#34;docker-testing.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;本篇文章主要讲解如何在 Docker 中进行 Go 单元测试，依赖 Docker 和 Go Modules。&lt;/p&gt;
+&lt;h3 id=&#34;为什么是-docker&#34;&gt;为什么是 Docker&lt;/h3&gt;
+&lt;p&gt;在 Docker 之前我们往往需要在 Jenkins 服务器上配置不同的 Go 版本以及针对每个项目配置 GOPATH，项目之间的隔离性差，经常出现基础库版本冲突的问题。&lt;/p&gt;
+&lt;p&gt;有了 Docker，我们可以在不同容器中运行单元测试，该测试不局限不同项目，甚至可以是同一项目不同分支。&lt;/p&gt;
+&lt;p&gt;所以在测试隔离性和项目测试并发度上都有很大提升，而且测试结束后，环境清理也简单许多。&lt;/p&gt;
+&lt;h3 id=&#34;为什么是-go-modules&#34;&gt;为什么是 Go Modules&lt;/h3&gt;
+&lt;p&gt;Go Modules 作为官方默认的包管理工具，基本解决了 Go 长期存在的包管理问题，它为我们的项目管理带来很多好处：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;自动解析和添加依赖&lt;/li&gt;
+&lt;li&gt;签名验证&lt;/li&gt;
+&lt;li&gt;依赖缓存&lt;/li&gt;
+&lt;li&gt;支持相对路径依赖&lt;/li&gt;
+&lt;li&gt;支持依赖一键打包，方便在离线环境下运行程序&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;实际例子&#34;&gt;实际例子&lt;/h3&gt;
+&lt;p&gt;下面我们来看一个简单例子，来自 &lt;a href=&#34;https://gin-gonic.com/docs/testing/&#34;&gt;Gin Testing Example&lt;/a&gt;，项目目录结构为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ tree .
+.
+├── go.mod
+├── go.sum
+├── main.go
+└── main_test.go
+
+0 directories, 4 files
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;main.go 内容：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+func setupRouter() *gin.Engine {
+	r := gin.Default()
+	r.GET(&amp;quot;/ping&amp;quot;, func(c *gin.Context) {
+		c.String(200, &amp;quot;pong&amp;quot;)
+	})
+	return r
+}
+
+func main() {
+	r := setupRouter()
+	r.Run(&amp;quot;:8080&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;main_test.go 内容：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+	&amp;quot;net/http&amp;quot;
+	&amp;quot;net/http/httptest&amp;quot;
+	&amp;quot;testing&amp;quot;
+
+	&amp;quot;github.com/stretchr/testify/assert&amp;quot;
+)
+
+func TestPingRoute(t *testing.T) {
+	router := setupRouter()
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest(&amp;quot;GET&amp;quot;, &amp;quot;/ping&amp;quot;, nil)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, 200, w.Code)
+	assert.Equal(t, &amp;quot;pong&amp;quot;, w.Body.String())
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;首先尝试在主机执行 &lt;code&gt;go test ./...&lt;/code&gt; ，测试通过，下面我们想办法在 Docker 中进行测试。&lt;/p&gt;
+&lt;h3 id=&#34;docker-运行测试&#34;&gt;Docker 运行测试&lt;/h3&gt;
+&lt;p&gt;步骤1: 对项目依赖进行打包，方便在 Docker 无网环境下运行单元测试&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;go mod vendor
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;此时所有的依赖都打包放在项目根目录的 vendor 下面：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ tree .
+.
+├── go.mod
+├── go.sum
+├── main.go
+├── main_test.go
+└── vendor
+    ├── github.com
+    │   ├── davecgh
+    │   │   └── go-spew
+    │   │       ├── LICENSE
+    │   │       └── spew
+    │   │           ├── bypass.go
+    │   │           ├── bypasssafe.go
+    │   │           ├── common.go
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;步骤2: 制作 Go Docker 镜像&lt;/p&gt;
+&lt;p&gt;因为我们只需要 Go 的标准环境，所以可以使用官方的标准镜像，例如 golang:1.12.1。&lt;/p&gt;
+&lt;p&gt;如果你有特殊需求，可以定制自己的 Go 镜像, 例如自定义启动命令，添加数据库依赖等：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Dockerfile:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;FROM ubuntu
+RUN apt-get update &amp;amp;&amp;amp; apt-get install -y libssl1.0.0 libssl-dev gcc
+
+RUN mkdir -p /data/db /opt/go/ /opt/gopath
+
+# go1.xx.x.linux-amd64.tar.gz 解压缩后为 go
+ADD go /opt/go 
+RUN cp /opt/go/bin/* /usr/local/bin/
+ENV GOROOT=/opt/go GOPATH=/opt/gopath
+
+WORKDIR /ws
+CMD GOPROXY=off go test -mod=vendor ./...
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;执行 docker build:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;docker build . -t gotesting:v0.0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;步骤3: 在 Docker 中运行 Golang 测试&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 golang:1.12.1:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;$ docker run --volume=$(pwd):/ws \
+     --workdir=/ws golang:1.12.1 \
+    /bin/bash -c &amp;quot;GOPROXY=off go test -mod=vendor ./...&amp;quot;
+ok  	github.com/songjiayang/gin-test	0.011s
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;使用自定义镜像 gotesting:v0.0.1:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;docker run --volume=$(pwd):/ws gotesting:v0.0.1
+ok  	github.com/songjiayang/gin-test	0.014s
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以看到两种方式都能在 Docker 中运行 Go 单元测试，自定义镜像可以指定默认运行命令，使操作更简单，上面命令的含义是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&amp;ndash;volume=$(pwd):/ws ：将项目根目录映射到 Docker 容器中的 /ws 目录。&lt;/li&gt;
+&lt;li&gt;&amp;ndash;workdir=/ws ： 指定容器运行工作目录为 /ws, 即映射外面项目根目录。&lt;/li&gt;
+&lt;li&gt;/bin/bash -c &amp;ldquo;GOPROXY=off go test -mod=vendor ./&amp;hellip;&amp;rdquo; : 表示在 Docker 中以离线，vendor 模式运行 Go 单元测试。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;做的更好&#34;&gt;做的更好&lt;/h3&gt;
+&lt;p&gt;到目前为止，我们已经掌握在 Docker 中运行 Go 单元测试的方法。当然我们还可以做的更好，Docker 运行的标准输出可以和 Jenkins 天然集成，实现项目的自动测试。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Go http.Flusher 在实际项目中的应用</title>
+      <link>/posts/2019-03-21-go-http-zhong-flusher-zai-shi-ji-kai-fa-zhong-de-ying-yong/</link>
+      <pubDate>Thu, 21 Mar 2019 20:16:31 +0800</pubDate>
+      
+      <guid>/posts/2019-03-21-go-http-zhong-flusher-zai-shi-ji-kai-fa-zhong-de-ying-yong/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/flush/cover01.png&#34; alt=&#34;cover.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;最近在使用 Docker Go SDK 做开发的时候，参考了官方的&lt;a href=&#34;https://docs.docker.com/develop/sdk/examples/&#34;&gt;示例&lt;/a&gt;代码:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;io&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os&amp;#34;&lt;/span&gt;
+
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/docker/docker/api/types&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/docker/docker/api/types/container&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/docker/docker/client&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;golang.org/x/net/context&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;ctx&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;context&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Background&lt;/span&gt;()
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;cli&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewEnvClient&lt;/span&gt;()
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		panic(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;reader&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cli&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ImagePull&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ctx&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;docker.io/library/alpine&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;types&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ImagePullOptions&lt;/span&gt;{})
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		panic(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;io&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Copy&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Stdout&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;reader&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cli&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ContainerCreate&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ctx&lt;/span&gt;, &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;container&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Config&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Image&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;alpine&amp;#34;&lt;/span&gt;,
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Cmd&lt;/span&gt;:   []&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;echo&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hello world&amp;#34;&lt;/span&gt;},
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Tty&lt;/span&gt;:   &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;,
+	}, &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		panic(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cli&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ContainerStart&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ctx&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ID&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;types&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ContainerStartOptions&lt;/span&gt;{}); &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		panic(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;statusCh&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;errCh&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cli&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ContainerWait&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ctx&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ID&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;container&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;WaitConditionNotRunning&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;select&lt;/span&gt; {
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;errCh&lt;/span&gt;:
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+			panic(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+		}
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;statusCh&lt;/span&gt;:
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cli&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ContainerLogs&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ctx&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ID&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;types&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ContainerLogsOptions&lt;/span&gt;{&lt;span style=&#34;color:#a6e22e&#34;&gt;ShowStdout&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;})
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		panic(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;io&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Copy&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Stdout&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这段代码主要做了 4 件事：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;拉取镜像&lt;/li&gt;
+&lt;li&gt;创建容器&lt;/li&gt;
+&lt;li&gt;启动容器&lt;/li&gt;
+&lt;li&gt;获取容器日志输出&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;其中有个地方引起了我的注意：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;reader, err := cli.ImagePull(ctx, &amp;quot;docker.io/library/alpine&amp;quot;, types.ImagePullOptions{})
+if err != nil {
+    panic(err)
+}
+io.Copy(os.Stdout, reader)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;因为没有用到返回结果 &lt;code&gt;reader&lt;/code&gt;，所以不假思素地将它去掉：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;_, err := cli.ImagePull(ctx, &amp;quot;docker.io/library/alpine&amp;quot;, types.ImagePullOptions{})
+if err != nil {
+    panic(err)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;保存代码，再次执行，当运行到 &lt;code&gt;cli.ContainerCreate&lt;/code&gt; 的时候，会收到&lt;code&gt;No such image: xx&lt;/code&gt;之类的错误。&lt;/p&gt;
+&lt;p&gt;能够运行到  &lt;code&gt;cli.ContainerCreate&lt;/code&gt; 说明已经执行了 &lt;code&gt;cli.ImagePull&lt;/code&gt;，而且没有错误，那为何还会提示找不到镜像？&lt;/p&gt;
+&lt;p&gt;想到的唯一解释是：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;当通过 &lt;code&gt;cli.ImagePull&lt;/code&gt; 拉取镜像的时候，虽然请求返回了结果，并不表示 Docker 服务端真的将镜像拉取完成，因为从远程仓库拉取镜像往往耗时较长，很有可能正在拉取中。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;为了验证猜想，我们深入 Docker 源码，一探究竟。&lt;/p&gt;
+&lt;h2 id=&#34;docker-源码探究&#34;&gt;Docker 源码探究&lt;/h2&gt;
+&lt;h3 id=&#34;客户端代码&#34;&gt;客户端代码：&lt;/h3&gt;
+&lt;p&gt;当客户端执行 &lt;code&gt;ImagePull&lt;/code&gt; 的时候，实际发送了一个 &lt;code&gt;POST&lt;/code&gt; 请求，地址为 &lt;code&gt;/images/create&lt;/code&gt;,  可以参考&lt;a href=&#34;https://github.com/moby/moby/blob/master/client/image_create.go#L34&#34;&gt;代码&lt;/a&gt; :&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/flush/flush05.png&#34; alt=&#34;flush05.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;服务端代码&#34;&gt;服务端代码：&lt;/h3&gt;
+&lt;p&gt;/images/create 请求处理&lt;a href=&#34;https://github.com/moby/moby/blob/master/api/server/router/image/image_routes.go#L26&#34;&gt;代码&lt;/a&gt;为:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/flush/flush01.png&#34; alt=&#34;ImagePull.png&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这段代码主要通过 &lt;code&gt;output   = ioutils.NewWriteFlusher(w)&lt;/code&gt; 封装一个 &lt;code&gt;WriteFlusher&lt;/code&gt; 返回结果。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;WriteFlusher 的 &lt;a href=&#34;https://github.com/moby/moby/blob/8e610b2b55bfd1bfa9436ab110d311f5e8a74dcb/pkg/ioutils/writeflusher.go#L26&#34;&gt;Write 函数&lt;/a&gt; 为 :&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/flush/flush02.png&#34; alt=&#34;flush02.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;最后请求是通过 &lt;code&gt;progressOutput&lt;/code&gt; 的 &lt;a href=&#34;https://github.com/moby/moby/blob/a3f54d45709b3b48022fafd3c4796b1088be1b9d/pkg/streamformatter/streamformatter.go#L115&#34;&gt;WriteProgress&lt;/a&gt; 返回进度：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/flush/flush03.png&#34; alt=&#34;flush03.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;到目前为止我们大致弄明白了 Docker &lt;code&gt;ImagePull&lt;/code&gt; 的逻辑，简单总结一下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;客户端发送 &lt;code&gt;POST&lt;/code&gt; 请求到 Docker 服务端  &lt;code&gt;/images/create&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;服务端通过  &lt;code&gt;WriteFlusher&lt;/code&gt; 来负责请求的返回，这里使用了 Go http.Flusher， 可以不断向客户端刷新数据。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;所以当我们客户端发送 &lt;code&gt;ImagePull&lt;/code&gt; 请求后，虽然可以很快获得 http.Response 对象，但它并不表示最终任务完成（请求结束），而是先返回请求状态码，再不断返回拉取进度，那怎样才知道任务完成了呢？&lt;/p&gt;
+&lt;p&gt;可以使用官方例子中的 &lt;code&gt;io.Copy(os.Stdout, reader)&lt;/code&gt; 或 &lt;code&gt;ioutil.ReadAll(reader)&lt;/code&gt; ，因为它们读取 Body 内容，会阻塞在这里，直到任务结束（读取报错，或者 EOF 标记）。&lt;/p&gt;
+&lt;p&gt;我把 Docker API 简单梳理了下，大致可以分为两类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 WriteFlusher 返回结果：主要用于耗时的任务，不仅可以通过快速向客户端返回状态码（200）来表明请求合法已经被接受处理，还可以不断向客户端刷新任务进度，实现实时效果，类似 Pusher。&lt;/li&gt;
+&lt;li&gt;直接返回结果：主要用于耗时较短的状态查询接口。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;go-中-httpflusher-示例&#34;&gt;Go 中 http.Flusher 示例&lt;/h2&gt;
+&lt;p&gt;在某些场景下 Go 的 &lt;code&gt;http.Flusher&lt;/code&gt;  还是非常有用的，比如可以用它来做流式 IO，如文件上传/下载/内容预处理等，那我们来看一个简单 http.Flusher 的用法：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;log&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;net/http&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;time&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;HandleFunc&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ResponseWriter&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Request&lt;/span&gt;) {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Header&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;Set&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;x-request-id&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;x-request-id&amp;#34;&lt;/span&gt;)
+
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;f&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt;.(&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Flusher&lt;/span&gt;)
+
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt; &amp;lt; &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fprintf&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;time.now(): %v \n\r&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Now&lt;/span&gt;())
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;f&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Flush&lt;/span&gt;()
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sleep&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Second&lt;/span&gt;)
+		}
+
+	})
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatal&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ListenAndServe&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;:8888&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;))
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;代码逻辑为： 每隔一秒向客户端  flush 当前时间。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;当运行代码，并使用 &lt;code&gt;curl -i http://localhost:8888&lt;/code&gt; 查看结果，可以看到类似输出：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/flush/flush04.png&#34; alt=&#34;flush04.png&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意：想要看到整个刷新过程，需要客户端的支持 (这里使用的是 curl, 你还可以使用 wget），我们可以看到终端每隔一秒从服务端获取输出结果，10 秒后请求结束。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在调用 Flush 之前，需要保证写入 &lt;code&gt;http.ResponseWriter&lt;/code&gt; 的内容以 &lt;code&gt;\n&lt;/code&gt; 结尾，不然不会输出到客户端。&lt;/p&gt;
+&lt;h2 id=&#34;写在最后&#34;&gt;写在最后&lt;/h2&gt;
+&lt;p&gt;我们通过 Docker 客户端 &lt;code&gt;ImagePull&lt;/code&gt; 接口一个问题出发，通过 Docker 源码了解了整个 Docker 镜像拉取流程，
+也弄明白使用 &lt;code&gt;io.Copy(os.Stdout, reader)&lt;/code&gt; 确保拉取任务结束的必要性。&lt;/p&gt;
+&lt;p&gt;举一反三，根据这个实现逻辑，我们可以将 Docker API 分为使用 WriteFlusher 和直接返回 body 内容两类。&lt;/p&gt;
+&lt;p&gt;最后还通过简单例子学习了 Go 的 &lt;code&gt;http.Flusher&lt;/code&gt; 用法，希望在实际的工作中对大家有所帮助。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何在 Go 中使用 TLS 连接 MongoDB</title>
+      <link>/posts/2019-01-07-mongo-connect-with-tls-in-go/</link>
+      <pubDate>Mon, 07 Jan 2019 14:38:44 +0800</pubDate>
+      
+      <guid>/posts/2019-01-07-mongo-connect-with-tls-in-go/</guid>
+      <description>&lt;p&gt;通常我们的数据库都配置为内网访问，但由于业务部署架构的不同，有时也需要通过公网访问 MongoDB 数据库，此时为了防止被端口扫描和脱库，MongoDB 需要配置为 TLS 访问，那在 Go 中应该如何实现呢？&lt;/p&gt;
+&lt;h3 id=&#34;依赖&#34;&gt;依赖&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;配置了 TLS 公网访问的 MongoDB 实例&lt;/li&gt;
+&lt;li&gt;Go 的 MongoDB 驱动 &lt;a href=&#34;github.com/globalsign/mgo&#34;&gt;globalsign/mgo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;go-实现代码&#34;&gt;Go 实现代码：&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;model&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;crypto/tls&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;crypto/x509&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;errors&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/globalsign/mgo&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;io/ioutil&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;log&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;net&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;dsn&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mongodb://user:password@host/database&amp;#34;&lt;/span&gt;
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;dialInfo&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mgo&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ParseURL&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;dsn&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Panic&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// read pemfile data
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;pemData&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ioutil&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ReadFile&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;./pemfile&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Panic&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;roots&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;x509&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewCertPool&lt;/span&gt;()
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; !&lt;span style=&#34;color:#a6e22e&#34;&gt;roots&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;AppendCertsFromPEM&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;pemData&lt;/span&gt;) {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Panic&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;errors&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;New&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;failed to parse root certificate&amp;#34;&lt;/span&gt;))
+	}
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// set tls config
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;tlsConfig&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;tls&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Config&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;RootCAs&lt;/span&gt;:            &lt;span style=&#34;color:#a6e22e&#34;&gt;roots&lt;/span&gt;,
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;InsecureSkipVerify&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;,
+	}
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// update dialserver with tls Dial
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;dialInfo&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;DialServer&lt;/span&gt; = &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;addr&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;mgo&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ServerAddr&lt;/span&gt;) (&lt;span style=&#34;color:#a6e22e&#34;&gt;net&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Conn&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt;) {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;conn&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;tls&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Dial&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;tcp&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;addr&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;String&lt;/span&gt;(), &lt;span style=&#34;color:#a6e22e&#34;&gt;tlsConfig&lt;/span&gt;)
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+		}
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;conn&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;session&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mgo&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;DialWithInfo&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;dialInfo&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Panic&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Error&lt;/span&gt;())
+	}
+	&lt;span style=&#34;color:#75715e&#34;&gt;// db operation with session
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;通过以上代码，我们就能通过公网连接 tls 的 MongoDB 实例，当连接上后，其数据库的操作和内网连接一致。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>JSON 序列化和反序列化 In Go</title>
+      <link>/posts/2018-05-13-json-xu-lie-hua-he-fan-xu-lie-hua-in-go/</link>
+      <pubDate>Sun, 13 May 2018 21:42:59 +0800</pubDate>
+      
+      <guid>/posts/2018-05-13-json-xu-lie-hua-he-fan-xu-lie-hua-in-go/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/posts/05-13.png&#34; alt=&#34;JSON 序列化和反序列化 In Go&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何在 Go 中发送表单请求</title>
+      <link>/posts/2018-03-06-zai-go-zhong-fa-song-multipart-biao-dan-qing-qiu/</link>
+      <pubDate>Tue, 06 Mar 2018 16:51:25 +0800</pubDate>
+      
+      <guid>/posts/2018-03-06-zai-go-zhong-fa-song-multipart-biao-dan-qing-qiu/</guid>
+      <description>&lt;p&gt;通常我们与第三方交互使用的是 &lt;code&gt;json&lt;/code&gt;，但偶尔也会遇到要求使用表单方式来提交数据，故今天我们就一起来学习下如何在 Go 中发送表单请求。&lt;/p&gt;
+&lt;h3 id=&#34;准备工作&#34;&gt;准备工作&lt;/h3&gt;
+&lt;p&gt;首先我们有这样一段测试代码来接收 &lt;code&gt;POST&lt;/code&gt; 请求，并返回其接收到的字段信息。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;log&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;net/http&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;urlencodedHandler&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ResponseWriter&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Request&lt;/span&gt;) {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ParseForm&lt;/span&gt;()
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;r.ParseForm(): %v&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;k&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;v&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Form&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sprintf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%s:%v\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;k&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;v&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fprintf&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt;)
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;multipartHandler&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ResponseWriter&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Request&lt;/span&gt;) {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ParseMultipartForm&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;r.ParseForm(): %v&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;k&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;v&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MultipartForm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Value&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sprintf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%s:%v\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;k&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;v&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;k&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;v&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MultipartForm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;File&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sprintf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%s:%v\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;k&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;v&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fprintf&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;w&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt;)
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;HandleFunc&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/urlencoded&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;urlencodedHandler&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;HandleFunc&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/multipart&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;multipartHandler&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatal&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ListenAndServe&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;:8080&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;))
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;发送-urlencoded-请求&#34;&gt;发送 urlencoded 请求&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;urlencoded&lt;/code&gt; 主要用于纯文本请求，代码如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+	&amp;quot;io/ioutil&amp;quot;
+	&amp;quot;net/http&amp;quot;
+	&amp;quot;net/url&amp;quot;
+	&amp;quot;strings&amp;quot;
+)
+
+func main() {
+	payload := url.Values{}
+	payload.Set(&amp;quot;foo&amp;quot;, &amp;quot;a&amp;quot;)
+	payload.Add(&amp;quot;foo&amp;quot;, &amp;quot;b&amp;quot;)
+	payload.Set(&amp;quot;foo2&amp;quot;, &amp;quot;c&amp;quot;)
+
+	req, err := http.NewRequest(http.MethodPost,
+                            &amp;quot;http://localhost:8080/urlencoded&amp;quot;,
+                            strings.NewReader(payload.Encode()))
+	if err != nil {
+		return
+	}
+
+	req.Header.Add(&amp;quot;Content-Type&amp;quot;,
+                  &amp;quot;application/x-www-form-urlencoded; param=value&amp;quot;)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return
+	}
+
+	defer resp.Body.Close()
+
+	data, _ := ioutil.ReadAll(resp.Body)
+
+	fmt.Println(string(data))
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;运行 &lt;code&gt;go run urlencoded.go&lt;/code&gt; 输出结果为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;foo2:[c]
+foo:[a b]
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;发送-multipart-请求&#34;&gt;发送 multipart 请求&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;multipart&lt;/code&gt; 主要用于发送文件上传的请求，代码如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;bytes&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;io/ioutil&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;log&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mime/multipart&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;net/http&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;buf&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; new(&lt;span style=&#34;color:#a6e22e&#34;&gt;bytes&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Buffer&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;writer&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;multipart&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewWriter&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;buf&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;writer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;WriteField&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;foo&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;a&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;writer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;WriteField&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;foo&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;b&amp;#34;&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;part&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;writer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;CreateFormFile&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;tmp.png&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;tmp.png&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fileData&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; []byte(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hello,world&amp;#34;&lt;/span&gt;)  &lt;span style=&#34;color:#75715e&#34;&gt;// 此处内容可以来自本地文件读取或云存储
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;part&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Write&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;fileData&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;writer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Close&lt;/span&gt;(); &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;req&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewRequest&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MethodPost&lt;/span&gt;,
+                              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://localhost:8080/multipart&amp;#34;&lt;/span&gt;,
+                              &lt;span style=&#34;color:#a6e22e&#34;&gt;buf&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;req&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Header&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Add&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Content-Type&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;writer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;FormDataContentType&lt;/span&gt;())
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;DefaultClient&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Do&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;req&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;defer&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Body&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Close&lt;/span&gt;()
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ioutil&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ReadAll&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Body&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(string(&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;))
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;运行 &lt;code&gt;go run multipart.go&lt;/code&gt; 输出结果为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;foo:[a b]
+tmp.png:[0xc420082410]
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>深入了解 Go 语言的方法</title>
+      <link>/posts/2018-02-26-shen-ru-liao-jie-go-yu-yan-de-fang-fa/</link>
+      <pubDate>Sun, 25 Feb 2018 19:56:30 +0000</pubDate>
+      
+      <guid>/posts/2018-02-26-shen-ru-liao-jie-go-yu-yan-de-fang-fa/</guid>
+      <description>&lt;p&gt;方法主要源于 OOP 语言，在传统面向对象语言中 (例如 C++), 我们会用一个“类”来封装属于自己的数据和函数，这些类的函数就叫做方法。&lt;/p&gt;
+&lt;p&gt;虽然 Go 不是经典意义上的面向对象语言，但是我们可以在一些接收者（自定义类型，结构体）上定义函数，同理这些接收者的函数在 Go 里面也叫做方法。&lt;/p&gt;
+&lt;h3 id=&#34;声明&#34;&gt;声明&lt;/h3&gt;
+&lt;p&gt;方法（method）的声明和函数很相似, 只不过它必须指定接收者，我们先来看个简单例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+type T struct{}
+
+func (t T) F()  {}
+
+func main() {
+	t := T{}
+	t.F()
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;接收者类型不是任意类型&#34;&gt;接收者类型不是任意类型&lt;/h3&gt;
+&lt;p&gt;例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+func (t int64) F()  {}
+
+func main() {
+	t := int64(10)
+	t.F()
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当运行以下代码会得到 &lt;code&gt;cannot define new methods on non-local type int64&lt;/code&gt; 类似错误信息，我们可以使用自定义类型来解决：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+type T int64
+func (t T) F()  {}
+
+func main() {
+	t := T(10)
+	t.F()
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;小结：接收者不是任意类型，它只能为用关键字 &lt;code&gt;type&lt;/code&gt; 定义的类型（例如自定义类型，结构体）。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;命名冲突&#34;&gt;命名冲突&lt;/h3&gt;
+&lt;p&gt;a. 接收者定义的方法名不能重复, 例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+type T struct{}
+
+func (T) F()         {}
+func (T) F(a string) {}
+
+func main() {
+	t := T{}
+	t.F()
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;运行代码我们会得到 &lt;code&gt;method redeclared: T.F&lt;/code&gt; 类似错误。&lt;/p&gt;
+&lt;p&gt;b. 结构体方法名不能和字段重复，例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+type T struct{
+  F string
+}
+
+func (T) F(){}
+
+func main() {
+	t := T{}
+	t.F()
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;运行代码我们会得到 &lt;code&gt;: type T has both field and method named F&lt;/code&gt; 类似错误。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;小结： 同一个接收者的方法名不能重复 (没有重载)；如果是结构体，方法名不能和字段重复。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;接收者可以同时为值和指针&#34;&gt;接收者可以同时为值和指针&lt;/h3&gt;
+&lt;p&gt;在 Go 语言中，方法的接收者可以同时为值或者指针，例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+type T struct{}
+
+func (T) F()  {}
+func (*T) N() {}
+
+func main() {
+	t := T{}
+	t.F()
+	t.N()
+
+	t1 := &amp;amp;T{} // 指针类型
+	t1.F()
+	t1.N()
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以看到无论值类型 &lt;code&gt;T&lt;/code&gt; 还是指针类型 &lt;code&gt;&amp;amp;T&lt;/code&gt; 都可以同时访问 &lt;code&gt;F&lt;/code&gt; 和  &lt;code&gt;N&lt;/code&gt; 方法。&lt;/p&gt;
+&lt;h3 id=&#34;值和指针作为接收者的区别&#34;&gt;值和指针作为接收者的区别&lt;/h3&gt;
+&lt;p&gt;同样我们先看一段代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
+
+import &amp;quot;fmt&amp;quot;
+
+type T struct {
+	value int
+}
+
+func (m T) StayTheSame() {
+	m.value = 3
+}
+
+func (m *T) Update() {
+	m.value = 3
+}
+
+func main() {
+	m := T{0}
+	fmt.Println(m) // {0}
+
+	m.StayTheSame()
+	fmt.Println(m) // {0}
+
+	m.Update()
+	fmt.Println(m) // {3}
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;运行代码输出结果为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{0}
+{0}
+{3}
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;小结：值作为接收者（&lt;code&gt;T&lt;/code&gt;） 不会修改结构体值，而指针 &lt;code&gt;*T&lt;/code&gt; 可以修改。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+&lt;p&gt;可以看到在 Go 语言中方法有一些比较特殊的地方，主要为以下几点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;接收者的类型只能为用关键字 &lt;code&gt;type&lt;/code&gt; 定义的类型，例如自定义类型，结构体。&lt;/li&gt;
+&lt;li&gt;同一个接收者的方法名不能重复 (没有重载)，如果是结构体，方法名还不能和字段名重复。&lt;/li&gt;
+&lt;li&gt;值作为接收者无法修改其值，如果有更改需求，需要使用指针类型。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Why is gopher</title>
+      <link>/posts/2017-09-24-why-is-gopher/</link>
+      <pubDate>Sun, 24 Sep 2017 23:02:28 +0000</pubDate>
+      
+      <guid>/posts/2017-09-24-why-is-gopher/</guid>
+      <description>&lt;p&gt;众所周知 Golang programmer 都以 Gopher 自居，例如我加入的某微信讨论群就叫 “Gopher”，Golang Conf China 也取名为 GopherConf 。&lt;/p&gt;
+&lt;p&gt;那对于一名长期从事 Ruby 开发的 Rubist，心中有个疑问，这 Gopher 到底啥来头，为啥取名叫 Gopher 呢？&lt;/p&gt;
+&lt;h3 id=&#34;gopher-是什么&#34;&gt;Gopher 是什么&lt;/h3&gt;
+&lt;p&gt;Gopher， 英文直译为：地鼠（就是那个萌萌的，有两颗大暴牙的小动物）。&lt;/p&gt;
+&lt;p&gt;而 Golang 中的 gopher 是 Go 语言的一个标志性吉祥物，也是 Golang 项目最具特色的部分。&lt;/p&gt;
+&lt;p&gt;它的形象和地鼠一样，萌的可以， 像这样&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/gopher/pic1.png&#34; alt=&#34;pic1.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;关于 Go gopher 的更多设计可以参见 &lt;a href=&#34;https://github.com/golang/go/wiki/Gopher&#34;&gt;https://github.com/golang/go/wiki/Gopher&lt;/a&gt; .&lt;/p&gt;
+&lt;p&gt;那 gopher 是如何一步一步发展成今天这样子，我们有必要了解下它的前世今生。&lt;/p&gt;
+&lt;h3 id=&#34;gopher-成长进化史&#34;&gt;Gopher 成长进化史&lt;/h3&gt;
+&lt;p&gt;大约在15年前（比 Go 项目还早 5 年），gopher 首先出现在新泽西州 WFMU 广播电台的推广活动中，当时法国人 Renee 被委托设计一个年度筹款活动用的 T 恤，gopher 就这样诞生了。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/gopher/pic2.png&#34; alt=&#34;pic2.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;接下来 gopher 又出现在了贝尔实验室，当时作为 Bob Flandrena 在贝尔实验室邮件系统中的头像，其中还使用了其他一系列萌萌的头像。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/gopher/pic3.png&#34; alt=&#34;pic3.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;在 Go 创建之初，当时急需要一个图标，Renee 作为自愿者参与画作，这样就诞生了第一个 Go T恤和 Google Code 网站上的标志性图案。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/gopher/pic4.png&#34; alt=&#34;pic4.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;2009 年 Golang 正式开源，Renee 建议将 WFMU gopher 作为 Go 语言的的吉祥物，从此 Go gopher 诞生。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/gopher/pic5.png&#34; alt=&#34;pic5.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;需要指出的是这个吉祥物没有名字，我们统一称之为 &amp;ldquo;Go gopher&amp;rdquo;。&lt;/p&gt;
+&lt;p&gt;在 2011年 Google I / O 推出 Go App Engine 运行时，Go 项目组聘请 Squishable 生产了 首款 3D 毛绒的 gopher。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/gopher/pic6.png&#34; alt=&#34;pic6.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;于此同一时间，更多形式的 Go gopher 出现，例如由 Kidrobot 制作的乙烯基雕像。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/gopher/pic7.png&#34; alt=&#34;pic7.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;gopher-现状&#34;&gt;Gopher 现状&lt;/h3&gt;
+&lt;p&gt;Go gopher 是一个角色，一个独特的创作，历史上没有出现过的，就像史努比没有任何老卡通狗一样。&lt;/p&gt;
+&lt;p&gt;gopher 图像是知识共享署名 3.0 授权， 这意味着你可以玩图像，但是无论在哪里使用它们, 您必须给予他们的创作者（Renee French）信用。&lt;/p&gt;
+&lt;h3 id=&#34;gopher-寓意&#34;&gt;Gopher 寓意&lt;/h3&gt;
+&lt;p&gt;Gopher 以许多形式存在，但一直是 Renee 的创作，它代表着 Go 项目和 Go 程序员到处都是，它是 Go 世界中最受欢迎的事情之一。&lt;/p&gt;
+&lt;p&gt;所以你想作为一名 Go gopher ，成为卡通漫画中一样可爱的人吗？&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>benchmarks in go</title>
+      <link>/posts/2016-06-26-benchmarks-in-golang/</link>
+      <pubDate>Sun, 26 Jun 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-06-26-benchmarks-in-golang/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/benchmark-in-go.png&#34; alt=&#34;benchmark-in-go.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;在涉及代码性能优化的时候，benchmarks 自然少不了，那么如何在 golang 中做 benchmarking 呢？&lt;/p&gt;
+&lt;p&gt;这里我们可以使用 &lt;code&gt;testing&lt;/code&gt; 包，它包含了 benchmark 全部代码。&lt;/p&gt;
+&lt;h3 id=&#34;1-定义-benchmark-用例&#34;&gt;1. 定义 benchmark 用例&lt;/h3&gt;
+&lt;p&gt;与单元测试相似，benchmark 用例的定义也是靠函数名来约定，只不过函数名从 &lt;code&gt;Testxx&lt;/code&gt; 换成了 &lt;code&gt;Benchmarkxx&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;例如:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+func BenchmarkHello(b *testing.B) {
+   for i := 0; i &amp;lt; b.N; i++ {
+       fmt.Sprintf(&amp;quot;hello&amp;quot;)
+   }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;2-运行-benchmark-用例&#34;&gt;2. 运行 benchmark 用例&lt;/h3&gt;
+&lt;p&gt;运行 benchmark 需要使用 go test 命令，相关参数有:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;-bench regexp
+    Run benchmarks matching the regular expression.
+    By default, no benchmarks run. To run all benchmarks,
+    use &#39;-bench .&#39; or &#39;-bench=.&#39;.
+
+-benchmem
+    Print memory allocation statistics for benchmarks.
+
+-benchtime t
+    Run enough iterations of each benchmark to take t, specified
+    as a time.Duration (for example, -benchtime 1h30s).
+    The default is 1 second (1s).
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;例如我可以运行 &lt;code&gt;go test -bench=BenchmarkHello -benchmem -benchtime=10s&lt;/code&gt; 来执行测试用例：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;BenchmarkHello-4	100000000	       124 ns/op	       5 B/op	       1 allocs/op
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

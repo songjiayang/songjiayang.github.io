@@ -1,0 +1,1451 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>prometheus on 小鱼驿站</title>
+    <link>/tags/prometheus/</link>
+    <description>小鱼驿站 (prometheus)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 26 Jun 2018 22:06:37 +0800</lastBuildDate>
+    
+    <atom:link href="/tags/prometheus/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Prometheus 的优雅关闭姿势</title>
+      <link>/posts/2018-06-26-prometheus-de-you-ya-guan-bi-zi-shi/</link>
+      <pubDate>Tue, 26 Jun 2018 22:06:37 +0800</pubDate>
+      
+      <guid>/posts/2018-06-26-prometheus-de-you-ya-guan-bi-zi-shi/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/posts/06-26.png&#34; alt=&#34;Prometheus 的优雅关闭姿势&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Summary 数据类型详解</title>
+      <link>/posts/2018-06-24-summary-shu-ju-lei-xing-xiang-jie/</link>
+      <pubDate>Sun, 24 Jun 2018 22:05:10 +0800</pubDate>
+      
+      <guid>/posts/2018-06-24-summary-shu-ju-lei-xing-xiang-jie/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/posts/06-24.png&#34; alt=&#34;Summary 数据类型详解&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>解惑：关于 PromQL 范围查询的问题</title>
+      <link>/posts/2018-06-21-jie-huo-guan-yu-promql-fan-wei-cha-xun-de-wen-ti/</link>
+      <pubDate>Thu, 21 Jun 2018 22:03:41 +0800</pubDate>
+      
+      <guid>/posts/2018-06-21-jie-huo-guan-yu-promql-fan-wei-cha-xun-de-wen-ti/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/posts/06-21.png&#34; alt=&#34;解惑：关于 PromQL 范围查询的问题&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Prometheus 2.3 更新概览</title>
+      <link>/posts/2018-06-15-prometheus-2-dot-3-geng-xin-gai-lan/</link>
+      <pubDate>Fri, 15 Jun 2018 21:58:01 +0800</pubDate>
+      
+      <guid>/posts/2018-06-15-prometheus-2-dot-3-geng-xin-gai-lan/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/posts/06-15.png&#34; alt=&#34;Prometheus 2.3 更新概览&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>cadvisor 与 Prometheus 集成</title>
+      <link>/posts/2018-04-11-rong-qi-jian-kong-zhi-cadvisor-zhi-prometheus-ji-cheng/</link>
+      <pubDate>Wed, 11 Apr 2018 11:44:56 +0800</pubDate>
+      
+      <guid>/posts/2018-04-11-rong-qi-jian-kong-zhi-cadvisor-zhi-prometheus-ji-cheng/</guid>
+      <description>&lt;p&gt;在上一篇文章 &lt;a href=&#34;http://www.songjiayang.com/posts/jrong-qi-jian-kong-zhi-cadvisor&#34;&gt;容器监控之 cadvisor （一）&lt;/a&gt; 已经介绍了如何通过 cadvisor 来收集容器的运行状态信息，那这篇文章将具体讲解如何与 Prometheus 集成并通过 Prometheus 查看收集的数据。&lt;/p&gt;
+&lt;p&gt;主要内容：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;cadvisor 与 Prometheus 集成&lt;/li&gt;
+&lt;li&gt;在 Prometheus 中查看容器的 CPU，内存，网络流量等信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;cadvisor-与-prometheus-集成&#34;&gt;cadvisor 与 Prometheus 集成&lt;/h3&gt;
+&lt;p&gt;Step1: 修改 Prometheus 配置信息，添加 cadvisor 访问地址：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#prometheus.yml
+
+scrape_configs:
+  - job_name: &#39;node&#39;
+    static_configs:
+      - targets: [&#39;127.0.0.1:9100&#39;]
+
+  - job_name: &#39;container&#39;
+    static_configs:
+      - targets: [&#39;127.0.0.1:8080&#39;]  # 本地 cadvisor 访问地址
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Step2: 重新加载配置，访问 &lt;code&gt;http://localhost:9090/targets&lt;/code&gt; 你将看到新加的 &lt;code&gt;cadvisor&lt;/code&gt; 已经生效。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus01.png&#34; alt=&#34;/images/cadvisor/prometheus01.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Step3: 此时访问 Prometheus 的 graph 页面 &lt;code&gt;http://localhost:9090/graph&lt;/code&gt;，搜索 &lt;code&gt;container&lt;/code&gt; 你将看到容器相关数据。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus02.png&#34; alt=&#34;/images/cadvisor/prometheus02.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;prometheus-中查看容器的-cpu内存网络流量等数据&#34;&gt;Prometheus 中查看容器的 CPU，内存，网络流量等数据&lt;/h3&gt;
+&lt;p&gt;CPU 使用率查询：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sum by (name) (rate(container_cpu_usage_seconds_total{image!=&amp;quot;&amp;quot;}[1m])) / scalar(count(node_cpu{mode=&amp;quot;user&amp;quot;})) * 100
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus03.png&#34; alt=&#34;/images/cadvisor/prometheus03.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;内存使用量：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sum by (name)(container_memory_usage_bytes{image!=&amp;quot;&amp;quot;})
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus04.png&#34; alt=&#34;/images/cadvisor/prometheus04.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;网络入口流量&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sum by (name) (rate(container_network_receive_bytes_total{image!=&amp;quot;&amp;quot;}[1m]))
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus06.png&#34; alt=&#34;/images/cadvisor/prometheus06.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;网络出口流量&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sum by (name) (rate(container_network_transmit_bytes_total{image!=&amp;quot;&amp;quot;}[1m]))
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus05.png&#34; alt=&#34;/images/cadvisor/prometheus05.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;磁盘使用量：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sum by (name) (container_fs_usage_bytes{image!=&amp;quot;&amp;quot;})
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;/images/cadvisor/prometheus07.png&#34; alt=&#34;/images/cadvisor/prometheus07.png&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>容器监控之 cadvisor</title>
+      <link>/posts/2018-04-10-jrong-qi-jian-kong-zhi-cadvisor/</link>
+      <pubDate>Tue, 10 Apr 2018 17:49:39 +0800</pubDate>
+      
+      <guid>/posts/2018-04-10-jrong-qi-jian-kong-zhi-cadvisor/</guid>
+      <description>&lt;p&gt;想必大家在生产环境中已大量使用到了容器，那对于容器的监控（CPU, 内存，网络请求）是如何处理的呢？&lt;/p&gt;
+&lt;h3 id=&#34;docker-stats-对-cadvisor&#34;&gt;docker stats 对 cadvisor&lt;/h3&gt;
+&lt;p&gt;众所周知 &lt;code&gt;dokcer stats&lt;/code&gt; 可以查看运行的 Docker 镜像的运行状态，例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;CONTAINER ID        NAME                CPU %               MEM USAGE / LIMIT    MEM %               NET I/O             BLOCK I/O           PIDS
+a25dd77a5237        cadvisor            0.91%               14.8MiB / 1.952GiB   0.74%               749kB / 11.5MB      18.9MB / 0B         11
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这种方式比较原始，因为你无法通过 http 的方式来获取数据，而且没有界面，数据可视化还需要做大量的工作。&lt;/p&gt;
+&lt;p&gt;由于 &lt;code&gt;dokcer stats&lt;/code&gt; 有这些问题，所以 &lt;code&gt;cadvisor&lt;/code&gt; 诞生了。&lt;code&gt;cadvisor&lt;/code&gt; 不仅可以搜集一台机器上所有运行的容器信息还提供基础查询界面和 http 接口，方便 Prometheus 进行数据抓取。&lt;/p&gt;
+&lt;p&gt;正是因为 &lt;code&gt;cadvisor&lt;/code&gt; 与 Prometheus 的完美结合，所以它成为了容器监控的第一选择。&lt;/p&gt;
+&lt;h3 id=&#34;cadvisor-的安装&#34;&gt;cadvisor 的安装&lt;/h3&gt;
+&lt;p&gt;Step1: 使用 &lt;code&gt;docker pull&lt;/code&gt; 下载最新版本的 &lt;code&gt;cadvisor&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ docker pull google/cadvisor:latest
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Step2: 使用 &lt;code&gt;docker images&lt;/code&gt; 查看下载的版本&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ docker images  
+
+google/cadvisor      latest              75f88e3ec333        4 months ago        62.2MB
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Step3: 使用 &lt;code&gt;docker run&lt;/code&gt; 启动&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo docker run \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run:/var/run:rw \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  --volume=/dev/disk/:/dev/disk:ro \
+  --publish=8080:8080 \
+  --detach=true \
+  --name=cadvisor \
+  google/cadvisor:latest
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当启动成功后，使用 &lt;code&gt;docker ps&lt;/code&gt; 你会看到&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;CONTAINER ID        IMAGE                    COMMAND                  CREATED             STATUS              PORTS                    NAMES
+742a464fa631        google/cadvisor:latest   &amp;quot;/usr/bin/cadvisor -…&amp;quot;   1 second ago        Up 1 second         0.0.0.0:8080-&amp;gt;8080/tcp   cadvisor
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Step4: 访问 &lt;code&gt;http://localhost:8080&lt;/code&gt; 你将看到：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/cadvisor-01.png&#34; alt=&#34;/images/cadvisor/cadvisor-01.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;这说明 &lt;code&gt;cadvisor&lt;/code&gt; 已运行成功。&lt;/p&gt;
+&lt;h3 id=&#34;cadvisor-深入了解&#34;&gt;cadvisor 深入了解&lt;/h3&gt;
+&lt;p&gt;Tips1: 访问 &lt;code&gt;http://localhost:8080/docker&lt;/code&gt; 可以查看到所有运行的 dokcer 镜像：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/cadvisor-02.png&#34; alt=&#34;/images/cadvisor/cadvisor-02.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Tips2: 选择任意一个镜像，你将看到其运行状态的详细信息：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/cadvisor-03.png&#34; alt=&#34;/images/cadvisor/cadvisor-03.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/cadvisor-04.png&#34; alt=&#34;/images/cadvisor/cadvisor-04.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Tips3: 访问 &lt;code&gt;http://localhost:8080/metrics&lt;/code&gt; 可以查看其暴露给 Prometheus 的所有数据：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/cadvisor/cadvisor-05.png&#34; alt=&#34;/images/cadvisor/cadvisor-05.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结：&lt;/h3&gt;
+&lt;p&gt;cadvisor 是一个非常好的容器数据收集的工具，它提供良好的 Web 界面，方便查询。&lt;/p&gt;
+&lt;p&gt;既然 cadvisor 已经将所有容器的数据收集了，那接下来就是结合 Prometheus 和 Grafana 做监控和告警了，这部分的内容我们将在后面的文章中详细讲解，敬请期待。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何格式化 Alertmanager 告警模版中的时间</title>
+      <link>/posts/2018-04-09-alertmanager-mo-ban-zhong-shi-jian-format/</link>
+      <pubDate>Mon, 09 Apr 2018 17:08:44 +0800</pubDate>
+      
+      <guid>/posts/2018-04-09-alertmanager-mo-ban-zhong-shi-jian-format/</guid>
+      <description>&lt;p&gt;AlertManger 告警模版中显示的时间使用的是 Go 默认的格式，形如：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/alerttemplate/alert01.png&#34; alt=&#34;images/alerttemplate/alert01.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;显然这个格式不太好看，我们更期望使用的形式为 &lt;code&gt;2018-10-07 12:00:00&lt;/code&gt;，那我们该如何来格式化呢？&lt;/p&gt;
+&lt;p&gt;这里主要使用 Go 的 &lt;code&gt;time.Format&lt;/code&gt; 方法，其在 &lt;code&gt;template&lt;/code&gt; 中的写法如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StartsAt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Format&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2006-01-02 15:04:05&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;所以我的 &lt;code&gt;wechat.tmpl&lt;/code&gt; 修改后的结果为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;最后的告警效果图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/alerttemplate/alert02.jpg&#34; alt=&#34;images/alerttemplate/alert02.png&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>关于 relabel_configs 中 hashmod 的用法</title>
+      <link>/posts/2018-03-08-guan-yu-prometheus-target-hashmod-de-yong-fa/</link>
+      <pubDate>Thu, 08 Mar 2018 12:11:32 +0800</pubDate>
+      
+      <guid>/posts/2018-03-08-guan-yu-prometheus-target-hashmod-de-yong-fa/</guid>
+      <description>&lt;p&gt;今天有朋友在群里问了一段关于 Prometheus hashmod 配置的问题，如图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/hashmod/config01.jpg&#34; alt=&#34;config01.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;此配置出自 Brian 的博客 &lt;a href=&#34;https://www.robustperception.io/scaling-and-federating-prometheus/&#34;&gt;scaling-and-federating-prometheus&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;那这段配置到底是什么意思？因为以前没用过这个配置，所以只好去翻看源码。&lt;/p&gt;
+&lt;h3 id=&#34;核心源码解读&#34;&gt;核心源码解读&lt;/h3&gt;
+&lt;p&gt;阅读的过程中，发现 &lt;a href=&#34;https://github.com/prometheus/prometheus/blob/master/pkg/relabel/relabel.go#L41&#34;&gt;relabel.go#L41&lt;/a&gt; 的代码与配置非常相关：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;relabel&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;lset&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;labels&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Labels&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;cfg&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;config&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;RelabelConfig&lt;/span&gt;) &lt;span style=&#34;color:#a6e22e&#34;&gt;labels&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Labels&lt;/span&gt; {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;values&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; make([]&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, len(&lt;span style=&#34;color:#a6e22e&#34;&gt;cfg&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SourceLabels&lt;/span&gt;))
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ln&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cfg&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SourceLabels&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;values&lt;/span&gt; = append(&lt;span style=&#34;color:#a6e22e&#34;&gt;values&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;lset&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Get&lt;/span&gt;(string(&lt;span style=&#34;color:#a6e22e&#34;&gt;ln&lt;/span&gt;)))
+	}
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;val&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;strings&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Join&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;values&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;cfg&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Separator&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;lb&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;labels&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewBuilder&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;lset&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;switch&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cfg&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Action&lt;/span&gt; {
+	&lt;span style=&#34;color:#75715e&#34;&gt;// 此处省略代码
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#75715e&#34;&gt;// 判断值是否匹配，如果不匹配那么将放弃此 target
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;config&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;RelabelKeep&lt;/span&gt;:
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; !&lt;span style=&#34;color:#a6e22e&#34;&gt;cfg&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Regex&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MatchString&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;val&lt;/span&gt;) {
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;
+		}
+	&lt;span style=&#34;color:#75715e&#34;&gt;// 对字段 source_labels 的值进行 md5 和取余，并将结果存到自定义目标字段中
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;config&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;RelabelHashMod&lt;/span&gt;:
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;mod&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum64&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;md5&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sum&lt;/span&gt;([]byte(&lt;span style=&#34;color:#a6e22e&#34;&gt;val&lt;/span&gt;))) &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cfg&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Modulus&lt;/span&gt;
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;lb&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Set&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;cfg&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;TargetLabel&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sprintf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%d&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;mod&lt;/span&gt;))
+	&lt;span style=&#34;color:#75715e&#34;&gt;// 此处省略代码
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;:
+		panic(&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Errorf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;relabel: unknown relabel action type %q&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;cfg&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Action&lt;/span&gt;))
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lb&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Labels&lt;/span&gt;()
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;有了代码参考，一开始的配置就容易理解了，它的逻辑为：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;配置的第一个 souce_labels 是对同一个任务抓取目标的 LabelSet 进行预处理，具体而言就是将抓取目标地址进行 hashmod, 并将 hashmod 的值存到一个自定义字段 &lt;code&gt;__tmp_hash&lt;/code&gt; 中。&lt;/li&gt;
+&lt;li&gt;配置的第二个 &lt;code&gt;souce_labels&lt;/code&gt; 对预处理后的抓取目标进行筛选，只选取 &lt;code&gt;__tmp_hash&lt;/code&gt; 值满足正则匹配的，例子中 hashmod != 1 将全部被忽略。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;通过以上两步，就非常容易对相同 job 的抓取目标进行散列，从而抓取命中的部分。&lt;/p&gt;
+&lt;h3 id=&#34;散列均衡性测试&#34;&gt;散列均衡性测试&lt;/h3&gt;
+&lt;p&gt;抓取目标的散列是否足够均衡呢？&lt;/p&gt;
+&lt;p&gt;下面是根据 Prometheus 的 mod 计算方法编写的一段测试代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;crypto/md5&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;nodes&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; []&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;{
+		&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;192.168.1.1:9090&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;192.168.1.2:9090&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;192.168.1.3:9090&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;192.168.1.4:9090&amp;#34;&lt;/span&gt;,	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;192.168.1.5:9090&amp;#34;&lt;/span&gt;,
+		&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;192.168.1.6:9090&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;192.168.1.7:9090&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;192.168.1.8:9090&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;192.168.1.9:9090&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;192.168.1.10:9090&amp;#34;&lt;/span&gt;,		
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ip&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nodes&lt;/span&gt; {
+	   &lt;span style=&#34;color:#a6e22e&#34;&gt;mod&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum64&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;md5&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sum&lt;/span&gt;([]byte(&lt;span style=&#34;color:#a6e22e&#34;&gt;ip&lt;/span&gt;))) &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+	   &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%s mode is %d \n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ip&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;mod&lt;/span&gt;)
+	}
+
+}
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum64&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;hash&lt;/span&gt; [&lt;span style=&#34;color:#a6e22e&#34;&gt;md5&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Size&lt;/span&gt;]&lt;span style=&#34;color:#66d9ef&#34;&gt;byte&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;uint64&lt;/span&gt; {
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;uint64&lt;/span&gt;
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;b&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;hash&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;shift&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; uint64((&lt;span style=&#34;color:#a6e22e&#34;&gt;md5&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Size&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;i&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;)
+
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;|=&lt;/span&gt; uint64(&lt;span style=&#34;color:#a6e22e&#34;&gt;b&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;shift&lt;/span&gt;
+	}
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;输出结果为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;192.168.1.1:9090 mode is 3
+192.168.1.2:9090 mode is 1
+192.168.1.3:9090 mode is 0
+192.168.1.4:9090 mode is 0
+192.168.1.5:9090 mode is 1
+192.168.1.6:9090 mode is 2
+192.168.1.7:9090 mode is 3
+192.168.1.8:9090 mode is 1
+192.168.1.9:9090 mode is 1
+192.168.1.10:9090 mode is 1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以看到，当目标地址足够多的时候，还是能够满足均匀散列。&lt;/p&gt;
+&lt;h3 id=&#34;配置的意义&#34;&gt;配置的意义&lt;/h3&gt;
+&lt;p&gt;以前在文章 &lt;a href=&#34;http://www.songjiayang.com/posts/prometheus-ji-qun-fang-an-zhi-remote-read-shi-zhan&#34;&gt;Prometheus 集群方案之 remote read 实战&lt;/a&gt; 中已经介绍过按照业务将 Prometheus server 拆分成的思路，即便如此，有些数据（比如一个机房的所有机器信息）还是特别大，超过了单机承载能力。&lt;/p&gt;
+&lt;p&gt;此时我们可以采用 &lt;code&gt;hashmod&lt;/code&gt; 配置，使用同样的配置列表，将抓取目标散列到不同的 Prometheus server 中去, 从而很好实现 Prometheus 数据收集的横向扩展。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>我的第一个 SlideShare</title>
+      <link>/posts/2018-03-02-wo-de-di-ge-slideshare/</link>
+      <pubDate>Fri, 02 Mar 2018 07:38:51 +0000</pubDate>
+      
+      <guid>/posts/2018-03-02-wo-de-di-ge-slideshare/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/prometheus101.png&#34; alt=&#34;prometheus101.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;今天第一次在 &lt;a href=&#34;https://www.slideshare.net&#34;&gt;SlideShare&lt;/a&gt; 上发布了一个关于Prometheus 的演讲稿，所以有必要 mark 一下。&lt;/p&gt;
+&lt;p&gt;它的主要内容有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Prometheus 入门&lt;/li&gt;
+&lt;li&gt;Prometheus 与 Node Exporter&lt;/li&gt;
+&lt;li&gt;Prometheus 与 Alertmanager&lt;/li&gt;
+&lt;li&gt;Prometheus 与 容器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果你感兴趣，可以点击详情&lt;a href=&#34;https://www.slideshare.net/songjiayang/prometheus-101-91515393&#34;&gt;链接&lt;/a&gt;进行阅读。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何定制微信告警模版</title>
+      <link>/posts/2018-03-01-ru-he-xiu-gai-wei-xin-gao-jing-mo-ban/</link>
+      <pubDate>Thu, 01 Mar 2018 04:11:07 +0000</pubDate>
+      
+      <guid>/posts/2018-03-01-ru-he-xiu-gai-wei-xin-gao-jing-mo-ban/</guid>
+      <description>&lt;p&gt;AlertManger 从 v0.12 已经默认支持企业微信发送告警信息了，具体步骤可以参见 &lt;a href=&#34;http://www.songjiayang.com/posts/alertmanger-with-wechat&#34;&gt;alertmanger-with-wechat&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;最近不少朋友在群里问到：“如何定制微信告警消息？”，下面来讲解下具体步骤。&lt;/p&gt;
+&lt;h3 id=&#34;1-添加自定义模版&#34;&gt;1. 添加自定义模版&lt;/h3&gt;
+&lt;p&gt;在 alertmanager 目录添加 一个 &lt;code&gt;wechat.tmpl&lt;/code&gt; 文件，根据需求添加告警信息。&lt;/p&gt;
+&lt;p&gt;a: 如果分组有多条告警信息，可以通过循环输出的方式：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;效果如图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/weixin02.png&#34; alt=&#34;weixin02.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;b: 如果分组只想显示一条信息，那么可以使用公用信息：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;效果如图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/weixin03.png&#34; alt=&#34;weixin03.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;2-修改配置文件&#34;&gt;2. 修改配置文件&lt;/h3&gt;
+&lt;p&gt;打开 &lt;code&gt;alertmanger.yml&lt;/code&gt; 文件，添加自定义模版配置：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;templates:
+  - &#39;wechat.tmpl&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;保存重新加载配置即可。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何量化你的服务</title>
+      <link>/posts/2018-02-27-ru-he-liang-hua-ni-de-fu-wu/</link>
+      <pubDate>Mon, 26 Feb 2018 18:02:53 +0000</pubDate>
+      
+      <guid>/posts/2018-02-27-ru-he-liang-hua-ni-de-fu-wu/</guid>
+      <description>&lt;p&gt;我们经常被问到：“你服务运行的质量如何？“&lt;/p&gt;
+&lt;p&gt;问题很简单，几个字，但想要回答好并不容易，因为你需要有明确的数据来支持你的结论。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;那我们该如何量化我们的服务呢？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;使用-use-方法&#34;&gt;使用 USE 方法&lt;/h3&gt;
+&lt;p&gt;通常我们使用 &lt;code&gt;USE&lt;/code&gt; 方法来量化我们的硬件资源使用情况，它具体指：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Utilisation: % time that the resource was busy&lt;/li&gt;
+&lt;li&gt;Saturation: amount of work resource has to do, often queue length&lt;/li&gt;
+&lt;li&gt;Errors: the count of error events&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们的硬件资源常见检测项包括：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/method/use02.png&#34; alt=&#34;use02.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;我们来看看一个 Prometheus 关于内存查询的例子：&lt;/p&gt;
+&lt;p&gt;内存使用率（Utilisation）:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1 - sum( node_memory_MemFree{job=“…”} +
+  node_memory_Cached{job=“…”} +
+  node_memory_Buffers{job=“…”})
+  / sum(node_memory_MemTotal{job=“…”})
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;内存饱和（Saturation）:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1e3 * sum(
+  rate(node_vmstat_pgpgin{job=“…”}[1m]) +
+  rate(node_vmstat_pgpgout{job=“…”}[1m]))
+)
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;使用-red-方法&#34;&gt;使用 RED 方法&lt;/h3&gt;
+&lt;p&gt;通常我们使用 &lt;code&gt;RED&lt;/code&gt; 方法来量化我们后端服务的运行情况（尤其微服务），它具体指：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Rate: number of requests per second&lt;/li&gt;
+&lt;li&gt;Errors: the number of those requests that are failing&lt;/li&gt;
+&lt;li&gt;Duration: the amount of time those requests take&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用 Prometheus 查询例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// rate:
+sum(rate(request_duration_seconds_count{job=“…”}[1m]))
+// errors:
+sum(rate(request_duration_seconds_count{job=“…”,  
+  status_code!~”2..”}[1m]))
+// duration: 
+histogram_quantile(0.99,  
+  sum(rate(request_duration_seconds_bucket{job=“…}[1m])) by (le))
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;google-sre-4-黄金指标&#34;&gt;Google SRE 4 黄金指标&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Latency: time taken to serve a request&lt;/li&gt;
+&lt;li&gt;Trafﬁc: how much demand is places on your system&lt;/li&gt;
+&lt;li&gt;Errors: rate or requests that are failing&lt;/li&gt;
+&lt;li&gt;Saturation: how “full” your services is&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于 Google SRE 的指标是很多公司参考和努力的方向，不过通常我们可以将它简化为 &lt;code&gt;RED&lt;/code&gt; 方法。&lt;/p&gt;
+&lt;p&gt;参考链接： &lt;a href=&#34;https://www.slideshare.net/kausalco/the-red-method-how-to-instrument-your-services-83653970&#34;&gt;The RED Method: How To Instrument Your Services&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Alertmanger With WeChat</title>
+      <link>/posts/2018-02-22-alertmanger-with-wechat/</link>
+      <pubDate>Wed, 21 Feb 2018 18:52:10 +0000</pubDate>
+      
+      <guid>/posts/2018-02-22-alertmanger-with-wechat/</guid>
+      <description>&lt;p&gt;Alertmanger 从 v0.12 开始已经默认支持企业微信了，真的非常接地气啊，今天我们就来一起体验一下。&lt;/p&gt;
+&lt;h3 id=&#34;准备工作&#34;&gt;准备工作&lt;/h3&gt;
+&lt;p&gt;step 1: 访问&lt;a href=&#34;https://work.weixin.qq.com/&#34;&gt;网站&lt;/a&gt; 注册企业微信账号（不需要企业认证）。&lt;/p&gt;
+&lt;p&gt;step 2: 访问&lt;a href=&#34;https://work.weixin.qq.com/wework_admin/frame#apps&#34;&gt;apps&lt;/a&gt; 创建第三方应用，点击&lt;code&gt;创建应用按钮&lt;/code&gt; -&amp;gt; 填写应用信息：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/wechat/wechat01.png&#34; alt=&#34;点击创建第三方应用&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;使用版本&#34;&gt;使用版本&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;prometheus: 2.0.darwin-amd64&lt;/li&gt;
+&lt;li&gt;node_exporter: 0.15.0.darwin-amd64&lt;/li&gt;
+&lt;li&gt;alertmanager: 0.14.darwin-amd64&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;详细配置&#34;&gt;详细配置：&lt;/h3&gt;
+&lt;h4 id=&#34;prometheus-配置&#34;&gt;prometheus 配置：&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - localhost:9093
+
+rule_files:
+  - &amp;quot;rules.yml&amp;quot;
+
+scrape_configs:
+  - job_name: &#39;node&#39;
+    static_configs:
+      - targets: [&#39;localhost:9100&#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;rules.yml 配置：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;groups:
+- name: node
+  rules:
+  - alert: server_status
+    expr: up{job=&amp;quot;node&amp;quot;} == 0
+    for: 15s
+    annotations:
+      summary: &amp;quot;机器 {{ $labels.instance }} 挂了&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;alertmanger-配置&#34;&gt;alertmanger 配置：&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;route:
+  group_by: [&#39;alertname&#39;]
+  receiver: &#39;wechat&#39;
+
+receivers:
+- name: &#39;wechat&#39;
+  wechat_configs:
+  - corp_id: &#39;xxx&#39;
+    to_party: &#39;1&#39;
+    agent_id: &#39;1000002&#39;
+    api_secret: &#39;xxxx&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;参数说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;corp_id: 企业微信账号唯一 ID， 可以在&lt;code&gt;我的企业&lt;/code&gt;中查看。&lt;/li&gt;
+&lt;li&gt;to_party: 需要发送的组。&lt;/li&gt;
+&lt;li&gt;agent_id: 第三方企业应用的 ID，可以在自己创建的第三方企业应用详情页面查看。&lt;/li&gt;
+&lt;li&gt;api_secret: 第三方企业应用的密钥，可以在自己创建的第三方企业应用详情页面查看。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;详情请参考&lt;a href=&#34;https://work.weixin.qq.com/api/doc#10167/%E6%96%87%E6%9C%AC%E6%B6%88%E6%81%AF&#34;&gt;文档&lt;/a&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;验证测试&#34;&gt;验证测试&lt;/h3&gt;
+&lt;p&gt;当我们停掉 node_exporter 的时候，会收到如下告警信息：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/wechat/wechat03.PNG&#34; alt=&#34;wechat03.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;当我们重新启动 node_exporter 的时候，会收到如下告警信息：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/wechat/wechat04.PNG&#34; alt=&#34;wechat04.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;结论&#34;&gt;结论&lt;/h3&gt;
+&lt;p&gt;企业微信从注册到 alertmanger 配置没有什么坑，而且它的通知非常及时，基本不丢消息，大家可以测试体验以下。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Prometheus 数据安全之 Basic 认证</title>
+      <link>/posts/2018-01-30-prometheus-shu-ju-an-quan-zhi-basic-ren-zheng/</link>
+      <pubDate>Tue, 30 Jan 2018 22:56:26 +0000</pubDate>
+      
+      <guid>/posts/2018-01-30-prometheus-shu-ju-an-quan-zhi-basic-ren-zheng/</guid>
+      <description>&lt;p&gt;我们都知道 Promethetheus 是不带认证和数据加密的，但很多时候我们又想在公网中直接使用它的管理界面，如果不做任何处理，它将存在严重的数据泄漏安全问题。&lt;/p&gt;
+&lt;p&gt;下面我将介绍如何通过 nginx 的 basic 认证来解决这一问题。&lt;/p&gt;
+&lt;h3 id=&#34;原始-prometheus-代理配置&#34;&gt;原始 Prometheus 代理配置&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;server {
+    listen 80;
+    server_name example.coom;
+
+    location / {
+        proxy_pass http://localhost:9090/;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;说明：使用 nignx 的 &lt;code&gt;proxy_pass&lt;/code&gt; 代理我们 Prometheus 服务。&lt;/p&gt;
+&lt;h3 id=&#34;使用-htpasswd-生成认证密钥对&#34;&gt;使用 htpasswd 生成认证密钥对&lt;/h3&gt;
+&lt;p&gt;htpasswd 属于 &lt;code&gt;apache2-utils&lt;/code&gt; 包，下面我将演示在 Ubuntu 上的安装和配置过程。&lt;/p&gt;
+&lt;p&gt;Step1: 安装 apache2-utils&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ sudo apt-get install apache2-utils
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Step2: 生成认证密钥&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ htpasswd -c /etc/nginx/.htpasswd monitor
+
+
+New password:
+Re-type new password:
+Adding password for user monitor
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;说明：&lt;code&gt;monitor&lt;/code&gt; 可以修改为任意用户名。&lt;/p&gt;
+&lt;p&gt;Step3: 使用 cat 查看生成内容:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ cat /etc/nginx/.htpasswd
+
+monitor:$apr1$EEV......
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;修改-nginx-配置&#34;&gt;修改 nginx 配置&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;server {
+    listen 80;
+    server_name example.coom;
+
+    location / {
+        auth_basic &amp;quot;Prometheus&amp;quot;;
+        auth_basic_user_file &amp;quot;/etc/nginx/.htpasswd&amp;quot;;
+        
+        proxy_pass http://localhost:9090/;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;保存配置，重启 nignx 服务后，你访问域名 example.com 将出现 basic 认证的界面:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/prometheus/nginx-basic.png&#34; alt=&#34;nginx-basic.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;输入正确的账号密码，你将进入 Prometheus 管理界面。&lt;/p&gt;
+&lt;h3 id=&#34;写在最后&#34;&gt;写在最后&lt;/h3&gt;
+&lt;p&gt;我们可以使用 nginx 的 basic auth 的方式来解决 Prometheus 认证的问题，此方法同样适用 Alertmanger 或者 NodeExporter。&lt;/p&gt;
+&lt;p&gt;从现在起，不要再让你的监控数据在公网中裸奔，赶快去修改配置吧。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>AlertManager 邮件告警配置详解</title>
+      <link>/posts/2018-01-22-prometheus-shu-ju-an-quan-zhi-basic-ren-zheng0/</link>
+      <pubDate>Mon, 22 Jan 2018 21:56:26 +0000</pubDate>
+      
+      <guid>/posts/2018-01-22-prometheus-shu-ju-an-quan-zhi-basic-ren-zheng0/</guid>
+      <description>&lt;p&gt;邮件作为最为通用的告警手段，我想大家在平时的工作中一定不会少用，下面我就以 gmail 为例来讲解整个配置过程。&lt;/p&gt;
+&lt;p&gt;版本：Alertmanager 版本: 0.13.0&lt;/p&gt;
+&lt;h3 id=&#34;配置内容&#34;&gt;配置内容&lt;/h3&gt;
+&lt;p&gt;修改 &lt;code&gt;alertmanager.yml&lt;/code&gt; 文件，添加信息如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;route:
+  group_by: [Alertname]
+  receiver: email 
+  
+receivers:
+  - name: &#39;email&#39;
+  email_configs:
+  - smarthost: &#39;smtp.gmail.com:587&#39;
+    hello: &#39;gmail.com&#39;
+    from: &#39;xx@gmail.com&#39;
+    to: &#39;xx@gmail.com&#39;
+    auth_username: &#39;&#39; // email 账号
+    auth_identity: &#39;&#39; // email 账号
+    auth_password: &#39;&#39; // email 密码
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果你有多个 email recevier，而它们使用相同的 smtp sever，那么我们可以使用全局 smtp 来简化配置：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;global:
+  smtp_smarthost: &#39;smtp.gmail.com:587&#39;
+  smtp_from: &#39;xx@gmail.com&#39;
+  smtp_hello: &#39;gmail.com&#39;
+  
+receivers:
+  - name: &#39;email&#39;
+  email_configs:
+  - to: &#39;xx@gmail.com&#39;
+    auth_username: &#39;&#39; // email 账号
+    auth_identity: &#39;&#39; // email 账号
+    auth_password: &#39;&#39; // email 密码
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;重要提醒：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;auth_password 为 gmail 密码，通常你需要的是一个 App Password。&lt;/li&gt;
+&lt;li&gt;尽量避免使用非专业邮箱发送告警，例如 QQ 邮箱。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;更新配置后，如果有新的告警信息，你将收到类似邮件：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/prometheus/alertemail.png&#34; alt=&#34;email-alert.png&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;自定义消息模版&#34;&gt;自定义消息模版&lt;/h3&gt;
+&lt;p&gt;告警通知使用的是默认模版，因为它已经编译到二进制包了，所以我们不需要额外配置。如果我们想自定义模版，这又该如何配置呢？&lt;/p&gt;
+&lt;p&gt;步骤一： 下载官方默认模版&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ wget https://raw.githubusercontent.com/prometheus/alertmanager/master/template/default.tmpl
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;步骤二： 根据自己的需求修改模版，主要是下面这一段&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;define &amp;quot;email.default.html&amp;quot; 
+.... // 修改内容
+end 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;步骤三: 修改 alertmanger.yml，添加 templates 配置参数&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;templates:
+- &#39;./template/*.tmpl&#39; //  自定义模版路径
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;最后保存重新加载配置即可。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>如何将同一条告警信息发送给多个渠道</title>
+      <link>/posts/2018-01-19-ru-he-jiang-tong-tiao-gao-jing-xin-xi-fa-song-gei-duo-ge-qu-dao/</link>
+      <pubDate>Fri, 19 Jan 2018 23:55:26 +0000</pubDate>
+      
+      <guid>/posts/2018-01-19-ru-he-jiang-tong-tiao-gao-jing-xin-xi-fa-song-gei-duo-ge-qu-dao/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;背景： 有时我们需要将告警信息同时发送给多个渠道（例如短信或邮件），那么我们的 Alertmanager 该如何配置呢？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;使用版本：Alertmanager 版本： 0.13.0&lt;/p&gt;
+&lt;h3 id=&#34;方法一&#34;&gt;方法一&lt;/h3&gt;
+&lt;p&gt;在同一个 recevier 定义多个接收渠道，例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;route:
+  receiver: my-receiver
+
+receivers:
+  - name: my-receiver
+    webhook_configs:
+    - url: &#39;https://hooks.xxx.com/xxxx&#39;
+    email_configs:
+    - to: &#39;xx@xxxx&#39;
+      auth_username: &#39;xxx&#39;
+      auth_password: &#39;xxx&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;说明: 可以看到同一条消息既使用 &lt;code&gt;webhook&lt;/code&gt; 又使用 email 配置，所有在这两个渠道我们都收到消息。&lt;/p&gt;
+&lt;h3 id=&#34;方法二&#34;&gt;方法二&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;route:
+  receiver: email # 默认配置一个
+  
+routes:
+  - match:
+      severity: Critical
+    continue: true
+    receiver: webhook
+    
+ - match:
+     severity: Critical
+   receiver: email
+   
+receivers:
+  - name: webhook
+    webhook_configs:
+    - url: &#39;https://hooks.xxx.com/xxxx&#39;
+  - name: email
+    email_configs:
+    - to: &#39;xx@xxxx&#39;
+      auth_username: &#39;xxx&#39;
+      auth_password: &#39;xxx&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;定义多个独立的 receiver, 然后使用 routes 中的 &lt;code&gt;continue&lt;/code&gt; 选项进行配置：&lt;/p&gt;
+&lt;p&gt;说明： 我们采用独立的两个 receiver 来接收消息，通过配置多个 routes 进行分发控制。&lt;/p&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+&lt;p&gt;我们可以使用以上两种方式实现同一条消息发送给不同渠道的效果，但是如果你的告警消息具有多类责任人（组），那么应该采用多个 routes 来分发消息，因为一个 receiver 代表了同一类接收者，这样配置也更灵活。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Prometheus 集群方案之 Remote Read 实战</title>
+      <link>/posts/2018-01-03-prometheus-ji-qun-fang-an-zhi-remote-read-shi-zhan/</link>
+      <pubDate>Wed, 03 Jan 2018 23:54:45 +0000</pubDate>
+      
+      <guid>/posts/2018-01-03-prometheus-ji-qun-fang-an-zhi-remote-read-shi-zhan/</guid>
+      <description>&lt;p&gt;众所周知，Prometheus 被吐槽最多的就是 HA 和集群方案。&lt;/p&gt;
+&lt;p&gt;想想以前，我们用上顶配机器，但还会遇到磁盘，网络 IO，查询超时等问题，主要因为收集的数据量太大，超过单机承受的范围。&lt;/p&gt;
+&lt;p&gt;在过去一段时间，虽然我们已经根据业务和部门，将能拆分的数据都拆分到不同的 Prometheus 中去了，但即便如此，仍存在以下问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;有些业务无法拆分，数据量还是特别大。&lt;/li&gt;
+&lt;li&gt;数据收集和查询做的事情是完全独立的，但两者时常相互竞争占用资源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;今天我们一起探讨解决此问题的新思路，即采用 remote_read 实现 Prometheus 数据的读写分离的集群方案 。&lt;/p&gt;
+&lt;h3 id=&#34;remote_read-简介&#34;&gt;remote_read 简介&lt;/h3&gt;
+&lt;p&gt;众所周知，从 Prometheus 1.8 开始，增加了一个叫做 remote_read 的配置，详细信息如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# The URL of the endpoint to query from.
+url: &amp;lt;string&amp;gt;
+
+# Timeout for requests to the remote read endpoint.
+[ remote_timeout: &amp;lt;duration&amp;gt; | default = 30s ]
+
+# Sets the `Authorization` header on every remote read request with the
+# configured username and password.
+basic_auth:
+  [ username: &amp;lt;string&amp;gt; ]
+  [ password: &amp;lt;string&amp;gt; ]
+
+# Sets the `Authorization` header on every remote read request with
+# the configured bearer token. It is mutually exclusive with `bearer_token_file`.
+[ bearer_token: &amp;lt;string&amp;gt; ]
+
+# Sets the `Authorization` header on every remote read request with the bearer token
+# read from the configured file. It is mutually exclusive with `bearer_token`.
+[ bearer_token_file: /path/to/bearer/token/file ]
+
+# Configures the remote read request&#39;s TLS settings.
+tls_config:
+  [ &amp;lt;tls_config&amp;gt; ]
+
+# Optional proxy URL.
+[ proxy_url: &amp;lt;string&amp;gt; ]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;remote_read&lt;/code&gt; 参数用于远程读取数据，采用 http 协议。&lt;/p&gt;
+&lt;p&gt;当然作为数据源被读取需要支持它的 remote storage reader 的接口，这么设计的目的是为了在新一代的存储架构里实现解耦，很方便做到：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Prometheus 的读写可以在不同的 Prometheus Server 进行，即一个 Prometheus 读取其它 Prometheus 的数据。&lt;/li&gt;
+&lt;li&gt;Prometheus 的读写可以在更多的存储引擎中进行，即你完可以使用 InfluxDB 作为数据库来存储数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;部署架构&#34;&gt;部署架构&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/images/prometheus/2018-01-03.img1.png&#34; alt=&#34;部署架构图.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;架构说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Server &lt;code&gt;A&#39;&lt;/code&gt; 表示 Server A 的镜像，具有相同的功能和数据（B，C 同理）。&lt;/li&gt;
+&lt;li&gt;数据流统一采用拉取的方式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;不难发现，架构中的 Prometheus 主要分为两类， 用于数据收集（例如 B） 和 用于数据查询（例如 A）。&lt;/p&gt;
+&lt;p&gt;数据查询的 Prometheus 会从收集到数据的节点中读取数据，请注意，它只做实时的查询以及内存运算，不做数据存储。&lt;/p&gt;
+&lt;p&gt;通过这样的架构，我们就很容易将整个监控的数据收集查询分离开了，也更容易实现高可用。&lt;/p&gt;
+&lt;h3 id=&#34;如何配置&#34;&gt;如何配置&lt;/h3&gt;
+&lt;p&gt;下面我将通过本地实验向大家演示使用 &lt;code&gt;remote_read&lt;/code&gt; 实现 Prometheus 之间数据的读取过程。&lt;/p&gt;
+&lt;p&gt;软件版本：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Prometheus 版本： prometheus-1.8.2.darwin-amd64&lt;/li&gt;
+&lt;li&gt;NodeExporter 版本：node_exporter-0.12.0.darwin-amd64&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实验内容：&lt;/p&gt;
+&lt;p&gt;本地运行三个 Prometheus Server, 它们分别运行在 &lt;code&gt;9090&lt;/code&gt;, &lt;code&gt;9091&lt;/code&gt;, &lt;code&gt;9092&lt;/code&gt; 端口。 其中 &lt;code&gt;9091&lt;/code&gt; 和 &lt;code&gt;9092&lt;/code&gt; 主要用来收集 node_exporter 数据， &lt;code&gt;9090&lt;/code&gt; 用来读取 &lt;code&gt;9091&lt;/code&gt;, &lt;code&gt;9092&lt;/code&gt; 收集的数据。&lt;/p&gt;
+&lt;p&gt;配置信息如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 数据读取的 9090 的配置
+remote_read:
+  - url: &#39;http://localhost:9091/api/v1/read&#39;
+    remote_timeout: 8s
+  - url: &#39;http://localhost:9092/api/v1/read&#39;
+    remote_timeout: 8s
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;# 数据收集 9091 的配置
+- job_name: &#39;node&#39;
+  static_configs:
+  - targets: [&amp;quot;localhost:9100&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;# 数据收集 9092 的配置
+- job_name: &#39;node&#39;
+  static_configs:
+  - targets: [&amp;quot;localhost:9100&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;完成配置，并成功启动此三个实例后，我们可以在它们自带的界面中进行验证。&lt;/p&gt;
+&lt;p&gt;9091 收集到的数据:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/prometheus/2018-01-03.img2.png&#34; alt=&#34;9091 收集到的数据&#34;&gt;&lt;/p&gt;
+&lt;p&gt;9092 收集到的数据:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/prometheus/2018-01-03.img3.png&#34; alt=&#34;9092 收集到的数据&#34;&gt;&lt;/p&gt;
+&lt;p&gt;9090 通过远程读取的数据:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/prometheus/2018-01-03.img4.png&#34; alt=&#34;9090 通过远程读取的数据&#34;&gt;&lt;/p&gt;
+&lt;p&gt;支持聚合运算查询：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/prometheus/2018-01-03.img5.png&#34; alt=&#34;汇总查询&#34;&gt;&lt;/p&gt;
+&lt;p&gt;好了，到目前为止我们已经成功实现通过 &lt;code&gt;remote_read&lt;/code&gt; 配置实现从不同的 Prometheus Server 读取数据，这意味着我们先前讨论的部署架构是完全是可行的。&lt;/p&gt;
+&lt;p&gt;写到这里，本篇文章讨论的重点也基本完成，下面就是去调整你的部署架构了 :smile:。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Prometheus 2.0 告警规则介绍</title>
+      <link>/posts/2017-12-12-prometheus-2-dot-0-gao-jing-gui-ze-jie-shao/</link>
+      <pubDate>Tue, 12 Dec 2017 23:50:46 +0000</pubDate>
+      
+      <guid>/posts/2017-12-12-prometheus-2-dot-0-gao-jing-gui-ze-jie-shao/</guid>
+      <description>&lt;p&gt;Prometheus 2.0 已经发布一段时间了，从今天开始我将分几篇文章为大家介绍其中的一些变化。&lt;/p&gt;
+&lt;p&gt;此篇文章主要介绍 2.0 的告警规则声明的新写法。&lt;/p&gt;
+&lt;h3 id=&#34;变化&#34;&gt;变化&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/images/prometheus/pic1.png&#34; alt=&#34;pic1.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;从 1.x 到 2.0 规则声明由自定义的 DSL 语法变成了标准的 yaml。&lt;/p&gt;
+&lt;p&gt;这么做的主要原因是 yaml 能够提供更丰富的配置信息，能够彻底解决告警规则分组问题。&lt;/p&gt;
+&lt;p&gt;在 2.0 中我们可以很方便的给不同告警组设置不同的检查轮询时间，详情请参考官方的文档（点击原文链接）。&lt;/p&gt;
+&lt;h3 id=&#34;升级&#34;&gt;升级&lt;/h3&gt;
+&lt;p&gt;你的 Prometheus 1.x 已经运行一段时间了，其中配置了大量的告警规则, 如何快速将 1.x 的告警规则定义配置升级到 2.0 格式呢?&lt;/p&gt;
+&lt;p&gt;这个问题 Prometheus 早已经为我们考虑了，你可以使用 Prometheus 安装包下面的 promtool 工具来实现批量更新，用法如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/prometheus/pic2.png&#34; alt=&#34;pic2.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;注： &lt;code&gt;rules-files&lt;/code&gt; 支持单个文件和正则表达式，当执行完命令，在对应文件目录会生成一个同名的 文件名.yml 文件存放新的定义。&lt;/p&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+&lt;p&gt;本篇文章主要介绍 Prometheus 2.0 告警规则的新语法以及如何使用 &lt;code&gt;promtool&lt;/code&gt; 批量跟新旧定义，希望对大家有所帮助。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>一个由于配置不当导致 Prometheus 告警失效的 bug</title>
+      <link>/posts/2017-09-25-ge-you-yu-pei-zhi-bu-dang-dao-zhi-prometheus-gao-jing-shi-xiao-de-bug/</link>
+      <pubDate>Mon, 25 Sep 2017 23:02:11 +0000</pubDate>
+      
+      <guid>/posts/2017-09-25-ge-you-yu-pei-zhi-bu-dang-dao-zhi-prometheus-gao-jing-shi-xiao-de-bug/</guid>
+      <description>&lt;p&gt;随着对 Prometheus, Alertmanager 深入了解，我们配置的告警通知可读性提高了不少。&lt;/p&gt;
+&lt;p&gt;但是有一个问题不断困扰着我们，现象大致为：&lt;/p&gt;
+&lt;p&gt;在逻辑上我们认为是同一条的告警内容，在告警通知里面出现多次，而且已经过时告警还在不断发（一直报）。&lt;/p&gt;
+&lt;p&gt;我们可以将这个问题简单总结为以下几点:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Prometheus Rule 一条查询结果，在 Alertmanager 却对应了多条警告。&lt;/li&gt;
+&lt;li&gt;Alertmanager 里面有警报一直处于未恢复的状态（没有收到 Prometheus 发送的 resolved 请求）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;出现问题的原因&#34;&gt;出现问题的原因&lt;/h3&gt;
+&lt;p&gt;一开始我怀疑，是不是 Prometheus 向 Alertmanager 发送的 Resolved 通知有丢失, 导致部分历史警告一直处于未恢复状态。&lt;/p&gt;
+&lt;p&gt;经排查，发现 Prometheus 和 Alertmanager 都未重启过，所以理论上不存在丢失通知的情况，即使有也是很低频的，无法解释问题 2 的大量情况。&lt;/p&gt;
+&lt;p&gt;为了彻底搞清楚这个问题，我们有必要先弄清楚 Prometheus 中的 Rule 触发产生的告警在 Alertmanager 中是怎么对应的。&lt;/p&gt;
+&lt;h4 id=&#34;1-如何区分两条告警&#34;&gt;1. 如何区分两条告警&lt;/h4&gt;
+&lt;p&gt;根据 Prometheus &lt;code&gt;common/alert&lt;/code&gt; 中的代码可知，所有具有相同 Labels 的告警为同一告警。&lt;/p&gt;
+&lt;p&gt;那如何才算具有相同 Labels 呢，它的计算逻辑为对一个 map 按照 key 排序，然后依次对 key, value 取值，做 hash 计算，代码逻辑大致为：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/alertmanager/pic1.png&#34; alt=&#34;pic1.png&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;2-prometheus-产生一条-alert-的逻辑&#34;&gt;2. Prometheus 产生一条 Alert 的逻辑&lt;/h4&gt;
+&lt;p&gt;Prometheus 执行配置中的 Rule 查询的时候，如果有满足条件的结果，就会产生对应告警，而告警条目数与查询出的纪录条数一致。&lt;/p&gt;
+&lt;p&gt;当产生告警的时候，一条告警的 Labels 中除了 Prometheus 自动加入的 alertname，还有对应 Rule 定义的 Labels。&lt;/p&gt;
+&lt;h4 id=&#34;3-alertmanager-是如何分辨告警&#34;&gt;3. Alertmanager 是如何分辨告警&lt;/h4&gt;
+&lt;p&gt;首先，对于 Alertmanager ，它收到的告警是一个打平的数组。&lt;/p&gt;
+&lt;p&gt;因为每个告警的 Labels 里面包含了 Rule 的 alertname，区别是否是相同的告警，对 Alertmanager 而言，只需查看是否具有完全相同的 Labels 即可。&lt;/p&gt;
+&lt;p&gt;Alertmanager 中的代码大致为：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/alertmanager/pic2.png&#34; alt=&#34;pic2.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;现在，我们已搞清楚了 Prometheus 产生告警和 Alertmanager 中判断是否为相同告警的逻辑，是时候 review 一下我们的配置了。&lt;/p&gt;
+&lt;p&gt;我们很多业务类监控规则的写法类似这样:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/alertmanager/pic3.png&#34; alt=&#34;pic3.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;可以看到，这条规则中自定义了一个 value 属性，它的值是创建告警的时候的查询结果（一个变量），当这条规则触发后，Alertmanager 接收到的告警 大致是这样：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;｛alertname: &amp;quot;xxxx&amp;quot;, value: , xxx｝
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;因为告警的 value 是一个动态变化值，所以当 Prometheus 触发恢复告警的时候，实际上会产生了一条全新的告警恢复，因为它和以前触发的告警的 value 不同了，所以实际上 Alertmanger 正在告警的通知并没有收到对应的恢复通知。&lt;/p&gt;
+&lt;p&gt;故老得告警无法收到恢复通知，新的告警（value不同）又不断产生，最终就会导致以上两个问题。&lt;/p&gt;
+&lt;p&gt;在弄清楚问题来龙去脉以后，解决起来自然简单：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;检查 Rule 配置文件，将 value 参数 放到 ANNOTATIONS，重新加载配置。&lt;/li&gt;
+&lt;li&gt;删除 Alertmanager 的历史数据，重启。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+&lt;p&gt;配置 Prometheus Rule 时候，自定义的 Lables 不能存在变量，不然会产生多条告警。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>一个 Prometheus 查询的奇怪问题</title>
+      <link>/posts/2017-09-21-ge-prometheus-cha-xun-de-qi-guai-wen-ti/</link>
+      <pubDate>Thu, 21 Sep 2017 23:02:58 +0000</pubDate>
+      
+      <guid>/posts/2017-09-21-ge-prometheus-cha-xun-de-qi-guai-wen-ti/</guid>
+      <description>&lt;p&gt;昨天下午，一同事对我说 Prometheus 告警触发了，但是没发现对应的结果，我让她发了对应的截图给我：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/prom0921/pic1.png&#34; alt=&#34;pic1.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;原来同事使用了图一的查询来监控服务状态码为 4xx,  且非 400 和 419 的情况。&lt;/p&gt;
+&lt;p&gt;这个查询的逻辑看上去很合理，首先计算 4xx 的总数，然后再减去 400 和 419 的总数，最后查看计算结果是否 &amp;gt; 0 。&lt;/p&gt;
+&lt;p&gt;但通过图一和图二我们不难发现以下两个问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;图一查询结果怎么会有负数。&lt;/li&gt;
+&lt;li&gt;根据图二结果可知，不存在非 400和 419 的 4xx 数据，但为何图一查询结果却有 &amp;gt; 0 的情况。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这两个问题，其实本质上是一个问题，那就是浮点数的精度问题，对于这个问题，我在 github 提了一个 issue， 得到的回复也大相径庭。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/prom0921/pic2.png&#34; alt=&#34;pic2.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;所以，我们需要尽量避免浮点数运算，尤其使用除法和减法来做监控告警的依据。&lt;/p&gt;
+&lt;p&gt;那回到同事这个需求，我们可以采用聚合的正则匹配来解决，其语句应该是这样：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/prom0921/pic3.png&#34; alt=&#34;pic3.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;变通了一下，查询语句简单不少，性能也有所提升。&lt;/p&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+&lt;p&gt;凡是能够直接通过查询搞定的，就不要再用计算表达式；如果用了表达式，需要注意精度问题，尤其做减法和除法。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>CloudNativeCon 2017 Prometheus 报道</title>
+      <link>/posts/2017-08-18-cloudnativecon-2017-prometheus-bao-dao/</link>
+      <pubDate>Fri, 18 Aug 2017 22:02:05 +0000</pubDate>
+      
+      <guid>/posts/2017-08-18-cloudnativecon-2017-prometheus-bao-dao/</guid>
+      <description>&lt;p&gt;最近两天 PromCon 2017 正如火如荼的进行着，具体演讲主题以及大会安排可以参考链接 http://t.cn/RCUGHoy，或者访问 Twitter 频道 #PromCon2017查看最新动态。&lt;/p&gt;
+&lt;p&gt;目前大会还未结束，暂时无法获取相关 slide, 但是我们可以回顾一下今年 3/29～ 3/30 的 CloudNativeCon 2017 大会，下面是我整理的关于 Prometheus 的分享主题和以及对应的视频，资料链接（需要翻墙）。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/promconf2017/pic1.png&#34; alt=&#34;pic1.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;主要介绍 Prometheus 的成长历史，如何从一个公司内部系统到多人贡献的优秀开源系统的华丽转变。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;video: http://t.cn/RCyH0mA&lt;/li&gt;
+&lt;li&gt;slide: http://t.cn/RCyQluy&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/promconf2017/pic2.png&#34; alt=&#34;pic2.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;主要介绍 Prometheus 的 Counter 数据模型，最佳实践。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;video: http://t.cn/RCynpyG&lt;/li&gt;
+&lt;li&gt;slide: http://t.cn/RCyQluy&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/promconf2017/pic3.png&#34; alt=&#34;pic3.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;主要介绍最新版本 AlertManager 的高可用模型, 再也不用担心告警的 HA 问题了。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;video: http://t.cn/RCyugqk&lt;/li&gt;
+&lt;li&gt;slide: 缺失&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/promconf2017/pic4.png&#34; alt=&#34;pic4.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;主要介绍 Cloud Native 生产环境中如何使用 Prometheus 监控告警，释放运维人力的案例。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;video: http://t.cn/RCUUOvt&lt;/li&gt;
+&lt;li&gt;slide: 缺失&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/promconf2017/pic5.png&#34; alt=&#34;pic5.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;详细介绍 AlertManager 的架构，各个组建作用，配置示例，并根据实践为 AlertManager 写了一个告警历史查询的插件。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;video: http://t.cn/RCUUESz&lt;/li&gt;
+&lt;li&gt;slide: http://t.cn/RCUUkk6&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/promconf2017/pic6.png&#34; alt=&#34;pic6.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;主要介绍 Grafana 配合 Prometheus 使用，以及指出不满足的地方，并使用扩展给出解决方案。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;video: http://t.cn/RCU4w4O&lt;/li&gt;
+&lt;li&gt;slide: http://t.cn/RCU4GY0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/promconf2017/pic7.png&#34; alt=&#34;pic7.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;主要介绍 Prometheus 超长时间跨度的存储方案&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;video: http://t.cn/RCU4ac1&lt;/li&gt;
+&lt;li&gt;slide: http://t.cn/RCUvYu5&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/promconf2017/pic8.png&#34; alt=&#34;pic8.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;主要介绍如何使用 mtail 和 snmp_exporter 对负载均衡设备进行监控，从而对系统的关键组件性能更加了解。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;video: http://t.cn/RCU40tg&lt;/li&gt;
+&lt;li&gt;slide: 缺失&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/promconf2017/pic9.png&#34; alt=&#34;pic9.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;主要介绍通过配置参数，对 Prometheus 进行调优，大大提高性能，实战性非常强。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;video: http://t.cn/RCU4Tdk&lt;/li&gt;
+&lt;li&gt;slide: http://t.cn/RCUhDgd&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/promconf2017/pic10.png&#34; alt=&#34;pic10.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;主要介绍如何使用 Prometheus 监控一个基于微服务架构，容器，容器编排的开源系统，如果你具有相似架构，那么此视频具有很强的参考价值。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;video: http://t.cn/RCU43Ty&lt;/li&gt;
+&lt;li&gt;slide: http://t.cn/RCyFe4f&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/images/promconf2017/pic11.png&#34; alt=&#34;pic11.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;这是一个非常有趣的话题，众所周知，Prometheus 主要用于后端系统的数据收集，但是它也可以用来收集浏览器的一些指标，演讲者，脑洞大开，让人耳目一新。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;video: http://t.cn/RCU4DPH&lt;/li&gt;
+&lt;li&gt;slide: http://t.cn/RCUb20o&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以上就是 CloudNativeCon 2017 中关于 Prometheus 的 11 场分享，其中有些 slide 暂时没有找到，后续会尝试联系作者提供下载链接（点击阅读原文，可以跳转视频地址，需要翻墙）。&lt;/p&gt;
+&lt;p&gt;在这 11 场分享中，我最感兴趣的话题是  &lt;strong&gt;Configuring Prometheus for High Performance&lt;/strong&gt; 和 &lt;strong&gt;Understanding and Extending Prometheus AlertManager&lt;/strong&gt;，收获颇多。&lt;/p&gt;
+&lt;p&gt;最后，预祝 PromCon 2017 取得圆满成功，早点放出视频，让我等大饱眼福。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Use Textfile Collector to make your node exporter more Powerful</title>
+      <link>/posts/2016-11-08-use-textfile-collector-to-make-your-node-exporter-more-powerful/</link>
+      <pubDate>Tue, 08 Nov 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-11-08-use-textfile-collector-to-make-your-node-exporter-more-powerful/</guid>
+      <description>&lt;p&gt;有时 node_exporter 不能完全满足机器信息的收集，相较于 fork 代码，使用官方推荐的 Textfile Collector 是一种更简便的方式。&lt;/p&gt;
+&lt;h3 id=&#34;textfile-collector-使用逻辑大致如下&#34;&gt;Textfile Collector 使用逻辑大致如下：&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;使用 &lt;code&gt;-collector.textfile.directory&lt;/code&gt; 参数启动 node_exporter。&lt;/li&gt;
+&lt;li&gt;将我们自己收集的数据，按照 prometheus 的 &lt;a href=&#34;https://prometheus.io/docs/instrumenting/exposition_formats/#text-format-details&#34;&gt;文本格式&lt;/a&gt; 存储到 textfile collector 目录下的 *.prom 文件中。&lt;/li&gt;
+&lt;li&gt;每当 Prometheus server 到 node_exporter 拉数据的时候，node_exporter 会自动解析所有 *.prom 文件，将数据全部返回。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;prometheus-文本格式的规则&#34;&gt;Prometheus 文本格式的规则&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;#&lt;/code&gt; 开头表示注视，将被忽略。&lt;/li&gt;
+&lt;li&gt;如果以 &lt;code&gt;# HELP&lt;/code&gt; 开头，将视为 Metric 帮助信息。&lt;/li&gt;
+&lt;li&gt;如果以 &lt;code&gt;# TYPE&lt;/code&gt; 开头，将视为 Metric 类型定义，如果没有定义类型，Metric 默认为 Gauge, 例如：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;# Minimalistic line:
+metric_without_timestamp_and_labels 12.47
+
+# HELP http_requests_total The total number of HTTP requests.
+# TYPE http_requests_total counter
+http_requests_total{method=&amp;quot;post&amp;quot;,code=&amp;quot;200&amp;quot;} 1027 1395066363000
+http_requests_total{method=&amp;quot;post&amp;quot;,code=&amp;quot;400&amp;quot;}    3 1395066363000
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以看到文本格式的数据都是静态的，它并不是一个可以执行的脚本，这意味着我们为了获动态的数据，需要定时执行一些数据收集脚本，并将数据转化为 Prometheus 识别的文本格式，最后同步到对应的 &lt;code&gt;*.pom&lt;/code&gt; 文件即可。&lt;/p&gt;
+&lt;p&gt;在日常工作中，我们总结了一套比较好的模式，大致过程如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在 node_exporter 目录中新建一个 cron 目录，用于存放所有需要执行的脚本, 脚本按照执行的时间间隔分组，分别放到不同的目录，所以 cron 目录应该是这样：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;cron
+├── 120
+│   └── collector1.sh
+├── 300
+│   └── collector2.sh
+└── main.cron.py
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;每个脚本负责一个 Metric 数据收集，它只负责将收集的数据转化为对应的文本格式，然后输出到标准 IO。&lt;/li&gt;
+&lt;li&gt;有个主函数，主函数的输入为一组需要执行的脚本目录，他会依次执行收集脚本，然后将每个脚本输出的标准 IO，以 &lt;code&gt;.pom&lt;/code&gt; 为后缀的文件，保存到配置的 Textfile Collector 目录。&lt;/li&gt;
+&lt;li&gt;使用 contab 定时执行主函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;*/2 * * * * python ～cron/main.cron.py ~/cron/120
+*/5 * * * * python ～cron/main.cron.py ~/cron/300
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;总结： 很方便使用 Textfile Collector 来扩展 node_exporter，收集一些自定义需求。 Textfile Collector 和 pushgateway 很相似，只不过 pushgateway 更多的是 service 级别数据收集，而 Textfile Collector 更多是 node_exporter 补充，收集机器信息。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>A bug about prometheus rule incorrect configuration</title>
+      <link>/posts/2016-11-02-a-bug-about-prometheus-rule-incorrect-configuration/</link>
+      <pubDate>Wed, 02 Nov 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-11-02-a-bug-about-prometheus-rule-incorrect-configuration/</guid>
+      <description>&lt;p&gt;随着对 Prometheus Alertmanager 深入了解，我们配置的告警通知已非常具有可读性。&lt;/p&gt;
+&lt;p&gt;但是有一个问题不断困扰着我们，问题现象大致为，在逻辑上我们认为是同一条的告警内容，在告警通知里面出现多次，而且已经过时告警还在不断警告（一直报）。&lt;/p&gt;
+&lt;p&gt;我们可以将这个问题简单总结为两点:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Prometheus rule 一条查询结果，在 Alertmanager 却对应了多条。&lt;/li&gt;
+&lt;li&gt;Alertmanager 里面有警报一直处于未恢复的状态（没有收到 Prometheus 发送的 resolved 请求）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;一开始怀疑，是不是 Prometheus 向 Alertmanager 发送的 resolved 通知有丢失, 导致部分历史警告一直处于未恢复状态。&lt;/p&gt;
+&lt;p&gt;但是排查，发现 Prometheus 和 Alertmanager 在这段时间都没有被重启过。即使有类似现象也是低频的，肯定不会出现如此多的过期告警，而且这种假设仅能部分解释上述问题的第 2 点。&lt;/p&gt;
+&lt;p&gt;看来要彻底搞清楚这个 bug，必须先弄清楚 Prometheus 中一条告警是怎么和 Alertmanager 中的告警通知关联的。&lt;/p&gt;
+&lt;h3 id=&#34;1-如何判断两条告警其实是同一告警&#34;&gt;1. 如何判断两条告警其实是同一告警&lt;/h3&gt;
+&lt;p&gt;根据 Prometheus &lt;code&gt;common/alert&lt;/code&gt; 中的代码可知，所有具有相同 Labels 的告警为同一告警。&lt;/p&gt;
+&lt;p&gt;那如何才算具有相同 Labels 呢，它的计算逻辑为对一个 map 按照 key 排序，然后依次对 key, value 取值，做 hash，代码逻辑大致为：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;labelSetToFastFingerprint&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ls&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;LabelSet&lt;/span&gt;) &lt;span style=&#34;color:#a6e22e&#34;&gt;Fingerprint&lt;/span&gt; {
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; len(&lt;span style=&#34;color:#a6e22e&#34;&gt;ls&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Fingerprint&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;emptyLabelSignature&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;uint64&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;labelName&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;labelValue&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ls&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;hashNew&lt;/span&gt;()
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;hashAdd&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;, string(&lt;span style=&#34;color:#a6e22e&#34;&gt;labelName&lt;/span&gt;))
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;hashAddByte&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;SeparatorByte&lt;/span&gt;)
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;hashAdd&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;, string(&lt;span style=&#34;color:#a6e22e&#34;&gt;labelValue&lt;/span&gt;))
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt; ^= &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;
+	}
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Fingerprint&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt;)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;详情请&lt;a href=&#34;https://github.com/prometheus/common/blob/9a94032291f2192936512bab367bc45e77990d6a/model/signature.go#L80&#34;&gt;参考&lt;/a&gt; 。&lt;/p&gt;
+&lt;h3 id=&#34;2-prometheus-产生一条-alert-的逻辑&#34;&gt;2. Prometheus 产生一条 Alert 的逻辑&lt;/h3&gt;
+&lt;p&gt;Prometheus 执行配置中的 rule 查询条件，如果查询结果不为空，那么就会产生告警，而告警条数与查询出的纪录条数一致。&lt;/p&gt;
+&lt;p&gt;当 rule 查询出结果以后，Prometheus 会创建对应的的告警，而告警信息的 Labels 中除了 Prometheus 自动加入的 &lt;code&gt;alertname&lt;/code&gt;，还有自己 rule 定义的 Labels。&lt;/p&gt;
+&lt;p&gt;这条告警内容会被 Prometheus 缓存起来，它缓存的逻辑大致为 alertname =&amp;gt; PormQL 查询结果的 Labels 的 hash =&amp;gt; 根据 rule 配置产生的告警内容。&lt;/p&gt;
+&lt;h3 id=&#34;3-alertmanager-是如何识别是否为相同告警的呢&#34;&gt;3. Alertmanager 是如何识别是否为相同告警的呢？&lt;/h3&gt;
+&lt;p&gt;对于 Alertmanager 而言，它收到的告警是打平了的。&lt;/p&gt;
+&lt;p&gt;因为每个告警的 Labels 里面包含了 rule 的 alertname，区别是否是相同的告警，对 Alertmanager 而言，只需查看是否具有相同的 Labels 即可。 Alertmanager 中的代码大致为：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Put adds the given alert to the set.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Alerts&lt;/span&gt;) &lt;span style=&#34;color:#a6e22e&#34;&gt;Put&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;alerts&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;...*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;types&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Alert&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt; {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;mtx&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Lock&lt;/span&gt;()
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;defer&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;mtx&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Unlock&lt;/span&gt;()
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;alert&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;alerts&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;fp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;alert&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fingerprint&lt;/span&gt;()
+
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;old&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ok&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;alerts&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;fp&lt;/span&gt;]; &lt;span style=&#34;color:#a6e22e&#34;&gt;ok&lt;/span&gt; {
+			&lt;span style=&#34;color:#75715e&#34;&gt;// Merge alerts if there is an overlap in activity range.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;			&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;alert&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;EndsAt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;After&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;old&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StartsAt&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;alert&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;EndsAt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Before&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;old&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;EndsAt&lt;/span&gt;)) &lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt;
+				(&lt;span style=&#34;color:#a6e22e&#34;&gt;alert&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StartsAt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;After&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;old&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StartsAt&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;alert&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StartsAt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Before&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;old&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;EndsAt&lt;/span&gt;)) {
+				&lt;span style=&#34;color:#a6e22e&#34;&gt;alert&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;old&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Merge&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;alert&lt;/span&gt;)
+			}
+		}
+
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;alerts&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;fp&lt;/span&gt;] = &lt;span style=&#34;color:#a6e22e&#34;&gt;alert&lt;/span&gt;
+
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ch&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;listeners&lt;/span&gt; {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;ch&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;alert&lt;/span&gt;
+		}
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;现在我们已搞清楚了 Prometheus 产生告警和 Alertmanager 中判断相同告警的逻辑。&lt;/p&gt;
+&lt;p&gt;是时候 review 了一下我们监控系统中 rules 配置了，果然被我发现了一些端倪。我们很多业务类监控的写法类似这样:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ALERT xxxx
+  IF sum(xxxx) &amp;gt; 1
+  FOR 10s
+  LABELS {
+    value={{$value}},
+  }
+  ANNOTATIONS {
+    summary = &amp;quot;xxxx&amp;quot;,
+    description = &amp;quot;xxxxx&amp;quot;
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以看出，这条 rule 自定义了一个 value 的 label, 它的值是创建告警的时候的查询结果（它是一个变化值），而 Alertmanager 接收到的告警 Labels 大致为:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;｛ alertname: &amp;quot;xxxx&amp;quot;, value: {{$current_value}}, xxx ｝
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;因为 &lt;code&gt;value&lt;/code&gt; 是一个动态变化的值，所以当 Prometheus 里面缓存的告警内容丢失，就会产生新的告警内容，新的告警会具有不同的 Labels。而当 Alertmanager 接收到这条新的告警的时候，在老的告警里面，很难找到具有相同 Labels 的记录，所以也会对应创建一条新的纪录。&lt;/p&gt;
+&lt;p&gt;那什么情况会导致 Prometheus 里面缓存的告警内容丢失呢？&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Prometheus 重启。&lt;/li&gt;
+&lt;li&gt;Rule 配置修改。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;由于最近我们在不断调整 rule 配置文件， 看来这个问题确实因它而起。&lt;/p&gt;
+&lt;p&gt;在弄清楚问题来龙去脉以后，解决起来自然简单很多：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;检查 rule 配置文件，删除 value 参数，重新加在 Prometheus 配置。&lt;/li&gt;
+&lt;li&gt;删除 Alertmanager 的历史数据。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;又是一次有趣的 bug 探索，让我对 Prometheus 里面告警生成有了更深认识。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Why my delta is a negative number</title>
+      <link>/posts/2016-10-31-why-my-delta-isa-negative-number/</link>
+      <pubDate>Mon, 31 Oct 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-10-31-why-my-delta-isa-negative-number/</guid>
+      <description>&lt;p&gt;首先，让我们从一个 bug 说起，上周五, 有用户反馈，说我们的 API 每日请求统计为负数。&lt;/p&gt;
+&lt;p&gt;先简单解释下我们的每日统计是怎么实现的：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;我们有个日志分析程序持续分析最新的日志（5分钟粒度），它会将分析结果推送到 pushgateway,
+然后 prometheus 定时从 pushgateway 拉取数据。&lt;/li&gt;
+&lt;li&gt;我们定义了一个 metric 来表示收集到的数据，它是一个 counter 类型（不断递增）。&lt;/li&gt;
+&lt;li&gt;我们使用 PromQL 的 delta 语法, 选择从 00:00 ～ 23:59 的区间作为每日访问量。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这个计算逻辑初看上去很合理，但是它存在一个前提，那就是确保 Prometheus 存储的 metric 数值一定是递增。&lt;/p&gt;
+&lt;p&gt;那用户提的这个 bug 是不是就是这个原因导致呢？&lt;/p&gt;
+&lt;p&gt;我查看了过去几日的数据，它几乎就是一直递增的，只是中间出现了一次置零，看来我们已经找到点蛛丝马迹，那为啥 counter 会出现置零情况？&lt;/p&gt;
+&lt;p&gt;要搞懂这个问题，必须先弄清楚这条 metric 的 counter 存在哪里。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;首先排除日志分析程序，因为它只管分析和推送，不负责计算。&lt;/li&gt;
+&lt;li&gt;查看 pushgateway 的启动参数，发现 &lt;code&gt;persistence.file&lt;/code&gt; 和 &lt;code&gt;persistence.interval&lt;/code&gt; 这两个参数与这个问题相关，他们分别表示 pushgateway 存储 metrics 文件路径和同步周期，如果没有设置 &lt;code&gt;persistence.file&lt;/code&gt; 参数，那么默认存在内存中。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;我马上检查了下给用户服务的 pushgateway 启动方式，发现果然缺少 &lt;code&gt;persistence.file&lt;/code&gt; 参数，再看看进程重启时间，恰好发生在置零之前一点，瞬间恍然大悟。&lt;/p&gt;
+&lt;p&gt;好了，问题终于水露石出，简单总结就是：&lt;/p&gt;
+&lt;p&gt;我们选用了 counter 的 delta 来算每日统计量，然后因为 pushgateway 启动方式不对，没有开启持久化选项，导致在 pushgateway 重启过后， metric 丢失。当新数据推送来的时候，pushgateway 会重新生成一个 counter， 故从零开始。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;那是不是添加了持久化选项，你的 counter 就能确保一直递增呢？&lt;/p&gt;
+&lt;p&gt;答案当然是否定的。&lt;/p&gt;
+&lt;p&gt;因为出于性能的考虑，它的持久化是异步落盘的，这就意味着在重启的时候，也会丢失数据，出现 delta 为负数的情况也有可能的，只不过出现的条件与 pushgateway 落盘时间和 Prometheus 最后拉取数据，以及 Prometheus 拉取到数据落盘时间都有关系。&lt;/p&gt;
+&lt;p&gt;虽然我们不能确保 counter 一直递增，但是我觉得我们用 delta 来计算每日统计还是很合理的，因为：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;对于时刻都有很多人访问的接口，即使出现 pushgateway 出现重启，丢数据的情况，（不会出现置零的情况，它会从上一个落盘的时刻累加）从一日的统计区间来看它也应该是增加的。&lt;/li&gt;
+&lt;li&gt;我们统计只是用于看一天的大致体量，用于查看是否出现数量级异常，并不一定需要非常精确。&lt;/li&gt;
+&lt;li&gt;我们可以增加服务的可靠性，减少服务重启次数等。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;写在最后&#34;&gt;写在最后：&lt;/h3&gt;
+&lt;p&gt;通过这次问题排查，让我对 Prometheus 有了更深的认识，对 Prometheus 而言，它不维护 metric 的结构，比如 counter， 像平时我们用 PromQL 查询用到的数据，只是一个个 float64 数字而已。&lt;/p&gt;
+&lt;p&gt;Prometheus 出于性能的考虑，不太适合用来做审计，计费相关的业务，使用 delta 来看数量级的趋势还是很不错的。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Prometheus Alertmanager with slack receiver</title>
+      <link>/posts/2016-10-22-prometheus-alert-slack-receiver/</link>
+      <pubDate>Sat, 22 Oct 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-10-22-prometheus-alert-slack-receiver/</guid>
+      <description>&lt;p&gt;在过去一篇文章 &lt;a href=&#34;/technical/prometheus-with-alertmanager&#34;&gt;Prometheus With Alertmanager&lt;/a&gt; 中，
+已介绍了 prometheus 的告警模块，Alertmanager 用法；今天我们将一起学习，使用 slack 接收告警通知，让咱们的运维看上去高大上，我们想做：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用 slack 接受消息。&lt;/li&gt;
+&lt;li&gt;消息能够带有 url， 自动跳转到 prometheus 对应 graph 查询页面。&lt;/li&gt;
+&lt;li&gt;能自定义颜色。&lt;/li&gt;
+&lt;li&gt;能够 @ 某人&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;假设你已注册了 slack 账号，并创建了一个 #test 频道。&lt;/p&gt;
+&lt;p&gt;一.  为 &lt;code&gt;#test&lt;/code&gt; 频道创建一个 incomming webhooks 应用&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;点击频道标题，选择 &lt;code&gt;Add an app or integration&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/images/slack-alert1.png&#34; alt=&#34;slack-alert1.png&#34;&gt;
+2. 然后在 app store 中搜索 &lt;code&gt;incomming webhooks&lt;/code&gt;，选择第一个&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/slack-alert2.png&#34; alt=&#34;slack-alert2.png&#34;&gt;
+创建成功以后，拷贝 app webhook 地址，以被后面使用。&lt;/p&gt;
+&lt;p&gt;二.  修改 prometheus rules，添加一些字段&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ALERT InstanceStatus
+ IF up {job=&amp;quot;node&amp;quot;}== 0
+ FOR 10s
+ LABELS {
+   instance = &amp;quot;{{$labels.instance}}&amp;quot;,
+ }
+ ANNOTATIONS {
+   summary = &amp;quot;服务器运行状态&amp;quot;,
+   description = &amp;quot;服务器 {{ $labels.instance }} 已当机超过 20s&amp;quot;,
+   link = &amp;quot;http://localhost:9090/graph#%5B%7B%22range_input%22%3A%221h%22%2C%22expr%22%3A%22up%7Bjob%3D%5C%22node%5C%22%7D%20%3D%3D%200%22%2C%22tab%22%3A1%7D%5D&amp;quot;,
+   color = &amp;quot;#ff0000&amp;quot;,
+   username = &amp;quot;@sjy&amp;quot;
+ }
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这里，我在 rule 的 ANNOTATIONS 中，添加了 &lt;code&gt;link&lt;/code&gt;, &lt;code&gt;color&lt;/code&gt;, &lt;code&gt;username&lt;/code&gt; 三个字段，
+它们分别表示消息外链地址，消息颜色和需要 @ 的人。&lt;/p&gt;
+&lt;p&gt;三.  修改 Alertmanager 配置&lt;/p&gt;
+&lt;p&gt;这里我们将使用到 &lt;code&gt;slack_configs&lt;/code&gt;，配置大致为：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/slack-alert4.png&#34; alt=&#34;slack-alert3.png&#34;&gt;
+说下配置大致意思：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;按 alertname 分组。&lt;/li&gt;
+&lt;li&gt;相同组，如果事件没有恢复，每隔 10s 发送一次（主要为了测试）。&lt;/li&gt;
+&lt;li&gt;slack_configs 配置中，使用了 template 语句，通过 &lt;code&gt;CommonAnnotations&lt;/code&gt; 查找字段。&lt;/li&gt;
+&lt;li&gt;插入外链不仅可以使用 title_link, 还可以使用 slack link 标记语法 &lt;code&gt;&amp;lt;htttpxxxxxx| Click here&amp;gt;&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;更多 slack 配置，请参考 &lt;a href=&#34;https://api.slack.com/incoming-webhooks&#34;&gt;incoming-webhooks&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;经过以上配置，我们收到的消息是这样：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/slack-alert5.png&#34; alt=&#34;slack-alert5.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;消息一条一条的，瞬间清晰很多。有了那几个自定义字段，稍作扩展，你将想到一些有趣的事情，比如自动分配任务，标记不同警报级别。&lt;/p&gt;
+&lt;p&gt;最后点击 title 或者 &lt;code&gt;Click here&lt;/code&gt;， 即可跳转到 Prometheus graph 页面：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/slack-alert6.png&#34; alt=&#34;slack-alert6.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;真的太方便了，有没有，再也不用担心多个 Prometheus 节点，切换查询的烦恼了。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;不得不说，slack 还是非常好用的。经过我测试下来，无论网站，桌面客户端，APP，都没有被墙，消息到达及时，只是网页版，启动较慢。要知道，slack 在 IM 工具里，算很靠谱的了，你不用担心突然关掉之类，我个人比较推荐使用它。&lt;/p&gt;
+&lt;p&gt;当然如果你还是觉得慢，那么再推荐下零信，号称国内 slack, 他们文档上说是兼容 slack 的。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Prometheus with mysqld_exporter</title>
+      <link>/posts/2016-10-21-prometheus-with-mysqld-exporter/</link>
+      <pubDate>Fri, 21 Oct 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-10-21-prometheus-with-mysqld-exporter/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/images/mysqld_exporter.png&#34; alt=&#34;mysqld_exporter&#34;&gt;&lt;/p&gt;
+&lt;p&gt;一.  创建一个 MySQL 用户，并拥有适当的权限&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;CREATE USER &#39;mysqld_exporter&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;password&#39;;
+GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO &#39;mysqld_exporter&#39;@&#39;localhost&#39;
+  WITH MAX_USER_CONNECTIONS 3;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;二. 下载和启动 mysqld_exporter&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.9.0/mysqld_exporter-0.9.0.linux-amd64.tar.gz
+tar -xzf mysqld_exporter-0.9.0.linux-amd64.tar.gz
+export DATA_SOURCE_NAME=&#39;mysqld_exporter:password@unix(/var/run/mysqld/mysqld.sock)/&#39;
+./mysqld_exporter
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果安装成功，访问 http://localhost:9104/metrics，您将看到 mysqld_exporter 所有 metrics&lt;/p&gt;
+&lt;p&gt;三. 修改 prometheus 配置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 修改 prometheus.yml, 添加如下配置
+scrape_configs:
+ - job_name: &#39;mysqld&#39;
+   static_configs:
+    - targets:
+      - localhost:9104
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;重启 Prometheus，访问 http://localhost:9090/graph，然后查询 &lt;code&gt;mysql_up&lt;/code&gt;, 你将看到 mysqld 的运行状态。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Prometheus with Alertmanager</title>
+      <link>/posts/2016-10-20-prometheus-with-alertmanager/</link>
+      <pubDate>Thu, 20 Oct 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-10-20-prometheus-with-alertmanager/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/prometheus/alertmanager/4e6695682acd2580773a904e4aa2e3b927ee27b7/doc/arch.jpg&#34; alt=&#34;alertmanager&#34;&gt;&lt;/p&gt;
+&lt;p&gt;在文章 &lt;a href=&#34;technical/how-to-monitor-your-system-with-prometheus/&#34;&gt;How to monitor your system with prometheus&lt;/a&gt; 中介绍过 Prometheus 的安装教程，相信看过的小伙伴都已经开始使用了。但这样就够了吗，是否还缺少点什么？&lt;/p&gt;
+&lt;p&gt;对，没错，我们缺少告警 ！&lt;/p&gt;
+&lt;p&gt;图表再好看，也不会时时刻刻盯着啊，个人认为一个好的监控系统是能够自发告警，只有在有告警的时候，我们才登上去多喵几眼。&lt;/p&gt;
+&lt;p&gt;其实，Prometheus 官方提供了告警模块，那就是 &lt;a href=&#34;https://github.com/prometheus/alertmanager&#34;&gt;Alertmanager&lt;/a&gt;, 不过因为代码解耦关系，它被单独剥离成一个独立项目了。&lt;/p&gt;
+&lt;p&gt;我是分割线&lt;/p&gt;
+&lt;p&gt;下面我们将完成安装和配置 Alertmanager, 并结合 Onealert 实现报警需求&lt;/p&gt;
+&lt;p&gt;环境准备&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;已安装 Prometheus Server (参考 &lt;a href=&#34;technical/how-to-monitor-your-system-with-prometheus/&#34;&gt;How to monitor your system with prometheus&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;step-1--安装-alertmanager&#34;&gt;Step 1 — 安装 Alertmanager&lt;/h3&gt;
+&lt;p&gt;使用 &lt;code&gt;wget&lt;/code&gt; 下载 Alertmanager 安装包&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd ~/Download
+wget https://github.com/prometheus/alertmanager/releases/download/v0.4.2/alertmanager-0.4.2.linux-amd64.tar.gz
+cd Prometheus
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用 &lt;code&gt;tar&lt;/code&gt; 解压缩 &lt;code&gt;alertmanager-0.4.2.linux-amd64.tar.gz&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tar -xvzf ~/Download/alertmanager-0.4.2.linux-amd64.tar.gz
+cd alertmanager-0.4.2.linux-amd64
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当解压缩成功后，可以运行 version 检查运行环境是否正常&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./alertmanager -version
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果你看到类似输出，表示你已安装成功:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;alertmanager, version xxx (branch: master, revision: 9a5ab2fa63dd7951f4f202b0846d4f4d8e9615b0)
+  build user:       root@2811d2f42616
+  build date:       20160902-15:34:07
+  go version:       go1.6.3
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;step-2--修改-alertmanager-配置&#34;&gt;Step 2 — 修改 alertmanager 配置&lt;/h3&gt;
+&lt;p&gt;修改 simple.yml 文件，使用 Onealert 的 Prometheus 默认应用配置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#simple.yml
+global:
+  resolve_timeout: 1m
+
+route:
+  group_by: [&#39;alertname&#39;]
+  group_wait: 5s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: &#39;webhook&#39;
+
+receivers:
+- name: &#39;webhook&#39;
+  webhook_configs:
+  - url: &#39;http://api.110monitor.com/alert/api/event/prometheus/xxxxxxxxx&#39;
+    send_resolved: true
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;提示: 这里我们使用 Alertmanager 的 webhook_configs，地址为 Onealert 一个 App&lt;/p&gt;
+&lt;h3 id=&#34;step-3--启动-alertmanager&#34;&gt;Step 3 — 启动 Alertmanager&lt;/h3&gt;
+&lt;p&gt;使用 &lt;code&gt;./alertmanager -config.file simple.yml&lt;/code&gt; 运行 Alertmanager, 如果看到类似输出，表示运行成功&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;INFO[0000] Starting alertmanager (version=0.4.2, branch=master, revision=9a5ab2fa63dd7951f4f202b0846d4f4d8e9615b0)  source=main.go:84
+INFO[0000] Build context (go=go1.6.3, user=root@2811d2f42616, date=20160902-15:34:07)  source=main.go:85
+INFO[0000] Loading configuration file                    file=simple.yml source=main.go:156
+INFO[0000] Listening on :9093                            source=main.go:206
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;step-4--添加-rules&#34;&gt;Step 4 — 添加 Rules&lt;/h3&gt;
+&lt;p&gt;切换到 Prometheus Server 目录, 修改 &lt;code&gt;prometheus.yml&lt;/code&gt; 文件，添加 &lt;code&gt;rule_files&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#prometheus.yml
+rule_files:
+  - &amp;quot;first.rules&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;创建 &lt;code&gt;first.rules&lt;/code&gt; 文件, 并添加&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#first.rules&lt;/span&gt;
+ALERT InstanceStatus
+  IF up&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;job&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;node&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+  FOR 10s
+  LABELS &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    instance &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;{{&lt;/span&gt;$labels&lt;span style=&#34;color:#e6db74&#34;&gt;.instance}}&amp;#34;&lt;/span&gt;,
+  &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+  ANNOTATIONS &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    summary &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;服务器 {{ &lt;/span&gt;$labels&lt;span style=&#34;color:#e6db74&#34;&gt;.instance }} 运行状态&amp;#34;&lt;/span&gt;,
+    description &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;服务器 {{ &lt;/span&gt;$labels&lt;span style=&#34;color:#e6db74&#34;&gt;.instance }} 已当机超过 20s&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使用命令 &lt;code&gt;./prometheus -alertmanager.url http://localhost:9093&lt;/code&gt; 重启 Promtheus Server&lt;/p&gt;
+&lt;p&gt;此时在浏览器中访问页面 &lt;code&gt;http://localhost:9090/alerts&lt;/code&gt;，你将看到配置的所有 Rules&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/proalert1.png&#34; alt=&#34;proalert1&#34;&gt;&lt;/p&gt;
+&lt;p&gt;停掉 Node Exporter，隔一定时间，刷新该页面，你将看到&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/proalert2.png&#34; alt=&#34;proalert2&#34;&gt;&lt;/p&gt;
+&lt;p&gt;此时你会收到类似的告警邮件（Onealert 默认通知配置）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/images/proalert3.png&#34; alt=&#34;proalert3&#34;&gt;&lt;/p&gt;
+&lt;p&gt;至此，我们已完成了使用 Alertmanager 来实现应用的告警通知。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;结语：&lt;/p&gt;
+&lt;p&gt;Prometheus 代码是非常解耦的，我们可以使用官方的 Alertmanager 包，再结合 PromQL 强大能力，简单配置 Rules，
+即满足常见告警需求，对于比较特殊的告警，则需要结合 Alertmanager 更加细致的配置实现。&lt;/p&gt;
+&lt;p&gt;我已仔细阅读代码，发现它在告警聚合，去重，以及配置不同发送频率，不同渠道都做的比较完备，以后会展开细讲。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Prometheus with hot reload</title>
+      <link>/posts/2016-09-19-prometheuswith-hot-reload/</link>
+      <pubDate>Mon, 19 Sep 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-09-19-prometheuswith-hot-reload/</guid>
+      <description>&lt;p&gt;当 Prometheus 有配置文件修改，我们想加载新的配置信息而不停掉服务的时候，可以采用 Prometheus 提供的热更新的方法。&lt;/p&gt;
+&lt;p&gt;热更新的加载方法有两种：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;kill -HUP pid&lt;/li&gt;
+&lt;li&gt;curl -X POST http://localhost:9090/-/reload&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;当你采用以上任一方式执行 reload 成功的时候，将在 promtheus log 中看到如下信息：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://7o512j.com1.z0.glb.clouddn.com/reload_success.png&#34; alt=&#34;reload_success.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;如果有配置信息填写错误，将导致 reload 失败，你将看到类型如下信息：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ERRO[0161] Error reloading config: couldn&#39;t load configuration (-config.file=prometheus.yml): unknown fields in scrape_config: job_nae  source=main.go:146
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;提示： 我个人更倾向于采用 curl -X POST 的方式，因为每次 reload 过后， pid 会改变，使用 kill 方式需要找到当前进程号。&lt;/p&gt;
+&lt;p&gt;再分别说下这两种方式 Prometheus 内部实现：&lt;/p&gt;
+&lt;p&gt;第一种：通过 kill 命令的 HUP (hang up) 参数实现&lt;/p&gt;
+&lt;p&gt;首先 Prometheus 在 cmd/promethteus/main.go 中实现了对进程系统调用监听，
+如果发现是 &lt;code&gt;syscall.SIGHUP&lt;/code&gt; 的信号，那么就会执行 reloadConfig 函数。&lt;/p&gt;
+&lt;p&gt;代码类似:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hup := make(chan os.Signal)
+signal.Notify(hup, syscall.SIGHUP)
+go func() {
+  for {
+    select {
+    case &amp;lt;-hup:
+      if err := reloadConfig(cfg.configFile, reloadables...); err != nil {
+        log.Errorf(&amp;quot;Error reloading config: %s&amp;quot;, err)
+      }
+    }
+  }
+}()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;第二种：通过 web 模块的 &lt;code&gt;/-/reload&lt;/code&gt; action 实现。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;首先 Prometheus 在 web(web/web.go) 模块中注册了一个 POST 的 action &lt;code&gt;/-/reload&lt;/code&gt;,
+它的 handler 是 &lt;code&gt;web.reload&lt;/code&gt; 函数，该函数主要向 &lt;code&gt;web.reloadCh&lt;/code&gt; chan 里面发送一个 &lt;code&gt;chan error&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;在 Prometheus 的 cmd/promethteus/main.go 中有个 goroutine 来监听 web 的 reloadCh, 如果有值，那么执行 reloadConfig 函数.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;代码类似：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hupReady := make(chan bool)
+go func() {
+	&amp;lt;-hupReady
+	for {
+		select {
+		case rc := &amp;lt;-webHandler.Reload():
+			if err := reloadConfig(cfg.configFile, reloadables...); err != nil {
+				log.Errorf(&amp;quot;Error reloading config: %s&amp;quot;, err)
+				rc &amp;lt;- err
+			} else {
+				rc &amp;lt;- nil
+			}
+		}
+	}
+}()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;总结：Prometheus 内部提供了成熟的 hot reload 方案，这大大方便配置文件的修改和重新加载。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to monitor your system with prometheus</title>
+      <link>/posts/2016-09-14-how-to-monitor-your-system-with-prometheus/</link>
+      <pubDate>Wed, 14 Sep 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-09-14-how-to-monitor-your-system-with-prometheus/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://prometheus.io/assets/architecture.svg&#34; alt=&#34;prometheus-architecture.svg&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;prometheus-是什么&#34;&gt;Prometheus 是什么？&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://prometheus.io&#34;&gt;Prometheus&lt;/a&gt; 是一个 golang 写的监控告警系统，完全开源，它提供完善的统计模型和友好的查询语句，可以很方便地实现系统机器运行状况监控。&lt;/p&gt;
+&lt;p&gt;环境准备&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;linux amd64 (ubuntu server)&lt;/li&gt;
+&lt;li&gt;golang 运行环境 (安装文档 &lt;a href=&#34;https://golang.org/doc/install&#34;&gt;https://golang.org/doc/install&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;step-1--安装-prometheus-server&#34;&gt;Step 1 — 安装 Prometheus Server&lt;/h3&gt;
+&lt;p&gt;创建下载目录,以便安装过后清理掉&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mkdir ~/Download
+cd ~/Download
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用 &lt;code&gt;wget&lt;/code&gt; 下载 Prometheus 服务（自带数据库）的安装包&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;wget https://github.com/prometheus/prometheus/releases/download/v1.1.2/prometheus-1.1.2.linux-amd64.tar.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;创建 Prometheus 目录，用于存放所有 Prometheus 相关的运行服务&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mkdir ~/Prometheus
+cd ~/Prometheus
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用 &lt;code&gt;tar&lt;/code&gt; 解压缩 &lt;code&gt;prometheus-1.1.2.linux-amd64.tar.gz&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tar -xvzf ~/Download/prometheus-1.1.2.linux-amd64.tar.gz
+cd prometheus-1.1.2.linux-amd64
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当解压缩成功后，可以运行 version 检查运行环境是否正常&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./prometheus version
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果你看到类似输出，表示你已安装成功:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;prometheus, version xxx (branch: master, revision: xxxx)
+  build user:       xxx
+  build date:       xxx
+  go version:       xxx
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;step-2--安装-node-exporter&#34;&gt;Step 2 — 安装 Node Exporter&lt;/h3&gt;
+&lt;p&gt;Node Exporter 是官方提供的最基本的 Exporter, 提供机器运行相关的信息收集，比如 CPU, Memory, Disk 等等，
+它会在 Prometheus Server 定时来拉取数据的时候，提供当前的数据。&lt;/p&gt;
+&lt;p&gt;使用 &lt;code&gt;wget&lt;/code&gt; 下载 Node Exporter&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd ~/Download
+wget https://github.com/prometheus/node_exporter/releases/download/0.12.0/node_exporter-0.12.0.linux-amd64.tar.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使用 &lt;code&gt;tar&lt;/code&gt; 解压缩 &lt;code&gt;node_exporter-0.12.0.linux-amd64.tar.gz&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd ~/Prometheus
+tar -xvzf ~/Download/node_exporter-0.12.0.linux-amd64.tar.gz
+cd node_exporter-0.12.0.linux-amd64
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;step-3--启动-node-exporter&#34;&gt;Step 3 — 启动 Node Exporter&lt;/h3&gt;
+&lt;p&gt;使用 &lt;code&gt;./node_exporter&lt;/code&gt; 运行  Node Exporter, 如果看到类似输出，表示运行成功&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;INFO[0000] Starting node_exporter (version=0.12.0, branch=master, revision=df8dcd2)  source=node_exporter.go:135
+INFO[0000] Build context (go=go1.6.2, user=root@ff68505a5469, date=20160505-22:15:11)  source=node_exporter.go:136
+INFO[0000] No directory specified, see --collector.textfile.directory  source=textfile.go:57
+INFO[0000] Enabled collectors:                           source=node_exporter.go:155
+INFO[0000]  - loadavg                                    source=node_exporter.go:157
+INFO[0000]  - textfile                                   source=node_exporter.go:157
+INFO[0000]  - time                                       source=node_exporter.go:157
+INFO[0000] Listening on :9100                            source=node_exporter.go:176
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当 Node Exporter 运行起来后，可以在浏览器中访问 &lt;code&gt;http://IP:9100/metrics&lt;/code&gt;， 将看到类似输出&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# HELP go_gc_duration_seconds A summary of the GC invocation durations.
+# TYPE go_gc_duration_seconds summary
+go_gc_duration_seconds{quantile=&amp;quot;0&amp;quot;} 0
+go_gc_duration_seconds{quantile=&amp;quot;0.25&amp;quot;} 0
+go_gc_duration_seconds{quantile=&amp;quot;0.5&amp;quot;} 0
+. . .
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;提示：当然你可以将 node_exporter 添加到 init 配置里，或者使用 supervisord 作为服务自启动&lt;/p&gt;
+&lt;h3 id=&#34;step-4--启动-prometheus-server&#34;&gt;Step 4 — 启动 Prometheus Server&lt;/h3&gt;
+&lt;p&gt;打开 Prometheus 配置文件 &lt;code&gt;prometheus.yml&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd ~/Prometheus/prometheus-1.1.2.linux-amd64
+nano prometheus.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;修改文件，添加如下配置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;scrape_configs:
+  - job_name: &amp;quot;node&amp;quot;
+    scrape_interval: &amp;quot;15s&amp;quot;
+    static_configs:
+      - targets: [&#39;127.0.0.1:9100&#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;配置说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;scrape_configs&lt;/code&gt; 表示配置一组数据拉取任务相关参数，比如时间间隔，目标地址等&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;job_name&lt;/code&gt; 表示一组叫做 &lt;code&gt;node&lt;/code&gt; 的任务&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;static_configs&lt;/code&gt;  里面的 &lt;code&gt;targets&lt;/code&gt; 表示配置的 exporter 地址&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;详情参考地址 &lt;a href=&#34;https://prometheus.io/docs/operating/configuration/&#34;&gt;https://prometheus.io/docs/operating/configuration/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;保存修改后，启动 Prometheus Server&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./prometheus
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果 prometheus 正常启动，你将看到如下信息：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;NFO[0000] Starting prometheus (version=1.1.0, branch=master, revision=5ee84a96db6190d4fcdaf4eff74a09b52824a9aa)  source=main.go:73
+INFO[0000] Build context (go=go1.6.3, user=root@54c6975115bb, date=20160903-19:04:27)  source=main.go:74
+INFO[0000] Loading configuration file prometheus.yml     source=main.go:221
+INFO[0000] Loading series map and head chunks...         source=storage.go:358
+INFO[0000] 974 series loaded.                            source=storage.go:363
+WARN[0000] No AlertManagers configured, not dispatching any alerts  source=notifier.go:176
+INFO[0000] Starting target manager...                    source=targetmanager.go:75
+INFO[0000] Listening on :9090                            source=web.go:233
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当 Prometheus 启动后，你可以通过浏览器来访问 &lt;code&gt;http://IP:9090&lt;/code&gt;，将看到如下页面&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://7o512j.com1.z0.glb.clouddn.com/prometheus-graph.png&#34; alt=&#34;http://7o512j.com1.z0.glb.clouddn.com/prometheus-graph.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;可以使用 &lt;code&gt;PromQL&lt;/code&gt; 实现简单查询&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://7o512j.com1.z0.glb.clouddn.com/prometheus-load1.png&#34; alt=&#34;http://7o512j.com1.z0.glb.clouddn.com/prometheus-load1.png&#34;&gt;&lt;/p&gt;
+&lt;p&gt;提示：你可以将 Prometheus 添加到 init 配置里，或者使用 supervisord 作为服务自启动&lt;/p&gt;
+&lt;h3 id=&#34;结论&#34;&gt;结论&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;可以看出 Prometheus 安装非常方便，依赖超级少，自带数据库&lt;/li&gt;
+&lt;li&gt;功能蛮强大的，它的 &lt;code&gt;PromQL&lt;/code&gt; 很灵活，详情请参考&lt;a href=&#34;https://prometheus.io/docs/querying/basics/&#34;&gt;这里&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;自带的 UI 太过于简单，虽然官方提供了 PromDash, 但是已不推荐使用，更好的选择是采用通用的 Dashbord &lt;a href=&#34;http://grafana.org/&#34;&gt;grafana&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;如果想要添加更多的机器，可以在 &lt;code&gt;static_configs&lt;/code&gt; 里的 &lt;code&gt;targets&lt;/code&gt; 添加对应 IP 地址&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>PromCon2016 记实报道</title>
+      <link>/posts/2016-08-27-promcon2016bao-dao/</link>
+      <pubDate>Sat, 27 Aug 2016 22:31:00 +0800</pubDate>
+      
+      <guid>/posts/2016-08-27-promcon2016bao-dao/</guid>
+      <description>&lt;p&gt;PromCon2016 已落下帷幕，是时候写一篇相关的记实报道了。&lt;/p&gt;
+&lt;p&gt;起初我对本次 Conf 还是有些担忧的，毕竟这是第一届，但随着时间推移，才发现我的担忧是多余的。&lt;/p&gt;
+&lt;p&gt;本届 Conf 无论是从举办场地（Google Berlin）, 赞助商（基本一线大公司），演讲 Topic (实战性强)，
+还是参与人数，现场氛围来看，都算得上是一次成功的 Conf，来句套路满满的话：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;PromCon2016 was awesome. Great hosting.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;好了，废话这么多，下面为大家带来一些现场照片和 Topic Slide.&lt;/p&gt;
+&lt;p&gt;分享照片：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://7o512j.com1.z0.glb.clouddn.com/CqzWc5KWEAAmdSI.jpg&#34; alt=&#34;http://7o512j.com1.z0.glb.clouddn.com/CqzWc5KWEAAmdSI.jpg&#34;&gt;
+&lt;img src=&#34;http://7o512j.com1.z0.glb.clouddn.com/Cqyqd__WEAACO_v.jpg&#34; alt=&#34;http://7o512j.com1.z0.glb.clouddn.com/Cqyqd__WEAACO_v.jpg&#34;&gt;
+&lt;img src=&#34;http://7o512j.com1.z0.glb.clouddn.com/CqsF_pTWgAAganG.jpg&#34; alt=&#34;http://7o512j.com1.z0.glb.clouddn.com/CqsF_pTWgAAganG.jpg&#34;&gt;&lt;/p&gt;
+&lt;p&gt;照片看上去，逼格满满，好想吃那个点心有没有 (强烈推荐 @RubyConf 也来一打)。&lt;/p&gt;
+&lt;h4 id=&#34;share-slide&#34;&gt;Share Slide：&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.google.com/presentation/d/1xMnqKHNfBS1DWcnMQ6S3iTS10_DMISoDfNt6If4ihe4/pub?start=false&amp;amp;loop=false&amp;amp;delayms=3000&amp;amp;slide=id.p&#34;&gt;Alerting Heartbeats&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.slideshare.net/brianbrazil/so-you-want-to-write-an-exporter&#34;&gt;How to best write an exporter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.slideshare.net/wyukawa/promcon2016?qid=0f276761-8ae7-49f2-8d2f-5d6ec1b8089a&amp;amp;v=&amp;amp;b=&amp;amp;from_search=1&#34;&gt;Hadoop/Fluentd monitoring with prometheus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.slideshare.net/brianbrazil/an-exploration-of-the-formal-properties-of-promql&#34;&gt;An Exploration of the Formal Properties of PromQL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.slideshare.net/weaveworks/project-frankenstein-a-multitenant-horizontally-scalable-prometheus-as-a-service&#34;&gt;Project Frankenstein: A multitenant, horizontally scalable Prometheus as a service&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.slideshare.net/brianbrazil/life-of-a-label-promcon2016-berlin&#34;&gt;Life of a Label&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.slideshare.net/MatthewCampbell7/breaking-prometheus-promcon-berlin-16?qid=a27b726a-ac93-4adb-bd2b-94b8e60f412c&amp;amp;v=&amp;amp;b=&amp;amp;from_search=1&#34;&gt;Breaking Prometheus&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;More slide are comming soon &amp;hellip;..&lt;/p&gt;
+&lt;p&gt;更多动态，请关注 Twitter &lt;a href=&#34;https://twitter.com/hashtag/promcon2016?src=hash&#34;&gt;#promcon2016&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

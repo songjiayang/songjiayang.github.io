@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta name="generator" content="Hugo 0.72.0" />
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>小鱼驿站 - 小鱼驿站</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="小鱼驿站" />
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="favicon.png">
+
+<link rel="stylesheet" href="css/style.css?rnd=1591688447" />
+
+<link rel="stylesheet" href="css/my.css?rnd=1591688447">
+
+<meta property="og:title" content="小鱼驿站" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" />
+<meta property="og:image" content="images/og-featured.png"/>
+<meta property="og:updated_time" content="2020-06-04T17:03:04+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="images/og-featured.png"/>
+
+<meta name="twitter:title" content="小鱼驿站"/>
+<meta name="twitter:description" content=""/>
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="/">小鱼驿站</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/tags/prometheus" title="Prometheus">Prometheus</a>
+    
+    <a class="" href="/tags/ipfs" title="IPFS">IPFS</a>
+    
+    <a class="" href="/tags/" title="Tags">Tags</a>
+    
+    <a class="" href="/posts/" title="Archive">Archive</a>
+    
+    <a class="" href="/about" title="About">About</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    <div class="homepage-content">
+        
+    </div>
+
+    
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-30-ni-zen-yao-she-de-wo-nan-guo-huang-pin-yuan/">你怎么舍得我难过-黄品源</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        今晚是 2013 年的除夕夜，偶然找到这首老歌，听着听着，心就碎了。
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-30</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-28-linuxxia-ci-pan-xing-neng-jian-dan-jian-ce/">Linux 下磁盘性能简单检测</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        1.使用dd命令简单测试磁盘I/O
+dd if=/dev/zero of=testfile bs=1M count=512 conv=fdatasync 2.使用hdparm命令
+sudo hdparm -t /dev/sda 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-28-linuxxiang-qing-de-fang-fa/">Linux 下查看 CPU 详情的方法</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        1.通过查看/proc/cupinfo文件信息
+cat /proc/cpuinfo 2.通过ls命令查看
+lscup 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-24-dai-ma-xing-tong-ji-zhi-gitming-ling/">代码行统计之 git 命令</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        年底下，突然想看下今年项目提交代码的行数，于是在网上找到了如下命令:
+git log --author=&quot;&lt;USERNAME&gt;&quot; --pretty=tformat: --numstat | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf &quot;added lines: %s removed lines : %s total lines: %s\n&quot;,add,subs,loc }' 具体使用只需要将替换成某某一个git comment user，如：
+git log --author=&quot;songjiayang&quot; --pretty=tformat: --numstat | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf &quot;added lines: %s removed lines : %s total lines: %s\n&quot;,add,subs,loc }' added lines: 164821 removed lines : 287743 total lines: -122922 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/git">#git</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-22-xing-neng-ce-shi-gong-ju-zhi-httperf/">性能测试工具之 httperf</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        下载httperf
+  配置环境 ./config
+  编译 make
+  安装 make install
+  httperf的基本使用
+  ==&gt; httperf --hog --server=www.ruby-china.org --wsess=100,100,0.1 --burst-length=10 --rate=5 --timeout=5 httperf --hog --timeout=5 --client=0/1 --server=www.ruby-china.org --port=80 --uri=/ --rate=5 --send-buffer=4096 --recv-buffer=16384 --wsess=100,100,0.100 --burst-length=10 httperf: warning: open file limit &gt; FD_SETSIZE; limiting max. # of open files to FD_SETSIZE Maximum connect burst length: 1 Total: connections 100 requests 10000 replies 10000 test-duration 23.630 s Connection rate: 4.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-22-railszhong-counter-cachede-yong/">Rails中 counter_cache 的使用</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        假设我们现在已经有了post和comment两个model:
+#app/models/post.rb class Post &lt; ActiveRecord::Base has_many :comments, dependent: :destroy end #app/models/comment.rb class Comment &lt; ActiveRecord::Base belongs_to :post end 有这样一个需求：统计每个文章评论数。这里我们采用rails的counter_cache来处理。
+我们在以上基础一步一步地添加 rails 的 counter_cache 的使用。
+1.在Post中添加一个comment_count的字段来存储comments的数量,可以直接使用migration来处理:
+rails g migration add_comment_count_to_post comment_count:integer 2.修改comment.rb文件，添加counter_cache的支持:
+#app/models/comment.rb class Comment &lt; ActiveRecord::Base belongs_to :post, counter_cache: :comment_count end 3.修改rspec测试用例:
+#spec/models/post.rb context &quot;comment_count&quot; do let(:post){create :post} let(:comment1){ create :comment, :post =&gt; post} it &quot;comment_count should +1&quot; do expect { create :comment, :post =&gt; post }.to change{post.reload.comment_count}.by(1) end it &quot;comment_count should -1&quot; do expect { comment1.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-22</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/ruby">#ruby</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-21-liang-ge-cha-kan-linuxduan-kou-zhan-yong-qing-kuang-de-ming-ling/">两个查看 Linux 端口占用情况的命令</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        netstat 和 lsof是两个很好的查看服务器上端口占用情况的命令，简单使用如下： =&gt; netstat -tupln (Not all processes could be identified, non-owned process info will not be shown, you would have to be root to see it all.) Active Internet connections (only servers) Proto Recv-Q Send-Q Local Address Foreign Address State PID/Program name tcp 0 0 127.0.0.1:27017 0.0.0.0:* LISTEN - tcp 0 0 127.0.0.1:3306 0.0.0.0:* LISTEN - tcp 0 0 127.0.0.1:11211 0.0.0.0:* LISTEN - tcp 0 0 127.0.0.1:6379 0.0.0.0:* LISTEN - tcp 0 0 127.
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-21-linuxci-pan-jian-kong/">linux磁盘监控</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        大家可能都知道Linux上的top命令，使用它可以实时显示系统的运行状况，如图:
+top命令很好，唯独无法清楚的监控系统磁盘I/O的读写情况，iotop这个软件就可以很好的弥补top不足，能对服务器的磁盘进行实时监控。
+iotop安装  sudo apt-get install iotop 运行iotop sudo iotop 运行效果 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-21-mysql-console-command/">Mysql Wiki</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Drop a colomn form a table ALTER TABLE tb_name DROP COLUMN column_name ; Give a user all permission to a table GRANT ALL PRIVILEGES ON dbTest.* To 'user'@'hostname' IDENTIFIED BY 'password'; Change databse charset to utf-8： ALTER DATABASE databasename CHARACTER SET utf8 COLLATE utf8_unicode_ci; ALTER TABLE tablename CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci; Install mysql in rails sudo apt-get install mysql-server-xx sudo apt-get install libmysqlclient-dev gem install mysql2 
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/mysql">#mysql</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header>
+        <h1 class="post-title"><a href="/posts/2014-01-19-ding-shi-ren-wu-zhi-crontab/">定时任务之 crontab</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        ####1.编辑定时任务 crontab -e
+####2. crontab 中的时间对应关系
+* * * * * m h dom mon dow ####3. 查询当前用户的定时任务 crontab -l
+    </div>
+
+    
+    
+
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2014-01-19</div>
+    
+    <div class="post-taxonomies">
+        
+            
+                <ul class="post-tags">
+                    
+                        <li><a href="tags/linux">#linux</a></li>
+                    
+                </ul>
+        
+    </div>
+</div>
+
+</article>
+    
+    
+    
+        
+    <div class="pagination">
+        <div class="left pagination-item ">
+            
+                <a href="/page/18/">To new posts</a>
+            
+        </div>
+        <div class="right pagination-item ">
+            
+                <a href="/page/20/">To old posts</a>
+            
+        </div>
+    </div>
+
+
+
+        </main>
+        <footer>
+            
+                
+                
+
+                <p>© smallfish, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

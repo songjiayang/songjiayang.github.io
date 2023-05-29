@@ -7,7 +7,7 @@ deploy_branch = 'master'
 
 desc "Jekyll serve and watch file change"
 task :watch do
-  system "bundle exec jekyll server -w"
+  system "bundle exec jekyll server -w --incremental"
 end
 
 

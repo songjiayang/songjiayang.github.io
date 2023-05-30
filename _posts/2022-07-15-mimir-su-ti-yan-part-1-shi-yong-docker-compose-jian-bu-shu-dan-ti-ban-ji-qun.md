@@ -8,8 +8,6 @@ thumbnail-img: /images/mimir/step01/03.jpg
 tags: [grafana, mimir]
 ---
 
-## 前言
-
 前面两篇文章我们对 Mimir 产生的背景，它的核心卖点有了一个大概的了解，今天我们开始一个全新系列-【Mimir 速体验】，即通过 docker-compose 搭建 Mimir 单体版集群的方式，来深入掌握它的用法。
 
 本系列文章一共有三篇，这篇文章属于该系列第一篇，主要讲解内容包括：

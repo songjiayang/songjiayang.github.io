@@ -8,8 +8,6 @@ thumbnail-img: /images/mimir/source/03/01.jpg
 tags: [grafana, mimir]
 ---
 
-## 背景
-
 熟悉 Prometheus TSDB 的朋友应该都知道，Prometheus 是不支持乱序数据写入的，因为它对乱序数据写入有两个限制：
 
 1. 同一 series 要求数据写入不可以乱序（即： 时间相对靠前的数据需要先写入，时间靠后的数据后写入)，若乱序到达的数据则会拒绝写入，这种错误称为out of order。

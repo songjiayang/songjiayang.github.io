@@ -8,8 +8,6 @@ thumbnail-img: /images/mimir/source/02/01.jpg
 tags: [grafana, mimir]
 ---
 
-## 背景
-
 Mimir compactor组件负责将抓取模块ingester上传的多个TSDB blocks，合并成大的block，即从level1-levelN的压缩过程。当处理亿级活跃指标压缩数据时，会出现一系列挑战性的问题。  
 
 ## 问题场景  

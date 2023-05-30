@@ -7,8 +7,6 @@ thumbnail-img: /images/mimir/source/04/01.jpg
 # share-img: 
 tags: [grafana, mimir]
 
-## 背景
-
 在 Mimir 集群中运行10亿活跃指标，不只要求抓取保存这么多 metrics 数据，同时也要能够高效的查询这些数据。  
 
 如果使用 PromQL 的单线程引擎，这种查询就会受到单核 CPU 的能力影响。当处理高基数查询时，查询性能会比较差。Mimir 带来了一种边缘计算或者叫做算子下推的方式，对高基数查询进行优化。  

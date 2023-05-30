@@ -8,8 +8,6 @@ thumbnail-img: /images/mimir/step05/01.jpg
 tags: [grafana, mimir]
 ---
 
-## 背景
-
 以前我们介绍过， Mimir 想成为大一统的时序数据库，对多种数据协议的写入原生支持（不再需要 Proxy）必不可少，它除了天然支持 Prometheus、OpenMetrics 外，终于在 v2.3.0 实现了对 OTLP 的支持，这离它宣传兼容主流协议又近了一步。
 
 OTLP metric 是 OpenTelemetry 提供的指标格式，具体可以参考 specification/metrics, 而 Mimir 目前支持的是 OTLP/HTTP 模式，gRPC 暂不支持。

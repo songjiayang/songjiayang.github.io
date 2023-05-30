@@ -8,8 +8,6 @@ thumbnail-img: /images/mimir/step04/01.jpg
 tags: [grafana, mimir]
 ---
 
-## 背景
-
 在 Mimir/Cortex 中，默认一份数据从 distributor 会写3份到不同 ingester 节点，这样做的目的是想通过多副本复制的方式实现数据存储的高可靠。在 Prometheus 生态中，不仅要实现数据存储的高可靠，还要实现数据抓取（Agent/Collector）的高可靠，通常大家也是采用相似的策略，即针对相同配置起多个 Prometheus 实例，然后再将每个实例抓取的结果通过 remote write 推送到同一存储后端。
 
 这样做虽然带来了抓取的高可靠，但如果数据不去重（在一个抓取周期内，distributor 只需转发一个 Prometheus 抓取的数据），每个 Prometheus 示例抓取的指标最终都要转发给 ingester，这会导致 ingester 数据写入量和 compactor block 压缩量翻倍，这将带来资源的浪费。

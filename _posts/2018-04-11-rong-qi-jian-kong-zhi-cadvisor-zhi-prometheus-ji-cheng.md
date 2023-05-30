@@ -1,7 +1,7 @@
 ---
 title: "cadvisor 与 Prometheus 集成"
 date: 2018-04-11 11:44:56+0800
-tags: [prometheus, 云原生]
+tags: [prometheus]
 ---
 
 在上一篇文章 [容器监控之 cadvisor （一）](http://www.songjiayang.com/posts/jrong-qi-jian-kong-zhi-cadvisor) 已经介绍了如何通过 cadvisor 来收集容器的运行状态信息，那这篇文章将具体讲解如何与 Prometheus 集成并通过 Prometheus 查看收集的数据。

@@ -1,7 +1,7 @@
 ---
 title: "容器监控之 cadvisor"
 date: 2018-04-10 17:49:39+0800
-tags: [prometheus, 云原生]
+tags: [prometheus]
 ---
 
 想必大家在生产环境中已大量使用到了容器，那对于容器的监控（CPU, 内存，网络请求）是如何处理的呢？

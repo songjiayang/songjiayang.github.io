@@ -1,7 +1,7 @@
 ---
 title: "我的第一个 SlideShare"
 date: 2018-03-02 07:38:51
-tags: [prometheus, 分享]
+tags: [prometheus, slide]
 ---
 
 ![prometheus101.png](/images/prometheus101.png)

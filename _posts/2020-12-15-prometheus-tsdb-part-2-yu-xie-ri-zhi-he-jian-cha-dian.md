@@ -4,7 +4,7 @@ subtitle: 主要介绍 TSDB 中预写日志的基础知识。
 date: 2020-12-15 21:36:56+0800
 # cover-img: /assets/img/path.jpg
 # thumbnail-img: /assets/img/thumb.png
-tags: [promethues]
+tags: [prometheus]
 ---
 
 本篇是 TSDB 系列翻译文章的第2篇，主要介绍 TSDB 中预写日志的基础知识、存储记录的类型、如何和头块内容映射以及如何做重放等内容。

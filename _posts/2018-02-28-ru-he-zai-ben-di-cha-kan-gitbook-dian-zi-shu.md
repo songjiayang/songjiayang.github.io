@@ -1,7 +1,7 @@
 ---
 title: "如何在本地查看 GitBook 电子书"
 date: 2018-02-28 06:19:38
-tags: [gitbook]
+tags: [tools]
 ---
 
 ### 背景

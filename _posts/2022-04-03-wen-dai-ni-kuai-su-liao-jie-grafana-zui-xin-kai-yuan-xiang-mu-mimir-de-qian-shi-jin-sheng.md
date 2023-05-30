@@ -5,7 +5,7 @@ date: 2022-04-03 20:17:55+0800
 thumbnail-img: /images/mimir/intro/01.jpg
 # cover-img: 
 # share-img: 
-tags: [grafana]
+tags: [grafana, mimir]
 ---
 
 就在前几天（2022/3/29）Grafana 宣布正式对外开源其时序数据库 Mimir，一经开源便在社区引起广泛讨论，不仅 hacknews 上的讨论持续发热，而且 Github 上也迅速收获 1K 关注。

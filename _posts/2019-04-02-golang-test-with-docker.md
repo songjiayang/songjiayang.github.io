@@ -1,7 +1,7 @@
 ---
 title: "Unit Test In Go With Docker"
 date: 2019-04-02 18:10:29+0800
-tags: [docker, go, 云原生]
+tags: [docker, go]
 ---
 
 ![docker-testing.png](/images/docker-testing.png)

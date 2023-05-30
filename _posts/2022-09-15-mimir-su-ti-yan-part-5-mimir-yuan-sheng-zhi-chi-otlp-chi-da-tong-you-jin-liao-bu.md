@@ -2,7 +2,7 @@
 title: "Mimir 速体验(Part 5): Mimir 原生支持 OTLP"
 subtitle: 
 date: 2022-09-15  21:19:16+0800
-thumbnail-img: /images/mimir/step05/01.jpg
+thumbnail-img: /images/mimir/step06/01.jpg
 # cover-img: 
 # share-img: 
 tags: [grafana, mimir]

@@ -2,7 +2,7 @@
 title: "Mimir 源码分析 （五）：查询分片和压缩分片的组合场景"
 subtitle: 
 date: 2022-08-28  22:41:08+0800
-# thumbnail-img: 
+thumbnail-img: /images/mimir/source/05/01.jpg
 # cover-img: 
 # share-img: 
 tags: [grafana, mimir]

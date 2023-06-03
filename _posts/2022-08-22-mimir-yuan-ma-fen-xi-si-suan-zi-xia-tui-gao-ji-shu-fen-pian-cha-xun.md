@@ -1,5 +1,5 @@
 ---
-title: "Mimir 源码分析 （四）：算子下推--高基数分片查询"
+title: "Mimir 源码分析 （四）：算子下推之高基数分片查询"
 subtitle: 
 date: 2022-08-22  20:40:15+0800
 thumbnail-img: /images/mimir/source/04/01.jpg

@@ -2,7 +2,7 @@
 title: "Mimir 速体验（Part 6）： 规则评估和告警管理"
 subtitle: 
 date: 2022-11-18  21:34:23+0800
-thumbnail-img: (/images/mimir/step06/01.jpg)
+thumbnail-img: /images/mimir/step06/01.jpg
 # cover-img: 
 # share-img: 
 tags: [grafana, mimir]

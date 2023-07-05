@@ -8,7 +8,7 @@ thumbnail-img: /images/kind/02/dashboard-token.png
 tags: [kubernetes, kind]
 ---
 
-在上一篇文章中，我们讲解了如何通过 Kind 快速部署本地 K8s 环境，今天我们将进一步讲解其本地 K8s 环境中添加 K8s Dashboard 的方法。
+在[上一篇](/2023-07-01-ru-he-shi-yong-kind-jin-xing-ben-di-k8s-ji-qun-kuai-su-yan-zheng)文章中，我们讲解了如何通过 Kind 快速部署本地 K8s 环境，今天我们将进一步讲解其本地 K8s 环境中添加 K8s Dashboard 的方法。
 
 Kubenetes Dashboard 项目地址为 [https://github.com/kubernetes/dashboard](https://github.com/kubernetes/dashboard)， 可以看到它提供统一的 Web 界面，对 K8s 集群中的不同命令空间的各种对象资源进行观测，非常简约直观，下面我们就来讲解其具体用法。
 

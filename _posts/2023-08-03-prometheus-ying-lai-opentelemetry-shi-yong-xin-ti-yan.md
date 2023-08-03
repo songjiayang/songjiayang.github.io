@@ -1,6 +1,6 @@
 ---
 title: "Prometheus 迎来 OpenTelemetry—使用新体验"
-subtitle: 
+subtitle: OpenTelemetry 经过几年发展，其 SDK 已然成为数据埋点、采集、上报的默认选择，今天我们就来看看如何将 OTLP 协议直接发送到 Prometheus。
 date: 2023-08-03 22:21:19+0800
 # thumbnail-img: 
 cover-img: /images/prometheus/otlp/1.jpg
@@ -96,7 +96,7 @@ httpDurationsHistogram.Record(context.Background(), elapsed, opt)
 
 测试程序的指标数据可以通过 Prometheus 的看板进行查询。
 
-![otlp-console.jpg](/images/prometheus/otlp/1.jpg)
+![otlp-console.jpg](/images/prometheus/otlp/2.jpg)
 
 通过该图可知，OTLP 协议解析和转化后，生成 Prometheus 指标的标签对应关系如下：
 
